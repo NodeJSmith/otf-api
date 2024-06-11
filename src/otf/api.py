@@ -70,9 +70,13 @@ class Api:
 
         logger.debug(f"Making {method!r} request to {full_url}")
 
-        async with self.session.request(
-            method, full_url, headers=self.base_headers, params=params, **kwargs
-        ) as response:
+        if "headers" in kwargs:
+            headers = kwargs.pop("headers")
+            headers.update(self.base_headers)
+        else:
+            headers = self.base_headers
+
+        async with self.session.request(method, full_url, headers=headers, params=params, **kwargs) as response:
             response.raise_for_status()
             return await response.json()
 
