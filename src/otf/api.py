@@ -10,6 +10,7 @@ from otf.classes_api import ClassesApi
 from otf.dna_api import DnaApi
 from otf.member_api import MemberApi
 from otf.models.auth import User
+from otf.performance_api import PerformanceApi
 from otf.studio_api import StudiosApi
 
 if typing.TYPE_CHECKING:
@@ -42,6 +43,7 @@ class Api:
         self.classes_api = ClassesApi(self)
         self.studios_api = StudiosApi(self)
         self.dna_api = DnaApi(self)
+        self.performance_api = PerformanceApi(self)
         self.member_home_studio = None
         self.home_studio_uuid = None
         self.member_tz = None
@@ -117,3 +119,9 @@ class Api:
     async def _dna_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs) -> dict:
         """Perform an API request to the DNA API."""
         return await self._do(method, API_DNA_BASE_URL, url, params, **kwargs)
+
+    async def _performance_summary_request(
+        self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs
+    ) -> dict:
+        """Perform an API request to the performance summary API."""
+        return await self._do(method, API_IO_BASE_URL, url, params, **kwargs)
