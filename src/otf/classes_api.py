@@ -32,13 +32,10 @@ class ClassesApi:
             OtfClassList: The classes for the user.
         """
 
-        md = await self._api.member_api.get_member_detail()
-        home_studio_uuid = md.home_studio.studio_uuid
-
         if not studio_uuids:
-            studio_uuids = [home_studio_uuid]
-        elif include_home_studio and home_studio_uuid not in studio_uuids:
-            studio_uuids.append(home_studio_uuid)
+            studio_uuids = [self._api.home_studio_uuid]
+        elif include_home_studio and self._api.home_studio_uuid not in studio_uuids:
+            studio_uuids.append(self._api.home_studio_uuid)
 
         path = "/v1/classes"
 

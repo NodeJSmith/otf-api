@@ -26,9 +26,7 @@ class StudiosApi:
         Returns:
             StudioDetail: Detailed information about the studio.
         """
-        if not studio_uuid:
-            md = await self._api.member_api.get_member_detail()
-            studio_uuid = md.home_studio.studio_uuid
+        studio_uuid = studio_uuid or self._api.home_studio_uuid
 
         path = f"/mobile/v1/studios/{studio_uuid}"
         params = {"include": "locations"}

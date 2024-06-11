@@ -243,8 +243,7 @@ class MemberApi:
         Returns:
             StudioServiceList: The services available at the studio.
         """
-        if not studio_uuid:
-            studio_uuid = (await self.get_member_detail()).home_studio.studio_uuid
+        studio_uuid = studio_uuid or self._api.home_studio_uuid
         data = await self._api._default_request("GET", f"/member/studios/{studio_uuid}/services")
         return StudioServiceList(data=data["data"])
 
