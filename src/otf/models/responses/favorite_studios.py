@@ -82,7 +82,7 @@ class FavoriteStudio(BaseModel):
     time_zone: str = Field(..., alias="timeZone")
     environment: str
     allows_cr_waitlist: bool = Field(..., alias="allowsCRWaitlist")
-    cr_waitlist_flag_last_updated: str = Field(..., alias="crWaitlistFlagLastUpdated")
+    cr_waitlist_flag_last_updated: datetime = Field(..., alias="crWaitlistFlagLastUpdated")
     is_integrated: bool = Field(..., alias="isIntegrated")
     created_by: str = Field(..., alias="createdBy")
     created_date: datetime = Field(..., alias="createdDate")
