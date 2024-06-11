@@ -26,7 +26,14 @@ class Api:
     user: User
     session: aiohttp.ClientSession
 
-    def __init__(self, username: str | None = None, password: str | None = None):
+    def __init__(self, username: str, password: str):
+        """Create a new API instance. The username and password are required arguments because even though
+        we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
+
+        Args:
+            username (str): The username of the user.
+            password (str): The password of the user.
+        """
         self.user = User.load_from_disk(username, password)
 
         self.session = aiohttp.ClientSession()
@@ -35,6 +42,25 @@ class Api:
         self.classes_api = ClassesApi(self)
         self.studios_api = StudiosApi(self)
         self.dna_api = DnaApi(self)
+        self.member_home_studio = None
+        self.home_studio_uuid = None
+        self.member_tz = None
+
+    @classmethod
+    async def create(cls, username: str, password: str) -> "Api":
+        """Create a new API instance. The username and password are required arguments because even though
+        we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
+
+        Args:
+            username (str): The username of the user.
+            password (str): The password of the user.
+        """
+        self = cls(username, password)
+        details = await self.member_api.get_member_detail()
+        self.member_home_studio = details.home_studio
+        self.home_studio_uuid = details.home_studio.studio_uuid
+        self.member_tz = self.member_home_studio.time_zone
+        return self
 
     def __del__(self):
         try:
