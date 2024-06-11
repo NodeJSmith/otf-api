@@ -85,7 +85,7 @@ class StudioDetail(BaseModel):
     sms_package_enabled: bool | None = Field(..., alias="smsPackageEnabled")
     allows_dashboard_access: bool | None = Field(..., alias="allowsDashboardAccess")
     allows_cr_waitlist: bool = Field(..., alias="allowsCrWaitlist")
-    cr_waitlist_flag_last_updated: str | None = Field(..., alias="crWaitlistFlagLastUpdated")
+    cr_waitlist_flag_last_updated: datetime | None = Field(..., alias="crWaitlistFlagLastUpdated")
     royalty_rate: int | None = Field(..., alias="royaltyRate")
     marketing_fund_rate: int | None = Field(..., alias="marketingFundRate")
     commission_percent: int | None = Field(..., alias="commissionPercent")
