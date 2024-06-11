@@ -22,7 +22,7 @@ REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "A
 
 
 class Api:
-    logger: type["Logger"] = logger
+    logger: "Logger" = logger
     user: User
     session: aiohttp.ClientSession
 
