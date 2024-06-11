@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+
+name = "otf"
+version = "0.0.1"
+description = "Python OrangeTheory Fitness API Client"
+
+
+dependencies = ["aiohttp", "loguru", "pydantic", "pycognito"]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["otf"]
