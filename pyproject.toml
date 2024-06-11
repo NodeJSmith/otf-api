@@ -10,7 +10,12 @@ version = "0.0.1"
 description = "Python OrangeTheory Fitness API Client"
 
 
-dependencies = ["aiohttp", "loguru", "pydantic", "pycognito"]
+dependencies = [
+    "aiohttp==3.9.5",
+    "loguru==0.7.2",
+    "pydantic==2.7.3",
+    "pycognito==2024.5.1",
+]
 
 
 [tool.setuptools.packages.find]
