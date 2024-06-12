@@ -2,13 +2,29 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["otf"]
 
 [project]
-
-name = "otf"
+name = "otf-api"
 version = "0.0.1"
 description = "Python OrangeTheory Fitness API Client"
+readme = "README.md"
+requires-python = ">=3.10"
 
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Internet :: WWW/HTTP",
+    "Operating System :: OS Independent",
+]
 
 dependencies = [
     "aiohttp==3.9.5",
@@ -16,8 +32,3 @@ dependencies = [
     "pydantic==2.7.3",
     "pycognito==2024.5.1",
 ]
-
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["otf"]
