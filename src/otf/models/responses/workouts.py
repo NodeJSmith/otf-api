@@ -1,16 +1,18 @@
 from ast import literal_eval
 from datetime import datetime
 
-from pydantic import BaseModel, Field, PrivateAttr
+from pydantic import Field, PrivateAttr
+
+from otf.models.base import OtfBaseModel
 
 
-class WorkoutType(BaseModel):
+class WorkoutType(OtfBaseModel):
     id: int
     display_name: str = Field(..., alias="displayName")
     icon: str
 
 
-class Workout(BaseModel):
+class Workout(OtfBaseModel):
     studio_number: str = Field(..., alias="studioNumber")
     studio_name: str = Field(..., alias="studioName")
     class_type: str = Field(..., alias="classType")
@@ -67,7 +69,7 @@ class Workout(BaseModel):
         self._minute_by_minute_raw = data.get("minuteByMinuteHr")
 
 
-class WorkoutList(BaseModel):
+class WorkoutList(OtfBaseModel):
     workouts: list[Workout]
 
     @property

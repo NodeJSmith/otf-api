@@ -1,9 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class MemberMembership(BaseModel):
+class MemberMembership(OtfBaseModel):
     member_membership_id: int = Field(..., alias="memberMembershipId")
     member_membership_uuid: str = Field(..., alias="memberMembershipUUId")
     membership_id: int = Field(..., alias="membershipId")

@@ -3,13 +3,15 @@ from pathlib import Path
 from typing import ClassVar
 
 from pycognito import Cognito, TokenVerificationException
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 CLIENT_ID = "65knvqta6p37efc2l3eh26pl5o"  # from otlive
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
 
 
-class IdClaimsData(BaseModel):
+class IdClaimsData(OtfBaseModel):
     sub: str
     email_verified: bool
     iss: str
@@ -36,7 +38,7 @@ class IdClaimsData(BaseModel):
         return f"{self.given_name} {self.family_name}"
 
 
-class AccessClaimsData(BaseModel):
+class AccessClaimsData(OtfBaseModel):
     sub: str
     device_key: str
     iss: str

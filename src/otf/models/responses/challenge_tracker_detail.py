@@ -1,9 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class MetricEntry(BaseModel):
+class MetricEntry(OtfBaseModel):
     title: str = Field(..., alias="Title")
     equipment_id: int = Field(..., alias="EquipmentId")
     entry_type: str = Field(..., alias="EntryType")
@@ -12,7 +14,7 @@ class MetricEntry(BaseModel):
     max_value: str = Field(..., alias="MaxValue")
 
 
-class BenchmarkHistory(BaseModel):
+class BenchmarkHistory(OtfBaseModel):
     studio_name: str = Field(..., alias="StudioName")
     equipment_id: int = Field(..., alias="EquipmentId")
     result: float | str = Field(..., alias="Result")
@@ -31,7 +33,7 @@ class BenchmarkHistory(BaseModel):
     linked_challenges: list = Field(..., alias="LinkedChallenges")
 
 
-class ChallengeHistory(BaseModel):
+class ChallengeHistory(OtfBaseModel):
     challenge_objective: str = Field(..., alias="ChallengeObjective")
     challenge_id: int = Field(..., alias="ChallengeId")
     studio_id: int = Field(..., alias="StudioId")
@@ -43,7 +45,7 @@ class ChallengeHistory(BaseModel):
     benchmark_histories: list[BenchmarkHistory] = Field(..., alias="BenchmarkHistories")
 
 
-class ChallengeTrackerDetail(BaseModel):
+class ChallengeTrackerDetail(OtfBaseModel):
     challenge_category_id: int = Field(..., alias="ChallengeCategoryId")
     challenge_sub_category_id: None = Field(..., alias="ChallengeSubCategoryId")
     equipment_id: int = Field(..., alias="EquipmentId")
@@ -59,5 +61,5 @@ class ChallengeTrackerDetail(BaseModel):
     challenge_histories: list[ChallengeHistory] = Field(..., alias="ChallengeHistories")
 
 
-class ChallengeTrackerDetailList(BaseModel):
+class ChallengeTrackerDetailList(OtfBaseModel):
     details: list[ChallengeTrackerDetail]

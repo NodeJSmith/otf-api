@@ -1,9 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class Location(BaseModel):
+class Location(OtfBaseModel):
     phone: str
     latitude: str
     longitude: str
@@ -14,16 +16,16 @@ class Location(BaseModel):
     postal_code: str = Field(..., alias="postalCode")
 
 
-class Currency(BaseModel):
+class Currency(OtfBaseModel):
     currency_alphabetic_code: str = Field(..., alias="currencyAlphabeticCode")
 
 
-class DefaultCurrency(BaseModel):
+class DefaultCurrency(OtfBaseModel):
     currency_id: int = Field(..., alias="currencyId")
     currency: Currency
 
 
-class Country(BaseModel):
+class Country(OtfBaseModel):
     country_id: int = Field(..., alias="countryId")
     country_code: str = Field(..., alias="countryCode")
     description: str
@@ -31,7 +33,7 @@ class Country(BaseModel):
     default_currency: DefaultCurrency = Field(..., alias="defaultCurrency")
 
 
-class StudioLocation(BaseModel):
+class StudioLocation(OtfBaseModel):
     studio_location_id: int = Field(..., alias="studioLocationId")
     bill_to_address: str = Field(..., alias="billToAddress")
     bill_to_address2: str = Field(..., alias="billToAddress2")
@@ -63,7 +65,7 @@ class StudioLocation(BaseModel):
     country: Country
 
 
-class Studio(BaseModel):
+class Studio(OtfBaseModel):
     studio_id: int = Field(..., alias="studioId")
     studio_uuid: str = Field(..., alias="studioUUId")
     mbo_studio_id: int = Field(..., alias="mboStudioId")
@@ -107,7 +109,7 @@ class Studio(BaseModel):
     studio_location: StudioLocation = Field(..., alias="studioLocation")
 
 
-class MemberPurchase(BaseModel):
+class MemberPurchase(OtfBaseModel):
     member_purchase_id: int = Field(..., alias="memberPurchaseId")
     member_purchase_uuid: str = Field(..., alias="memberPurchaseUUId")
     studio_id: int = Field(..., alias="studioId")
@@ -129,5 +131,5 @@ class MemberPurchase(BaseModel):
     studio: Studio
 
 
-class MemberPurchaseList(BaseModel):
+class MemberPurchaseList(OtfBaseModel):
     data: list[MemberPurchase]

@@ -1,11 +1,13 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
-from .enums import ClassStatus, StudioStatus
+from otf.models.base import OtfBaseModel
+
+from .enums import BookingStatus, StudioStatus
 
 
-class Location(BaseModel):
+class Location(OtfBaseModel):
     address_one: str = Field(alias="address1")
     address_two: str | None = Field(alias="address2")
     city: str
@@ -15,9 +17,11 @@ class Location(BaseModel):
     location_name: str | None = Field(None, alias="locationName")
     longitude: float = Field(alias="longitude")
     phone_number: str = Field(alias="phone")
+    postal_code: str | None = Field(None, alias="postalCode")
+    state: str | None = None
 
 
-class Coach(BaseModel):
+class Coach(OtfBaseModel):
     coach_uuid: str = Field(alias="coachUUId")
     name: str
     first_name: str = Field(alias="firstName")
@@ -26,21 +30,21 @@ class Coach(BaseModel):
     profile_picture_url: str | None = Field(None, alias="profilePictureUrl")
 
 
-class Currency(BaseModel):
+class Currency(OtfBaseModel):
     currency_alphabetic_code: str = Field(alias="currencyAlphabeticCode")
 
 
-class DefaultCurrency(BaseModel):
+class DefaultCurrency(OtfBaseModel):
     currency_id: int = Field(alias="currencyId")
     currency: Currency
 
 
-class StudioLocationCountry(BaseModel):
+class StudioLocationCountry(OtfBaseModel):
     country_currency_code: str = Field(alias="countryCurrencyCode")
     default_currency: DefaultCurrency = Field(alias="defaultCurrency")
 
 
-class StudioLocation(BaseModel):
+class StudioLocation(OtfBaseModel):
     latitude: float = Field(alias="latitude")
     longitude: float = Field(alias="longitude")
     phone_number: str = Field(alias="phoneNumber")
@@ -55,7 +59,7 @@ class StudioLocation(BaseModel):
     country: StudioLocationCountry = Field(alias="country")
 
 
-class Studio(BaseModel):
+class Studio(OtfBaseModel):
     studio_uuid: str = Field(alias="studioUUId")
     studio_name: str = Field(alias="studioName")
     description: str
@@ -65,11 +69,12 @@ class Studio(BaseModel):
     time_zone: str = Field(alias="timeZone")
     mbo_studio_id: int = Field(alias="mboStudioId")
     studio_id: int = Field(alias="studioId")
+    allows_cr_waitlist: bool | None = Field(None, alias="allowsCRWaitlist")
     cr_waitlist_flag_last_updated: datetime = Field(alias="crWaitlistFlagLastUpdated")
     studio_location: StudioLocation = Field(alias="studioLocation")
 
 
-class OtfClass(BaseModel):
+class OtfClass(OtfBaseModel):
     class_uuid: str = Field(alias="classUUId")
     name: str
     description: str
@@ -82,19 +87,20 @@ class OtfClass(BaseModel):
     studio: Studio
     coach: Coach
     location: Location
+    virtual_class: bool | None = Field(None, alias="virtualClass")
 
 
-class Member(BaseModel):
+class Member(OtfBaseModel):
     member_uuid: str = Field(alias="memberUUId")
     first_name: str = Field(alias="firstName")
     last_name: str = Field(alias="lastName")
-    email: str = Field(alias="email")
+    email: str
     phone_number: str = Field(alias="phoneNumber")
     gender: str
     cc_last_4: str = Field(alias="ccLast4")
 
 
-class Booking(BaseModel):
+class Booking(OtfBaseModel):
     class_booking_id: int = Field(alias="classBookingId")
     class_booking_uuid: str = Field(alias="classBookingUUId")
     studio_id: int = Field(alias="studioId")
@@ -103,11 +109,11 @@ class Booking(BaseModel):
     member_id: int = Field(alias="memberId")
     mbo_member_id: str = Field(alias="mboMemberId")
     mbo_class_id: int = Field(alias="mboClassId")
-    mbo_visit_id: int = Field(alias="mboVisitId")
+    mbo_visit_id: int | None = Field(None, alias="mboVisitId")
     mbo_waitlist_entry_id: int | None = Field(alias="mboWaitlistEntryId")
     mbo_sync_message: str | None = Field(alias="mboSyncMessage")
-    status: ClassStatus
-    booked_date: datetime = Field(alias="bookedDate")
+    status: BookingStatus
+    booked_date: datetime | None = Field(None, alias="bookedDate")
     checked_in_date: datetime | None = Field(alias="checkedInDate")
     cancelled_date: datetime | None = Field(alias="cancelledDate")
     created_by: str = Field(alias="createdBy")
@@ -116,8 +122,9 @@ class Booking(BaseModel):
     updated_date: datetime = Field(alias="updatedDate")
     is_deleted: bool = Field(alias="isDeleted")
     member: Member
+    waitlist_position: int | None = Field(None, alias="waitlistPosition")
     class_: OtfClass = Field(alias="class")
 
 
-class BookingList(BaseModel):
+class BookingList(OtfBaseModel):
     bookings: list[Booking]

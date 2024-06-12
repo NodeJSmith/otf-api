@@ -1,14 +1,16 @@
 from datetime import datetime, timedelta
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class Zone(BaseModel):
+class Zone(OtfBaseModel):
     start_bpm: int = Field(..., alias="startBpm")
     end_bpm: int = Field(..., alias="endBpm")
 
 
-class Zones(BaseModel):
+class Zones(OtfBaseModel):
     gray: Zone
     blue: Zone
     green: Zone
@@ -16,7 +18,13 @@ class Zones(BaseModel):
     red: Zone
 
 
-class TelemetryItem(BaseModel):
+class TreadData(OtfBaseModel):
+    tread_speed: float = Field(..., alias="treadSpeed")
+    tread_incline: float = Field(..., alias="treadIncline")
+    agg_tread_distance: int = Field(..., alias="aggTreadDistance")
+
+
+class TelemetryItem(OtfBaseModel):
     relative_timestamp: int = Field(..., alias="relativeTimestamp")
     hr: int
     agg_splats: int = Field(..., alias="aggSplats")
@@ -26,9 +34,10 @@ class TelemetryItem(BaseModel):
         init_var=False,
         description="The timestamp of the telemetry item, calculated from the class start time and relative timestamp.",
     )
+    tread_data: TreadData | None = Field(None, alias="treadData")
 
 
-class DnaTelemetry(BaseModel):
+class DnaTelemetry(OtfBaseModel):
     member_uuid: str = Field(..., alias="memberUuid")
     class_history_uuid: str = Field(..., alias="classHistoryUuid")
     class_start_time: datetime = Field(..., alias="classStartTime")
