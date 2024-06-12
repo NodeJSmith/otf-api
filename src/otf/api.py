@@ -16,6 +16,9 @@ from otf.studio_api import StudiosApi
 if typing.TYPE_CHECKING:
     from loguru._logger import Logger
 
+    from otf.models.responses.member_detail import MemberDetail
+    from otf.models.responses.studio_detail import StudioDetail
+
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
 API_DNA_BASE_URL = "api.yuzu.orangetheory.com"
@@ -35,8 +38,10 @@ class Api:
             username (str): The username of the user.
             password (str): The password of the user.
         """
-        self.user = User.load_from_disk(username, password)
+        self.member: "MemberDetail"
+        self.home_studio: "StudioDetail"
 
+        self.user = User.load_from_disk(username, password)
         self.session = aiohttp.ClientSession()
 
         self.member_api = MemberApi(self)
@@ -44,9 +49,6 @@ class Api:
         self.studios_api = StudiosApi(self)
         self.dna_api = DnaApi(self)
         self.performance_api = PerformanceApi(self)
-        self.member_home_studio = None
-        self.home_studio_uuid = None
-        self.member_tz = None
 
     @classmethod
     async def create(cls, username: str, password: str) -> "Api":
@@ -58,10 +60,8 @@ class Api:
             password (str): The password of the user.
         """
         self = cls(username, password)
-        details = await self.member_api.get_member_detail()
-        self.member_home_studio = details.home_studio
-        self.home_studio_uuid = details.home_studio.studio_uuid
-        self.member_tz = self.member_home_studio.time_zone
+        self.member = await self.member_api.get_member_detail()
+        self.home_studio = await self.studios_api.get_studio_detail(self.member.home_studio.studio_uuid)
         return self
 
     def __del__(self):
@@ -96,10 +96,10 @@ class Api:
 
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
-        logger.debug(f"Making {method!r} request to {full_url}")
+        logger.debug(f"Making {method!r} request to {full_url}, params: {params}, kwargs: {kwargs}")
 
         if "headers" in kwargs:
-            headers = kwargs.pop("headers")
+            headers: dict = kwargs.pop("headers")
             headers.update(self.base_headers)
         else:
             headers = self.base_headers

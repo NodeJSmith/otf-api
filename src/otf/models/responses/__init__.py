@@ -9,8 +9,8 @@ from .enums import (
     ALL_CLASS_STATUS,
     ALL_HISTORY_CLASS_STATUS,
     ALL_STUDIO_STATUS,
+    BookingStatus,
     ChallengeType,
-    ClassStatus,
     EquipmentType,
     HistoryClassStatus,
     StudioStatus,
@@ -21,6 +21,8 @@ from .member_detail import MemberDetail
 from .member_membership import MemberMembership
 from .member_purchases import MemberPurchaseList
 from .out_of_studio_workout_history import OutOfStudioWorkoutHistoryList
+from .performance_summary_detail import PerformanceSummaryDetail
+from .performance_summary_list import PerformanceSummaryList
 from .studio_detail import StudioDetail, StudioDetailList
 from .studio_services import StudioServiceList
 from .total_classes import TotalClasses
@@ -39,7 +41,7 @@ __all__ = [
     "TotalClasses",
     "WorkoutList",
     "ChallengeType",
-    "ClassStatus",
+    "BookingStatus",
     "EquipmentType",
     "HistoryClassStatus",
     "StudioStatus",
@@ -53,4 +55,6 @@ __all__ = [
     "ALL_CLASS_STATUS",
     "ALL_HISTORY_CLASS_STATUS",
     "ALL_STUDIO_STATUS",
+    "PerformanceSummaryDetail",
+    "PerformanceSummaryList",
 ]

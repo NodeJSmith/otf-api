@@ -26,7 +26,7 @@ class StudiosApi:
         Returns:
             StudioDetail: Detailed information about the studio.
         """
-        studio_uuid = studio_uuid or self._api.home_studio_uuid
+        studio_uuid = studio_uuid or self._api.home_studio.studio_uuid
 
         path = f"/mobile/v1/studios/{studio_uuid}"
         params = {"include": "locations"}
@@ -35,7 +35,12 @@ class StudiosApi:
         return StudioDetail(**res["data"])
 
     async def search_studios_by_geo(
-        self, latitude: float, longitude: float, distance: float = 50, page_index: int = 1, page_size: int = 50
+        self,
+        latitude: float | None = None,
+        longitude: float | None = None,
+        distance: float = 50,
+        page_index: int = 1,
+        page_size: int = 50,
     ) -> StudioDetailList:
         """Search for studios by geographic location. Requires latitude and longitude, other parameters are optional.
 
@@ -43,8 +48,8 @@ class StudiosApi:
         enforces a limit of 50 results per page to avoid potential rate limiting issues.
 
         Args:
-            latitude (float): Latitude of the location to search around.
-            longitude (float): Longitude of the location to search around.
+            latitude (float, optional): Latitude of the location to search around, if None uses home studio latitude.
+            longitude (float, optional): Longitude of the location to search around, if None uses home studio longitude.
             distance (float, optional): Distance in miles to search around the location. Defaults to 50.
             page_index (int, optional): Page index to start at. Defaults to 1.
             page_size (int, optional): Number of results per page. Defaults to 50.
@@ -55,6 +60,9 @@ class StudiosApi:
 
         """
         path = "/mobile/v1/studios"
+
+        latitude = latitude or self._api.home_studio.studio_location.latitude
+        longitude = longitude or self._api.home_studio.studio_location.longitude
 
         if page_size > 50:
             self.logger.warning("The API does not support more than 50 results per page, limiting to 50.")
