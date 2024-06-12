@@ -1,17 +1,19 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class MaxHr(BaseModel):
+class MaxHr(OtfBaseModel):
     type: str
     value: int
 
 
-class Zone(BaseModel):
+class Zone(OtfBaseModel):
     start_bpm: int = Field(..., alias="startBpm")
     end_bpm: int = Field(..., alias="endBpm")
 
 
-class Zones(BaseModel):
+class Zones(OtfBaseModel):
     gray: Zone
     blue: Zone
     green: Zone
@@ -19,7 +21,7 @@ class Zones(BaseModel):
     red: Zone
 
 
-class HistoryItem(BaseModel):
+class HistoryItem(OtfBaseModel):
     max_hr: MaxHr = Field(..., alias="maxHr")
     zones: Zones
     change_from_previous: int = Field(..., alias="changeFromPrevious")
@@ -27,6 +29,6 @@ class HistoryItem(BaseModel):
     assigned_at: str = Field(..., alias="assignedAt")
 
 
-class DnaHrHistory(BaseModel):
+class DnaHrHistory(OtfBaseModel):
     member_uuid: str = Field(..., alias="memberUuid")
     history: list[HistoryItem]

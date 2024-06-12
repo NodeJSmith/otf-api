@@ -1,9 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class Location(BaseModel):
+class Location(OtfBaseModel):
     location_id: int = Field(..., alias="locationId")
     location_uuid: str = Field(..., alias="locationUUId")
     studio_id: int = Field(..., alias="studioId")
@@ -19,7 +21,7 @@ class Location(BaseModel):
     postal_code: str = Field(..., alias="postalCode")
 
 
-class StudioLocation(BaseModel):
+class StudioLocation(OtfBaseModel):
     bill_to_address: str = Field(..., alias="billToAddress")
     bill_to_address2: str = Field(..., alias="billToAddress2")
     bill_to_city: str = Field(..., alias="billToCity")
@@ -49,7 +51,7 @@ class StudioLocation(BaseModel):
     longitude: str
 
 
-class FavoriteStudio(BaseModel):
+class FavoriteStudio(OtfBaseModel):
     studio_id: int = Field(..., alias="studioId")
     studio_uuid: str = Field(..., alias="studioUUId")
     mbo_studio_id: int = Field(..., alias="mboStudioId")
@@ -92,7 +94,7 @@ class FavoriteStudio(BaseModel):
     studio_location: StudioLocation = Field(..., alias="studioLocation")
 
 
-class FavoriteStudioList(BaseModel):
+class FavoriteStudioList(OtfBaseModel):
     studios: list[FavoriteStudio]
 
     @property

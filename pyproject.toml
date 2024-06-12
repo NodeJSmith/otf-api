@@ -2,17 +2,46 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-
-[project]
-
-name = "otf"
-version = "0.0.1"
-description = "Python OrangeTheory Fitness API Client"
-
-
-dependencies = ["aiohttp", "loguru", "pydantic", "pycognito"]
-
-
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["otf"]
+include = ["otf*"]
+
+[project]
+name = "otf-api"
+version = "0.0.1"
+description = "Python OrangeTheory Fitness API Client"
+readme = "README.md"
+requires-python = ">=3.10"
+
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Internet :: WWW/HTTP",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "aiohttp==3.9.5",
+    "loguru==0.7.2",
+    "pydantic==2.7.3",
+    "pycognito==2024.5.1",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.2.2",
+    "pytest-loguru==0.4.0",
+    "pytest-asyncio==0.23.7",
+    "aioresponses==0.7.6",
+    "tox==4.15.1",
+]
+
+[tools.pytest.ini_options]
+pythonpath = ["src"]

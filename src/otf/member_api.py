@@ -1,7 +1,7 @@
 import typing
 from datetime import date
 
-from otf.models.responses.enums import ClassStatus
+from otf.models.responses.enums import BookingStatus
 from otf.models.responses.favorite_studios import FavoriteStudioList
 
 from .models import (
@@ -62,14 +62,38 @@ class MemberApi:
         self,
         start_date: date | str | None = None,
         end_date: date | str | None = None,
-        statuses: list[ClassStatus] | None = None,
+        status: BookingStatus | None = None,
     ) -> BookingList:
         """Get the member's bookings.
 
         Args:
             start_date (date | str | None): The start date for the bookings. Default is None.
             end_date (date | str | None): The end date for the bookings. Default is None.
-            statuses (list[ClassStatus] | None): The statuses of the bookings to get. Default is None.
+            status (BookingStatus | None): The status of the bookings to get. Default is None, which includes
+            all statuses. Only a single status can be provided.
+
+        Note: Looking at the code in the app, it appears that this endpoint accepts multiple statuses. Indeed,
+        it does not throw an error if you include a list of statuses. However, only the last status in the list is
+        used. I'm not sure if this is a bug or if the API is supposed to work this way.
+
+        Note: This endpoint does not seem to provide much in the way of historical data. As far as I can tell,
+        it can go back about a month, potentially all of the data for the current month and prior month, as well as
+        as forward as they have classes scheduled (usually 30 days from today's date). Looking at the app code,
+        I believe the performance summaries endpoint is used for historical data.
+
+        Potentially 45 days back and 30 days forward, if dates are provided. If no dates are provided, seems to
+        default to current month?
+
+        Note: CheckedIn does not seem to return anything unless you provide dates.
+
+        Note: Incorrect/invalid statuses do not cause any bad status code, they just return no results.
+
+        Filtering best guesses:
+          - If status == Cancelled, the results are filtered class dates. If no dates provided,
+            returns those cancelled on current date?
+          - If status == Booked, the results are filtered on the class dates.
+          - If status == CheckedIn, the results are filtered on the class dates.
+          - If status == Waitlist, the results are filtered on class dates.
 
         Returns:
             BookingList: The member's bookings.
@@ -81,9 +105,55 @@ class MemberApi:
         if isinstance(end_date, date):
             end_date = end_date.isoformat()
 
-        status_values = [status.value for status in statuses] if statuses else None
+        status_value = status.value if status else None
 
-        params = {"startDate": start_date, "endDate": end_date, "statuses": status_values}
+        params = {"startDate": start_date, "endDate": end_date, "statuses": status_value}
+
+        res = await self._api._default_request("GET", f"/member/members/{self._member_id}/bookings", params=params)
+
+        return BookingList(bookings=res["data"])
+
+    async def _get_bookings_old(self, status: BookingStatus | None = None) -> BookingList:
+        """Get the member's bookings.
+
+        Args:
+            status (BookingStatus | None): The status of the bookings to get. Default is None, which includes
+            all statuses. Only a single status can be provided.
+
+        Note: This one is called with the param named 'status'. Dates cannot be provided, because if the endpoint
+        receives a date, it will return as if the param name was 'statuses'.
+
+        Note: This seems to only work for Cancelled, Booked, CheckedIn, and Waitlisted statuses. If you provide
+        a different status, it will return all bookings, not filtered by status. The results in this scenario do
+        not line up with the `get_bookings` with no status provided, as that returns fewer records. Likely the
+        filtered dates are different on the backend.
+
+        My guess: the endpoint called with dates and 'statuses' is a "v2" kind of thing, where they upgraded without
+        changing the version of the api. Calling it with no dates and a singular (limited) status is probably v1.
+
+        I'm leaving this in here for reference, but marking it private. I just don't want to have to puzzle over this
+        again if I remove it and forget about it.
+
+        Returns:
+            BookingList: The member's bookings.
+
+        Raises:
+            ValueError: If an unaccepted status is provided.
+        """
+
+        if status and status not in [
+            BookingStatus.Cancelled,
+            BookingStatus.Booked,
+            BookingStatus.CheckedIn,
+            BookingStatus.Waitlisted,
+        ]:
+            raise ValueError(
+                "Invalid status provided. Only Cancelled, Booked, CheckedIn, Waitlisted, and None are supported."
+            )
+
+        status_value = status.value if status else None
+
+        params = {"status": status_value}
 
         res = await self._api._default_request("GET", f"/member/members/{self._member_id}/bookings", params=params)
 
@@ -243,7 +313,7 @@ class MemberApi:
         Returns:
             StudioServiceList: The services available at the studio.
         """
-        studio_uuid = studio_uuid or self._api.home_studio_uuid
+        studio_uuid = studio_uuid or self._api.home_studio.studio_uuid
         data = await self._api._default_request("GET", f"/member/studios/{studio_uuid}/services")
         return StudioServiceList(data=data["data"])
 

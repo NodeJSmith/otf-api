@@ -69,7 +69,7 @@ class ChallengeType(int, Enum):
                 return cls.Other
 
 
-class ClassStatus(str, Enum):
+class BookingStatus(str, Enum):
     CheckedIn = "Checked In"
     CancelCheckinPending = "Cancel Checkin Pending"
     CancelCheckinRequested = "Cancel Checkin Requested"
@@ -80,6 +80,16 @@ class ClassStatus(str, Enum):
     CheckinPending = "Checkin Pending"
     CheckinRequested = "Checkin Requested"
     CheckinCancelled = "Checkin Cancelled"
+
+    @classmethod
+    def all_statuses(cls) -> list[str]:
+        return list(cls.__members__.values())
+
+
+class HistoryBookingStatus(str, Enum):
+    Attended = "Attended"
+    Cancelled = "Cancelled"
+    LateCancelled = "Late Cancelled"
 
     @classmethod
     def all_statuses(cls) -> list[str]:
@@ -105,6 +115,6 @@ class HistoryClassStatus(str, Enum):
         return list(cls.__members__.values())
 
 
-ALL_CLASS_STATUS = ClassStatus.all_statuses()
+ALL_CLASS_STATUS = BookingStatus.all_statuses()
 ALL_HISTORY_CLASS_STATUS = HistoryClassStatus.all_statuses()
 ALL_STUDIO_STATUS = StudioStatus.all_statuses()

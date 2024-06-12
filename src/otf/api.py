@@ -10,10 +10,14 @@ from otf.classes_api import ClassesApi
 from otf.dna_api import DnaApi
 from otf.member_api import MemberApi
 from otf.models.auth import User
+from otf.performance_api import PerformanceApi
 from otf.studio_api import StudiosApi
 
 if typing.TYPE_CHECKING:
     from loguru._logger import Logger
+
+    from otf.models.responses.member_detail import MemberDetail
+    from otf.models.responses.studio_detail import StudioDetail
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
@@ -34,17 +38,17 @@ class Api:
             username (str): The username of the user.
             password (str): The password of the user.
         """
-        self.user = User.load_from_disk(username, password)
+        self.member: "MemberDetail"
+        self.home_studio: "StudioDetail"
 
+        self.user = User.load_from_disk(username, password)
         self.session = aiohttp.ClientSession()
 
         self.member_api = MemberApi(self)
         self.classes_api = ClassesApi(self)
         self.studios_api = StudiosApi(self)
         self.dna_api = DnaApi(self)
-        self.member_home_studio = None
-        self.home_studio_uuid = None
-        self.member_tz = None
+        self.performance_api = PerformanceApi(self)
 
     @classmethod
     async def create(cls, username: str, password: str) -> "Api":
@@ -56,10 +60,8 @@ class Api:
             password (str): The password of the user.
         """
         self = cls(username, password)
-        details = await self.member_api.get_member_detail()
-        self.member_home_studio = details.home_studio
-        self.home_studio_uuid = details.home_studio.studio_uuid
-        self.member_tz = self.member_home_studio.time_zone
+        self.member = await self.member_api.get_member_detail()
+        self.home_studio = await self.studios_api.get_studio_detail(self.member.home_studio.studio_uuid)
         return self
 
     def __del__(self):
@@ -94,10 +96,10 @@ class Api:
 
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
-        logger.debug(f"Making {method!r} request to {full_url}")
+        logger.debug(f"Making {method!r} request to {full_url}, params: {params}, kwargs: {kwargs}")
 
         if "headers" in kwargs:
-            headers = kwargs.pop("headers")
+            headers: dict = kwargs.pop("headers")
             headers.update(self.base_headers)
         else:
             headers = self.base_headers
@@ -117,3 +119,9 @@ class Api:
     async def _dna_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs) -> dict:
         """Perform an API request to the DNA API."""
         return await self._do(method, API_DNA_BASE_URL, url, params, **kwargs)
+
+    async def _performance_summary_request(
+        self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs
+    ) -> dict:
+        """Perform an API request to the performance summary API."""
+        return await self._do(method, API_IO_BASE_URL, url, params, **kwargs)

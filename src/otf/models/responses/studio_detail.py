@@ -1,16 +1,18 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class Country(BaseModel):
+class Country(OtfBaseModel):
     country_id: int = Field(..., alias="countryId")
     country_currency_code: str = Field(..., alias="countryCurrencyCode")
     country_currency_name: str = Field(..., alias="countryCurrencyName")
     currency_alphabetic_code: str = Field(..., alias="currencyAlphabeticCode")
 
 
-class StudioLocation(BaseModel):
+class StudioLocation(OtfBaseModel):
     physical_address: str = Field(..., alias="physicalAddress")
     physical_address2: str | None = Field(..., alias="physicalAddress2")
     physical_city: str = Field(..., alias="physicalCity")
@@ -24,32 +26,32 @@ class StudioLocation(BaseModel):
     longitude: float
 
 
-class Language(BaseModel):
+class Language(OtfBaseModel):
     language_id: None = Field(..., alias="languageId")
     language_code: None = Field(..., alias="languageCode")
     language_name: None = Field(..., alias="languageName")
 
 
-class StudioLocationLocalized(BaseModel):
+class StudioLocationLocalized(OtfBaseModel):
     language: Language
     studio_name: None = Field(..., alias="studioName")
     studio_address: None = Field(..., alias="studioAddress")
 
 
-class StudioProfiles(BaseModel):
+class StudioProfiles(OtfBaseModel):
     is_web: bool = Field(..., alias="isWeb")
     intro_capacity: int = Field(..., alias="introCapacity")
     is_crm: bool | None = Field(..., alias="isCrm")
 
 
-class SocialMediaLink(BaseModel):
+class SocialMediaLink(OtfBaseModel):
     id: str
     language_id: str = Field(..., alias="languageId")
     name: str
     value: str
 
 
-class StudioDetail(BaseModel):
+class StudioDetail(OtfBaseModel):
     studio_id: int = Field(..., alias="studioId")
     studio_uuid: str = Field(..., alias="studioUUId")
     mbo_studio_id: int | None = Field(..., alias="mboStudioId")
@@ -98,12 +100,12 @@ class StudioDetail(BaseModel):
     social_media_links: list[SocialMediaLink] = Field(..., alias="socialMediaLinks")
 
 
-class Pagination(BaseModel):
+class Pagination(OtfBaseModel):
     page_index: int = Field(..., alias="pageIndex")
     page_size: int = Field(..., alias="pageSize")
     total_count: int = Field(..., alias="totalCount")
     total_pages: int = Field(..., alias="totalPages")
 
 
-class StudioDetailList(BaseModel):
+class StudioDetailList(OtfBaseModel):
     studios: list[StudioDetail]

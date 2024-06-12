@@ -1,33 +1,35 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class Currency(BaseModel):
+class Currency(OtfBaseModel):
     currency_alphabetic_code: str = Field(..., alias="currencyAlphabeticCode")
 
 
-class DefaultCurrency(BaseModel):
+class DefaultCurrency(OtfBaseModel):
     currency_id: int = Field(..., alias="currencyId")
     currency: Currency
 
 
-class Country(BaseModel):
+class Country(OtfBaseModel):
     country_currency_code: str = Field(..., alias="countryCurrencyCode")
     default_currency: DefaultCurrency = Field(..., alias="defaultCurrency")
 
 
-class StudioLocation(BaseModel):
+class StudioLocation(OtfBaseModel):
     studio_location_id: int = Field(..., alias="studioLocationId")
     country: Country
 
 
-class Studio(BaseModel):
+class Studio(OtfBaseModel):
     studio_id: int = Field(..., alias="studioId")
     studio_location: StudioLocation = Field(..., alias="studioLocation")
 
 
-class StudioService(BaseModel):
+class StudioService(OtfBaseModel):
     service_id: int = Field(..., alias="serviceId")
     service_uuid: str = Field(..., alias="serviceUUId")
     studio_id: int = Field(..., alias="studioId")
@@ -51,5 +53,5 @@ class StudioService(BaseModel):
     studio: Studio
 
 
-class StudioServiceList(BaseModel):
+class StudioServiceList(OtfBaseModel):
     data: list[StudioService]

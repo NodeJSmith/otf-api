@@ -33,9 +33,9 @@ class ClassesApi:
         """
 
         if not studio_uuids:
-            studio_uuids = [self._api.home_studio_uuid]
-        elif include_home_studio and self._api.home_studio_uuid not in studio_uuids:
-            studio_uuids.append(self._api.home_studio_uuid)
+            studio_uuids = [self._api.home_studio.studio_uuid]
+        elif include_home_studio and self._api.home_studio.studio_uuid not in studio_uuids:
+            studio_uuids.append(self._api.home_studio.studio_uuid)
 
         path = "/v1/classes"
 

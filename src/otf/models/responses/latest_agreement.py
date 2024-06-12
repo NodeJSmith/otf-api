@@ -1,9 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class LatestAgreement(BaseModel):
+class LatestAgreement(OtfBaseModel):
     file_url: str = Field(..., alias="fileUrl")
     agreement_id: int = Field(..., alias="agreementId")
     agreement_uuid: str = Field(..., alias="agreementUUId")

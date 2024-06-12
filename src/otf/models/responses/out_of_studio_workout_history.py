@@ -1,15 +1,17 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class WorkoutType(BaseModel):
+class WorkoutType(OtfBaseModel):
     id: int
     display_name: str = Field(..., alias="displayName")
     icon: str
 
 
-class OutOfStudioWorkoutHistory(BaseModel):
+class OutOfStudioWorkoutHistory(OtfBaseModel):
     workout_date: datetime = Field(..., alias="workoutDate")
     start_time: datetime = Field(..., alias="startTime")
     end_time: datetime = Field(..., alias="endTime")
@@ -35,5 +37,5 @@ class OutOfStudioWorkoutHistory(BaseModel):
     max_heartrate: int = Field(..., alias="maxHeartrate")
 
 
-class OutOfStudioWorkoutHistoryList(BaseModel):
+class OutOfStudioWorkoutHistoryList(OtfBaseModel):
     data: list[OutOfStudioWorkoutHistory]

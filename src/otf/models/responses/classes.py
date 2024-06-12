@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from otf.models.base import OtfBaseModel
 
 
-class Address(BaseModel):
+class Address(OtfBaseModel):
     line1: str
     city: str
     state: str
@@ -11,7 +11,7 @@ class Address(BaseModel):
     postal_code: str
 
 
-class Studio(BaseModel):
+class Studio(OtfBaseModel):
     id: str
     name: str
     mbo_studio_id: str
@@ -23,13 +23,13 @@ class Studio(BaseModel):
     longitude: float
 
 
-class Coach(BaseModel):
+class Coach(OtfBaseModel):
     mbo_staff_id: str
     first_name: str
     image_url: str | None = None
 
 
-class OtfClass(BaseModel):
+class OtfClass(OtfBaseModel):
     id: str
     ot_base_class_uuid: str
     starts_at: datetime
@@ -53,5 +53,5 @@ class OtfClass(BaseModel):
     updated_at: datetime
 
 
-class OtfClassList(BaseModel):
+class OtfClassList(OtfBaseModel):
     classes: list[OtfClass]

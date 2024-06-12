@@ -1,9 +1,11 @@
 from datetime import date, datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf.models.base import OtfBaseModel
 
 
-class Address(BaseModel):
+class Address(OtfBaseModel):
     member_address_uuid: str = Field(..., alias="memberAddressUUId")
     memberaddress_uuid: str = Field(..., alias="memberaddressUUId")
     type: str
@@ -15,27 +17,27 @@ class Address(BaseModel):
     country: str
 
 
-class MemberCreditCard(BaseModel):
+class MemberCreditCard(OtfBaseModel):
     name_on_card: str = Field(..., alias="nameOnCard")
     cc_type: str = Field(..., alias="ccType")
     cc_last4: str = Field(..., alias="ccLast4")
 
 
-class PhysicalCountryDetails(BaseModel):
+class PhysicalCountryDetails(OtfBaseModel):
     country_code: str = Field(..., alias="countryCode")
     description: str
 
 
-class StudioLocation(BaseModel):
+class StudioLocation(OtfBaseModel):
     physical_country_id: int = Field(..., alias="physicalCountryId")
     physical_country_details: PhysicalCountryDetails = Field(..., alias="physicalCountryDetails")
 
 
-class StudioPartner(BaseModel):
+class StudioPartner(OtfBaseModel):
     studio_acs_id: str = Field(..., alias="studioAcsId")
 
 
-class HomeStudio(BaseModel):
+class HomeStudio(OtfBaseModel):
     studio_id: int = Field(..., alias="studioId")
     studio_uuid: str = Field(..., alias="studioUUId")
     studio_name: str = Field(..., alias="studioName")
@@ -48,7 +50,7 @@ class HomeStudio(BaseModel):
     studio_partner: StudioPartner = Field(..., alias="studioPartner")
 
 
-class MemberProfile(BaseModel):
+class MemberProfile(OtfBaseModel):
     member_profile_uuid: str = Field(..., alias="memberProfileUUId")
     unit_of_measure: str = Field(..., alias="unitOfMeasure")
     max_hr_type: str = Field(..., alias="maxHrType")
@@ -58,7 +60,7 @@ class MemberProfile(BaseModel):
     member_optin_flow_type_id: int = Field(..., alias="memberOptinFlowTypeId")
 
 
-class MemberClassSummary(BaseModel):
+class MemberClassSummary(OtfBaseModel):
     total_classes_booked: int = Field(..., alias="totalClassesBooked")
     total_classes_attended: int = Field(..., alias="totalClassesAttended")
     total_intro: int = Field(..., alias="totalIntro")
@@ -72,7 +74,7 @@ class MemberClassSummary(BaseModel):
     last_class_studio_visited: int = Field(..., alias="lastClassStudioVisited")
 
 
-class MemberDetail(BaseModel):
+class MemberDetail(OtfBaseModel):
     member_id: int = Field(..., alias="memberId")
     member_uuid: str = Field(..., alias="memberUUId")
     cognito_id: str = Field(..., alias="cognitoId")
