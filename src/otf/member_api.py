@@ -195,7 +195,7 @@ class MemberApi:
 
         return ChallengeTrackerDetailList(details=data["Dto"])
 
-    async def get_challenge_tracker_participation(self, challenge_type_id: ChallengeType) -> dict:
+    async def get_challenge_tracker_participation(self, challenge_type_id: ChallengeType) -> typing.Any:
         """Get the member's participation in a challenge.
 
         Note: I've never gotten this to return anything other than invalid response. I'm not sure if it's a bug
@@ -319,7 +319,7 @@ class MemberApi:
 
     # the below do not return any data for me, so I can't test them
 
-    async def get_member_services(self, active_only: bool = True) -> dict:
+    async def get_member_services(self, active_only: bool = True) -> typing.Any:
         """Get the member's services.
 
         Note: I'm not sure what the services are, as I don't have any data to test this with.
@@ -336,7 +336,7 @@ class MemberApi:
         )
         return data
 
-    async def get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> dict:
+    async def get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> typing.Any:
         """Get data from the member's aspire wearable.
 
         Note: I don't have an aspire wearable, so I can't test this.
@@ -353,7 +353,7 @@ class MemberApi:
         data = self._api._default_request("GET", f"/member/wearables/{self._member_id}/wearable-daily", params=params)
         return data
 
-    async def get_body_composition_list(self) -> dict:
+    async def get_body_composition_list(self) -> typing.Any:
         """Get the member's body composition list.
 
         Note: I don't have body composition data, so I can't test this.

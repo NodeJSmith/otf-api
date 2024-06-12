@@ -14,7 +14,7 @@ from otf.performance_api import PerformanceApi
 from otf.studio_api import StudiosApi
 
 if typing.TYPE_CHECKING:
-    from loguru._logger import Logger
+    from loguru import Logger
 
     from otf.models.responses.member_detail import MemberDetail
     from otf.models.responses.studio_detail import StudioDetail
@@ -38,8 +38,8 @@ class Api:
             username (str): The username of the user.
             password (str): The password of the user.
         """
-        self.member: "MemberDetail"
-        self.home_studio: "StudioDetail"
+        self.member: MemberDetail
+        self.home_studio: StudioDetail
 
         self.user = User.load_from_disk(username, password)
         self.session = aiohttp.ClientSession()
@@ -64,7 +64,7 @@ class Api:
         self.home_studio = await self.studios_api.get_studio_detail(self.member.home_studio.studio_uuid)
         return self
 
-    def __del__(self):
+    def __del__(self) -> None:
         try:
             loop = asyncio.get_event_loop()
             asyncio.create_task(self._close_session())  # noqa
@@ -72,12 +72,12 @@ class Api:
             loop = asyncio.new_event_loop()
             loop.run_until_complete(self._close_session())
 
-    async def _close_session(self):
+    async def _close_session(self) -> None:
         if not self.session.closed:
             await self.session.close()
 
     @property
-    def base_headers(self):
+    def base_headers(self) -> dict[str, str]:
         """Get the base headers for the API."""
         if not self.user:
             raise ValueError("No user is logged in.")
@@ -88,7 +88,14 @@ class Api:
             "Accept": "application/json",
         }
 
-    async def _do(self, method: str, base_url: str, url: str, params: dict[str, Any] | None = None, **kwargs) -> dict:
+    async def _do(
+        self,
+        method: str,
+        base_url: str,
+        url: str,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
+    ) -> Any:
         """Perform an API request."""
 
         params = params or {}
@@ -96,32 +103,31 @@ class Api:
 
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
-        logger.debug(f"Making {method!r} request to {full_url}, params: {params}, kwargs: {kwargs}")
+        logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
 
-        if "headers" in kwargs:
-            headers: dict = kwargs.pop("headers")
+        if headers:
             headers.update(self.base_headers)
         else:
             headers = self.base_headers
 
-        async with self.session.request(method, full_url, headers=headers, params=params, **kwargs) as response:
+        async with self.session.request(method, full_url, headers=headers, params=params) as response:
             response.raise_for_status()
             return await response.json()
 
-    async def _classes_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs) -> dict:
+    async def _classes_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the classes API."""
-        return await self._do(method, API_IO_BASE_URL, url, params, **kwargs)
+        return await self._do(method, API_IO_BASE_URL, url, params)
 
-    async def _default_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs) -> dict:
+    async def _default_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the default API."""
-        return await self._do(method, API_BASE_URL, url, params, **kwargs)
+        return await self._do(method, API_BASE_URL, url, params)
 
-    async def _dna_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs) -> dict:
+    async def _dna_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the DNA API."""
-        return await self._do(method, API_DNA_BASE_URL, url, params, **kwargs)
+        return await self._do(method, API_DNA_BASE_URL, url, params)
 
     async def _performance_summary_request(
-        self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs
-    ) -> dict:
+        self, method: str, url: str, headers: dict[str, str], params: dict[str, Any] | None = None
+    ) -> Any:
         """Perform an API request to the performance summary API."""
-        return await self._do(method, API_IO_BASE_URL, url, params, **kwargs)
+        return await self._do(method, API_IO_BASE_URL, url, params, headers)

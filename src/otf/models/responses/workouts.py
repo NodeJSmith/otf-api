@@ -1,5 +1,6 @@
 from ast import literal_eval
 from datetime import datetime
+from typing import Any
 
 from pydantic import Field, PrivateAttr
 
@@ -58,7 +59,7 @@ class Workout(OtfBaseModel):
         """Get the active time in minutes."""
         return self.active_time // 60
 
-    def __init__(self, **data):
+    def __init__(self, **data: Any):
         if "minuteByMinuteHr" in data:
             try:
                 data["minuteByMinuteHr"] = literal_eval(data["minuteByMinuteHr"])

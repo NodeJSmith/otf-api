@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from typing import Any
 
 from pydantic import Field
 
@@ -127,7 +128,7 @@ class MemberDetail(OtfBaseModel):
     otf_acs_id: str = Field(..., alias="otfAcsId")
     member_class_summary: MemberClassSummary | None = Field(None, alias="memberClassSummary")
 
-    def __init__(self, **data):
+    def __init__(self, **data: Any):
         super().__init__(**data)
-        if self.birth_day:
+        if self.birth_day and isinstance(self.birth_day, str):
             self.birth_day = datetime.strptime(self.birth_day, "%Y-%m-%d").date()  # noqa

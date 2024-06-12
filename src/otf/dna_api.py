@@ -72,7 +72,7 @@ class DnaApi:
         res = await self._api._dna_request("GET", path, params=params)
         return DnaTelemetry(**res)
 
-    async def _get_max_data_points(self, class_history_uuid: str):
+    async def _get_max_data_points(self, class_history_uuid: str) -> int:
         """Get the max data points to use for the telemetry.
 
         Attempts to get the amount of active time for the workout from the OT Live API. If the workout is not found,
@@ -91,5 +91,5 @@ class DnaApi:
         return max_data_points
 
 
-def active_time_to_data_points(active_time: int) -> int:
+def active_time_to_data_points(active_time: int) -> float:
     return active_time / 60 * 2
