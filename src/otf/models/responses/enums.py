@@ -91,6 +91,10 @@ class HistoryBookingStatus(str, Enum):
     Cancelled = "Cancelled"
     LateCancelled = "Late Cancelled"
 
+    @classmethod
+    def all_statuses(cls) -> list[str]:
+        return list(cls.__members__.values())
+
 
 class HistoryClassStatus(str, Enum):
     CheckedIn = "Checked In"
