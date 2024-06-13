@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from otf.models.base import OtfBaseModel
+from otf_api.models.base import OtfBaseModel
 
 
 class Address(OtfBaseModel):

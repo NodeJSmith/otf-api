@@ -1,8 +1,8 @@
 import typing
 from datetime import date
 
-from otf.models.responses.enums import BookingStatus
-from otf.models.responses.favorite_studios import FavoriteStudioList
+from otf_api.models.responses.enums import BookingStatus
+from otf_api.models.responses.favorite_studios import FavoriteStudioList
 
 from .models import (
     BookingList,
@@ -21,7 +21,7 @@ from .models import (
 )
 
 if typing.TYPE_CHECKING:
-    from otf import Api
+    from otf_api import Api
 
 
 class MemberApi:

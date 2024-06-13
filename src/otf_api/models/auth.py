@@ -5,7 +5,7 @@ from typing import ClassVar
 from pycognito import Cognito, TokenVerificationException
 from pydantic import Field
 
-from otf.models.base import OtfBaseModel
+from otf_api.models.base import OtfBaseModel
 
 CLIENT_ID = "65knvqta6p37efc2l3eh26pl5o"  # from otlive
 USER_POOL_ID = "us-east-1_dYDxUeyL1"

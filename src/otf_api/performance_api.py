@@ -1,10 +1,10 @@
 import typing
 
-from otf.models.responses.performance_summary_detail import PerformanceSummaryDetail
-from otf.models.responses.performance_summary_list import PerformanceSummaryList
+from otf_api.models.responses.performance_summary_detail import PerformanceSummaryDetail
+from otf_api.models.responses.performance_summary_list import PerformanceSummaryList
 
 if typing.TYPE_CHECKING:
-    from otf import Api
+    from otf_api import Api
 
 
 class PerformanceApi:

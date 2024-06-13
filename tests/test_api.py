@@ -1,5 +1,5 @@
 import pytest
-from otf.api import Api
+from otf_api.api import Api
 
 
 @pytest.mark.asyncio

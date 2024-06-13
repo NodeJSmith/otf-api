@@ -1,9 +1,9 @@
 import typing
 
-from otf.models.responses.studio_detail import Pagination, StudioDetail, StudioDetailList
+from otf_api.models.responses.studio_detail import Pagination, StudioDetail, StudioDetailList
 
 if typing.TYPE_CHECKING:
-    from otf import Api
+    from otf_api import Api
 
 
 class StudiosApi:

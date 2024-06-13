@@ -6,18 +6,18 @@ import aiohttp
 from loguru import logger
 from yarl import URL
 
-from otf.classes_api import ClassesApi
-from otf.dna_api import DnaApi
-from otf.member_api import MemberApi
-from otf.models.auth import User
-from otf.performance_api import PerformanceApi
-from otf.studio_api import StudiosApi
+from otf_api.classes_api import ClassesApi
+from otf_api.dna_api import DnaApi
+from otf_api.member_api import MemberApi
+from otf_api.models.auth import User
+from otf_api.performance_api import PerformanceApi
+from otf_api.studio_api import StudiosApi
 
 if typing.TYPE_CHECKING:
     from loguru import Logger
 
-    from otf.models.responses.member_detail import MemberDetail
-    from otf.models.responses.studio_detail import StudioDetail
+    from otf_api.models.responses.member_detail import MemberDetail
+    from otf_api.models.responses.studio_detail import StudioDetail
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"

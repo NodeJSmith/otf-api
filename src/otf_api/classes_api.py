@@ -1,9 +1,9 @@
 import typing
 
-from otf.models.responses.classes import OtfClassList
+from otf_api.models.responses.classes import OtfClassList
 
 if typing.TYPE_CHECKING:
-    from otf import Api
+    from otf_api import Api
 
 
 class ClassesApi:

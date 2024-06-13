@@ -9,7 +9,7 @@ You can contribute in many ways:
 
 ### Report Bugs
 
-Report bugs at https://github.com/nodejsmith/otf/issues.
+Report bugs at https://github.com/nodejsmith/otf-api/issues.
 
 If you are reporting a bug, please include:
 
@@ -29,13 +29,13 @@ and "help wanted" is open to whoever wants to implement it.
 
 ### Write Documentation
 
-otf could always use more documentation, whether as part of the
-official otf docs, in docstrings, or even on the web in blog posts,
+otf-api could always use more documentation, whether as part of the
+official otf-api docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 ### Submit Feedback
 
-The best way to send feedback is to file an issue at https://github.com/nodejsmith/otf/issues.
+The best way to send feedback is to file an issue at https://github.com/nodejsmith/otf-api/issues.
 
 If you are proposing a feature:
 
@@ -46,13 +46,13 @@ If you are proposing a feature:
 
 ## Get Started!
 
-Ready to contribute? Here's how to set up `otf` for local development.
+Ready to contribute? Here's how to set up `otf-api` for local development.
 
-1. Fork the `otf` repo on GitHub.
+1. Fork the `otf-api` repo on GitHub.
 2. Clone your fork locally
 
 ```
-    $ git clone git@github.com:your_name_here/otf.git
+    $ git clone git@github.com:your_name_here/otf-api.git
 ```
 
 3. Ensure [poetry](https://python-poetry.org/docs/) is installed.
@@ -96,7 +96,7 @@ Before you submit a pull request, check that it meets these guidelines:
    your new functionality into a function with a docstring, and add the
    feature to the list in README.md.
 3. The pull request should work for Python 3.6, 3.7, 3.8, 3.9 and for PyPy. Check
-   https://github.com/nodejsmith/otf/actions
+   https://github.com/nodejsmith/otf-api/actions
    and make sure that the tests pass for all supported Python versions.
 
 ## Tips```

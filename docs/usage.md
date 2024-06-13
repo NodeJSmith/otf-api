@@ -1,6 +1,6 @@
 # Usage
 
-To use otf in a project
+To use otf-api in a project
 
 ```
     import otf

@@ -1,6 +1,6 @@
-site_name: otf
-repo_url: https://github.com/nodejsmith/otf
-repo_name: otf
+site_name: OrangeTheory API
+repo_url: https://github.com/nodejsmith/otf-api
+repo_name: otf-api
 nav:
   - home: index.md
   - installation: installation.md
@@ -77,7 +77,7 @@ extra:
     provider: mike
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/nodejsmith/otf
+      link: https://github.com/nodejsmith/otf-api
       name: Github
     - icon: material/email
       link: "mailto:j.smith.git1@gmail.com"

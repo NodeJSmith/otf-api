@@ -1,12 +1,12 @@
 import typing
 from math import ceil
 
-from otf.models.responses.dna_hr_history import DnaHrHistory
-from otf.models.responses.dna_max_hr import DnaMaxHr
-from otf.models.responses.dna_telemetry import DnaTelemetry
+from otf_api.models.responses.dna_hr_history import DnaHrHistory
+from otf_api.models.responses.dna_max_hr import DnaMaxHr
+from otf_api.models.responses.dna_telemetry import DnaTelemetry
 
 if typing.TYPE_CHECKING:
-    from otf import Api
+    from otf_api import Api
 
 
 class DnaApi:

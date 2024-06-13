@@ -4,7 +4,7 @@ from typing import Any
 
 from pydantic import Field, PrivateAttr
 
-from otf.models.base import OtfBaseModel
+from otf_api.models.base import OtfBaseModel
 
 
 class WorkoutType(OtfBaseModel):
