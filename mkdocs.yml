@@ -81,9 +81,6 @@ plugins:
             preload:
               - pydantic
 
-extra_css:
-  - css/mkdocstrings.css
-
 extra:
   version:
     provider: mike
@@ -97,4 +94,3 @@ extra:
 watch:
   - src/otf_api
   - scripts/gen_ref_pages.py
-  - css/mkdocstrings.css
