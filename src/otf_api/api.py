@@ -7,11 +7,10 @@ from loguru import logger
 from yarl import URL
 
 from otf_api.classes_api import ClassesApi
-from otf_api.dna_api import DnaApi
 from otf_api.member_api import MemberApi
 from otf_api.models.auth import User
 from otf_api.performance_api import PerformanceApi
-from otf_api.studio_api import StudiosApi
+from otf_api.studios_api import StudiosApi
 from otf_api.telemetry_api import TelemtryApi
 
 if typing.TYPE_CHECKING:
@@ -48,7 +47,6 @@ class Api:
         self.member_api = MemberApi(self)
         self.classes_api = ClassesApi(self)
         self.studios_api = StudiosApi(self)
-        self.dna_api = DnaApi(self)
         self.telemetry_api = TelemtryApi(self)
         self.performance_api = PerformanceApi(self)
 
