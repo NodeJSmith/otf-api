@@ -41,3 +41,6 @@ jobs:
 
       - name: Run lint checks
         run: tox -e lint -v
+
+      - name: Run build checks
+        run: tox -e build -v
