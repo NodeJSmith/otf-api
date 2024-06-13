@@ -36,12 +36,14 @@ class MemberApi:
     async def get_workouts(self) -> WorkoutList:
         """Get the list of workouts from OT Live.
 
-        This returns data from the same api the OT Live website uses. It is quite a bit of data,
-        and all workouts going back to ~2019. The data includes the class history UUID, which can be used to get
-        telemetry data for a specific workout.
-
         Returns:
             WorkoutList: The list of workouts.
+
+        Info:
+            ---
+            This returns data from the same api the [OT Live website](https://otlive.orangetheory.com/) uses.
+            It is quite a bit of data, and all workouts going back to ~2019. The data includes the class history
+            UUID, which can be used to get telemetry data for a specific workout.
         """
 
         res = await self._api._default_request("GET", "/virtual-class/in-studio-workouts")
@@ -72,31 +74,32 @@ class MemberApi:
             status (BookingStatus | None): The status of the bookings to get. Default is None, which includes\
             all statuses. Only a single status can be provided.
 
-        Note: Looking at the code in the app, it appears that this endpoint accepts multiple statuses. Indeed,
-        it does not throw an error if you include a list of statuses. However, only the last status in the list is
-        used. I'm not sure if this is a bug or if the API is supposed to work this way.
-
-        Note: This endpoint does not seem to provide much in the way of historical data. As far as I can tell,
-        it can go back about a month, potentially all of the data for the current month and prior month, as well as
-        as forward as they have classes scheduled (usually 30 days from today's date). Looking at the app code,
-        I believe the performance summaries endpoint is used for historical data.
-
-        Potentially 45 days back and 30 days forward, if dates are provided. If no dates are provided, seems to
-        default to current month?
-
-        Note: CheckedIn does not seem to return anything unless you provide dates.
-
-        Note: Incorrect/invalid statuses do not cause any bad status code, they just return no results.
-
-        Filtering best guesses:
-          - If status == Cancelled, the results are filtered class dates. If no dates provided,
-            returns those cancelled on current date?
-          - If status == Booked, the results are filtered on the class dates.
-          - If status == CheckedIn, the results are filtered on the class dates.
-          - If status == Waitlist, the results are filtered on class dates.
-
         Returns:
             BookingList: The member's bookings.
+
+        Warning:
+            ---
+            Incorrect statuses do not cause any bad status code, they just return no results.
+
+        Tip:
+            ---
+            `CheckedIn` - you must provide dates if you want to get bookings with a status of CheckedIn. If you do not
+            provide dates, the endpoint will return no results for this status.
+
+        Dates Notes:
+            ---
+            If dates are provided, the endpoint will return bookings where the class date is within the provided
+            date range. If no dates are provided, it seems to default to the current month.
+
+            In general, this endpoint does not seem to be able to access bookings older than a certain point. It seems
+            to be able to go back about 45 days or a month. For current/future dates, it seems to be able to go forward
+            to as far as you can book classes in the app, which is usually 30 days from today's date.
+
+        Developer Notes:
+            ---
+            Looking at the code in the app, it appears that this endpoint accepts multiple statuses. Indeed,
+            it does not throw an error if you include a list of statuses. However, only the last status in the list is
+            used. I'm not sure if this is a bug or if the API is supposed to work this way.
         """
 
         if isinstance(start_date, date):
@@ -120,25 +123,28 @@ class MemberApi:
             status (BookingStatus | None): The status of the bookings to get. Default is None, which includes
             all statuses. Only a single status can be provided.
 
-        Note: This one is called with the param named 'status'. Dates cannot be provided, because if the endpoint
-        receives a date, it will return as if the param name was 'statuses'.
-
-        Note: This seems to only work for Cancelled, Booked, CheckedIn, and Waitlisted statuses. If you provide
-        a different status, it will return all bookings, not filtered by status. The results in this scenario do
-        not line up with the `get_bookings` with no status provided, as that returns fewer records. Likely the
-        filtered dates are different on the backend.
-
-        My guess: the endpoint called with dates and 'statuses' is a "v2" kind of thing, where they upgraded without
-        changing the version of the api. Calling it with no dates and a singular (limited) status is probably v1.
-
-        I'm leaving this in here for reference, but marking it private. I just don't want to have to puzzle over this
-        again if I remove it and forget about it.
-
         Returns:
             BookingList: The member's bookings.
 
         Raises:
             ValueError: If an unaccepted status is provided.
+
+        Notes:
+        ---
+            This one is called with the param named 'status'. Dates cannot be provided, because if the endpoint
+            receives a date, it will return as if the param name was 'statuses'.
+
+            Note: This seems to only work for Cancelled, Booked, CheckedIn, and Waitlisted statuses. If you provide
+            a different status, it will return all bookings, not filtered by status. The results in this scenario do
+            not line up with the `get_bookings` with no status provided, as that returns fewer records. Likely the
+            filtered dates are different on the backend.
+
+            My guess: the endpoint called with dates and 'statuses' is a "v2" kind of thing, where they upgraded without
+            changing the version of the api. Calling it with no dates and a singular (limited) status is probably v1.
+
+            I'm leaving this in here for reference, but marking it private. I just don't want to have to puzzle over
+            this again if I remove it and forget about it.
+
         """
 
         if status and status not in [
@@ -173,8 +179,6 @@ class MemberApi:
     ) -> ChallengeTrackerDetailList:
         """Get the member's challenge tracker details.
 
-        Note: I'm not sure what the challenge_sub_type_id is supposed to be, so it defaults to 0.
-
         Args:
             equipment_id (EquipmentType): The equipment ID.
             challenge_type_id (ChallengeType): The challenge type ID.
@@ -182,6 +186,11 @@ class MemberApi:
 
         Returns:
             ChallengeTrackerDetailList: The member's challenge tracker details.
+
+        Notes:
+            ---
+            I'm not sure what the challenge_sub_type_id is supposed to be, so it defaults to 0.
+
         """
         params = {
             "equipmentId": equipment_id.value,
@@ -198,14 +207,17 @@ class MemberApi:
     async def get_challenge_tracker_participation(self, challenge_type_id: ChallengeType) -> typing.Any:
         """Get the member's participation in a challenge.
 
-        Note: I've never gotten this to return anything other than invalid response. I'm not sure if it's a bug
-        in my code or the API.
-
         Args:
             challenge_type_id (ChallengeType): The challenge type ID.
 
         Returns:
-            dict: The member's participation in the challenge.
+            Any: The member's participation in the challenge.
+
+        Notes:
+            ---
+            I've never gotten this to return anything other than invalid response. I'm not sure if it's a bug
+            in my code or the API.
+
         """
         params = {"challengeTypeId": challenge_type_id.value}
 
@@ -219,15 +231,6 @@ class MemberApi:
     ) -> MemberDetail:
         """Get the member details.
 
-        The member_id parameter is optional. If not provided, the currently logged in user will be used. The
-        include_addresses, include_class_summary, and include_credit_card parameters are optional and determine
-        what additional information is included in the response. By default, all additional information is included,
-        with the exception of the credit card information.
-
-        Note: The base member details include the last four of a credit card regardless of the include_credit_card,
-        although this is not always the same details as what is in the member_credit_card field. There doesn't seem
-        to be a way to exclude this information, and I do not know which is which or why they differ.
-
         Args:
             include_addresses (bool): Whether to include the member's addresses in the response.
             include_class_summary (bool): Whether to include the member's class summary in the response.
@@ -235,6 +238,17 @@ class MemberApi:
 
         Returns:
             MemberDetail: The member details.
+
+
+        Notes:
+            ---
+            The include_addresses, include_class_summary, and include_credit_card parameters are optional and determine
+            what additional information is included in the response. By default, all additional information is included,
+            with the exception of the credit card information.
+
+            The base member details include the last four of a credit card regardless of the include_credit_card,
+            although this is not always the same details as what is in the member_credit_card field. There doesn't seem
+            to be a way to exclude this information, and I do not know which is which or why they differ.
         """
 
         include: list[str] = []
@@ -294,10 +308,13 @@ class MemberApi:
     async def get_latest_agreement(self) -> LatestAgreement:
         """Get the latest agreement for the member.
 
-        Note: latest agreement here means a specific agreement id, not the most recent agreement.
-
         Returns:
             LatestAgreement: The agreement.
+
+        Notes:
+        ---
+            In this context, "latest" means the most recent agreement with a specific ID, not the most recent agreement
+            in general. The agreement ID is hardcoded in the endpoint, so it will always return the same agreement.
         """
         data = await self._api._default_request("GET", "/member/agreements/9d98fb27-0f00-4598-ad08-5b1655a59af6")
         return LatestAgreement(**data["data"])
@@ -319,16 +336,14 @@ class MemberApi:
 
     # the below do not return any data for me, so I can't test them
 
-    async def get_member_services(self, active_only: bool = True) -> typing.Any:
+    async def _get_member_services(self, active_only: bool = True) -> typing.Any:
         """Get the member's services.
-
-        Note: I'm not sure what the services are, as I don't have any data to test this with.
 
         Args:
             active_only (bool): Whether to only include active services. Default is True.
 
         Returns:
-            dict: The member's service
+            Any: The member's service
         ."""
         active_only_str = "true" if active_only else "false"
         data = await self._api._default_request(
@@ -336,7 +351,7 @@ class MemberApi:
         )
         return data
 
-    async def get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> typing.Any:
+    async def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> typing.Any:
         """Get data from the member's aspire wearable.
 
         Note: I don't have an aspire wearable, so I can't test this.
@@ -346,20 +361,20 @@ class MemberApi:
             unit (str | None): The measurement unit. Default is None.
 
         Returns:
-            dict: The member's aspire data.
+            Any: The member's aspire data.
         """
         params = {"datetime": datetime, "unit": unit}
 
         data = self._api._default_request("GET", f"/member/wearables/{self._member_id}/wearable-daily", params=params)
         return data
 
-    async def get_body_composition_list(self) -> typing.Any:
+    async def _get_body_composition_list(self) -> typing.Any:
         """Get the member's body composition list.
 
         Note: I don't have body composition data, so I can't test this.
 
         Returns:
-            dict: The member's body composition list.
+            Any: The member's body composition list.
         """
         data = await self._api._default_request("GET", f"/member/members/{self._member_uuid}/body-composition")
         return data

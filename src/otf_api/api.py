@@ -26,18 +26,28 @@ REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "A
 
 
 class Api:
+    """The main class of the otf-api library. Create an instance using the async method `create`.
+
+    Example:
+        ---
+        ```python
+        import asyncio
+        from otf_api import Api
+
+        async def main():
+            otf = await Api.create("username", "password")
+            print(otf.member)
+
+        if __name__ == "__main__":
+            asyncio.run(main())
+        ```
+    """
+
     logger: "Logger" = logger
     user: User
     session: aiohttp.ClientSession
 
     def __init__(self, username: str, password: str):
-        """Create a new API instance. The username and password are required arguments because even though
-        we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
-
-        Args:
-            username (str): The username of the user.
-            password (str): The password of the user.
-        """
         self.member: MemberDetail
         self.home_studio: StudioDetail
 
@@ -77,7 +87,7 @@ class Api:
             await self.session.close()
 
     @property
-    def base_headers(self) -> dict[str, str]:
+    def _base_headers(self) -> dict[str, str]:
         """Get the base headers for the API."""
         if not self.user:
             raise ValueError("No user is logged in.")
@@ -106,9 +116,9 @@ class Api:
         logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
 
         if headers:
-            headers.update(self.base_headers)
+            headers.update(self._base_headers)
         else:
-            headers = self.base_headers
+            headers = self._base_headers
 
         async with self.session.request(method, full_url, headers=headers, params=params) as response:
             response.raise_for_status()
