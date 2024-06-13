@@ -2,12 +2,12 @@ site_name: OrangeTheory API
 repo_url: https://github.com/nodejsmith/otf-api
 repo_name: otf-api
 nav:
-  - home: index.md
-  - installation: installation.md
-  - usage: usage.md
-  - contributing: contributing.md
-  - authors: authors.md
-  - history: history.md
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - Contributing: contributing.md
+  - Authors: authors.md
+  - History: history.md
   - Code Reference: reference/
 theme:
   name: material

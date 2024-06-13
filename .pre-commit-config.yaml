@@ -23,7 +23,7 @@ repos:
       - id: mypy
         name: mypy
         entry: mypy
-        exclude: ^tests
+        exclude: ^(tests|examples)/
         language: python
         types: [python]
         require_serial: true
