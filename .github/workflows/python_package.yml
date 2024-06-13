@@ -37,7 +37,7 @@ jobs:
           pip install tox
 
       - name: Run tests
-        run: tox --skip-env lint -v
+        run: tox -e ${{ matrix.python-version }} -v
 
       - name: Run lint checks
         run: tox -e lint -v
