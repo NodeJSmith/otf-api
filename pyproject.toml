@@ -23,7 +23,7 @@ classifiers = [
 python = "^3.10"
 aiohttp = "3.9.5"
 loguru = "0.7.2"
-pydantic = "2.7.3"
+pydantic = "2.7.4"
 pycognito = "2024.5.1"
 
 
