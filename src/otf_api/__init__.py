@@ -1,4 +1,4 @@
-from . import classes_api, dna_api, member_api, studio_api
+from . import classes_api, member_api, studios_api, telemetry_api
 from .api import Api
 from .models.auth import User
 from .models.responses import (
@@ -10,9 +10,6 @@ from .models.responses import (
     ChallengeTrackerContent,
     ChallengeTrackerDetailList,
     ChallengeType,
-    DnaHrHistory,
-    DnaMaxHr,
-    DnaTelemetry,
     EquipmentType,
     FavoriteStudioList,
     HistoryClassStatus,
@@ -28,6 +25,9 @@ from .models.responses import (
     StudioDetailList,
     StudioServiceList,
     StudioStatus,
+    TelemetryHrHistory,
+    TelemetryItem,
+    TelemetryMaxHr,
     TotalClasses,
     WorkoutList,
 )
@@ -55,11 +55,11 @@ __all__ = [
     "FavoriteStudioList",
     "OtfClassList",
     "classes_api",
-    "studio_api",
-    "dna_api",
-    "DnaHrHistory",
-    "DnaTelemetry",
-    "DnaMaxHr",
+    "studios_api",
+    "telemetry_api",
+    "TelemetryHrHistory",
+    "TelemetryItem",
+    "TelemetryMaxHr",
     "StudioDetail",
     "StudioDetailList",
     "ALL_CLASS_STATUS",

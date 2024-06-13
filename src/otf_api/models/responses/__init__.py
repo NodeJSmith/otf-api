@@ -2,9 +2,6 @@ from .bookings import BookingList
 from .challenge_tracker_content import ChallengeTrackerContent
 from .challenge_tracker_detail import ChallengeTrackerDetailList
 from .classes import OtfClassList
-from .dna_hr_history import DnaHrHistory
-from .dna_max_hr import DnaMaxHr
-from .dna_telemetry import DnaTelemetry
 from .enums import (
     ALL_CLASS_STATUS,
     ALL_HISTORY_CLASS_STATUS,
@@ -25,6 +22,9 @@ from .performance_summary_detail import PerformanceSummaryDetail
 from .performance_summary_list import PerformanceSummaryList
 from .studio_detail import StudioDetail, StudioDetailList
 from .studio_services import StudioServiceList
+from .telemetry_hr_history import TelemetryHrHistory
+from .telemetry_item import TelemetryItem
+from .telemetry_max_hr import TelemetryMaxHr
 from .total_classes import TotalClasses
 from .workouts import WorkoutList
 
@@ -47,9 +47,9 @@ __all__ = [
     "StudioStatus",
     "FavoriteStudioList",
     "OtfClassList",
-    "DnaHrHistory",
-    "DnaTelemetry",
-    "DnaMaxHr",
+    "TelemetryHrHistory",
+    "TelemetryItem",
+    "TelemetryMaxHr",
     "StudioDetail",
     "StudioDetailList",
     "ALL_CLASS_STATUS",

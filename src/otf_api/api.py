@@ -12,6 +12,7 @@ from otf_api.member_api import MemberApi
 from otf_api.models.auth import User
 from otf_api.performance_api import PerformanceApi
 from otf_api.studio_api import StudiosApi
+from otf_api.telemetry_api import TelemtryApi
 
 if typing.TYPE_CHECKING:
     from loguru import Logger
@@ -21,7 +22,7 @@ if typing.TYPE_CHECKING:
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
-API_DNA_BASE_URL = "api.yuzu.orangetheory.com"
+API_TELEMETRY_BASE_URL = "api.yuzu.orangetheory.com"
 REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "Accept": "application/json"}
 
 
@@ -48,6 +49,7 @@ class Api:
         self.classes_api = ClassesApi(self)
         self.studios_api = StudiosApi(self)
         self.dna_api = DnaApi(self)
+        self.telemetry_api = TelemtryApi(self)
         self.performance_api = PerformanceApi(self)
 
     @classmethod
@@ -122,9 +124,9 @@ class Api:
         """Perform an API request to the default API."""
         return await self._do(method, API_BASE_URL, url, params)
 
-    async def _dna_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
-        """Perform an API request to the DNA API."""
-        return await self._do(method, API_DNA_BASE_URL, url, params)
+    async def _telemetry_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+        """Perform an API request to the Telemetry API."""
+        return await self._do(method, API_TELEMETRY_BASE_URL, url, params)
 
     async def _performance_summary_request(
         self, method: str, url: str, headers: dict[str, str], params: dict[str, Any] | None = None

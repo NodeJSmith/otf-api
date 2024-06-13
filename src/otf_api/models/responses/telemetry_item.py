@@ -38,7 +38,7 @@ class TelemetryItem(OtfBaseModel):
     tread_data: TreadData | None = Field(None, alias="treadData")
 
 
-class DnaTelemetry(OtfBaseModel):
+class TelemetryItem(OtfBaseModel):
     member_uuid: str = Field(..., alias="memberUuid")
     class_history_uuid: str = Field(..., alias="classHistoryUuid")
     class_start_time: datetime = Field(..., alias="classStartTime")

@@ -155,7 +155,7 @@ async def main():
     # telemetry is a detailed record of a specific workout - minute by minute, or more granular if desired
     # this endpoint takes a class_history_uuid, as well as a number of max data points - if you do not pass
     # this value it will attempt to return enough data points for 30 second intervals
-    telemetry = await otf.dna_api.get_telemetry(workouts.workouts[0].class_history_uuid)
+    telemetry = await otf.telemetry_api.get_telemetry(workouts.workouts[0].class_history_uuid)
     print(json.dumps(telemetry.model_dump(), indent=4, default=str))
 
     """
