@@ -24,7 +24,7 @@ class ClassesApi:
         UUIDs are provided, it will default to the user's home studio.
 
         Args:
-            studio_uuids (list[str] | None): The studio UUIDs to get the classes for. Default is None, which will
+            studio_uuids (list[str] | None): The studio UUIDs to get the classes for. Default is None, which will\
             default to the user's home studio only.
             include_home_studio (bool): Whether to include the home studio in the classes. Default is True.
 

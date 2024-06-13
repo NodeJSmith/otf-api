@@ -69,7 +69,7 @@ class MemberApi:
         Args:
             start_date (date | str | None): The start date for the bookings. Default is None.
             end_date (date | str | None): The end date for the bookings. Default is None.
-            status (BookingStatus | None): The status of the bookings to get. Default is None, which includes
+            status (BookingStatus | None): The status of the bookings to get. Default is None, which includes\
             all statuses. Only a single status can be provided.
 
         Note: Looking at the code in the app, it appears that this endpoint accepts multiple statuses. Indeed,
@@ -307,7 +307,7 @@ class MemberApi:
         will be used.
 
         Args:
-            studio_uuid (str): The studio UUID to get services for. Default is None, which will use the member's home
+            studio_uuid (str): The studio UUID to get services for. Default is None, which will use the member's home\
             studio.
 
         Returns:
