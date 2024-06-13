@@ -20,7 +20,7 @@ class StudiosApi:
         user's home studio.
 
         Args:
-            studio_uuid (str): Studio UUID to get details for. Defaults to None, which will default to the user's home
+            studio_uuid (str): Studio UUID to get details for. Defaults to None, which will default to the user's home\
             studio.
 
         Returns:

@@ -57,7 +57,7 @@ class DnaApi:
 
         Args:
             class_history_uuid (str): The class history UUID.
-            max_data_points (int): The max data points to use for the telemetry. Default is 0, which will attempt to
+            max_data_points (int): The max data points to use for the telemetry. Default is 0, which will attempt to\
             get the max data points from the workout. If the workout is not found, it will default to 120 data points.
 
         Returns:
