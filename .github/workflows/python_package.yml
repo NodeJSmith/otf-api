@@ -32,13 +32,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install tox
 
-      # - name: Run tests
-      #   run: tox --skip-env lint -v
+      - name: Run tests
+        run: tox --skip-env lint -v
 
-      - name: mkdocs build
-        run: |
-          pip install '.[dev,docs]'
-          mkdocs build -v
-
-      # - name: Run lint checks
-      #   run: tox -e lint -v
+      - name: Run lint checks
+        run: tox -e lint -v
