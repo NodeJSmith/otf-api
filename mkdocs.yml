@@ -1,7 +1,6 @@
 site_name: otf
 repo_url: https://github.com/nodejsmith/otf
 repo_name: otf
-#strict: true
 nav:
   - home: index.md
   - installation: installation.md
@@ -13,7 +12,6 @@ nav:
 theme:
   name: material
   language: en
-  #logo: assets/logo.png
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
