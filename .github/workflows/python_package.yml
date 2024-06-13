@@ -33,7 +33,7 @@ jobs:
           pip install tox
 
       - name: Run tests
-        run: tox --skip-env lint
+        run: tox --skip-env lint -v
 
       - name: Run lint checks
-        run: tox -e lint
+        run: tox -e lint -v
