@@ -7,10 +7,10 @@ To use the API, you need to create an instance of the `Api` class, providing you
 The `Api` object has multiple api objects as attributes, which you can use to make requests to the API. The available api objects are:
 
 - `classes_api`
-- `dna_api` (workout telemetry)
 - `members_api`
 - `performance_api`
 - `studios_api`
+- `telemetry_api`
 
 Each of these api objects has methods that correspond to the endpoints in the API. You can use these methods to make requests to the API and get the data you need.
 
