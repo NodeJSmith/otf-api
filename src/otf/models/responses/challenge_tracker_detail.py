@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 from pydantic import Field
 
@@ -30,7 +31,9 @@ class BenchmarkHistory(OtfBaseModel):
     coach_image_url: str = Field(..., alias="CoachImageUrl")
     workout_type_id: None = Field(..., alias="WorkoutTypeId")
     workout_id: None = Field(..., alias="WorkoutId")
-    linked_challenges: list = Field(..., alias="LinkedChallenges")
+    linked_challenges: list[Any] = Field(
+        ..., alias="LinkedChallenges"
+    )  # not sure what this will be, never seen it before
 
 
 class ChallengeHistory(OtfBaseModel):

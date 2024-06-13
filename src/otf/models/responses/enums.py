@@ -35,39 +35,6 @@ class ChallengeType(int, Enum):
     Push = 66
     BackAtIt = 84
 
-    @classmethod
-    def map_to_time(cls, challenge_type: "ChallengeType") -> int:
-        mapping = {
-            "MultiWeek": [cls.Transformation, cls.BackAtIt],
-            "MultiDay": [cls.Mayhem, cls.RemixInSix, cls.HellWeek, cls.Push, cls.TwelveDaysOfFitness],
-            "Other": [cls.Other, cls.MarathonMonth, cls.DriTri],
-        }
-        for key, value in mapping.items():
-            if challenge_type in value:
-                return key
-
-        raise ValueError(f"Could not map {challenge_type} to a time type")
-
-    @classmethod
-    def from_api_name(cls, name: str) -> "ChallengeType":
-        match name:
-            case "12 DAYS OF FITNESS":
-                return cls.TwelveDaysOfFitness
-            case "ALL OUT MAYHEM":
-                return cls.Mayhem
-            case "HELL WEEK":
-                return cls.HellWeek
-            case "MARATHON MONTH":
-                return cls.MarathonMonth
-            case "PUSH 30":
-                return cls.Push
-            case "TRANSFORMATION CHALLENGE":
-                return cls.Transformation
-            case "DRITRI":
-                return cls.DriTri
-            case _:
-                return cls.Other
-
 
 class BookingStatus(str, Enum):
     CheckedIn = "Checked In"

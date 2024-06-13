@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import Any
 
 from pydantic import Field
 
@@ -46,7 +47,7 @@ class DnaTelemetry(OtfBaseModel):
     window_size: int = Field(..., alias="windowSize")
     telemetry: list[TelemetryItem]
 
-    def __init__(self, **data):
+    def __init__(self, **data: dict[str, Any]):
         super().__init__(**data)
         for telem in self.telemetry:
             telem.timestamp = self.class_start_time + timedelta(seconds=telem.relative_timestamp)

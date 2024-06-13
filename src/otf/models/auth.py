@@ -80,7 +80,7 @@ class User:
     def id_claims_data(self) -> IdClaimsData:
         return IdClaimsData(**self.cognito.id_claims)
 
-    def save_to_disk(self):
+    def save_to_disk(self) -> None:
         self.token_path.parent.mkdir(parents=True, exist_ok=True)
         data = {
             "username": self.cognito.username,
@@ -134,7 +134,7 @@ class User:
         user.save_to_disk()
         return user
 
-    def refresh_token(self):
+    def refresh_token(self) -> "User":
         """Refresh the user's access token."""
         self.cognito.check_token()
         self.save_to_disk()
