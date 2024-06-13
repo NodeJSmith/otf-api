@@ -37,10 +37,10 @@ jobs:
           pip install tox
 
       - name: Run tests
-        run: tox -e ${{ matrix.python-version }} -vv
+        run: tox -e ${{ matrix.python-version }}
 
       - name: Run lint checks
-        run: tox -e lint -vv
+        run: tox -e lint
 
       - name: Run build checks
-        run: tox -e build -vv
+        run: tox -e build
