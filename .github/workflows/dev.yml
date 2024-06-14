@@ -58,9 +58,9 @@ jobs:
       - name: test with tox
         run: tox
 
-      - uses: codecov/codecov-action@v3
-        with:
-          fail_ci_if_error: true
+      # - uses: codecov/codecov-action@v3
+      #   with:
+      #     fail_ci_if_error: true
 
   publish_dev_build:
     # if test failed, we should not publish
