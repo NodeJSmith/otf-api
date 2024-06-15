@@ -107,7 +107,7 @@ Before you submit a pull request, check that it meets these guidelines:
 ## Deploying
 
 A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.md).
+Make sure all your changes are committed (including an entry in CHANGELOG.md).
 Then run:
 
 ```
