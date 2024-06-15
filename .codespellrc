@@ -1,0 +1,3 @@
+[codespell]
+skip = ./build,./.venv/,./venv/,./.tox,.git,*.pdf,*.svg,versioneer.py,package-lock.json,_vendor,*.css,.codespellrc
+ignore-words-list = OT,Checkin

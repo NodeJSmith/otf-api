@@ -122,7 +122,7 @@ jobs:
   #           For more information, please check change history at https://${{ needs.test.outputs.repo_owner }}.github.io/${{ needs.test.outputs.repo_name }}/${{ needs.test.outputs.package_version }}.dev/history
 
   #           ## Package Download
-  #           The pacakge is available at: https://test.pypi.org/project/${{ needs.test.outputs.package_name }}/
+  #           The package is available at: https://test.pypi.org/project/${{ needs.test.outputs.package_name }}/
 
   #     - name: build failure notification via email
   #       if: ${{ steps.check.outputs.status == 'failure' }}
@@ -158,4 +158,4 @@ jobs:
   #       ### Change History
   #       Please check change history at https://${{ needs.test.outputs.repo_owner }}.github.io/${{ needs.test.outputs.repo_name }}/${{ needs.test.outputs.package_version }}.dev/history
   #       ### Package Download
-  #       The pacakge is availabled at: https://test.pypi.org/project/${{ needs.test.outputs.repo_name }}/
+  #       The package is available at: https://test.pypi.org/project/${{ needs.test.outputs.repo_name }}/

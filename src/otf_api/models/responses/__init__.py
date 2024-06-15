@@ -22,8 +22,8 @@ from .performance_summary_detail import PerformanceSummaryDetail
 from .performance_summary_list import PerformanceSummaryList
 from .studio_detail import StudioDetail, StudioDetailList
 from .studio_services import StudioServiceList
+from .telemetry import Telemetry
 from .telemetry_hr_history import TelemetryHrHistory
-from .telemetry_item import TelemetryItem
 from .telemetry_max_hr import TelemetryMaxHr
 from .total_classes import TotalClasses
 from .workouts import WorkoutList
@@ -48,7 +48,7 @@ __all__ = [
     "FavoriteStudioList",
     "OtfClassList",
     "TelemetryHrHistory",
-    "TelemetryItem",
+    "Telemetry",
     "TelemetryMaxHr",
     "StudioDetail",
     "StudioDetailList",

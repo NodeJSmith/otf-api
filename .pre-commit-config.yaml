@@ -10,21 +10,19 @@ repos:
       - id: check-yaml
         args: [--unsafe]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
-    rev: v0.4.8
+    rev: v0.4.9
     hooks:
-      # Run the linter.
       - id: ruff
-        args: [--fix]
-      # Run the formatter.
+        language_version: python3
+        args: [--fix, --exit-non-zero-on-fix, --show-fixes]
       - id: ruff-format
-  - repo: local
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        args: [--config, .codespellrc]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
     hooks:
       - id: mypy
-        name: mypy
-        entry: mypy
         exclude: ^(tests|examples)/
-        language: python
-        types: [python]
-        require_serial: true
-        verbose: true
