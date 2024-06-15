@@ -23,7 +23,7 @@ classifiers = [
 python = "^3.10"
 aiohttp = "3.9.5"
 loguru = "0.7.2"
-pydantic = "2.7.3"
+pydantic = "2.7.4"
 pycognito = "2024.5.1"
 
 
@@ -35,7 +35,7 @@ aioresponses = "0.7.6"
 tox = "4.15.1"
 pytest-cov = "5.0.0"
 build = "1.2.1"
-ruff = "0.4.8"
+ruff = "0.4.9"
 pre-commit = "3.7.1"
 mypy = "1.10.0"
 twine = "5.1.0"
