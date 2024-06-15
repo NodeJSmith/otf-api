@@ -1,8 +1,8 @@
 import typing
 from math import ceil
 
+from otf_api.models.responses.telemetry import Telemetry
 from otf_api.models.responses.telemetry_hr_history import TelemetryHrHistory
-from otf_api.models.responses.telemetry_item import TelemetryItem
 from otf_api.models.responses.telemetry_max_hr import TelemetryMaxHr
 
 if typing.TYPE_CHECKING:
@@ -49,7 +49,7 @@ class TelemtryApi:
         res = await self._api._telemetry_request("GET", path, params=params)
         return TelemetryMaxHr(**res)
 
-    async def get_telemetry(self, class_history_uuid: str, max_data_points: int = 0) -> TelemetryItem:
+    async def get_telemetry(self, class_history_uuid: str, max_data_points: int = 0) -> Telemetry:
         """Get the telemetry for a class history.
 
         This returns an object that contains the max heartrate, start/end bpm for each zone,
@@ -70,7 +70,7 @@ class TelemtryApi:
 
         params = {"classHistoryUuid": class_history_uuid, "maxDataPoints": max_data_points}
         res = await self._api._telemetry_request("GET", path, params=params)
-        return TelemetryItem(**res)
+        return Telemetry(**res)
 
     async def _get_max_data_points(self, class_history_uuid: str) -> int:
         """Get the max data points to use for the telemetry.

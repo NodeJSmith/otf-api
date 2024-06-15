@@ -18,13 +18,14 @@ repos:
         args: [--fix]
       # Run the formatter.
       - id: ruff-format
-  - repo: local
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
     hooks:
       - id: mypy
-        name: mypy
-        entry: mypy
         exclude: ^(tests|examples)/
-        language: python
-        types: [python]
-        require_serial: true
-        verbose: true
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v1.17.0
+    hooks:
+      - id: commitizen
+        stages:
+          - commit-msg
