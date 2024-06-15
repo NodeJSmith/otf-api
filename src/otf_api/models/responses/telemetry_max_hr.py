@@ -8,6 +8,6 @@ class MaxHr(OtfBaseModel):
     value: int
 
 
-class DnaMaxHr(OtfBaseModel):
+class TelemetryMaxHr(OtfBaseModel):
     member_uuid: str = Field(..., alias="memberUuid")
     max_hr: MaxHr = Field(..., alias="maxHr")

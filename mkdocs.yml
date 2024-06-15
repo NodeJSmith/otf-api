@@ -24,6 +24,7 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode
   features:
+    - navigation.index
     - navigation.tabs
     - navigation.instant
     - navigation.tabs.sticky
@@ -66,6 +67,14 @@ plugins:
       handlers:
         python:
           options:
+            merge_init_into_class: true
+            show_root_toc_entry: false
+            show_symbol_type_toc: true
+            filters:
+              - "!^_"
+              - "^__"
+            members_order: source
+            signature_crossrefs: true
             extensions:
               - griffe_fieldz: { include_inherited: true }
             show_source: true
@@ -81,3 +90,7 @@ extra:
       name: Github
     - icon: material/email
       link: "mailto:j.smith.git1@gmail.com"
+
+watch:
+  - src/otf_api
+  - scripts/gen_ref_pages.py

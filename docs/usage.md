@@ -7,10 +7,10 @@ To use the API, you need to create an instance of the `Api` class, providing you
 The `Api` object has multiple api objects as attributes, which you can use to make requests to the API. The available api objects are:
 
 - `classes_api`
-- `dna_api` (workout telemetry)
 - `members_api`
 - `performance_api`
 - `studios_api`
+- `telemetry_api`
 
 Each of these api objects has methods that correspond to the endpoints in the API. You can use these methods to make requests to the API and get the data you need.
 
@@ -418,7 +418,7 @@ async def main():
     # telemetry is a detailed record of a specific workout - minute by minute, or more granular if desired
     # this endpoint takes a class_history_uuid, as well as a number of max data points - if you do not pass
     # this value it will attempt to return enough data points for 30 second intervals
-    telemetry = await otf.dna_api.get_telemetry(workouts.workouts[0].class_history_uuid)
+    telemetry = await otf.telemetry_api.get_telemetry(workouts.workouts[0].class_history_uuid)
     print(json.dumps(telemetry.model_dump(), indent=4, default=str))
 
     """

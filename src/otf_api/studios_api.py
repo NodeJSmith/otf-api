@@ -42,10 +42,7 @@ class StudiosApi:
         page_index: int = 1,
         page_size: int = 50,
     ) -> StudioDetailList:
-        """Search for studios by geographic location. Requires latitude and longitude, other parameters are optional.
-
-        There does not seem to be a limit to the number of results that can be requested total or per page, the library
-        enforces a limit of 50 results per page to avoid potential rate limiting issues.
+        """Search for studios by geographic location.
 
         Args:
             latitude (float, optional): Latitude of the location to search around, if None uses home studio latitude.
@@ -57,6 +54,10 @@ class StudiosApi:
         Returns:
             StudioDetailList: List of studios that match the search criteria.
 
+        Notes:
+            ---
+            There does not seem to be a limit to the number of results that can be requested total or per page, the
+            library enforces a limit of 50 results per page to avoid potential rate limiting issues.
 
         """
         path = "/mobile/v1/studios"

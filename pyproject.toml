@@ -39,6 +39,7 @@ ruff = "0.4.8"
 pre-commit = "3.7.1"
 mypy = "1.10.0"
 twine = "5.1.0"
+black = "^24.4.2"
 
 
 [tool.poetry.group.docs.dependencies]

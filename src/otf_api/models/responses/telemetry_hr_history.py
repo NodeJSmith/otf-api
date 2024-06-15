@@ -29,6 +29,6 @@ class HistoryItem(OtfBaseModel):
     assigned_at: str = Field(..., alias="assignedAt")
 
 
-class DnaHrHistory(OtfBaseModel):
+class TelemetryHrHistory(OtfBaseModel):
     member_uuid: str = Field(..., alias="memberUuid")
     history: list[HistoryItem]

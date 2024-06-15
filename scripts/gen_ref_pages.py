@@ -1,5 +1,4 @@
-"""Generate the code reference pages and navigation."""
-
+import shutil
 from pathlib import Path
 
 import mkdocs_gen_files
@@ -8,6 +7,10 @@ nav = mkdocs_gen_files.Nav()
 
 root = Path(__file__).parent.parent
 src = root / "src"
+
+REF_DIR = root / "docs" / "reference"
+if REF_DIR.exists():
+    shutil.rmtree(REF_DIR)
 
 for path in sorted(src.rglob("*.py")):
     module_path = path.relative_to(src).with_suffix("")
@@ -23,7 +26,18 @@ for path in sorted(src.rglob("*.py")):
     elif parts[-1] == "__main__":
         continue
 
-    nav[parts] = doc_path.as_posix()
+    title_parts = []
+    for part in parts:
+        sub_parts = part.split("_")
+        for i, sub_part in enumerate(sub_parts):
+            if sub_part in ["api", "hr"]:
+                sub_parts[i] = sub_part.upper()
+            else:
+                sub_parts[i] = sub_part.capitalize()
+        part = " ".join(sub_parts)
+        title_parts.append(part)
+
+    nav[title_parts] = doc_path.as_posix()
 
     with mkdocs_gen_files.open(full_doc_path, "w") as fd:
         ident = ".".join(parts)
