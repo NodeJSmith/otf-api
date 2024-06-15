@@ -122,7 +122,7 @@
 #             For more information, please check change history at https://${{ needs.release.outputs.repo_owner }}.github.io/${{ needs.release.outputs.repo_name }}/${{ needs.release.outputs.package_version }}/history
 
 #             ## Package Download
-#             The pacakge is available at: https://pypi.org/project/${{ needs.release.outputs.package_name }}/
+#             The package is available at: https://pypi.org/project/${{ needs.release.outputs.package_name }}/
 
 #       - name: build failure notification via email
 #         if: ${{ steps.check.outputs.status == 'failure' }}
@@ -160,4 +160,4 @@
 #       #       ### Change History
 #       #       Please check change history at https://${{ needs.release.outputs.repo_owner }}.github.io/${{ needs.release.outputs.repo_name }}/latest/history
 #       #       ### Package Download
-#       #       Please download the pacakge at: https://pypi.org/project/${{ needs.release.outputs.repo_name }}/
+#       #       Please download the package at: https://pypi.org/project/${{ needs.release.outputs.repo_name }}/
