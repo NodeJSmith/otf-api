@@ -47,9 +47,3 @@ jobs:
 
       - name: Run build checks
         run: tox -e build
-
-      - name: Publish build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: pypi-dists
-          path: "./dist"
