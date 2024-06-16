@@ -1,4 +1,4 @@
+from otf_api.cli.app import base_app
 from otf_api.cli.bookings import bookings_app
-from otf_api.cli.root import app
 
-__all__ = ["app", "bookings_app"]
+__all__ = ["base_app", "bookings_app"]

@@ -11,10 +11,10 @@ def exit_with_error(message: Any, code: int = 1, **kwargs: Any) -> NoReturn:
     """
     Utility to print a stylized error message and exit with a non-zero code
     """
-    from otf_api.cli.root import app
+    from otf_api.cli.app import base_app
 
     kwargs.setdefault("style", "red")
-    app.console.print(message, **kwargs)
+    base_app.console.print(message, **kwargs)
     raise typer.Exit(code)
 
 
@@ -22,10 +22,10 @@ def exit_with_success(message: Any, **kwargs: Any) -> NoReturn:
     """
     Utility to print a stylized success message and exit with a zero code
     """
-    from otf_api.cli.root import app
+    from otf_api.cli.app import base_app
 
     kwargs.setdefault("style", "green")
-    app.console.print(message, **kwargs)
+    base_app.console.print(message, **kwargs)
     raise typer.Exit(0)
 
 

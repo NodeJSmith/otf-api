@@ -76,4 +76,4 @@ build-backend = "poetry.core.masonry.api"
 pythonpath = ["src"]
 
 [tool.poetry.scripts]
-otf = "otf_api.cli:app"
+otf = "otf_api.cli:base_app"
