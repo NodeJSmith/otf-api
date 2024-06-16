@@ -4,6 +4,40 @@ All notable changes to this project will be documented in this file. See [conven
 
 ## [unreleased]
 
+[7e2ff79](7e2ff79f640f90b78959af038a07305749091f8f)...[]()
+
+### Other (unconventional)
+
+- Remove conditional check for push event with tags in python_package.yml ([07699fe](https://github.com/nodejsmith/otf-api/commit/07699fe00d12102cea332f895347baad5270bf7b)) - @
+
+
+## [0.1.1] - 2024-06-15
+
+[b7f8f91](b7f8f9197679c9095aadd4f2a5ea4bba56e35ef2)...[7e2ff79](7e2ff79f640f90b78959af038a07305749091f8f)
+
+### Other (unconventional)
+
+- Merge pull request #10 from NodeJSmith/cleanup/more_cleanup
+
+Cleanup/more cleanup ([f6f244b](https://github.com/nodejsmith/otf-api/commit/f6f244be1492481a09045484a2c2f8168f1fd831)) - @NodeJSmith
+
+- Ci(workflows): update python_package workflow to separate build and publish steps
+ci(workflows): add test_and_lint workflow for testing and linting on push and PR events
+ ([253abe2](https://github.com/nodejsmith/otf-api/commit/253abe223da239dd7609c893d7eb060005d6abe0)) - @NodeJSmith
+
+- Remove publishing of build artifacts from test/lint workflow ([23f1392](https://github.com/nodejsmith/otf-api/commit/23f1392e5a063f408e4684e18ee5170920052c6d)) - @NodeJSmith
+
+- Rename workflow from 'Python package' to 'Test and Lint' for clarity ([730f8eb](https://github.com/nodejsmith/otf-api/commit/730f8eb27d503a95b33d8dc5ad297424efded0df)) - @NodeJSmith
+
+- Remove dev build CI workflow file ([eafa7d5](https://github.com/nodejsmith/otf-api/commit/eafa7d52ebd3dc6a7b7d86a84007c278d3cf6fce)) - @NodeJSmith
+
+- Merge pull request #11 from NodeJSmith/feature/releasing
+
+Feature/releasing ([7e2ff79](https://github.com/nodejsmith/otf-api/commit/7e2ff79f640f90b78959af038a07305749091f8f)) - @NodeJSmith
+
+
+## [0.1.0] - 2024-06-15
+
 ### Bug Fixes
 
 - Change cr_waitlist_flag_last_updated type from str to datetime for accuracy ([4310693](https://github.com/nodejsmith/otf-api/commit/4310693e4f8c135bb7a60e1d196e6cf84f1f788f)) - @NodeJSmith
@@ -44,6 +78,12 @@ feat(tox.ini): add pipx install poetry in commands_pre to ensure poetry is insta
 
 - Docstrings, make some members private
  ([0263298](https://github.com/nodejsmith/otf-api/commit/02632986a3c74dcffe5c2b33e32ca2f46d065eed)) - @NodeJSmith
+
+- Correct typos in package download URLs in dev and release workflows ([a60c055](https://github.com/nodejsmith/otf-api/commit/a60c05507b7cd75e0377042e6898c883f368e2f5)) - @NodeJSmith
+
+- Docs(CONTRIBUTING.md): update reference from HISTORY.md to CHANGELOG.md
+docs: rename history.md to changelog.md and update references
+ ([d6ca531](https://github.com/nodejsmith/otf-api/commit/d6ca531d9617f9d99ef08ce60f8943051b15b485)) - @NodeJSmith
 
 
 ### Features
@@ -88,13 +128,23 @@ chore(tox.ini): update allowlist_externals to include only necessary tools poetr
 refactor(telemetry): replace TelemetryItem with Telemetry in telemetry API
 fix(models): update imports and __all__ to reflect Telemetry changes
 feat(models): add Telemetry model to handle telemetry data
- ([63feb5f](https://github.com/nodejsmith/otf-api/commit/63feb5f9109a5af06f5716a2aab011e0fa3b755c)) - @
+ ([63feb5f](https://github.com/nodejsmith/otf-api/commit/63feb5f9109a5af06f5716a2aab011e0fa3b755c)) - @NodeJSmith
 
-- Remove commitizen hook configuration to streamline pre-commit checks ([c439a79](https://github.com/nodejsmith/otf-api/commit/c439a791d1de42bdb59847895240fb9f8ffe4ac8)) - @
+- Remove commitizen hook configuration to streamline pre-commit checks ([c439a79](https://github.com/nodejsmith/otf-api/commit/c439a791d1de42bdb59847895240fb9f8ffe4ac8)) - @NodeJSmith
 
-- Add git-cliff configuration file for automated changelog generation ([190e05f](https://github.com/nodejsmith/otf-api/commit/190e05f1fcec1662c048e6e1bb0f846a5895f75f)) - @
+- Add git-cliff configuration file for automated changelog generation ([190e05f](https://github.com/nodejsmith/otf-api/commit/190e05f1fcec1662c048e6e1bb0f846a5895f75f)) - @NodeJSmith
 
-- Generate changelog ([14abcb7](https://github.com/nodejsmith/otf-api/commit/14abcb747f82587ca94490a9a5dea667d74f636f)) - @
+- Generate changelog ([14abcb7](https://github.com/nodejsmith/otf-api/commit/14abcb747f82587ca94490a9a5dea667d74f636f)) - @NodeJSmith
+
+- Update changelog ([446fdf1](https://github.com/nodejsmith/otf-api/commit/446fdf12b2daccfc6339425850c4a00bd2c266c6)) - @NodeJSmith
+
+- Chore: add .codespellrc configuration file to define codespell settings
+chore: update .pre-commit-config.yaml to include codespell hook and update ruff to v0.4.9
+ ([eba311c](https://github.com/nodejsmith/otf-api/commit/eba311c393edb0c5249c5d0aad8053116011b86b)) - @NodeJSmith
+
+- Chore(deps): update ruff from 0.4.8 to 0.4.9
+feat(deps): add httpx version 0.27.0 for HTTP requests
+ ([b7f8f91](https://github.com/nodejsmith/otf-api/commit/b7f8f9197679c9095aadd4f2a5ea4bba56e35ef2)) - @NodeJSmith
 
 
 ### Other (unconventional)
@@ -232,7 +282,10 @@ Upgrade/switch to poetry ([110d78a](https://github.com/nodejsmith/otf-api/commit
 Clean up docs ([314c683](https://github.com/nodejsmith/otf-api/commit/314c683097210bfe4a99a21dedeb937f50a77fff)) - @NodeJSmith
 
 - (docs): replace HISTORY.md with CHANGELOG.md for better change tracking
- ([b2fc07a](https://github.com/nodejsmith/otf-api/commit/b2fc07a5c08bef8dce025c0d388e20e0df1eea80)) - @
+ ([b2fc07a](https://github.com/nodejsmith/otf-api/commit/b2fc07a5c08bef8dce025c0d388e20e0df1eea80)) - @NodeJSmith
+
+- Add author and link
+ ([5311d54](https://github.com/nodejsmith/otf-api/commit/5311d54f5e36653365a319aed295cbc102daddcf)) - @NodeJSmith
 
 
 ### Refactoring
