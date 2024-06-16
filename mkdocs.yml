@@ -7,7 +7,7 @@ nav:
   - Usage: usage.md
   - Contributing: contributing.md
   - Authors: authors.md
-  - History: history.md
+  - Changelog: changelog.md
   - Code Reference: reference/
 theme:
   name: material
@@ -89,7 +89,7 @@ extra:
       link: https://github.com/nodejsmith/otf-api
       name: Github
     - icon: material/email
-      link: "mailto:j.smith.git1@gmail.com"
+      link: "mailto:12jessicasmith34@gmail.com"
 
 watch:
   - src/otf_api
