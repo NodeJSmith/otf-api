@@ -166,3 +166,4 @@ cython_debug/
 #.idea/
 model_generator.py
 scratch.py
+docs/reference/
