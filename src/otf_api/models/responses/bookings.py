@@ -123,7 +123,7 @@ class Booking(OtfBaseModel):
     is_deleted: bool = Field(alias="isDeleted")
     member: Member
     waitlist_position: int | None = Field(None, alias="waitlistPosition")
-    class_: OtfClass | None = Field(None, alias="class")
+    otf_class: OtfClass = Field(alias="class")
 
 
 class BookingList(OtfBaseModel):

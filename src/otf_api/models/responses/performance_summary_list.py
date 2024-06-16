@@ -52,14 +52,14 @@ class ClassRating(OtfBaseModel):
 
 class Ratings(OtfBaseModel):
     coach: CoachRating
-    class_: ClassRating = Field(..., alias="class")
+    otf_class: ClassRating = Field(..., alias="class")
 
 
 class PerformanceSummaryEntry(OtfBaseModel):
     performance_summary_id: str = Field(..., alias="id")
     details: Details
     ratable: bool
-    class_: Class = Field(..., alias="class")
+    otf_class: Class = Field(..., alias="class")
     ratings: Ratings | None = None
 
 

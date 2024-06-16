@@ -74,4 +74,4 @@ class PerformanceSummaryDetail(BaseModel):
     id: str
     details: Details
     ratable: bool
-    class_: Class = Field(..., alias="class")
+    otf_class: Class = Field(..., alias="class")

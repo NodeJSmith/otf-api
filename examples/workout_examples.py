@@ -32,7 +32,7 @@ async def main():
             }
         },
         "ratable": true,
-        "class_": {
+        "otf_class": {
             "ot_base_class_uuid": "b6549fc2-a479-4b03-9303-e0e45dbcd8c9",
             "starts_at_local": "2024-06-11T09:45:00",
             "name": "Orange 60 Min 2G",
@@ -94,7 +94,7 @@ async def main():
             }
         },
         "ratable": false,
-        "class_": {
+        "otf_class": {
             "starts_at_local": "2024-06-11T09:45:00",
             "name": "Orange 60 Min 2G"
         }
