@@ -62,7 +62,7 @@ class StudioLocation(OtfBaseModel):
 class Studio(OtfBaseModel):
     studio_uuid: str = Field(alias="studioUUId")
     studio_name: str = Field(alias="studioName")
-    description: str
+    description: str | None = None
     contact_email: str = Field(alias="contactEmail")
     status: StudioStatus
     logo_url: str | None = Field(alias="logoUrl")
