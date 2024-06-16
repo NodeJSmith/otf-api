@@ -16,9 +16,9 @@ body = """
     ## [unreleased]
 {% endif %}\
 {% if previous %}\
-    {% if previous.commit_id %}
+    {% if previous.commit_id and commit_id %}
         [{{ previous.commit_id | truncate(length=7, end="") }}]({{ previous.commit_id }})...\
-            [{{ commit_id | default(value='') | truncate(length=7, end="") }}]({{ commit_id }})
+            [{{ commit_id | truncate(length=7, end="") }}]({{ commit_id }})
     {% endif %}\
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
@@ -61,7 +61,7 @@ commit_parsers = [
     { message = "^revert", group = "Revert" },
     { message = "^test", group = "Tests" },
     { message = "^chore\\(version\\):", skip = true },
-    { message = "^chore", group = "Miscellaneous Chores" },
+    { message = "^(chore|ci|Ci)", group = "Miscellaneous Chores" },
     { body = ".*security", group = "Security" },
     { body = ".*", group = "Other (unconventional)" },
 ]
