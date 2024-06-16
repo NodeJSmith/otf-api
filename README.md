@@ -23,7 +23,7 @@ The `Api` object has multiple api objects as attributes, which you can use to ma
 
 ## Example Usage
 
-Note: see more examples in the `examples` directory and in the [usage docs](https://otf-api.readthedocs.io/en/latest/usage/).
+Note: see more examples in the `examples` directory and in the [usage docs](https://otf-api.readthedocs.io/en/stable/usage/).
 
 ```python
 import asyncio

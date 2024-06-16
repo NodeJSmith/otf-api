@@ -5,7 +5,7 @@ description = "Python OrangeTheory Fitness API Client"
 authors = ["Jessica Smith <j.smith.git1@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-documentation = "https://otf-api.readthedocs.io/en/latest/"
+documentation = "https://otf-api.readthedocs.io/en/stable/"
 
 classifiers = [
     "Development Status :: 4 - Beta",
