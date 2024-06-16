@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "otf-api"
-version = "0.0.1"
+version = "0.2.0"
 description = "Python OrangeTheory Fitness API Client"
 authors = ["Jessica Smith <j.smith.git1@gmail.com>"]
 license = "MIT"
@@ -41,6 +41,7 @@ mypy = "1.10.0"
 twine = "5.1.0"
 black = "^24.4.2"
 httpx = "^0.27.0"
+bump-my-version = "^0.23.0"
 
 
 [tool.poetry.group.docs.dependencies]
