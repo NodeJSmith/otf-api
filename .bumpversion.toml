@@ -1,0 +1,30 @@
+[tool.bumpversion]
+current_version = "0.2.0"
+
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)(\\.(?P<dev>dev)\\d+\\+[-_a-zA-Z0-9]+)?"
+
+serialize = ["{major}.{minor}.{patch}-dev{dev}", "{major}.{minor}.{patch}"]
+commit = false
+tag = false
+
+[tool.bumpversion.parts.minor]
+optional = false
+
+[tool.bumpversion.parts.dev]
+optional = true
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "src/otf_api/__version__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+
+[[tool.bumpversion.files]]
+filename = ".bumpversion.toml"
+search = 'current_version = "{current_version}"'
+replace = 'current_version = "{new_version}"'
