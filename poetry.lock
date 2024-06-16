@@ -2717,7 +2717,7 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "verspec"
-version = "0.1.1"
+version = "0.1.0"
 description = "Flexible version handling"
 optional = false
 python-versions = "*"
