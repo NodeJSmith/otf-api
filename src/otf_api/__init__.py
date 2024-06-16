@@ -1,10 +1,12 @@
+import os
+import sys
+
+from loguru import logger
+
 from . import classes_api, member_api, studios_api, telemetry_api
 from .api import Api
 from .models.auth import User
 from .models.responses import (
-    ALL_CLASS_STATUS,
-    ALL_HISTORY_CLASS_STATUS,
-    ALL_STUDIO_STATUS,
     BookingList,
     BookingStatus,
     ChallengeTrackerContent,
@@ -24,7 +26,6 @@ from .models.responses import (
     StudioDetail,
     StudioDetailList,
     StudioServiceList,
-    StudioStatus,
     Telemetry,
     TelemetryHrHistory,
     TelemetryMaxHr,
@@ -52,7 +53,6 @@ __all__ = [
     "MemberPurchaseList",
     "OutOfStudioWorkoutHistoryList",
     "StudioServiceList",
-    "StudioStatus",
     "TotalClasses",
     "WorkoutList",
     "FavoriteStudioList",
@@ -65,9 +65,9 @@ __all__ = [
     "TelemetryMaxHr",
     "StudioDetail",
     "StudioDetailList",
-    "ALL_CLASS_STATUS",
-    "ALL_HISTORY_CLASS_STATUS",
-    "ALL_STUDIO_STATUS",
     "PerformanceSummaryDetail",
     "PerformanceSummaryList",
 ]
+
+logger.remove()
+logger.add(sink=sys.stdout, level=os.getenv("OTF_LOG_LEVEL", "INFO"))

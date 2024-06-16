@@ -91,6 +91,15 @@ class User:
         self.token_path.write_text(json.dumps(data))
 
     @classmethod
+    def cache_file_exists(cls) -> bool:
+        return cls.token_path.exists()
+
+    @classmethod
+    def username_from_disk(cls) -> str:
+        val: str = json.loads(cls.token_path.read_text())["username"]
+        return val
+
+    @classmethod
     def load_from_disk(cls, username: str | None = None, password: str | None = None) -> "User":
         """Load a User instance from disk. If the token is invalid, reauthenticate with the provided credentials.
 

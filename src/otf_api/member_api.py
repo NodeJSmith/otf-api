@@ -1,11 +1,11 @@
 import typing
 from datetime import date
 
-from otf_api.models.responses.enums import BookingStatus
 from otf_api.models.responses.favorite_studios import FavoriteStudioList
 
 from .models import (
     BookingList,
+    BookingStatus,
     ChallengeTrackerContent,
     ChallengeTrackerDetailList,
     ChallengeType,
@@ -65,6 +65,7 @@ class MemberApi:
         start_date: date | str | None = None,
         end_date: date | str | None = None,
         status: BookingStatus | None = None,
+        limit: int | None = None,
     ) -> BookingList:
         """Get the member's bookings.
 
@@ -73,6 +74,8 @@ class MemberApi:
             end_date (date | str | None): The end date for the bookings. Default is None.
             status (BookingStatus | None): The status of the bookings to get. Default is None, which includes\
             all statuses. Only a single status can be provided.
+            limit (int | None): The maximum number of bookings to return. Default is None, which returns all\
+            bookings.
 
         Returns:
             BookingList: The member's bookings.
@@ -114,7 +117,20 @@ class MemberApi:
 
         res = await self._api._default_request("GET", f"/member/members/{self._member_id}/bookings", params=params)
 
-        return BookingList(bookings=res["data"])
+        bookings = res["data"][:limit] if limit else res["data"]
+
+        data = BookingList(bookings=bookings)
+        data.bookings = sorted(data.bookings, key=lambda x: x.otf_class.start_date_time)
+
+        for booking in data.bookings:
+            if not booking.otf_class:
+                continue
+            if booking.otf_class.studio.studio_uuid == self._api.home_studio.studio_uuid:
+                booking.is_home_studio = True
+            else:
+                booking.is_home_studio = False
+
+        return data
 
     async def _get_bookings_old(self, status: BookingStatus | None = None) -> BookingList:
         """Get the member's bookings.

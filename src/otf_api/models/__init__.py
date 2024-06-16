@@ -1,8 +1,5 @@
 from .auth import User
 from .responses import (
-    ALL_CLASS_STATUS,
-    ALL_HISTORY_CLASS_STATUS,
-    ALL_STUDIO_STATUS,
     BookingList,
     BookingStatus,
     ChallengeTrackerContent,
@@ -22,7 +19,6 @@ from .responses import (
     StudioDetail,
     StudioDetailList,
     StudioServiceList,
-    StudioStatus,
     Telemetry,
     TelemetryHrHistory,
     TelemetryMaxHr,
@@ -36,7 +32,6 @@ __all__ = [
     "BookingStatus",
     "EquipmentType",
     "HistoryClassStatus",
-    "StudioStatus",
     "BookingList",
     "ChallengeTrackerContent",
     "ChallengeTrackerDetailList",
@@ -55,9 +50,6 @@ __all__ = [
     "TelemetryMaxHr",
     "StudioDetail",
     "StudioDetailList",
-    "ALL_CLASS_STATUS",
-    "ALL_HISTORY_CLASS_STATUS",
-    "ALL_STUDIO_STATUS",
     "PerformanceSummaryDetail",
     "PerformanceSummaryList",
 ]

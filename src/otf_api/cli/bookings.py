@@ -1,44 +1,60 @@
-from typing import cast
+from enum import Enum
 
 import pendulum
 import typer
 from loguru import logger
 
 import otf_api
-from otf_api.cli._types import AsyncTyper
-from otf_api.cli.root import app
-from otf_api.models.responses.enums import BookingStatus
+from otf_api.cli.app import OPT_OUTPUT, AsyncTyper, OutputType, base_app
+from otf_api.models.responses.bookings import BookingStatus
+
+flipped_status = {item.value: item.name for item in BookingStatus}
+FlippedEnum = Enum("CliBookingStatus", flipped_status)  # type: ignore
+
 
 bookings_app = AsyncTyper(name="bookings", help="Get bookings data")
-app.add_typer(bookings_app, aliases=["booking"])
-
-# TODO: figure out why mypy doesn't like these unless they are wrapped in cast
+base_app.add_typer(bookings_app, aliases=["booking"])
 
 
 def today() -> str:
-    val = pendulum.now().date().to_date_string()
-    return cast(str, val)
+    val: str = pendulum.yesterday().date().to_date_string()
+    return val
 
 
 def next_month() -> str:
-    val = pendulum.now().add(months=1).date().to_date_string()
-    return cast(str, val)
+    val: str = pendulum.now().add(months=1).date().to_date_string()
+    return val
 
 
 @bookings_app.command()
 async def ls(
-    start_date: str = typer.Option(default_factory=today),
-    end_date: str = typer.Option(default_factory=next_month),
-    status: BookingStatus = typer.Option(None),
+    start_date: str = typer.Option(default_factory=today, help="Start date for bookings"),
+    end_date: str = typer.Option(default_factory=next_month, help="End date for bookings"),
+    status: FlippedEnum = typer.Option(None, case_sensitive=False, help="Booking status"),
+    limit: int = typer.Option(None, help="Limit the number of bookings returned"),
+    exclude_none: bool = typer.Option(
+        True, "--exclude-none/--allow-none", help="Exclude fields with a value of None", show_default=True
+    ),
+    output: OutputType = OPT_OUTPUT,
 ) -> None:
     """
     List bookings data
     """
+
     logger.info("Listing bookings data")
 
-    if not app.api:
-        app.api = await otf_api.Api.create(app.username, app.password)
-    bookings = await app.api.member_api.get_bookings(start_date, end_date, status)
+    if output:
+        base_app.output = output
 
-    for booking in bookings:
-        app.console.print(booking)
+    bk_status = BookingStatus.get_from_key_insensitive(status.value) if status else None
+
+    if not base_app.api:
+        base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+    bookings = await base_app.api.member_api.get_bookings(start_date, end_date, bk_status, limit)
+
+    kwargs = {"indent": 4, "exclude_none": exclude_none}
+
+    if base_app.output == "json":
+        base_app.print(bookings.model_dump_json(**kwargs))
+    elif base_app.output == "table":
+        base_app.print(bookings.to_table())
