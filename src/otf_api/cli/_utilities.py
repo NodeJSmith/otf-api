@@ -1,10 +1,27 @@
 import functools
+import inspect
 import traceback
-from collections.abc import Callable
-from typing import Any, NoReturn
+from collections.abc import Awaitable, Callable
+from typing import Any, NoReturn, ParamSpec, TypeGuard, TypeVar
 
 import typer
 from click.exceptions import ClickException
+
+T = TypeVar("T")
+P = ParamSpec("P")
+R = TypeVar("R")
+
+
+def is_async_fn(func: Callable[P, R] | Callable[P, Awaitable[R]]) -> TypeGuard[Callable[P, Awaitable[R]]]:
+    """
+    Returns `True` if a function returns a coroutine.
+
+    See https://github.com/microsoft/pyright/issues/2142 for an example use
+    """
+    while hasattr(func, "__wrapped__"):
+        func = func.__wrapped__
+
+    return inspect.iscoroutinefunction(func)
 
 
 def exit_with_error(message: Any, code: int = 1, **kwargs: Any) -> NoReturn:
