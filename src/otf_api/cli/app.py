@@ -11,8 +11,7 @@ from rich.console import Console
 from rich.theme import Theme
 
 import otf_api
-from otf_api.cli._utilities import with_cli_exception_handling
-from otf_api.cli.asyncutils import is_async_fn
+from otf_api.cli._utilities import is_async_fn, with_cli_exception_handling
 from otf_api.models.auth import User
 
 if typing.TYPE_CHECKING:
