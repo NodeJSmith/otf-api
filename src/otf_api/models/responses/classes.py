@@ -1,5 +1,10 @@
 from datetime import datetime
 
+from pydantic import Field
+from rich.style import Style
+from rich.styled import Styled
+from rich.table import Table
+
 from otf_api.models.base import OtfBaseModel
 
 
@@ -51,7 +56,33 @@ class OtfClass(OtfBaseModel):
     mbo_class_description_id: str
     created_at: datetime
     updated_at: datetime
+    is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
 
 class OtfClassList(OtfBaseModel):
     classes: list[OtfClass]
+
+    def to_table(self) -> Table:
+        table = Table(title="Classes", style="cyan")
+
+        table.add_column("Class Date")
+        table.add_column("Class Name")
+        table.add_column("Studio")
+        table.add_column("Home Studio", justify="center")
+        table.add_column("Class UUID")
+
+        home_studio_true = Styled("✓", style=Style(color="green"))
+        home_studio_false = Styled("X", style="red")
+
+        for otf_class in self.classes:
+            home_studio = home_studio_true if otf_class.is_home_studio else home_studio_false
+
+            table.add_row(
+                otf_class.starts_at_local.strftime("%Y-%m-%d %H:%M"),
+                otf_class.name,
+                otf_class.studio.name,
+                home_studio,
+                otf_class.ot_base_class_uuid,
+            )
+
+        return table

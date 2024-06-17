@@ -1,7 +1,9 @@
 from .auth import User
 from .responses import (
+    BookClass,
     BookingList,
     BookingStatus,
+    CancelBooking,
     ChallengeTrackerContent,
     ChallengeTrackerDetailList,
     ChallengeType,
@@ -52,4 +54,6 @@ __all__ = [
     "StudioDetailList",
     "PerformanceSummaryDetail",
     "PerformanceSummaryList",
+    "BookClass",
+    "CancelBooking",
 ]

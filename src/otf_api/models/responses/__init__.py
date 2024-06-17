@@ -1,4 +1,6 @@
+from .book_class import BookClass
 from .bookings import BookingList, BookingStatus
+from .cancel_booking import CancelBooking
 from .challenge_tracker_content import ChallengeTrackerContent
 from .challenge_tracker_detail import ChallengeTrackerDetailList
 from .classes import OtfClassList
@@ -43,9 +45,8 @@ __all__ = [
     "TelemetryMaxHr",
     "StudioDetail",
     "StudioDetailList",
-    "ALL_CLASS_STATUS",
-    "ALL_HISTORY_CLASS_STATUS",
-    "ALL_STUDIO_STATUS",
     "PerformanceSummaryDetail",
     "PerformanceSummaryList",
+    "BookClass",
+    "CancelBooking",
 ]
