@@ -105,6 +105,7 @@ class Api:
         url: str,
         params: dict[str, Any] | None = None,
         headers: dict[str, str] | None = None,
+        **kwargs: Any,
     ) -> Any:
         """Perform an API request."""
 
@@ -120,17 +121,26 @@ class Api:
         else:
             headers = self._base_headers
 
-        async with self.session.request(method, full_url, headers=headers, params=params) as response:
-            response.raise_for_status()
+        async with self.session.request(method, full_url, headers=headers, params=params, **kwargs) as response:
+            try:
+                text = await response.text()
+            except aiohttp.ContentTypeError:
+                text = None
+            try:
+                response.raise_for_status()
+            except Exception as e:
+                logger.error(f"Error making request: {e}")
+                logger.error(f"Response: {text}")
+                raise
             return await response.json()
 
     async def _classes_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the classes API."""
         return await self._do(method, API_IO_BASE_URL, url, params)
 
-    async def _default_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+    async def _default_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs: Any) -> Any:
         """Perform an API request to the default API."""
-        return await self._do(method, API_BASE_URL, url, params)
+        return await self._do(method, API_BASE_URL, url, params, **kwargs)
 
     async def _telemetry_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the Telemetry API."""
