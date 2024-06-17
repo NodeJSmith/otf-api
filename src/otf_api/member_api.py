@@ -1,6 +1,8 @@
 import typing
 from datetime import date
 
+from otf_api.models.responses.book_class import BookClass
+from otf_api.models.responses.cancel_booking import CancelBooking
 from otf_api.models.responses.favorite_studios import FavoriteStudioList
 
 from .models import (
@@ -59,6 +61,40 @@ class MemberApi:
         """
         data = await self._api._default_request("GET", "/mobile/v1/members/classes/summary")
         return TotalClasses(**data["data"])
+
+    async def book_class(self, class_uuid: str) -> BookClass:
+        """Book a class by class_uuid.
+
+        Args:
+            class_uuid (str): The class UUID to book.
+
+        Returns:
+            None: The response is empty.
+        """
+
+        body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
+
+        resp = await self._api._default_request("PUT", f"/member/members/{self._member_id}/bookings", json=body)
+
+        data = BookClass(**resp["data"])
+
+        return data
+
+    async def cancel_booking(self, booking_uuid: str) -> CancelBooking:
+        """Cancel a class by booking_uuid.
+
+        Args:
+            booking_uuid (str): The booking UUID to cancel.
+
+        Returns:
+            None: The response is empty.
+        """
+
+        params = {"confirmed": "true"}
+        resp = await self._api._default_request(
+            "DELETE", f"/member/members/{self._member_id}/bookings/{booking_uuid}", params=params
+        )
+        return CancelBooking(**resp["data"])
 
     async def get_bookings(
         self,

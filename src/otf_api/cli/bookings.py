@@ -26,8 +26,8 @@ def next_month() -> str:
     return val
 
 
-@bookings_app.command()
-async def ls(
+@bookings_app.command(aliases=["ls", "list"])
+async def list_bookings(
     start_date: str = typer.Option(default_factory=today, help="Start date for bookings"),
     end_date: str = typer.Option(default_factory=next_month, help="End date for bookings"),
     status: FlippedEnum = typer.Option(None, case_sensitive=False, help="Booking status"),
@@ -58,3 +58,33 @@ async def ls(
         base_app.print(bookings.model_dump_json(**kwargs))
     elif base_app.output == "table":
         base_app.print(bookings.to_table())
+
+
+@bookings_app.command()
+async def book(class_uuid: str) -> None:
+    """
+    Book a class
+    """
+
+    logger.info(f"Booking class {class_uuid}")
+
+    if not base_app.api:
+        base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+    booking = await base_app.api.member_api.book_class(class_uuid)
+
+    base_app.console.print(booking)
+
+
+@bookings_app.command()
+async def cancel(booking_uuid: str) -> None:
+    """
+    Cancel a booking
+    """
+
+    logger.info(f"Cancelling booking {booking_uuid}")
+
+    if not base_app.api:
+        base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+    booking = await base_app.api.member_api.cancel_booking(booking_uuid)
+
+    base_app.console.print(booking)
