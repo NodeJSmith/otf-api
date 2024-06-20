@@ -7,6 +7,7 @@ from rich.styled import Styled
 from rich.table import Table
 
 from otf_api.models.base import OtfBaseModel
+from otf_api.models.responses.classes import OtfClassTimeMixin
 
 
 class StudioStatus(str, Enum):
@@ -50,6 +51,34 @@ class BookingStatus(str, Enum):
     @classmethod
     def all_statuses(cls) -> list[str]:
         return list(cls.__members__.values())
+
+
+class BookingStatusCli(str, Enum):
+    """Flipped enum so that the CLI does not have values with spaces"""
+
+    CheckedIn = "CheckedIn"
+    CancelCheckinPending = "CancelCheckinPending"
+    CancelCheckinRequested = "CancelCheckinRequested"
+    Cancelled = "Cancelled"
+    LateCancelled = "LateCancelled"
+    Booked = "Booked"
+    Waitlisted = "Waitlisted"
+    CheckinPending = "CheckinPending"
+    CheckinRequested = "CheckinRequested"
+    CheckinCancelled = "CheckinCancelled"
+
+    @classmethod
+    def to_standard_case_insensitive(cls, key: str) -> BookingStatus:
+        lcase_to_actual = {item.lower(): item for item in cls._member_map_}
+        val = cls.__members__.get(lcase_to_actual[key.lower()])
+        if not val:
+            raise ValueError(f"Invalid BookingStatus: {key}")
+        return BookingStatus(val)
+
+    @classmethod
+    def get_case_insensitive(cls, value: str) -> str:
+        lcase_to_actual = {item.value.lower(): item.value for item in cls}
+        return lcase_to_actual[value.lower()]
 
 
 class Location(OtfBaseModel):
@@ -119,12 +148,12 @@ class Studio(OtfBaseModel):
     studio_location: StudioLocation = Field(alias="studioLocation", exclude=True)
 
 
-class OtfClass(OtfBaseModel):
+class OtfClass(OtfBaseModel, OtfClassTimeMixin):
     class_uuid: str = Field(alias="classUUId")
     name: str
     description: str | None = Field(None, exclude=True)
-    start_date_time: datetime = Field(alias="startDateTime")
-    end_date_time: datetime = Field(alias="endDateTime")
+    starts_at_local: datetime = Field(alias="startDateTime")
+    ends_at_local: datetime = Field(alias="endDateTime")
     is_available: bool = Field(alias="isAvailable")
     is_cancelled: bool = Field(alias="isCancelled")
     program_name: str = Field(alias="programName")
@@ -178,7 +207,10 @@ class BookingList(OtfBaseModel):
     def to_table(self) -> Table:
         table = Table(title="Bookings", style="cyan")
 
+        table.add_column("Class DoW")
         table.add_column("Class Date")
+        table.add_column("Class Time")
+        table.add_column("Class Duration")
         table.add_column("Class Name")
         table.add_column("Status")
         table.add_column("Studio")
@@ -204,7 +236,10 @@ class BookingList(OtfBaseModel):
                 status = Styled(booking.status, style="green")
 
             table.add_row(
-                booking.otf_class.start_date_time.strftime("%Y-%m-%d %H:%M"),
+                booking.otf_class.day_of_week,
+                booking.otf_class.date,
+                booking.otf_class.time,
+                booking.otf_class.duration,
                 booking.otf_class.name,
                 status,
                 booking.otf_class.studio.studio_name,

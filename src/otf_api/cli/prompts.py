@@ -191,7 +191,7 @@ def prompt_select_from_table(
         if not selected_item:
             layout["right"].visible = False
         else:
-            sidebar_data = selected_item.sidebar_data # type: ignore
+            sidebar_data = selected_item.sidebar_data  # type: ignore
             layout["right"].update(sidebar_data)
             layout["right"].visible = True
         return layout
