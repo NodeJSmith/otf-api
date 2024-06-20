@@ -1,6 +1,8 @@
 import typing
 from datetime import date
 
+from loguru import logger
+
 from otf_api.models.responses.book_class import BookClass
 from otf_api.models.responses.cancel_booking import CancelBooking
 from otf_api.models.responses.favorite_studios import FavoriteStudioList
@@ -102,6 +104,7 @@ class MemberApi:
         end_date: date | str | None = None,
         status: BookingStatus | None = None,
         limit: int | None = None,
+        exclude_cancelled: bool = True,
     ) -> BookingList:
         """Get the member's bookings.
 
@@ -112,6 +115,7 @@ class MemberApi:
             all statuses. Only a single status can be provided.
             limit (int | None): The maximum number of bookings to return. Default is None, which returns all\
             bookings.
+            exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
 
         Returns:
             BookingList: The member's bookings.
@@ -141,6 +145,12 @@ class MemberApi:
             used. I'm not sure if this is a bug or if the API is supposed to work this way.
         """
 
+        if exclude_cancelled and status == BookingStatus.Cancelled:
+            logger.warning(
+                "Cannot exclude cancelled bookings when status is Cancelled. Setting exclude_cancelled to False."
+            )
+            exclude_cancelled = False
+
         if isinstance(start_date, date):
             start_date = start_date.isoformat()
 
@@ -156,7 +166,7 @@ class MemberApi:
         bookings = res["data"][:limit] if limit else res["data"]
 
         data = BookingList(bookings=bookings)
-        data.bookings = sorted(data.bookings, key=lambda x: x.otf_class.start_date_time)
+        data.bookings = sorted(data.bookings, key=lambda x: x.otf_class.starts_at_local)
 
         for booking in data.bookings:
             if not booking.otf_class:
@@ -165,6 +175,9 @@ class MemberApi:
                 booking.is_home_studio = True
             else:
                 booking.is_home_studio = False
+
+        if exclude_cancelled:
+            data.bookings = [b for b in data.bookings if b.status != BookingStatus.Cancelled]
 
         return data
 
