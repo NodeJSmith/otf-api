@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "otf-api"
-version = "0.2.2"
+version = "0.0.0"
 description = "Python OrangeTheory Fitness API Client"
 authors = ["Jessica Smith <j.smith.git1@gmail.com>"]
 license = "MIT"
@@ -73,9 +73,13 @@ enable = true
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 
-[toolpyscaffold]
+[tool.pyscaffold]
 # PyScaffold's parameters when the project was created.
 # This will be used when updating. Do not change!
 version = 4.5
 package = "otf_api"
 extensions = ["github_actions", "markdown", "no_skeleton", "pre_commit"]
+
+[tool.coverage]
+run = ["src"]
+omit = ["*/__init__.py"]
