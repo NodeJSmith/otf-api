@@ -1,9 +1,3 @@
-# Credits
+# Contributors
 
-## Development Lead
-
-* Jessica Smith <j.smith.git1@gmail.com>
-
-## Contributors
-
-None yet. Why not be the first?
+* Jessica Smith [12jessicasmith34@gmail.com](mailto:12jessicasmith34@gmail.com)

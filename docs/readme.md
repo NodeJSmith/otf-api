@@ -1,4 +1,4 @@
-```{include} ../CHANGELOG.md
+```{include} ../README.md
 :relative-docs: docs/
 :relative-images:
 ```

@@ -1,70 +1,17 @@
+from importlib.metadata import PackageNotFoundError, version  # pragma: no cover
+
 from . import classes_api, member_api, studios_api, telemetry_api
 from .api import Api
 from .models.auth import User
-from .models.responses import (
-    ALL_CLASS_STATUS,
-    ALL_HISTORY_CLASS_STATUS,
-    ALL_STUDIO_STATUS,
-    BookingList,
-    BookingStatus,
-    ChallengeTrackerContent,
-    ChallengeTrackerDetailList,
-    ChallengeType,
-    EquipmentType,
-    FavoriteStudioList,
-    HistoryClassStatus,
-    LatestAgreement,
-    MemberDetail,
-    MemberMembership,
-    MemberPurchaseList,
-    OtfClassList,
-    OutOfStudioWorkoutHistoryList,
-    PerformanceSummaryDetail,
-    PerformanceSummaryList,
-    StudioDetail,
-    StudioDetailList,
-    StudioServiceList,
-    StudioStatus,
-    Telemetry,
-    TelemetryHrHistory,
-    TelemetryMaxHr,
-    TotalClasses,
-    WorkoutList,
-)
 
-__all__ = [
-    "Api",
-    "User",
-    "member_api",
-    "BookingList",
-    "ChallengeTrackerContent",
-    "ChallengeTrackerDetailList",
-    "ChallengeType",
-    "BookingStatus",
-    "EquipmentType",
-    "HistoryClassStatus",
-    "LatestAgreement",
-    "MemberDetail",
-    "MemberMembership",
-    "MemberPurchaseList",
-    "OutOfStudioWorkoutHistoryList",
-    "StudioServiceList",
-    "StudioStatus",
-    "TotalClasses",
-    "WorkoutList",
-    "FavoriteStudioList",
-    "OtfClassList",
-    "classes_api",
-    "studios_api",
-    "telemetry_api",
-    "TelemetryHrHistory",
-    "Telemetry",
-    "TelemetryMaxHr",
-    "StudioDetail",
-    "StudioDetailList",
-    "ALL_CLASS_STATUS",
-    "ALL_HISTORY_CLASS_STATUS",
-    "ALL_STUDIO_STATUS",
-    "PerformanceSummaryDetail",
-    "PerformanceSummaryList",
-]
+try:
+    # Change here if project is renamed and does not equal the package name
+    dist_name = __name__
+    __version__ = version(dist_name)
+except PackageNotFoundError:  # pragma: no cover
+    __version__ = "unknown"
+finally:
+    del version, PackageNotFoundError
+
+
+__all__ = ["Api", "User", "classes_api", "member_api", "studios_api", "telemetry_api"]

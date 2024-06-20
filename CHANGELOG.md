@@ -46,8 +46,6 @@ Fix/docs ([27fb285](https://github.com/nodejsmith/otf-api/commit/27fb285b4f4ac3b
 
 ## [0.2.0] - 2024-06-16
 
-[7e2ff79](7e2ff79f640f90b78959af038a07305749091f8f)...[c5c6436](c5c64364bb7e044d43f98be0da73a54ad14f3bc6)
-
 ### Bug Fixes
 
 - Add default value for commit_id to handle undefined cases ([ab5cbdc](https://github.com/nodejsmith/otf-api/commit/ab5cbdcbd5d77903ab73ad594cf63d5a8281bff0)) - @NodeJSmith
@@ -75,7 +73,6 @@ Test/debug publish ([c5c6436](https://github.com/nodejsmith/otf-api/commit/c5c64
 
 ## [0.1.1] - 2024-06-15
 
-[f6f244b](f6f244be1492481a09045484a2c2f8168f1fd831)...[7e2ff79](7e2ff79f640f90b78959af038a07305749091f8f)
 
 ### Miscellaneous Chores
 
@@ -153,10 +150,10 @@ docs: rename history.md to changelog.md and update references
 
 - Enhance header handling in API requests to allow custom headers ([11e42eb](https://github.com/nodejsmith/otf-api/commit/11e42ebec0a076014e8eddebd80f67c773cf3597)) - @NodeJSmith
 
-- Feat(api.py): enforce username and password as required for Api class
-feat(api.py): add class method to create Api instance with user details
-docs(api.py): update constructor docstring to explain username and password necessity
-feat(api.py): introduce member home studio and timezone attributes in Api class
+- Feat(api): enforce username and password as required for Api class
+feat(api): add class method to create Api instance with user details
+docs(api): update constructor docstring to explain username and password necessity
+feat(api): introduce member home studio and timezone attributes in Api class
  ([def9aca](https://github.com/nodejsmith/otf-api/commit/def9aca25bc3001ab897f63b9f74df410839b610)) - @NodeJSmith
 
 - Integrate PerformanceApi for performance data handling ([020d6d5](https://github.com/nodejsmith/otf-api/commit/020d6d5a9e2d961fc57e6427101aacaf8f835dad)) - @NodeJSmith
