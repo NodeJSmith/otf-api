@@ -51,7 +51,7 @@ class Api:
         self.member: MemberDetail
         self.home_studio: StudioDetail
 
-        self.user = User.load_from_disk(username, password)
+        self.user = User.login(username, password)
         self.session = aiohttp.ClientSession()
 
         self.member_api = MemberApi(self)
@@ -75,6 +75,8 @@ class Api:
         return self
 
     def __del__(self) -> None:
+        if not hasattr(self, "session"):
+            return
         try:
             loop = asyncio.get_event_loop()
             asyncio.create_task(self._close_session())  # noqa
