@@ -6,14 +6,18 @@ from loguru import logger
 
 import otf_api
 from otf_api.cli.app import OPT_OUTPUT, AsyncTyper, OutputType, base_app
+from otf_api.cli.prompts import prompt_select_from_table
 from otf_api.models.responses.bookings import BookingStatus
+from otf_api.models.responses.classes import ClassType, ClassTypeCli
 
 flipped_status = {item.value: item.name for item in BookingStatus}
 FlippedEnum = Enum("CliBookingStatus", flipped_status)  # type: ignore
 
 
 bookings_app = AsyncTyper(name="bookings", help="Get bookings data")
+classes_app = AsyncTyper(name="classes", help="Get classes data")
 base_app.add_typer(bookings_app, aliases=["booking"])
+base_app.add_typer(classes_app, aliases=["class"])
 
 
 def today() -> str:
@@ -32,6 +36,9 @@ async def list_bookings(
     end_date: str = typer.Option(default_factory=next_month, help="End date for bookings"),
     status: FlippedEnum = typer.Option(None, case_sensitive=False, help="Booking status"),
     limit: int = typer.Option(None, help="Limit the number of bookings returned"),
+    exclude_cancelled: bool = typer.Option(
+        True, "--exclude-cancelled/--include-cancelled", help="Exclude cancelled bookings", show_default=True
+    ),
     exclude_none: bool = typer.Option(
         True, "--exclude-none/--allow-none", help="Exclude fields with a value of None", show_default=True
     ),
@@ -50,7 +57,7 @@ async def list_bookings(
 
     if not base_app.api:
         base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
-    bookings = await base_app.api.member_api.get_bookings(start_date, end_date, bk_status, limit)
+    bookings = await base_app.api.member_api.get_bookings(start_date, end_date, bk_status, limit, exclude_cancelled)
 
     kwargs = {"indent": 4, "exclude_none": exclude_none}
 
@@ -76,6 +83,28 @@ async def book(class_uuid: str) -> None:
 
 
 @bookings_app.command()
+async def book_interactive() -> None:
+    """
+    Book a class interactively
+    """
+
+    logger.info("Booking class interactively")
+
+    with base_app.console.status("Getting classes...", spinner="arc"):
+        if not base_app.api:
+            base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+        classes = await base_app.api.classes_api.get_classes()
+
+    result = prompt_select_from_table(
+        console=base_app.console, prompt="Book a class, any class", columns=classes._columns(), data=classes.classes
+    )
+
+    booking = await base_app.api.member_api.book_class(result["ot_class_uuid"])
+
+    base_app.console.print(booking)
+
+
+@bookings_app.command()
 async def cancel(booking_uuid: str) -> None:
     """
     Cancel a booking
@@ -88,3 +117,53 @@ async def cancel(booking_uuid: str) -> None:
     booking = await base_app.api.member_api.cancel_booking(booking_uuid)
 
     base_app.console.print(booking)
+
+
+@classes_app.command(aliases=["ls", "list"])
+async def list_classes(
+    studio_uuids: list[str] = typer.Option(None, help="Studio UUIDs to get classes for"),
+    include_home_studio: bool = typer.Option(True, help="Include the home studio in the classes"),
+    start_date: str = typer.Option(default_factory=today, help="Start date for classes"),
+    end_date: str = typer.Option(default_factory=next_month, help="End date for classes"),
+    limit: int = typer.Option(10, help="Limit the number of classes returned"),
+    class_type: ClassTypeCli = typer.Option(None, help="Class type to filter by"),
+    exclude_cancelled: bool = typer.Option(
+        True, "--exclude-cancelled/--allow-cancelled", help="Exclude cancelled classes", show_default=True
+    ),
+    exclude_none: bool = typer.Option(
+        True, "--exclude-none/--allow-none", help="Exclude fields with a value of None", show_default=True
+    ),
+    output: OutputType = OPT_OUTPUT,
+) -> None:
+    """
+    List classes data
+    """
+
+    logger.info("Listing classes")
+
+    if output:
+        base_app.output = output
+
+    class_type_enum = ClassType.get_from_key_insensitive(class_type.value) if class_type else None
+
+    if not base_app.api:
+        base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+    classes = await base_app.api.classes_api.get_classes(
+        studio_uuids, include_home_studio, start_date, end_date, limit, class_type_enum, exclude_cancelled
+    )
+
+    kwargs = {"indent": 4, "exclude_none": exclude_none}
+
+    if base_app.output == "json":
+        base_app.print(classes.model_dump_json(**kwargs))
+    # elif base_app.output == "table":
+    #     base_app.print(classes.to_table())
+    else:
+        result = prompt_select_from_table(
+            console=base_app.console,
+            prompt="Book a class, any class",
+            columns=classes._columns(),
+            data=classes.classes,
+        )
+        print(type(result))
+        print(result)

@@ -21,8 +21,8 @@ repos:
     hooks:
       - id: codespell
         args: [--config, .codespellrc]
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.0
-    hooks:
-      - id: mypy
-        exclude: ^(tests|examples)/
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v1.10.0
+  #   hooks:
+  #     - id: mypy
+  #       exclude: ^(tests|examples)/

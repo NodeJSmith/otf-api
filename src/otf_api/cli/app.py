@@ -21,6 +21,7 @@ if typing.TYPE_CHECKING:
 class OutputType(str, Enum):
     json = "json"
     table = "table"
+    interactive = "interactive"
 
 
 def version_callback(value: bool) -> None:
@@ -46,7 +47,7 @@ def register_main_callback(app: "AsyncTyper") -> None:
         version: bool = OPT_VERSION,  # noqa
         username: str = OPT_USERNAME,
         password: str = OPT_PASSWORD,
-        output: str = OPT_OUTPUT,
+        output: OutputType = OPT_OUTPUT,
         log_level: str = OPT_LOG_LEVEL,
     ) -> None:
         app.setup_console()
@@ -74,13 +75,14 @@ class AsyncTyper(typer.Typer):
     def __init__(self, *args: typing.Any, **kwargs: typing.Any):
         super().__init__(*args, **kwargs)
 
-        self.console = Console(highlight=False, theme=Theme({"prompt.choices": "bold blue"}), color_system="auto")
+        theme = Theme({"prompt.choices": "bold blue"})
+        self.console = Console(highlight=False, theme=theme, color_system="auto")
 
         # TODO: clean these up later, just don't want warnings everywhere that these could be None
         self.api: Api = None  # type: ignore
         self.username: str = None  # type: ignore
         self.password: str = None  # type: ignore
-        self.output: str = None  # type: ignore
+        self.output: OutputType = None  # type: ignore
         self.logger = logger
         self.log_level = "CRITICAL"
 
