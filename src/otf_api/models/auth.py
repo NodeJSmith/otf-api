@@ -100,18 +100,16 @@ class User:
         return val
 
     @classmethod
-    def load_from_disk(cls, username: str | None = None, password: str | None = None) -> "User":
+    def load_from_disk(cls, username: str, password: str) -> "User":
         """Load a User instance from disk. If the token is invalid, reauthenticate with the provided credentials.
 
         Args:
-            username (str | None): The username to reauthenticate with.
-            password (str | None): The password to reauthenticate with.
+            username (str): The username to reauthenticate with.
+            password (str): The password to reauthenticate with.
 
         Returns:
             User: The loaded user.
 
-        Raises:
-            ValueError: If the token is invalid and no username and password are provided.
         """
         attr_dict = json.loads(cls.token_path.read_text())
 
@@ -120,10 +118,8 @@ class User:
             cognito_user.verify_tokens()
             return cls(cognito=cognito_user)
         except TokenVerificationException:
-            if username and password:
-                user = cls.login(username, password)
-                return user
-            raise
+            user = cls.login(username, password)
+            return user
 
     @classmethod
     def login(cls, username: str, password: str) -> "User":
