@@ -30,6 +30,8 @@ typer = { version = "^0.12.3", extras = ["cli"] }
 pendulum = { version = "^3.0.0", extras = ["cli"] }
 
 
+readchar = { version = "^4.1.0", extras = ["cli"] }
+humanize = "^4.9.0"
 [tool.poetry.group.dev.dependencies]
 pytest = "8.2.2"
 pytest-loguru = "0.4.0"

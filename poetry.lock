@@ -992,6 +992,20 @@ http2 = ["h2 (>=3,<5)"]
 socks = ["socksio (==1.*)"]
 
 [[package]]
+name = "humanize"
+version = "4.9.0"
+description = "Python humanize utilities"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "humanize-4.9.0-py3-none-any.whl", hash = "sha256:ce284a76d5b1377fd8836733b983bfb0b76f1aa1c090de2566fcf008d7f6ab16"},
+    {file = "humanize-4.9.0.tar.gz", hash = "sha256:582a265c931c683a7e9b8ed9559089dea7edcf6cc95be39a3cbc2c5d5ac2bcfa"},
+]
+
+[package.extras]
+tests = ["freezegun", "pytest", "pytest-cov"]
+
+[[package]]
 name = "identify"
 version = "2.5.36"
 description = "File identification library for Python"
@@ -2427,6 +2441,17 @@ files = [
 prompt_toolkit = ">=2.0,<=3.0.36"
 
 [[package]]
+name = "readchar"
+version = "4.1.0"
+description = "Library to easily read single chars and key strokes"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "readchar-4.1.0-py3-none-any.whl", hash = "sha256:d163680656b34f263fb5074023db44b999c68ff31ab394445ebfd1a2a41fe9a2"},
+    {file = "readchar-4.1.0.tar.gz", hash = "sha256:6f44d1b5f0fd93bd93236eac7da39609f15df647ab9cea39f5bc7478b3344b99"},
+]
+
+[[package]]
 name = "readme-renderer"
 version = "43.0"
 description = "readme_renderer is a library for rendering readme descriptions for Warehouse"
@@ -3091,4 +3116,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "de6618cd630813d7b8d8d8c17217a99854c19f4cc9a52e52c8e6f698dca5e074"
+content-hash = "86f16c0385e11a93a1d37a019aab57bc2405f850fbc2b9f93f0714b84fefb5ad"
