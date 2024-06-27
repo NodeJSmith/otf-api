@@ -57,7 +57,7 @@ async def list_bookings(
 
     if not base_app.api:
         base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
-    bookings = await base_app.api.member_api.get_bookings(start_date, end_date, bk_status, limit, exclude_cancelled)
+    bookings = await base_app.api.get_bookings(start_date, end_date, bk_status, limit, exclude_cancelled)
 
     kwargs = {"indent": 4, "exclude_none": exclude_none}
 
@@ -65,6 +65,14 @@ async def list_bookings(
         base_app.print(bookings.model_dump_json(**kwargs))
     elif base_app.output == "table":
         base_app.print(bookings.to_table())
+    elif base_app.output == "interactive":
+        result = prompt_select_from_table(
+            console=base_app.console,
+            prompt="Select a booking",
+            columns=bookings._columns(),
+            data=bookings.bookings,
+        )
+        print(result)
 
 
 @bookings_app.command()
@@ -77,7 +85,7 @@ async def book(class_uuid: str) -> None:
 
     if not base_app.api:
         base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
-    booking = await base_app.api.member_api.book_class(class_uuid)
+    booking = await base_app.api.book_class(class_uuid)
 
     base_app.console.print(booking)
 
@@ -93,13 +101,40 @@ async def book_interactive() -> None:
     with base_app.console.status("Getting classes...", spinner="arc"):
         if not base_app.api:
             base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
-        classes = await base_app.api.classes_api.get_classes()
+        classes = await base_app.api.get_classes()
 
     result = prompt_select_from_table(
         console=base_app.console, prompt="Book a class, any class", columns=classes._columns(), data=classes.classes
     )
 
-    booking = await base_app.api.member_api.book_class(result["ot_class_uuid"])
+    print(result["ot_class_uuid"])
+    booking = await base_app.api.book_class(result["ot_class_uuid"])
+
+    base_app.console.print(booking)
+
+
+@bookings_app.command()
+async def cancel_interactive() -> None:
+    """
+    Cancel a booking interactively
+    """
+
+    logger.info("Cancelling booking interactively")
+
+    with base_app.console.status("Getting bookings...", spinner="arc"):
+        if not base_app.api:
+            base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+        bookings = await base_app.api.get_bookings()
+
+    result = prompt_select_from_table(
+        console=base_app.console,
+        prompt="Cancel a booking, any booking",
+        columns=bookings._columns(),
+        data=bookings.bookings,
+    )
+
+    print(result["class_booking_uuid"])
+    booking = await base_app.api.cancel_booking(result["class_booking_uuid"])
 
     base_app.console.print(booking)
 
@@ -114,7 +149,7 @@ async def cancel(booking_uuid: str) -> None:
 
     if not base_app.api:
         base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
-    booking = await base_app.api.member_api.cancel_booking(booking_uuid)
+    booking = await base_app.api.cancel_booking(booking_uuid)
 
     base_app.console.print(booking)
 
@@ -148,7 +183,7 @@ async def list_classes(
 
     if not base_app.api:
         base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
-    classes = await base_app.api.classes_api.get_classes(
+    classes = await base_app.api.get_classes(
         studio_uuids, include_home_studio, start_date, end_date, limit, class_type_enum, exclude_cancelled
     )
 
