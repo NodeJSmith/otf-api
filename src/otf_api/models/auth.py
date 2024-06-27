@@ -28,6 +28,7 @@ class IdClaimsData(OtfBaseModel):
     iat: int
     family_name: str
     email: str
+    koji_person_id: str = Field(alias="custom:koji_person_id")
 
     @property
     def member_uuid(self) -> str:

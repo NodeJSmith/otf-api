@@ -200,9 +200,48 @@ class Booking(OtfBaseModel):
     otf_class: OtfClass = Field(alias="class")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
+    @property
+    def id_val(self) -> str:
+        return self.class_booking_id
+
+    @property
+    def sidebar_data(self) -> Table:
+        data = {
+            "date": self.otf_class.date,
+            "class_name": self.otf_class.name,
+            "description": self.otf_class.description,
+            "class_id": self.id_val,
+            "studio_address": self.otf_class.studio.studio_location.physical_address,
+            "coach_name": self.otf_class.coach.name,
+        }
+
+        table = Table(expand=True, show_header=False, show_footer=False)
+        table.add_column("Key", style="cyan", ratio=1)
+        table.add_column("Value", style="magenta", ratio=2)
+
+        for key, value in data.items():
+            if value is False:
+                table.add_row(key, Styled(str(value), style="red"))
+            else:
+                table.add_row(key, str(value))
+
+        return table
+
 
 class BookingList(OtfBaseModel):
     bookings: list[Booking]
+
+    def _columns(self) -> list[dict[str, str]]:
+        return [
+            {"header": "Class DoW", "key": "otf_class.day_of_week"},
+            {"header": "Class Date", "key": "otf_class.date"},
+            {"header": "Class Time", "key": "otf_class.time"},
+            {"header": "Class Duration", "key": "otf_class.duration"},
+            {"header": "Class Name", "key": "otf_class.name"},
+            {"header": "Status", "key": "status"},
+            {"header": "Studio", "key": "otf_class.studio.studio_name"},
+            {"header": "Home Studio", "key": "is_home_studio"},
+        ]
 
     def to_table(self) -> Table:
         table = Table(title="Bookings", style="cyan")

@@ -106,7 +106,7 @@ class OtfClassTimeMixin:
         duration = self.ends_at_local - self.starts_at_local
         human_val: str = precisedelta(duration, minimum_unit="minutes")
         if human_val == "1 hour and 30 minutes":
-            return "90 min"
+            return "90 minutes"
         return human_val
 
     @property
@@ -157,6 +157,7 @@ class OtfClass(OtfBaseModel, OtfClassTimeMixin):
     @property
     def sidebar_data(self) -> Table:
         data = {
+            "class_name": self.name,
             "class_id": self.id_val,
             "available": self.has_availability,
             "waitlist_available": self.waitlist_available,

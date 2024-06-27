@@ -7,8 +7,7 @@ from otf_api.models.base import OtfBaseModel
 
 
 class Address(OtfBaseModel):
-    member_address_uuid: str = Field(..., alias="memberAddressUUId")
-    memberaddress_uuid: str = Field(..., alias="memberaddressUUId")
+    member_address_uuid: str | None = Field(None, alias="memberAddressUUId")
     type: str
     address1: str
     address2: str | None = None
@@ -16,6 +15,12 @@ class Address(OtfBaseModel):
     territory: str
     postal_code: str = Field(..., alias="postalCode")
     country: str
+
+    def __init__(self, **data):
+        if "memberaddressUUId" in data:
+            data["memberAddressUUId"] = data.pop("memberaddressUUId")
+
+        super().__init__(**data)
 
 
 class MemberCreditCard(OtfBaseModel):

@@ -42,10 +42,10 @@ class MemberService(BaseModel):
     payment_date: datetime = Field(..., alias="paymentDate")
     expiration_date: datetime = Field(..., alias="expirationDate")
     active_date: datetime = Field(..., alias="activeDate")
-    created_by: str = Field(..., alias="createdBy")
-    created_date: datetime = Field(..., alias="createdDate")
-    updated_by: str = Field(..., alias="updatedBy")
-    updated_date: datetime = Field(..., alias="updatedDate")
+    created_by: str | None = Field(None, alias="createdBy")
+    created_date: datetime | None = Field(None, alias="createdDate")
+    updated_by: str | None = Field(None, alias="updatedBy")
+    updated_date: datetime | None = Field(None, alias="updatedDate")
     is_deleted: bool = Field(..., alias="isDeleted")
 
 
@@ -95,10 +95,10 @@ class Member(BaseModel):
     year_imported: int = Field(..., alias="yearImported")
     is_member_verified: bool = Field(..., alias="isMemberVerified")
     lead_prospect: bool = Field(..., alias="leadProspect")
-    created_by: str = Field(..., alias="createdBy")
-    created_date: datetime = Field(..., alias="createdDate")
-    updated_by: str = Field(..., alias="updatedBy")
-    updated_date: datetime = Field(..., alias="updatedDate")
+    created_by: str | None = Field(None, alias="createdBy")
+    created_date: datetime | None = Field(None, alias="createdDate")
+    updated_by: str | None = Field(None, alias="updatedBy")
+    updated_date: datetime | None = Field(None, alias="updatedDate")
     is_deleted: bool = Field(..., alias="isDeleted")
     member_profile: MemberProfile = Field(..., alias="memberProfile")
     home_studio: HomeStudio = Field(..., alias="homeStudio")
@@ -164,10 +164,10 @@ class Class(BaseModel):
     is_hide_cancel: bool = Field(..., alias="isHideCancel")
     is_available: bool = Field(..., alias="isAvailable")
     room_number: int = Field(..., alias="roomNumber")
-    created_by: None = Field(..., alias="createdBy")
-    created_date: datetime = Field(..., alias="createdDate")
-    updated_by: str = Field(..., alias="updatedBy")
-    updated_date: datetime = Field(..., alias="updatedDate")
+    created_by: str | None = Field(None, alias="createdBy")
+    created_date: datetime | None = Field(None, alias="createdDate")
+    updated_by: str | None = Field(None, alias="updatedBy")
+    updated_date: datetime | None = Field(None, alias="updatedDate")
     is_deleted: bool = Field(..., alias="isDeleted")
     studio: Studio
     location: Location
@@ -200,10 +200,10 @@ class SavedBooking(BaseModel):
     booked_date: datetime = Field(..., alias="bookedDate")
     checked_in_date: None = Field(..., alias="checkedInDate")
     cancelled_date: None = Field(..., alias="cancelledDate")
-    created_by: str = Field(..., alias="createdBy")
-    created_date: datetime = Field(..., alias="createdDate")
-    updated_by: str = Field(..., alias="updatedBy")
-    updated_date: datetime = Field(..., alias="updatedDate")
+    created_by: str | None = Field(None, alias="createdBy")
+    created_date: datetime | None = Field(None, alias="createdDate")
+    updated_by: str | None = Field(None, alias="updatedBy")
+    updated_date: datetime | None = Field(None, alias="updatedDate")
     is_deleted: bool = Field(..., alias="isDeleted")
     member: Member
     otf_class: Class = Field(..., alias="class")
@@ -224,11 +224,11 @@ class TreatmentRooms(BaseModel):
 
 
 class Location1(BaseModel):
-    site_id: str = Field(..., alias="siteId")
-    business_description: str = Field(..., alias="businessDescription")
-    additional_image_ur_ls: str = Field(..., alias="additionalImageUrLs")
-    facility_square_feet: FacilitySquareFeet = Field(..., alias="facilitySquareFeet")
-    treatment_rooms: TreatmentRooms = Field(..., alias="treatmentRooms")
+    site_id: str | Any = Field(..., alias="siteId")
+    business_description: str | Any = Field(..., alias="businessDescription")
+    additional_image_ur_ls: str | Any = Field(..., alias="additionalImageUrLs")
+    facility_square_feet: FacilitySquareFeet | Any = Field(..., alias="facilitySquareFeet")
+    treatment_rooms: TreatmentRooms | Any = Field(..., alias="treatmentRooms")
     has_classes: str = Field(..., alias="hasClasses")
     id: str
     name: str
@@ -248,23 +248,23 @@ class Location1(BaseModel):
 
 
 class MaxCapacity(BaseModel):
-    field_: FieldModel
+    field_: FieldModel | Any
 
 
 class WebCapacity(BaseModel):
-    field_: FieldModel
+    field_: FieldModel | Any
 
 
 class TotalBookedWaitlist(BaseModel):
-    field_: FieldModel
+    field_: FieldModel | Any
 
 
 class WebBooked(BaseModel):
-    field_: FieldModel
+    field_: FieldModel | Any
 
 
 class SemesterId(BaseModel):
-    field_: FieldModel
+    field_: FieldModel | Any
 
 
 class Program(BaseModel):
@@ -395,9 +395,9 @@ class MboClass(BaseModel):
 
 
 class MboResponseItem(BaseModel):
-    class_booking_uuid: str = Field(..., alias="classBookingUUId")
-    action: str
-    otf_class: MboClass = Field(..., alias="class")
+    class_booking_uuid: str | Any = Field(..., alias="classBookingUUId")
+    action: str | Any
+    otf_class: MboClass | Any = Field(..., alias="class")
 
 
 class BookClass(BaseModel):
