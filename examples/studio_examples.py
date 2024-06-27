@@ -1,5 +1,4 @@
 import asyncio
-import json
 import os
 
 from otf_api import Api
@@ -15,8 +14,8 @@ async def main():
     # which takes latitude, longitude, distance, page_index, and page_size as arguments
     # but you'll generally just need the first 3
     # same as with classes, you can leave it blank and get the studios within 50 miles of your home studio
-    studios_by_geo = await otf.studios_api.search_studios_by_geo()
-    print(json.dumps(studios_by_geo.studios[0].model_dump(), indent=4, default=str))
+    studios_by_geo = await otf.search_studios_by_geo()
+    print(studios_by_geo.studios[0].model_dump_json(indent=4))
 
     """
     {
@@ -67,8 +66,8 @@ async def main():
     # if you need to get detailed information about a studio, you can call `get_studio_detail`
     # which takes a studio_uuid as an argument, but you can leave it blank to get details about your home studio
     # this one has a result structure very much like the previous one
-    studio_detail = await otf.studios_api.get_studio_detail()
-    print(json.dumps(studio_detail.model_dump(), indent=4, default=str))
+    studio_detail = await otf.get_studio_detail()
+    print(studio_detail.model_dump_json(indent=4))
 
 
 if __name__ == "__main__":

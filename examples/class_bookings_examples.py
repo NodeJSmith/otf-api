@@ -1,9 +1,9 @@
 import asyncio
-import json
 import os
 from collections import Counter
 
 from otf_api import Api
+from otf_api.models.responses.bookings import BookingStatus
 from otf_api.models.responses.classes import ClassType
 
 USERNAME = os.getenv("OTF_EMAIL")
@@ -13,7 +13,13 @@ PASSWORD = os.getenv("OTF_PASSWORD")
 async def main():
     otf = await Api.create(USERNAME, PASSWORD)
 
-    studios = await otf.studios_api.search_studios_by_geo(40.7831, 73.9712, distance=100)
+    resp = await otf.get_member_purchases()
+    print(resp.model_dump_json(indent=4))
+
+    resp = await otf.get_bookings(start_date="2024-06-19", status=BookingStatus.LateCancelled)
+    print(resp.model_dump_json(indent=4))
+
+    studios = await otf.search_studios_by_geo(40.7831, 73.9712, distance=100)
 
     studio_uuids = [studio.studio_uuid for studio in studios.studios]
 
@@ -21,7 +27,7 @@ async def main():
     # You can pass a list of studio_uuids or, if you want to get classes from your home studio, leave it empty
     # this also takes a start date, end date, and limit - these are not sent to the API, they are used in the
     # client to filter the results
-    classes = await otf.classes_api.get_classes(studio_uuids)
+    classes = await otf.get_classes(studio_uuids)
 
     # get all statuses
     class_types = dict(
@@ -32,9 +38,9 @@ async def main():
         )
     )
 
-    print(json.dumps(class_types, indent=4, default=str))
+    print(class_types)
 
-    print(json.dumps(classes.classes[0].model_dump(), indent=4, default=str))
+    print(classes.classes[0].model_dump_json(indent=4))
 
     """
     {
@@ -65,8 +71,8 @@ async def main():
     # You can also get the classes that you have booked
     # You can pass a start_date, end_date, status, and limit as arguments
 
-    bookings = await otf.member_api.get_bookings()
-    print(bookings[0].model_dump_json(indent=4))
+    bookings = await otf.get_bookings()
+    print(bookings.bookings[0].model_dump_json(indent=4))
 
 
 if __name__ == "__main__":
