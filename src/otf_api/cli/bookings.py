@@ -8,7 +8,7 @@ import otf_api
 from otf_api.cli.app import OPT_OUTPUT, AsyncTyper, OutputType, base_app
 from otf_api.cli.prompts import prompt_select_from_table
 from otf_api.models.responses.bookings import BookingStatus
-from otf_api.models.responses.classes import ClassType, ClassTypeCli
+from otf_api.models.responses.classes import ClassType, ClassTypeCli, DoW
 
 flipped_status = {item.value: item.name for item in BookingStatus}
 FlippedEnum = Enum("CliBookingStatus", flipped_status)  # type: ignore
@@ -91,7 +91,19 @@ async def book(class_uuid: str) -> None:
 
 
 @bookings_app.command()
-async def book_interactive() -> None:
+async def book_interactive(
+    studio_uuids: list[str] = typer.Option(None, help="Studio UUIDs to get classes for"),
+    include_home_studio: bool = typer.Option(True, help="Include the home studio in the classes"),
+    start_date: str = typer.Option(default_factory=today, help="Start date for classes"),
+    end_date: str = typer.Option(None, help="End date for classes"),
+    limit: int = typer.Option(None, help="Limit the number of classes returned"),
+    class_type: list[ClassTypeCli] = typer.Option(None, help="Class type to filter by"),
+    day_of_week: list[DoW] = typer.Option(None, help="Days of the week to filter by"),
+    exclude_cancelled: bool = typer.Option(
+        True, "--exclude-cancelled/--allow-cancelled", help="Exclude cancelled classes", show_default=True
+    ),
+    start_time: list[str] = typer.Option(None, help="Start time for classes"),
+) -> None:
     """
     Book a class interactively
     """
@@ -99,9 +111,24 @@ async def book_interactive() -> None:
     logger.info("Booking class interactively")
 
     with base_app.console.status("Getting classes...", spinner="arc"):
+        if class_type:
+            class_type_enums = [ClassType.get_from_key_insensitive(class_type.value) for class_type in class_type]
+        else:
+            class_type_enums = None
+
         if not base_app.api:
             base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
-        classes = await base_app.api.get_classes()
+        classes = await base_app.api.get_classes(
+            studio_uuids,
+            include_home_studio,
+            start_date,
+            end_date,
+            limit,
+            class_type_enums,
+            exclude_cancelled,
+            day_of_week,
+            start_time,
+        )
 
     result = prompt_select_from_table(
         console=base_app.console, prompt="Book a class, any class", columns=classes._columns(), data=classes.classes

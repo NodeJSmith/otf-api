@@ -14,7 +14,7 @@ from otf_api.models.auth import User
 from otf_api.models.responses.body_composition_list import BodyCompositionList
 from otf_api.models.responses.book_class import BookClass
 from otf_api.models.responses.cancel_booking import CancelBooking
-from otf_api.models.responses.classes import ClassType, OtfClassList
+from otf_api.models.responses.classes import ClassType, DoW, OtfClassList
 from otf_api.models.responses.favorite_studios import FavoriteStudioList
 from otf_api.models.responses.lifetime_stats import StatsResponse, StatsTime
 from otf_api.models.responses.performance_summary_detail import PerformanceSummaryDetail
@@ -225,8 +225,10 @@ class Api:
         start_date: str | None = None,
         end_date: str | None = None,
         limit: int | None = None,
-        class_type: ClassType | None = None,
+        class_type: ClassType | list[ClassType] | None = None,
         exclude_cancelled: bool = False,
+        day_of_week: list[DoW] | None = None,
+        start_time: list[str] | None = None,
     ) -> OtfClassList:
         """Get the classes for the user.
 
@@ -240,8 +242,11 @@ class Api:
             start_date (str | None): The start date to get classes for, in the format "YYYY-MM-DD". Default is None.
             end_date (str | None): The end date to get classes for, in the format "YYYY-MM-DD". Default is None.
             limit (int | None): Limit the number of classes returned. Default is None.
-            class_type (ClassType | None): The class type to filter by. Default is None.
+            class_type (ClassType | list[ClassType] | None): The class type to filter by. Default is None. Multiple
+            class types can be provided, if there are multiple there will be a call per class type.
             exclude_cancelled (bool): Whether to exclude cancelled classes. Default is False.
+            day_of_week (list[DoW] | None): The days of the week to filter by. Default is None.
+            start_time (list[str] | None): The start time to filter by. Default is None.
 
         Returns:
             OtfClassList: The classes for the user.
@@ -270,14 +275,31 @@ class Api:
         if limit:
             classes_list.classes = classes_list.classes[:limit]
 
+        if class_type and isinstance(class_type, str):
+            class_type = [class_type]
+
+        if day_of_week and not isinstance(day_of_week, list):
+            day_of_week = [day_of_week]
+
+        if start_time and not isinstance(start_time, list):
+            start_time = [start_time]
+
         if class_type:
-            classes_list.classes = [c for c in classes_list.classes if c.class_type == class_type]
+            classes_list.classes = [c for c in classes_list.classes if c.class_type in class_type]
 
         if exclude_cancelled:
             classes_list.classes = [c for c in classes_list.classes if not c.canceled]
 
         for otf_class in classes_list.classes:
             otf_class.is_home_studio = otf_class.studio.id == self.home_studio.studio_uuid
+
+        if day_of_week:
+            classes_list.classes = [c for c in classes_list.classes if c.day_of_week_enum in day_of_week]
+
+        if start_time:
+            classes_list.classes = [
+                c for c in classes_list.classes if any(c.time.strip().startswith(t) for t in start_time)
+            ]
 
         classes_list.classes = list(filter(lambda c: not c.canceled, classes_list.classes))
 

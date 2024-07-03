@@ -10,6 +10,21 @@ from rich.table import Table
 from otf_api.models.base import OtfBaseModel
 
 
+class DoW(str, Enum):
+    monday = "monday"
+    tuesday = "tuesday"
+    wednesday = "wednesday"
+    thursday = "thursday"
+    friday = "friday"
+    saturday = "saturday"
+    sunday = "sunday"
+
+    @classmethod
+    def get_case_insensitive(cls, value: str) -> str:
+        lcase_to_actual = {item.value.lower(): item.value for item in cls}
+        return lcase_to_actual[value.lower()]
+
+
 class ClassType(str, Enum):
     ORANGE_60_MIN_2G = "Orange 60 Min 2G"
     TREAD_50 = "Tread 50"
@@ -155,8 +170,15 @@ class OtfClass(OtfBaseModel, OtfClassTimeMixin):
         return self.ot_class_uuid
 
     @property
+    def day_of_week_enum(self) -> DoW:
+        dow = self.starts_at_local.strftime("%A")
+        return DoW.get_case_insensitive(dow)
+
+    @property
     def sidebar_data(self) -> Table:
         data = {
+            "class_date": self.date,
+            "class_time": self.time.strip(),
             "class_name": self.name,
             "class_id": self.id_val,
             "available": self.has_availability,

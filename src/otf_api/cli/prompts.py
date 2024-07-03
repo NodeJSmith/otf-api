@@ -177,8 +177,13 @@ def prompt_select_from_table(
             row = list(map(str, row))
             if idx_with_offset == current_idx:
                 selected_item = item
-                end_of_row = row[1:]
-                table.add_row("[bold][blue]>", f"[bold][blue]{row[0]}[/]", *end_of_row)
+                # make whole row blue
+                row = [f"[bold][blue]{cell}[/]" for cell in row]
+                table.add_row("[bold][blue]> ", *row)
+            elif hasattr(item, "is_booked") and item.is_booked:
+                # make grey if already booked
+                row = [f"[grey58]{cell}[/]" for cell in row]
+                table.add_row("  ", *row)
             else:
                 table.add_row("  ", *row)
 
