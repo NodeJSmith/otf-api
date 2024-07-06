@@ -8,7 +8,7 @@ This library allows access to the OrangeTheory API to retrieve workouts and perf
 pip install otf-api
 ```
 
-{% include-markdown "./docs/usage.md" %}
+{% include-markdown "./usage.md" %}
 
 Disclaimer:
 This project is in no way affiliated with OrangeTheory Fitness.
