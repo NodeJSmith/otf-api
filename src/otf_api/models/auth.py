@@ -5,13 +5,13 @@ from typing import ClassVar
 from pycognito import Cognito, TokenVerificationException
 from pydantic import Field
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase
 
 CLIENT_ID = "65knvqta6p37efc2l3eh26pl5o"  # from otlive
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
 
 
-class IdClaimsData(OtfBaseModel):
+class IdClaimsData(OtfItemBase):
     sub: str
     email_verified: bool
     iss: str
@@ -28,6 +28,7 @@ class IdClaimsData(OtfBaseModel):
     iat: int
     family_name: str
     email: str
+    koji_person_id: str = Field(alias="custom:koji_person_id")
 
     @property
     def member_uuid(self) -> str:
@@ -38,7 +39,7 @@ class IdClaimsData(OtfBaseModel):
         return f"{self.given_name} {self.family_name}"
 
 
-class AccessClaimsData(OtfBaseModel):
+class AccessClaimsData(OtfItemBase):
     sub: str
     device_key: str
     iss: str
@@ -91,18 +92,25 @@ class User:
         self.token_path.write_text(json.dumps(data))
 
     @classmethod
-    def load_from_disk(cls, username: str | None = None, password: str | None = None) -> "User":
+    def cache_file_exists(cls) -> bool:
+        return cls.token_path.exists()
+
+    @classmethod
+    def username_from_disk(cls) -> str:
+        val: str = json.loads(cls.token_path.read_text())["username"]
+        return val
+
+    @classmethod
+    def load_from_disk(cls, username: str, password: str) -> "User":
         """Load a User instance from disk. If the token is invalid, reauthenticate with the provided credentials.
 
         Args:
-            username (str | None): The username to reauthenticate with.
-            password (str | None): The password to reauthenticate with.
+            username (str): The username to reauthenticate with.
+            password (str): The password to reauthenticate with.
 
         Returns:
             User: The loaded user.
 
-        Raises:
-            ValueError: If the token is invalid and no username and password are provided.
         """
         attr_dict = json.loads(cls.token_path.read_text())
 
@@ -111,10 +119,8 @@ class User:
             cognito_user.verify_tokens()
             return cls(cognito=cognito_user)
         except TokenVerificationException:
-            if username and password:
-                user = cls.login(username, password)
-                return user
-            raise
+            user = cls.login(username, password)
+            return user
 
     @classmethod
     def login(cls, username: str, password: str) -> "User":

@@ -1,5 +1,4 @@
 import asyncio
-import json
 import os
 
 from otf_api import Api
@@ -11,43 +10,12 @@ PASSWORD = os.getenv("OTF_PASSWORD")
 async def main():
     otf = await Api.create(USERNAME, PASSWORD)
 
-    # To get upcoming classes you can call the `get_classes` method
-    # You can pass a list of studio_uuids or, if you want to get classes from your home studio, leave it empty
-    classes = await otf.classes_api.get_classes()
-    print(json.dumps(classes.classes[0].model_dump(), indent=4, default=str))
-
-    """
-    {
-        "id": "0e39ef70-7403-49c1-8605-4a72643bd201",
-        "ot_base_class_uuid": "08cebfdb-e127-48d4-8a7f-e6ea4dd85c18",
-        "starts_at": "2024-06-13 10:00:00+00:00",
-        "starts_at_local": "2024-06-13 05:00:00",
-        "ends_at": "2024-06-13 11:00:00+00:00",
-        "ends_at_local": "2024-06-13 06:00:00",
-        "name": "Orange 3G",
-        "type": "ORANGE_60",
-        "studio": ...,
-        "coach": ...,
-        "max_capacity": 36,
-        "booking_capacity": 36,
-        "waitlist_size": 0,
-        "full": false,
-        "waitlist_available": false,
-        "canceled": false,
-        "mbo_class_id": "30809",
-        "mbo_class_schedule_id": "2655",
-        "mbo_class_description_id": "102",
-        "created_at": "2024-05-14 10:33:32.406000+00:00",
-        "updated_at": "2024-06-13 01:58:55.233000+00:00"
-    }
-    """
-
     # if you need to figure out what studios are in an area, you can call `search_studios_by_geo`
     # which takes latitude, longitude, distance, page_index, and page_size as arguments
     # but you'll generally just need the first 3
     # same as with classes, you can leave it blank and get the studios within 50 miles of your home studio
-    studios_by_geo = await otf.studios_api.search_studios_by_geo()
-    print(json.dumps(studios_by_geo.studios[0].model_dump(), indent=4, default=str))
+    studios_by_geo = await otf.search_studios_by_geo()
+    print(studios_by_geo.studios[0].model_dump_json(indent=4))
 
     """
     {
@@ -98,8 +66,8 @@ async def main():
     # if you need to get detailed information about a studio, you can call `get_studio_detail`
     # which takes a studio_uuid as an argument, but you can leave it blank to get details about your home studio
     # this one has a result structure very much like the previous one
-    studio_detail = await otf.studios_api.get_studio_detail()
-    print(json.dumps(studio_detail.model_dump(), indent=4, default=str))
+    studio_detail = await otf.get_studio_detail()
+    print(studio_detail.model_dump_json(indent=4))
 
 
 if __name__ == "__main__":

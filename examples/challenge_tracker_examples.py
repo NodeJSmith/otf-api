@@ -1,8 +1,8 @@
 import asyncio
-import json
 import os
 
-from otf_api import Api, ChallengeType, EquipmentType
+from otf_api import Api
+from otf_api.models.responses import ChallengeType, EquipmentType
 
 USERNAME = os.getenv("OTF_EMAIL")
 PASSWORD = os.getenv("OTF_PASSWORD")
@@ -13,8 +13,8 @@ async def main():
 
     # challenge tracker content is an overview of the challenges OTF runs
     # and your participation in them
-    challenge_tracker_content = await otf.member_api.get_challenge_tracker_content()
-    print(json.dumps(challenge_tracker_content.benchmarks[0].model_dump(), indent=4, default=str))
+    challenge_tracker_content = await otf.get_challenge_tracker_content()
+    print(challenge_tracker_content.benchmarks[0].model_dump_json(indent=4))
 
     """
     {
@@ -32,7 +32,7 @@ async def main():
     }
     """
 
-    print(json.dumps(challenge_tracker_content.challenges[0].model_dump(), indent=4, default=str))
+    print(challenge_tracker_content.challenges[0].model_dump_json(indent=4))
     """
     {
     "challenge_category_id": 10,
@@ -52,10 +52,8 @@ async def main():
 
     # challenge tracker details are detailed information about specific challenges
     # this endpoint takes an equipment type and a challenge type as arguments
-    tread_challenge_details = await otf.member_api.get_challenge_tracker_detail(
-        EquipmentType.Treadmill, ChallengeType.Other
-    )
-    print(json.dumps(tread_challenge_details.details[0].model_dump(), indent=4, default=str))
+    tread_challenge_details = await otf.get_challenge_tracker_detail(EquipmentType.Treadmill, ChallengeType.Other)
+    print(tread_challenge_details.details[0].model_dump_json(indent=4))
 
     """
     {

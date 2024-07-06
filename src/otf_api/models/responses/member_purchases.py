@@ -2,10 +2,10 @@ from datetime import datetime
 
 from pydantic import Field
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase
 
 
-class Location(OtfBaseModel):
+class Location(OtfItemBase):
     phone: str
     latitude: str
     longitude: str
@@ -16,16 +16,16 @@ class Location(OtfBaseModel):
     postal_code: str = Field(..., alias="postalCode")
 
 
-class Currency(OtfBaseModel):
+class Currency(OtfItemBase):
     currency_alphabetic_code: str = Field(..., alias="currencyAlphabeticCode")
 
 
-class DefaultCurrency(OtfBaseModel):
+class DefaultCurrency(OtfItemBase):
     currency_id: int = Field(..., alias="currencyId")
     currency: Currency
 
 
-class Country(OtfBaseModel):
+class Country(OtfItemBase):
     country_id: int = Field(..., alias="countryId")
     country_code: str = Field(..., alias="countryCode")
     description: str
@@ -33,7 +33,7 @@ class Country(OtfBaseModel):
     default_currency: DefaultCurrency = Field(..., alias="defaultCurrency")
 
 
-class StudioLocation(OtfBaseModel):
+class StudioLocation(OtfItemBase):
     studio_location_id: int = Field(..., alias="studioLocationId")
     bill_to_address: str = Field(..., alias="billToAddress")
     bill_to_address2: str = Field(..., alias="billToAddress2")
@@ -65,7 +65,7 @@ class StudioLocation(OtfBaseModel):
     country: Country
 
 
-class Studio(OtfBaseModel):
+class Studio(OtfItemBase):
     studio_id: int = Field(..., alias="studioId")
     studio_uuid: str = Field(..., alias="studioUUId")
     mbo_studio_id: int = Field(..., alias="mboStudioId")
@@ -109,7 +109,7 @@ class Studio(OtfBaseModel):
     studio_location: StudioLocation = Field(..., alias="studioLocation")
 
 
-class MemberPurchase(OtfBaseModel):
+class MemberPurchase(OtfItemBase):
     member_purchase_id: int = Field(..., alias="memberPurchaseId")
     member_purchase_uuid: str = Field(..., alias="memberPurchaseUUId")
     studio_id: int = Field(..., alias="studioId")
@@ -131,5 +131,5 @@ class MemberPurchase(OtfBaseModel):
     studio: Studio
 
 
-class MemberPurchaseList(OtfBaseModel):
+class MemberPurchaseList(OtfItemBase):
     data: list[MemberPurchase]

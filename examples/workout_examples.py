@@ -1,5 +1,4 @@
 import asyncio
-import json
 import os
 
 from otf_api import Api
@@ -11,10 +10,16 @@ PASSWORD = os.getenv("OTF_PASSWORD")
 async def main():
     otf = await Api.create(USERNAME, PASSWORD)
 
+    resp = await otf.get_member_lifetime_stats()
+    print(resp.model_dump_json(indent=4))
+
+    resp = await otf.get_body_composition_list()
+    print(resp.data[0].model_dump_json(indent=4))
+
     # performance summaries are historical records of your performance in workouts
     # `get_performance_summaries` takes a limit (default of 30) and returns a list of summaries
-    data_list = await otf.performance_api.get_performance_summaries()
-    print(json.dumps(data_list.summaries[0].model_dump(), indent=4, default=str))
+    data_list = await otf.get_performance_summaries()
+    print(data_list.summaries[0].model_dump_json(indent=4))
     """
     {
         "performance_summary_id": "29dd97f4-3418-4247-b35c-37eabc5e17f3",
@@ -32,7 +37,7 @@ async def main():
             }
         },
         "ratable": true,
-        "class_": {
+        "otf_class": {
             "ot_base_class_uuid": "b6549fc2-a479-4b03-9303-e0e45dbcd8c9",
             "starts_at_local": "2024-06-11T09:45:00",
             "name": "Orange 60 Min 2G",
@@ -45,8 +50,8 @@ async def main():
 
     # you can get detailed information about a specific performance summary by calling `get_performance_summary`
     # which takes a performance_summary_id as an argument
-    data = await otf.performance_api.get_performance_summary(data_list.summaries[0].performance_summary_id)
-    print(json.dumps(data.model_dump(), indent=4, default=str))
+    data = await otf.get_performance_summary(data_list.summaries[0].performance_summary_id)
+    print(data.model_dump_json(indent=4))
 
     """
     {
@@ -94,7 +99,7 @@ async def main():
             }
         },
         "ratable": false,
-        "class_": {
+        "otf_class": {
             "starts_at_local": "2024-06-11T09:45:00",
             "name": "Orange 60 Min 2G"
         }
@@ -103,8 +108,8 @@ async def main():
 
     # workouts is a similar endpoint but returns more data - this is what OTLive uses to display workout history
     # this endpoint takes no arguments and returns all workouts back to, as far as we can tell, around 2019
-    workouts = await otf.member_api.get_workouts()
-    print(json.dumps(workouts.workouts[0].model_dump(), indent=4, default=str))
+    workouts = await otf.get_workouts()
+    print(workouts.workouts[0].model_dump_json(indent=4))
     """
     {
         "studio_number": "8292",
@@ -155,8 +160,8 @@ async def main():
     # telemetry is a detailed record of a specific workout - minute by minute, or more granular if desired
     # this endpoint takes a class_history_uuid, as well as a number of max data points - if you do not pass
     # this value it will attempt to return enough data points for 30 second intervals
-    telemetry = await otf.telemetry_api.get_telemetry(workouts.workouts[0].class_history_uuid)
-    print(json.dumps(telemetry.model_dump(), indent=4, default=str))
+    telemetry = await otf.get_telemetry(workouts.workouts[0].class_history_uuid)
+    print(telemetry.model_dump_json(indent=4))
 
     """
     {

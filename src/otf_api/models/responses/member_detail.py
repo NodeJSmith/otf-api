@@ -3,12 +3,11 @@ from typing import Any
 
 from pydantic import Field
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase
 
 
-class Address(OtfBaseModel):
-    member_address_uuid: str = Field(..., alias="memberAddressUUId")
-    memberaddress_uuid: str = Field(..., alias="memberaddressUUId")
+class Address(OtfItemBase):
+    member_address_uuid: str | None = Field(None, alias="memberAddressUUId")
     type: str
     address1: str
     address2: str | None = None
@@ -17,28 +16,34 @@ class Address(OtfBaseModel):
     postal_code: str = Field(..., alias="postalCode")
     country: str
 
+    def __init__(self, **data):
+        if "memberaddressUUId" in data:
+            data["memberAddressUUId"] = data.pop("memberaddressUUId")
 
-class MemberCreditCard(OtfBaseModel):
+        super().__init__(**data)
+
+
+class MemberCreditCard(OtfItemBase):
     name_on_card: str = Field(..., alias="nameOnCard")
     cc_type: str = Field(..., alias="ccType")
     cc_last4: str = Field(..., alias="ccLast4")
 
 
-class PhysicalCountryDetails(OtfBaseModel):
+class PhysicalCountryDetails(OtfItemBase):
     country_code: str = Field(..., alias="countryCode")
     description: str
 
 
-class StudioLocation(OtfBaseModel):
+class StudioLocation(OtfItemBase):
     physical_country_id: int = Field(..., alias="physicalCountryId")
     physical_country_details: PhysicalCountryDetails = Field(..., alias="physicalCountryDetails")
 
 
-class StudioPartner(OtfBaseModel):
+class StudioPartner(OtfItemBase):
     studio_acs_id: str = Field(..., alias="studioAcsId")
 
 
-class HomeStudio(OtfBaseModel):
+class HomeStudio(OtfItemBase):
     studio_id: int = Field(..., alias="studioId")
     studio_uuid: str = Field(..., alias="studioUUId")
     studio_name: str = Field(..., alias="studioName")
@@ -51,7 +56,7 @@ class HomeStudio(OtfBaseModel):
     studio_partner: StudioPartner = Field(..., alias="studioPartner")
 
 
-class MemberProfile(OtfBaseModel):
+class MemberProfile(OtfItemBase):
     member_profile_uuid: str = Field(..., alias="memberProfileUUId")
     unit_of_measure: str = Field(..., alias="unitOfMeasure")
     max_hr_type: str = Field(..., alias="maxHrType")
@@ -61,7 +66,7 @@ class MemberProfile(OtfBaseModel):
     member_optin_flow_type_id: int = Field(..., alias="memberOptinFlowTypeId")
 
 
-class MemberClassSummary(OtfBaseModel):
+class MemberClassSummary(OtfItemBase):
     total_classes_booked: int = Field(..., alias="totalClassesBooked")
     total_classes_attended: int = Field(..., alias="totalClassesAttended")
     total_intro: int = Field(..., alias="totalIntro")
@@ -75,7 +80,7 @@ class MemberClassSummary(OtfBaseModel):
     last_class_studio_visited: int = Field(..., alias="lastClassStudioVisited")
 
 
-class MemberDetail(OtfBaseModel):
+class MemberDetail(OtfItemBase):
     member_id: int = Field(..., alias="memberId")
     member_uuid: str = Field(..., alias="memberUUId")
     cognito_id: str = Field(..., alias="cognitoId")

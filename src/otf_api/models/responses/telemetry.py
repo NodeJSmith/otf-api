@@ -3,15 +3,15 @@ from typing import Any
 
 from pydantic import Field
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase
 
 
-class Zone(OtfBaseModel):
+class Zone(OtfItemBase):
     start_bpm: int = Field(..., alias="startBpm")
     end_bpm: int = Field(..., alias="endBpm")
 
 
-class Zones(OtfBaseModel):
+class Zones(OtfItemBase):
     gray: Zone
     blue: Zone
     green: Zone
@@ -19,13 +19,13 @@ class Zones(OtfBaseModel):
     red: Zone
 
 
-class TreadData(OtfBaseModel):
+class TreadData(OtfItemBase):
     tread_speed: float = Field(..., alias="treadSpeed")
     tread_incline: float = Field(..., alias="treadIncline")
     agg_tread_distance: int = Field(..., alias="aggTreadDistance")
 
 
-class TelemetryItem(OtfBaseModel):
+class TelemetryItem(OtfItemBase):
     relative_timestamp: int = Field(..., alias="relativeTimestamp")
     hr: int
     agg_splats: int = Field(..., alias="aggSplats")
@@ -38,7 +38,7 @@ class TelemetryItem(OtfBaseModel):
     tread_data: TreadData | None = Field(None, alias="treadData")
 
 
-class Telemetry(OtfBaseModel):
+class Telemetry(OtfItemBase):
     member_uuid: str = Field(..., alias="memberUuid")
     class_history_uuid: str = Field(..., alias="classHistoryUuid")
     class_start_time: datetime = Field(..., alias="classStartTime")

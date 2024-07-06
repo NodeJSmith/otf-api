@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "otf-api"
-version = "0.2.2"
+version = "0.3.0"
 description = "Python OrangeTheory Fitness API Client"
 authors = ["Jessica Smith <j.smith.git1@gmail.com>"]
 license = "MIT"
@@ -26,8 +26,15 @@ aiohttp = "3.9.5"
 loguru = "0.7.2"
 pydantic = "2.7.3"
 pycognito = "2024.5.1"
+typer = { version = "^0.12.3", extras = ["cli"] }
+pendulum = { version = "^3.0.0", extras = ["cli"] }
 
 
+readchar = { version = "^4.1.0", extras = ["cli"] }
+humanize = "^4.9.0"
+python-box = "^7.2.0"
+inflection = "0.5.*"
+pint = "0.24.*"
 [tool.poetry.group.dev.dependencies]
 pytest = "8.2.2"
 pytest-loguru = "0.4.0"
@@ -63,9 +70,15 @@ setuptools = "^70.0.0"
 pkginfo = "^1.11.1"
 virtualenv = "^20.26.2"
 
+
+[tool.poetry.group.cli.dependencies]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+
+[tool.poetry.scripts]
+otf = "otf_api.cli:base_app"

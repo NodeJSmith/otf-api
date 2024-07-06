@@ -1,19 +1,6 @@
 from enum import Enum
 
 
-class StudioStatus(str, Enum):
-    OTHER = "OTHER"
-    ACTIVE = "Active"
-    INACTIVE = "Inactive"
-    COMING_SOON = "Coming Soon"
-    TEMP_CLOSED = "Temporarily Closed"
-    PERM_CLOSED = "Permanently Closed"
-
-    @classmethod
-    def all_statuses(cls) -> list[str]:
-        return list(cls.__members__.values())
-
-
 class EquipmentType(int, Enum):
     Treadmill = 2
     Strider = 3
@@ -34,23 +21,6 @@ class ChallengeType(int, Enum):
     RemixInSix = 65
     Push = 66
     BackAtIt = 84
-
-
-class BookingStatus(str, Enum):
-    CheckedIn = "Checked In"
-    CancelCheckinPending = "Cancel Checkin Pending"
-    CancelCheckinRequested = "Cancel Checkin Requested"
-    Cancelled = "Cancelled"
-    LateCancelled = "Late Cancelled"
-    Booked = "Booked"
-    Waitlisted = "Waitlisted"
-    CheckinPending = "Checkin Pending"
-    CheckinRequested = "Checkin Requested"
-    CheckinCancelled = "Checkin Cancelled"
-
-    @classmethod
-    def all_statuses(cls) -> list[str]:
-        return list(cls.__members__.values())
 
 
 class HistoryBookingStatus(str, Enum):
@@ -80,8 +50,3 @@ class HistoryClassStatus(str, Enum):
     @classmethod
     def all_statuses(cls) -> list[str]:
         return list(cls.__members__.values())
-
-
-ALL_CLASS_STATUS = BookingStatus.all_statuses()
-ALL_HISTORY_CLASS_STATUS = HistoryClassStatus.all_statuses()
-ALL_STUDIO_STATUS = StudioStatus.all_statuses()

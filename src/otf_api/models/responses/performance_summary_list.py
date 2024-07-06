@@ -1,9 +1,9 @@
 from pydantic import Field
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase
 
 
-class ZoneTimeMinutes(OtfBaseModel):
+class ZoneTimeMinutes(OtfItemBase):
     gray: int
     blue: int
     green: int
@@ -11,7 +11,7 @@ class ZoneTimeMinutes(OtfBaseModel):
     red: int
 
 
-class Details(OtfBaseModel):
+class Details(OtfItemBase):
     calories_burned: int
     splat_points: int
     step_count: int
@@ -19,18 +19,18 @@ class Details(OtfBaseModel):
     zone_time_minutes: ZoneTimeMinutes
 
 
-class Coach(OtfBaseModel):
+class Coach(OtfItemBase):
     image_url: str | None = None
     first_name: str
 
 
-class Studio(OtfBaseModel):
+class Studio(OtfItemBase):
     id: str
     license_number: str
     name: str
 
 
-class Class(OtfBaseModel):
+class Class(OtfItemBase):
     ot_base_class_uuid: str | None = None
     starts_at_local: str
     name: str
@@ -38,30 +38,30 @@ class Class(OtfBaseModel):
     studio: Studio
 
 
-class CoachRating(OtfBaseModel):
+class CoachRating(OtfItemBase):
     id: str
     description: str
     value: int
 
 
-class ClassRating(OtfBaseModel):
+class ClassRating(OtfItemBase):
     id: str
     description: str
     value: int
 
 
-class Ratings(OtfBaseModel):
+class Ratings(OtfItemBase):
     coach: CoachRating
-    class_: ClassRating = Field(..., alias="class")
+    otf_class: ClassRating = Field(..., alias="class")
 
 
-class PerformanceSummaryEntry(OtfBaseModel):
+class PerformanceSummaryEntry(OtfItemBase):
     performance_summary_id: str = Field(..., alias="id")
     details: Details
     ratable: bool
-    class_: Class = Field(..., alias="class")
+    otf_class: Class = Field(..., alias="class")
     ratings: Ratings | None = None
 
 
-class PerformanceSummaryList(OtfBaseModel):
+class PerformanceSummaryList(OtfItemBase):
     summaries: list[PerformanceSummaryEntry]

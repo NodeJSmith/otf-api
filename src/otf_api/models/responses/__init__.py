@@ -1,17 +1,10 @@
-from .bookings import BookingList
+from .book_class import BookClass
+from .bookings import BookingList, BookingStatus
+from .cancel_booking import CancelBooking
 from .challenge_tracker_content import ChallengeTrackerContent
 from .challenge_tracker_detail import ChallengeTrackerDetailList
 from .classes import OtfClassList
-from .enums import (
-    ALL_CLASS_STATUS,
-    ALL_HISTORY_CLASS_STATUS,
-    ALL_STUDIO_STATUS,
-    BookingStatus,
-    ChallengeType,
-    EquipmentType,
-    HistoryClassStatus,
-    StudioStatus,
-)
+from .enums import ChallengeType, EquipmentType, HistoryClassStatus
 from .favorite_studios import FavoriteStudioList
 from .latest_agreement import LatestAgreement
 from .member_detail import MemberDetail
@@ -52,9 +45,8 @@ __all__ = [
     "TelemetryMaxHr",
     "StudioDetail",
     "StudioDetailList",
-    "ALL_CLASS_STATUS",
-    "ALL_HISTORY_CLASS_STATUS",
-    "ALL_STUDIO_STATUS",
     "PerformanceSummaryDetail",
     "PerformanceSummaryList",
+    "BookClass",
+    "CancelBooking",
 ]
