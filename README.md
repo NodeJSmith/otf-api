@@ -15,6 +15,5 @@ To use the API, you need to create an instance of the `Api` class, providing you
 
 See the [examples](./examples) for more information on how to use the API.
 
-
 Disclaimer:
 This project is in no way affiliated with OrangeTheory Fitness.
