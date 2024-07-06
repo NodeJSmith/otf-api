@@ -99,10 +99,6 @@ Before you submit a pull request, check that it meets these guidelines:
    https://github.com/nodejsmith/otf-api/actions
    and make sure that the tests pass for all supported Python versions.
 
-## Tips```
-    $ pytest tests.test_otf
-```To run a subset of tests.
-
 
 ## Deploying
 

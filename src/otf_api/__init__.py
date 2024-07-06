@@ -1,15 +1,16 @@
-import os
-import sys
-
-from loguru import logger
+from importlib.metadata import PackageNotFoundError, version  # pragma: no cover
 
 from .api import Api
 from .models.auth import User
 
-__version__ = "0.3.0"
+try:
+    # Change here if project is renamed and does not equal the package name
+    dist_name = __name__
+    __version__ = version(dist_name)
+except PackageNotFoundError:  # pragma: no cover
+    __version__ = "unknown"
+finally:
+    del version, PackageNotFoundError
 
 
 __all__ = ["Api", "User"]
-
-logger.remove()
-logger.add(sink=sys.stdout, level=os.getenv("OTF_LOG_LEVEL", "INFO"))
