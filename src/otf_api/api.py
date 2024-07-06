@@ -83,7 +83,13 @@ class Api:
         self.home_studio: StudioDetail
 
         self.user = User.login(username, password)
-        self.session = aiohttp.ClientSession()
+
+        headers = {
+            "Authorization": f"Bearer {self.user.cognito.id_token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+        self.session = aiohttp.ClientSession(headers=headers)
 
         # simplify access to member_id and member_uuid
         self._member_id = self.user.member_id
@@ -121,18 +127,6 @@ class Api:
         if not self.session.closed:
             await self.session.close()
 
-    @property
-    def _base_headers(self) -> dict[str, str]:
-        """Get the base headers for the API."""
-        if not self.user:
-            raise ValueError("No user is logged in.")
-
-        return {
-            "Authorization": f"Bearer {self.user.cognito.id_token}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
-
     async def _do(
         self,
         method: str,
@@ -150,11 +144,6 @@ class Api:
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
         logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
-
-        if headers:
-            headers.update(self._base_headers)
-        else:
-            headers = self._base_headers
 
         text = None
         async with self.session.request(method, full_url, headers=headers, params=params, **kwargs) as response:
@@ -362,6 +351,7 @@ class Api:
         status: BookingStatus | None = None,
         limit: int | None = None,
         exclude_cancelled: bool = True,
+        exclude_checkedin: bool = True,
     ) -> BookingList:
         """Get the member's bookings.
 
@@ -373,6 +363,7 @@ class Api:
             limit (int | None): The maximum number of bookings to return. Default is None, which returns all\
             bookings.
             exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
+            exclude_checkedin (bool): Whether to exclude checked-in bookings. Default is True.
 
         Returns:
             BookingList: The member's bookings.
@@ -431,6 +422,9 @@ class Api:
 
         if exclude_cancelled:
             data.bookings = [b for b in data.bookings if b.status != BookingStatus.Cancelled]
+
+        if exclude_checkedin:
+            data.bookings = [b for b in data.bookings if b.status != BookingStatus.CheckedIn]
 
         return data
 
