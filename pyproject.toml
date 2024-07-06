@@ -34,6 +34,7 @@ readchar = { version = "^4.1.0", extras = ["cli"] }
 humanize = "^4.9.0"
 python-box = "^7.2.0"
 inflection = "0.5.*"
+pint = "0.24.*"
 [tool.poetry.group.dev.dependencies]
 pytest = "8.2.2"
 pytest-loguru = "0.4.0"
