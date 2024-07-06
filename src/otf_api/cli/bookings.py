@@ -30,7 +30,7 @@ def next_month() -> str:
     return val
 
 
-@bookings_app.command(aliases=["ls", "list"])
+@bookings_app.command(name="list")
 async def list_bookings(
     start_date: str = typer.Option(default_factory=today, help="Start date for bookings"),
     end_date: str = typer.Option(default_factory=next_month, help="End date for bookings"),
@@ -59,24 +59,22 @@ async def list_bookings(
         base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
     bookings = await base_app.api.get_bookings(start_date, end_date, bk_status, limit, exclude_cancelled)
 
-    kwargs = {"indent": 4, "exclude_none": exclude_none}
-
     if base_app.output == "json":
-        base_app.print(bookings.model_dump_json(**kwargs))
+        base_app.print(bookings.to_json(exclude_none=exclude_none))
     elif base_app.output == "table":
         base_app.print(bookings.to_table())
     elif base_app.output == "interactive":
         result = prompt_select_from_table(
             console=base_app.console,
             prompt="Select a booking",
-            columns=bookings._columns(),
+            columns=bookings.show_bookings_columns(),
             data=bookings.bookings,
         )
         print(result)
 
 
 @bookings_app.command()
-async def book(class_uuid: str) -> None:
+async def book(class_uuid: str = typer.Option(help="Class UUID to cancel")) -> None:
     """
     Book a class
     """
@@ -118,6 +116,7 @@ async def book_interactive(
 
         if not base_app.api:
             base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+
         classes = await base_app.api.get_classes(
             studio_uuids,
             include_home_studio,
@@ -131,7 +130,10 @@ async def book_interactive(
         )
 
     result = prompt_select_from_table(
-        console=base_app.console, prompt="Book a class, any class", columns=classes._columns(), data=classes.classes
+        console=base_app.console,
+        prompt="Book a class, any class",
+        columns=classes.book_class_columns(),
+        data=classes.classes,
     )
 
     print(result["ot_class_uuid"])
@@ -156,7 +158,7 @@ async def cancel_interactive() -> None:
     result = prompt_select_from_table(
         console=base_app.console,
         prompt="Cancel a booking, any booking",
-        columns=bookings._columns(),
+        columns=bookings.show_bookings_columns(),
         data=bookings.bookings,
     )
 
@@ -167,7 +169,7 @@ async def cancel_interactive() -> None:
 
 
 @bookings_app.command()
-async def cancel(booking_uuid: str) -> None:
+async def cancel(booking_uuid: str = typer.Option(help="Booking UUID to cancel")) -> None:
     """
     Cancel a booking
     """
@@ -181,13 +183,13 @@ async def cancel(booking_uuid: str) -> None:
     base_app.console.print(booking)
 
 
-@classes_app.command(aliases=["ls", "list"])
+@classes_app.command(name="list")
 async def list_classes(
     studio_uuids: list[str] = typer.Option(None, help="Studio UUIDs to get classes for"),
     include_home_studio: bool = typer.Option(True, help="Include the home studio in the classes"),
     start_date: str = typer.Option(default_factory=today, help="Start date for classes"),
     end_date: str = typer.Option(default_factory=next_month, help="End date for classes"),
-    limit: int = typer.Option(10, help="Limit the number of classes returned"),
+    limit: int = typer.Option(None, help="Limit the number of classes returned"),
     class_type: ClassTypeCli = typer.Option(None, help="Class type to filter by"),
     exclude_cancelled: bool = typer.Option(
         True, "--exclude-cancelled/--allow-cancelled", help="Exclude cancelled classes", show_default=True
@@ -214,17 +216,15 @@ async def list_classes(
         studio_uuids, include_home_studio, start_date, end_date, limit, class_type_enum, exclude_cancelled
     )
 
-    kwargs = {"indent": 4, "exclude_none": exclude_none}
-
     if base_app.output == "json":
-        base_app.print(classes.model_dump_json(**kwargs))
-    # elif base_app.output == "table":
-    #     base_app.print(classes.to_table())
+        base_app.print(classes.to_json(exclude_none=exclude_none))
+    elif base_app.output == "table":
+        base_app.print(classes.to_table())
     else:
         result = prompt_select_from_table(
             console=base_app.console,
             prompt="Book a class, any class",
-            columns=classes._columns(),
+            columns=classes.book_class_columns(),
             data=classes.classes,
         )
         print(type(result))

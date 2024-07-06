@@ -32,10 +32,10 @@ def version_callback(value: bool) -> None:
 
 OPT_USERNAME: str = typer.Option(None, envvar=["OTF_EMAIL", "OTF_USERNAME"], help="Username for the OTF API")
 OPT_PASSWORD: str = typer.Option(envvar="OTF_PASSWORD", help="Password for the OTF API", hide_input=True)
-OPT_OUTPUT: OutputType = typer.Option(None, show_default=False, help="Output format")
+OPT_OUTPUT: OutputType = typer.Option(None, envvar="OTF_OUTPUT", show_default=False, help="Output format")
 OPT_LOG_LEVEL: str = typer.Option("CRITICAL", help="Log level", envvar="OTF_LOG_LEVEL")
 OPT_VERSION: bool = typer.Option(
-    None, "--version", "-v", callback=version_callback, help="Display the current version.", is_eager=True
+    None, "--version", callback=version_callback, help="Display the current version.", is_eager=True
 )
 
 
