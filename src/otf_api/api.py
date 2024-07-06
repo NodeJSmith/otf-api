@@ -231,7 +231,7 @@ class Api:
             start_date (str | None): The start date to get classes for, in the format "YYYY-MM-DD". Default is None.
             end_date (str | None): The end date to get classes for, in the format "YYYY-MM-DD". Default is None.
             limit (int | None): Limit the number of classes returned. Default is None.
-            class_type (ClassType | list[ClassType] | None): The class type to filter by. Default is None. Multiple
+            class_type (ClassType | list[ClassType] | None): The class type to filter by. Default is None. Multiple\
             class types can be provided, if there are multiple there will be a call per class type.
             exclude_cancelled (bool): Whether to exclude cancelled classes. Default is False.
             day_of_week (list[DoW] | None): The days of the week to filter by. Default is None.
