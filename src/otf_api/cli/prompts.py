@@ -121,38 +121,44 @@ def prompt_select_from_table(
     table_kwargs = table_kwargs or {}
     layout = Layout()
 
-    layout.split_row(Layout(name="left"), Layout(name="right"))
+    TABLE_PANEL = Layout(name="left")
+    DATA_PANEL = Layout(name="right")
 
-    layout["left"].size = None
-    layout["left"].ratio = 7
-    layout["right"].size = None
-    layout["right"].ratio = 3
-    layout["right"].minimum_size = 50
+    layout.split_row(TABLE_PANEL, DATA_PANEL)
+
+    TABLE_PANEL.ratio = 7
+    DATA_PANEL.ratio = 3
+    DATA_PANEL.minimum_size = 50
+
+    n_rows = os.get_terminal_size()[1] - 5
 
     def build_table() -> Layout:
         """
         Generate a table of options. The `current_idx` will be highlighted.
         """
 
-        # This would also get the height:
-        # render_map = layout.render(console, console.options)
-        # render_map[layout].region.height
-        n_rows = os.get_terminal_size()[1] - 5
+        table = initialize_table()
+        rows = prepare_rows(data)
+        rows, offset = paginate_rows(rows)
+        selected_item = add_rows_to_table(table, rows, offset)
 
+        finalize_table(table, prompt, selected_item)
+
+        return layout
+
+    def initialize_table() -> Table:
         table_kwargs.setdefault("expand", True)
         table = Table(**table_kwargs)
         table.add_column()
         for column in columns:
             table.add_column(column.get("header", ""))
+        return table
 
-        rows = {}
+    def prepare_rows(data: list[OtfBaseModel]) -> list[dict[str, typing.Any]]:
+        rows: list[dict[str, typing.Any]] = []
         max_length = 250
         for i, item in enumerate(data):
-            id_val = item.id_val if hasattr(item, "id_val") else i
-            if id_val not in rows:
-                rows[id_val] = {"record": None, "item": item}
-
-            rows[id_val]["record"] = tuple(
+            record = tuple(
                 (
                     value[:max_length] + "...\n"
                     if isinstance(value := item.get(column.get("key")), str) and len(value) > max_length
@@ -160,46 +166,50 @@ def prompt_select_from_table(
                 )
                 for column in columns
             )
+            rows.append({"record": record, "item": item})
+        return rows
 
+    def paginate_rows(rows: list[dict[str, typing.Any]]) -> tuple[list[dict[str, typing.Any]], int]:
         if len(rows) > n_rows:
             start = max(0, current_idx - n_rows + 1)
             end = min(len(rows), start + n_rows)
-            rows = dict(list(rows.items())[start:end])
+            rows = rows[start:end]
             offset = start
         else:
             offset = 0
+        return rows, offset
 
-        selected_item = None
-        for i, (id_val, row_data) in enumerate(rows.items()):
+    def add_rows_to_table(table: Table, rows: list[dict[str, typing.Any]], offset: int) -> OtfBaseModel:
+        selected_item: OtfBaseModel = None
+        for i, row_data in enumerate(rows):
             row = row_data["record"]
             item = row_data["item"]
             idx_with_offset = i + offset
             row = list(map(str, row))
             if idx_with_offset == current_idx:
                 selected_item = item
-                # make whole row blue
                 row = [f"[bold][blue]{cell}[/]" for cell in row]
                 table.add_row("[bold][blue]> ", *row)
             elif hasattr(item, "is_booked") and item.is_booked:
-                # make grey if already booked
                 row = [f"[grey58]{cell}[/]" for cell in row]
                 table.add_row("  ", *row)
             else:
                 table.add_row("  ", *row)
+        return selected_item
 
+    def finalize_table(table: Table, prompt: str, selected_item: OtfBaseModel) -> None:
         if table.row_count < n_rows:
             for _ in range(n_rows - table.row_count):
                 table.add_row()
 
-        layout["left"].update(Panel(table, title=prompt))
-        layout["right"].update(Panel("", title="Selected Data"))
+        TABLE_PANEL.update(Panel(table, title=prompt))
+        DATA_PANEL.update(Panel("", title="Selected Data"))
         if not selected_item:
-            layout["right"].visible = False
+            DATA_PANEL.visible = False
         else:
             sidebar_data = selected_item.sidebar_data  # type: ignore
-            layout["right"].update(sidebar_data)
-            layout["right"].visible = True
-        return layout
+            DATA_PANEL.update(sidebar_data)
+            DATA_PANEL.visible = True
 
     with Live(build_table(), console=console, transient=True) as live:
         instructions_message = f"[bold][green]?[/] {prompt} [bright_blue][Use arrows to move; enter to select]"
@@ -209,19 +219,32 @@ def prompt_select_from_table(
 
             start_val = 0
             offset = 0
-            if key in [readchar.key.UP, readchar.key.PAGE_UP]:
-                offset = -1 if key == readchar.key.UP else -5
-                start_val = len(data) - 1 if current_idx < 0 else current_idx
-            elif key in [readchar.key.DOWN, readchar.key.PAGE_DOWN]:
-                offset = 1 if key == readchar.key.DOWN else 5
-                start_val = 0 if current_idx >= len(data) else current_idx
-            elif key == readchar.key.CTRL_C:
-                # gracefully exit with no message
-                exit_with_error("")
-            elif key == readchar.key.ENTER or key == readchar.key.CR:
-                selected_row = data[current_idx]
+
+            match key:
+                case readchar.key.UP:
+                    offset = -1
+                    start_val = len(data) - 1 if current_idx < 0 else current_idx
+                case readchar.key.PAGE_UP:
+                    offset = -5
+                    start_val = len(data) - 1 if current_idx < 0 else current_idx
+                case readchar.key.DOWN:
+                    offset = 1
+                    start_val = 0 if current_idx >= len(data) else current_idx
+                case readchar.key.PAGE_DOWN:
+                    offset = 5
+                    start_val = 0 if current_idx >= len(data) else current_idx
+                case readchar.key.CTRL_C:
+                    # gracefully exit with no message
+                    exit_with_error("")
+                case readchar.key.ENTER | readchar.key.CR:
+                    selected_row = data[current_idx]
 
             current_idx = start_val + offset
+
+            if current_idx < 0:
+                current_idx = len(data) - 1
+            elif current_idx >= len(data):
+                current_idx = 0
 
             live.update(build_table(), refresh=True)
 
