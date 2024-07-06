@@ -1,6 +1,5 @@
 import os
 import typing
-from collections.abc import Hashable
 
 import readchar
 from rich.layout import Layout
@@ -10,7 +9,7 @@ from rich.prompt import Confirm, Prompt
 from rich.table import Table
 
 from otf_api.cli._utilities import exit_with_error
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import T
 
 if typing.TYPE_CHECKING:
     from rich.console import Console
@@ -26,78 +25,11 @@ def confirm(message, **kwargs):
     return Confirm.ask(f"[bold][green]?[/] {message}[/]", **kwargs)
 
 
-def prompt_select_from_list(console: "Console", prompt: str, options: list[str] | list[tuple[Hashable, str]]) -> str:
-    """
-    Given a list of options, display the values to user in a table and prompt them
-    to select one.
-
-    Args:
-        options: A list of options to present to the user.
-            A list of tuples can be passed as key value pairs. If a value is chosen, the
-            key will be returned.
-
-    Returns:
-        str: the selected option
-    """
-
-    current_idx = 0
-    selected_option = None
-
-    def build_table() -> Table:
-        """
-        Generate a table of options. The `current_idx` will be highlighted.
-        """
-
-        table = Table(box=False, header_style=None, padding=(0, 0))
-        table.add_column(
-            f"? [bold]{prompt}[/] [bright_blue][Use arrows to move; enter to select]",
-            justify="left",
-            no_wrap=True,
-        )
-
-        for i, option in enumerate(options):
-            if isinstance(option, tuple):
-                option = option[1]
-
-            if i == current_idx:
-                # Use blue for selected options
-                table.add_row("[bold][blue]> " + option)
-            else:
-                table.add_row("  " + option)
-        return table
-
-    with Live(build_table(), auto_refresh=False, console=console) as live:
-        while selected_option is None:
-            key = readchar.readkey()
-
-            if key == readchar.key.UP:
-                current_idx = current_idx - 1
-                # wrap to bottom if at the top
-                if current_idx < 0:
-                    current_idx = len(options) - 1
-            elif key == readchar.key.DOWN:
-                current_idx = current_idx + 1
-                # wrap to top if at the bottom
-                if current_idx >= len(options):
-                    current_idx = 0
-            elif key == readchar.key.CTRL_C:
-                # gracefully exit with no message
-                exit_with_error("")
-            elif key == readchar.key.ENTER or key == readchar.key.CR:
-                selected_option = options[current_idx]
-                if isinstance(selected_option, tuple):
-                    selected_option = selected_option[0]
-
-            live.update(build_table(), refresh=True)
-
-        return selected_option
-
-
 def prompt_select_from_table(
     console: "Console",
     prompt: str,
-    columns: list[dict],
-    data: list[OtfBaseModel],
+    columns: list[str],
+    data: list[T],
     table_kwargs: dict | None = None,
 ) -> dict:
     """
@@ -106,10 +38,7 @@ def prompt_select_from_table(
 
     Args:
         prompt: A prompt to display to the user before the table.
-        columns: A list of dicts with keys `header` and `key` to display in
-            the table. The `header` value will be displayed in the table header
-            and the `key` value will be used to lookup the value for each row
-            in the provided data.
+        columns: A list of strings that represent the attributes of the data to display.
         data: A list of dicts with keys corresponding to the `key` values in
             the `columns` argument.
         table_kwargs: Additional kwargs to pass to the `rich.Table` constructor.
@@ -120,6 +49,11 @@ def prompt_select_from_table(
     selected_row = None
     table_kwargs = table_kwargs or {}
     layout = Layout()
+
+    if not data:
+        exit_with_error("No data to display")
+
+    MODEL_TYPE = type(data[0])
 
     TABLE_PANEL = Layout(name="left")
     DATA_PANEL = Layout(name="right")
@@ -138,7 +72,7 @@ def prompt_select_from_table(
         """
 
         table = initialize_table()
-        rows = prepare_rows(data)
+        rows = data.copy()
         rows, offset = paginate_rows(rows)
         selected_item = add_rows_to_table(table, rows, offset)
 
@@ -151,25 +85,10 @@ def prompt_select_from_table(
         table = Table(**table_kwargs)
         table.add_column()
         for column in columns:
-            table.add_column(column.get("header", ""))
+            table.add_column(MODEL_TYPE.attr_to_column_header(column))
         return table
 
-    def prepare_rows(data: list[OtfBaseModel]) -> list[dict[str, typing.Any]]:
-        rows: list[dict[str, typing.Any]] = []
-        max_length = 250
-        for i, item in enumerate(data):
-            record = tuple(
-                (
-                    value[:max_length] + "...\n"
-                    if isinstance(value := item.get(column.get("key")), str) and len(value) > max_length
-                    else value
-                )
-                for column in columns
-            )
-            rows.append({"record": record, "item": item})
-        return rows
-
-    def paginate_rows(rows: list[dict[str, typing.Any]]) -> tuple[list[dict[str, typing.Any]], int]:
+    def paginate_rows(rows: list[T]) -> tuple[list[T], int]:
         if len(rows) > n_rows:
             start = max(0, current_idx - n_rows + 1)
             end = min(len(rows), start + n_rows)
@@ -179,25 +98,17 @@ def prompt_select_from_table(
             offset = 0
         return rows, offset
 
-    def add_rows_to_table(table: Table, rows: list[dict[str, typing.Any]], offset: int) -> OtfBaseModel:
-        selected_item: OtfBaseModel = None
-        for i, row_data in enumerate(rows):
-            row = row_data["record"]
-            item = row_data["item"]
+    def add_rows_to_table(table: Table, rows: list[T], offset: int) -> T:
+        selected_item: T = None
+        for i, item in enumerate(rows):
             idx_with_offset = i + offset
-            row = list(map(str, row))
-            if idx_with_offset == current_idx:
+            is_selected_row = idx_with_offset == current_idx
+            if is_selected_row:
                 selected_item = item
-                row = [f"[bold][blue]{cell}[/]" for cell in row]
-                table.add_row("[bold][blue]> ", *row)
-            elif hasattr(item, "is_booked") and item.is_booked:
-                row = [f"[grey58]{cell}[/]" for cell in row]
-                table.add_row("  ", *row)
-            else:
-                table.add_row("  ", *row)
+            table.add_row(*item.to_row(columns, is_selected_row))
         return selected_item
 
-    def finalize_table(table: Table, prompt: str, selected_item: OtfBaseModel) -> None:
+    def finalize_table(table: Table, prompt: str, selected_item: T) -> None:
         if table.row_count < n_rows:
             for _ in range(n_rows - table.row_count):
                 table.add_row()
@@ -206,8 +117,8 @@ def prompt_select_from_table(
         DATA_PANEL.update(Panel("", title="Selected Data"))
         if not selected_item:
             DATA_PANEL.visible = False
-        else:
-            sidebar_data = selected_item.sidebar_data  # type: ignore
+        elif selected_item.sidebar_data is not None:
+            sidebar_data = selected_item.sidebar_data
             DATA_PANEL.update(sidebar_data)
             DATA_PANEL.visible = True
 
