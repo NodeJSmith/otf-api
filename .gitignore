@@ -56,3 +56,5 @@ MANIFEST
 model_generator.py
 scratch.py
 docs/reference/
+.env
+site/
