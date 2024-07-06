@@ -3,10 +3,10 @@ from typing import Any
 
 from pydantic import Field
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase
 
 
-class MetricEntry(OtfBaseModel):
+class MetricEntry(OtfItemBase):
     title: str = Field(..., alias="Title")
     equipment_id: int = Field(..., alias="EquipmentId")
     entry_type: str = Field(..., alias="EntryType")
@@ -15,7 +15,7 @@ class MetricEntry(OtfBaseModel):
     max_value: str = Field(..., alias="MaxValue")
 
 
-class BenchmarkHistory(OtfBaseModel):
+class BenchmarkHistory(OtfItemBase):
     studio_name: str = Field(..., alias="StudioName")
     equipment_id: int = Field(..., alias="EquipmentId")
     result: float | str = Field(..., alias="Result")
@@ -36,7 +36,7 @@ class BenchmarkHistory(OtfBaseModel):
     )  # not sure what this will be, never seen it before
 
 
-class ChallengeHistory(OtfBaseModel):
+class ChallengeHistory(OtfItemBase):
     challenge_objective: str = Field(..., alias="ChallengeObjective")
     challenge_id: int = Field(..., alias="ChallengeId")
     studio_id: int = Field(..., alias="StudioId")
@@ -48,7 +48,7 @@ class ChallengeHistory(OtfBaseModel):
     benchmark_histories: list[BenchmarkHistory] = Field(..., alias="BenchmarkHistories")
 
 
-class ChallengeTrackerDetail(OtfBaseModel):
+class ChallengeTrackerDetail(OtfItemBase):
     challenge_category_id: int = Field(..., alias="ChallengeCategoryId")
     challenge_sub_category_id: None = Field(..., alias="ChallengeSubCategoryId")
     equipment_id: int = Field(..., alias="EquipmentId")
@@ -64,5 +64,5 @@ class ChallengeTrackerDetail(OtfBaseModel):
     challenge_histories: list[ChallengeHistory] = Field(..., alias="ChallengeHistories")
 
 
-class ChallengeTrackerDetailList(OtfBaseModel):
+class ChallengeTrackerDetailList(OtfItemBase):
     details: list[ChallengeTrackerDetail]

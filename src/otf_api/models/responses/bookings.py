@@ -1,12 +1,14 @@
 from datetime import datetime
 from enum import Enum
+from typing import ClassVar
 
+from inflection import humanize
 from pydantic import Field
 from rich.style import Style
 from rich.styled import Styled
 from rich.table import Table
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase, OtfListBase
 from otf_api.models.responses.classes import OtfClassTimeMixin
 
 
@@ -81,7 +83,7 @@ class BookingStatusCli(str, Enum):
         return lcase_to_actual[value.lower()]
 
 
-class Location(OtfBaseModel):
+class Location(OtfItemBase):
     address_one: str = Field(alias="address1")
     address_two: str | None = Field(alias="address2")
     city: str
@@ -95,7 +97,7 @@ class Location(OtfBaseModel):
     state: str | None = None
 
 
-class Coach(OtfBaseModel):
+class Coach(OtfItemBase):
     coach_uuid: str = Field(alias="coachUUId")
     name: str
     first_name: str = Field(alias="firstName")
@@ -104,21 +106,21 @@ class Coach(OtfBaseModel):
     profile_picture_url: str | None = Field(None, alias="profilePictureUrl", exclude=True)
 
 
-class Currency(OtfBaseModel):
+class Currency(OtfItemBase):
     currency_alphabetic_code: str = Field(alias="currencyAlphabeticCode")
 
 
-class DefaultCurrency(OtfBaseModel):
+class DefaultCurrency(OtfItemBase):
     currency_id: int = Field(alias="currencyId")
     currency: Currency
 
 
-class StudioLocationCountry(OtfBaseModel):
+class StudioLocationCountry(OtfItemBase):
     country_currency_code: str = Field(alias="countryCurrencyCode")
     default_currency: DefaultCurrency = Field(alias="defaultCurrency")
 
 
-class StudioLocation(OtfBaseModel):
+class StudioLocation(OtfItemBase):
     latitude: float = Field(alias="latitude")
     longitude: float = Field(alias="longitude")
     phone_number: str = Field(alias="phoneNumber")
@@ -133,7 +135,7 @@ class StudioLocation(OtfBaseModel):
     country: StudioLocationCountry = Field(alias="country", exclude=True)
 
 
-class Studio(OtfBaseModel):
+class Studio(OtfItemBase):
     studio_uuid: str = Field(alias="studioUUId")
     studio_name: str = Field(alias="studioName")
     description: str | None = None
@@ -148,7 +150,7 @@ class Studio(OtfBaseModel):
     studio_location: StudioLocation = Field(alias="studioLocation", exclude=True)
 
 
-class OtfClass(OtfBaseModel, OtfClassTimeMixin):
+class OtfClass(OtfItemBase, OtfClassTimeMixin):
     class_uuid: str = Field(alias="classUUId")
     name: str
     description: str | None = Field(None, exclude=True)
@@ -163,8 +165,25 @@ class OtfClass(OtfBaseModel, OtfClassTimeMixin):
     location: Location
     virtual_class: bool | None = Field(None, alias="virtualClass")
 
+    @classmethod
+    def attr_to_column_header(cls, attr: str) -> str:
+        attr_map = {k: humanize(k) for k in cls.model_fields}
+        overrides = {
+            "day_of_week": "Class DoW",
+            "date": "Class Date",
+            "time": "Class Time",
+            "duration": "Class Duration",
+            "name": "Class Name",
+            "is_home_studio": "Home Studio",
+            "is_booked": "Booked",
+        }
 
-class Member(OtfBaseModel):
+        attr_map.update(overrides)
+
+        return attr_map.get(attr, attr)
+
+
+class Member(OtfItemBase):
     member_uuid: str = Field(alias="memberUUId")
     first_name: str = Field(alias="firstName")
     last_name: str = Field(alias="lastName")
@@ -174,7 +193,7 @@ class Member(OtfBaseModel):
     cc_last_4: str = Field(alias="ccLast4", exclude=True)
 
 
-class Booking(OtfBaseModel):
+class Booking(OtfItemBase):
     class_booking_id: int = Field(alias="classBookingId")
     class_booking_uuid: str = Field(alias="classBookingUUId")
     studio_id: int = Field(alias="studioId")
@@ -227,63 +246,59 @@ class Booking(OtfBaseModel):
 
         return table
 
+    def get_style(self, is_selected: bool = False) -> Style:
+        style = super().get_style(is_selected)
+        if self.status == BookingStatus.Cancelled:
+            style = Style(color="red")
+        elif self.status == BookingStatus.Waitlisted:
+            style = Style(color="yellow")
+        elif self.status == BookingStatus.CheckedIn and is_selected:
+            style = Style(color="blue", strike=True)
+        elif self.status == BookingStatus.CheckedIn:
+            style = Style(color="grey58")
 
-class BookingList(OtfBaseModel):
+        return style
+
+    @classmethod
+    def attr_to_column_header(cls, attr: str) -> str:
+        if attr.startswith("otf_class"):
+            return OtfClass.attr_to_column_header(attr.split(".")[-1])
+
+        attr_map = {k: humanize(k) for k in cls.model_fields}
+        overrides = {
+            "day_of_week": "Class DoW",
+            "date": "Class Date",
+            "time": "Class Time",
+            "duration": "Class Duration",
+            "name": "Class Name",
+            "is_home_studio": "Home Studio",
+            "is_booked": "Booked",
+        }
+
+        attr_map.update(overrides)
+
+        return attr_map.get(attr, attr)
+
+
+class BookingList(OtfListBase):
+    collection_field: ClassVar[str] = "bookings"
     bookings: list[Booking]
 
-    def _columns(self) -> list[dict[str, str]]:
+    @staticmethod
+    def show_bookings_columns() -> list[str]:
         return [
-            {"header": "Class DoW", "key": "otf_class.day_of_week"},
-            {"header": "Class Date", "key": "otf_class.date"},
-            {"header": "Class Time", "key": "otf_class.time"},
-            {"header": "Class Duration", "key": "otf_class.duration"},
-            {"header": "Class Name", "key": "otf_class.name"},
-            {"header": "Status", "key": "status"},
-            {"header": "Studio", "key": "otf_class.studio.studio_name"},
-            {"header": "Home Studio", "key": "is_home_studio"},
+            "otf_class.day_of_week",
+            "otf_class.date",
+            "otf_class.time",
+            "otf_class.duration",
+            "otf_class.name",
+            "status",
+            "otf_class.studio.studio_name",
+            "is_home_studio",
         ]
 
-    def to_table(self) -> Table:
-        table = Table(title="Bookings", style="cyan")
+    def to_table(self, columns: list[str] | None = None) -> Table:
+        if not columns:
+            columns = self.show_bookings_columns()
 
-        table.add_column("Class DoW")
-        table.add_column("Class Date")
-        table.add_column("Class Time")
-        table.add_column("Class Duration")
-        table.add_column("Class Name")
-        table.add_column("Status")
-        table.add_column("Studio")
-        table.add_column("Home Studio", justify="center")
-
-        cancelled_status = Styled("Cancelled", style="red")
-        waitlisted_status = Styled("Waitlisted", style="yellow")
-
-        home_studio_true = Styled("✓", style=Style(color="green"))
-        home_studio_false = Styled("X", style="red")
-
-        for booking in self.bookings:
-            home_studio = home_studio_true if booking.is_home_studio else home_studio_false
-
-            if booking.status == BookingStatus.Cancelled:
-                status = cancelled_status
-            elif booking.status == BookingStatus.Waitlisted:
-                status = waitlisted_status
-            elif booking.status == BookingStatus.CheckedIn:
-                status = booking.status
-                home_studio = home_studio.renderable
-            else:
-                status = Styled(booking.status, style="green")
-
-            table.add_row(
-                booking.otf_class.day_of_week,
-                booking.otf_class.date,
-                booking.otf_class.time,
-                booking.otf_class.duration,
-                booking.otf_class.name,
-                status,
-                booking.otf_class.studio.studio_name,
-                home_studio,
-                style="grey58" if booking.status == BookingStatus.CheckedIn else None,
-            )
-
-        return table
+        return super().to_table(columns)

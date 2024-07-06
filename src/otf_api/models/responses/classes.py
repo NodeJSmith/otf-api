@@ -1,13 +1,15 @@
 from datetime import datetime
 from enum import Enum
+from typing import ClassVar
 
 from humanize import precisedelta
+from inflection import humanize
 from pydantic import Field
 from rich.style import Style
 from rich.styled import Styled
 from rich.table import Table
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase, OtfListBase
 
 
 class DoW(str, Enum):
@@ -68,7 +70,7 @@ class ClassTypeCli(str, Enum):
     OTHER = "Other"
 
 
-class Address(OtfBaseModel):
+class Address(OtfItemBase):
     line1: str
     city: str
     state: str
@@ -76,7 +78,7 @@ class Address(OtfBaseModel):
     postal_code: str
 
 
-class Studio(OtfBaseModel):
+class Studio(OtfItemBase):
     id: str
     name: str
     mbo_studio_id: str
@@ -88,7 +90,7 @@ class Studio(OtfBaseModel):
     longitude: float
 
 
-class Coach(OtfBaseModel):
+class Coach(OtfItemBase):
     mbo_staff_id: str
     first_name: str
     image_url: str | None = None
@@ -133,7 +135,7 @@ class OtfClassTimeMixin:
         return ClassType.OTHER
 
 
-class OtfClass(OtfBaseModel, OtfClassTimeMixin):
+class OtfClass(OtfItemBase, OtfClassTimeMixin):
     id: str
     ot_class_uuid: str = Field(
         alias="ot_base_class_uuid",
@@ -205,50 +207,49 @@ class OtfClass(OtfBaseModel, OtfClassTimeMixin):
 
         return table
 
+    def get_style(self, is_selected: bool = False) -> Style:
+        style = super().get_style(is_selected)
+        if self.is_booked:
+            style = Style(color="grey58")
+        return style
 
-class OtfClassList(OtfBaseModel):
+    @classmethod
+    def attr_to_column_header(cls, attr: str) -> str:
+        attr_map = {k: humanize(k) for k in cls.model_fields}
+        overrides = {
+            "day_of_week": "Class DoW",
+            "date": "Class Date",
+            "time": "Class Time",
+            "duration": "Class Duration",
+            "name": "Class Name",
+            "is_home_studio": "Home Studio",
+            "is_booked": "Booked",
+        }
+
+        attr_map.update(overrides)
+
+        return attr_map.get(attr, attr)
+
+
+class OtfClassList(OtfListBase):
+    collection_field: ClassVar[str] = "classes"
     classes: list[OtfClass]
 
-    def _columns(self) -> list[dict[str, str]]:
+    @staticmethod
+    def book_class_columns() -> list[str]:
         return [
-            {"header": "Class DoW", "key": "day_of_week"},
-            {"header": "Class Date", "key": "date"},
-            {"header": "Class Time", "key": "time"},
-            {"header": "Class Duration", "key": "duration"},
-            {"header": "Class Name", "key": "name"},
-            {"header": "Studio", "key": "studio.name"},
-            {"header": "Home Studio", "key": "is_home_studio"},
-            {"header": "Booked", "key": "is_booked"},
+            "day_of_week",
+            "date",
+            "time",
+            "duration",
+            "name",
+            "studio.name",
+            "is_home_studio",
+            "is_booked",
         ]
 
-    def to_table(self) -> Table:
-        table = Table(title="Classes", style="cyan")
+    def to_table(self, columns: list[str] | None = None) -> Table:
+        if not columns:
+            columns = self.book_class_columns()
 
-        table.add_column("Class DoW")
-        table.add_column("Class Date")
-        table.add_column("Class Time")
-        table.add_column("Class Duration")
-        table.add_column("Class Name")
-        table.add_column("Studio")
-        table.add_column("Home Studio", justify="center")
-        table.add_column("Booked", justify="center")
-
-        home_studio_true = Styled("✓", style=Style(color="green"))
-        home_studio_false = Styled("X", style="red")
-
-        for otf_class in self.classes:
-            home_studio = home_studio_true if otf_class.is_home_studio else home_studio_false
-
-            table.add_row(
-                otf_class.day_of_week,
-                otf_class.date,
-                otf_class.time,
-                otf_class.duration,
-                otf_class.name,
-                otf_class.studio.name,
-                home_studio,
-                home_studio_true if otf_class.is_booked else "",
-                style="green" if otf_class.is_booked else None,
-            )
-
-        return table
+        return super().to_table(columns)

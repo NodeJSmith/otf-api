@@ -2,10 +2,10 @@ from datetime import datetime
 
 from pydantic import Field
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase
 
 
-class LatestAgreement(OtfBaseModel):
+class LatestAgreement(OtfItemBase):
     file_url: str = Field(..., alias="fileUrl")
     agreement_id: int = Field(..., alias="agreementId")
     agreement_uuid: str = Field(..., alias="agreementUUId")

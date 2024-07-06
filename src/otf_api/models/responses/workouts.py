@@ -4,16 +4,16 @@ from typing import Any
 
 from pydantic import Field, PrivateAttr
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase
 
 
-class WorkoutType(OtfBaseModel):
+class WorkoutType(OtfItemBase):
     id: int
     display_name: str = Field(..., alias="displayName")
     icon: str
 
 
-class Workout(OtfBaseModel):
+class Workout(OtfItemBase):
     studio_number: str = Field(..., alias="studioNumber")
     studio_name: str = Field(..., alias="studioName")
     class_type: str = Field(..., alias="classType")
@@ -70,7 +70,7 @@ class Workout(OtfBaseModel):
         self._minute_by_minute_raw = data.get("minuteByMinuteHr")
 
 
-class WorkoutList(OtfBaseModel):
+class WorkoutList(OtfItemBase):
     workouts: list[Workout]
 
     @property

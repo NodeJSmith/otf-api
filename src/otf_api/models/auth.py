@@ -5,13 +5,13 @@ from typing import ClassVar
 from pycognito import Cognito, TokenVerificationException
 from pydantic import Field
 
-from otf_api.models.base import OtfBaseModel
+from otf_api.models.base import OtfItemBase
 
 CLIENT_ID = "65knvqta6p37efc2l3eh26pl5o"  # from otlive
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
 
 
-class IdClaimsData(OtfBaseModel):
+class IdClaimsData(OtfItemBase):
     sub: str
     email_verified: bool
     iss: str
@@ -39,7 +39,7 @@ class IdClaimsData(OtfBaseModel):
         return f"{self.given_name} {self.family_name}"
 
 
-class AccessClaimsData(OtfBaseModel):
+class AccessClaimsData(OtfItemBase):
     sub: str
     device_key: str
     iss: str
