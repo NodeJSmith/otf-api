@@ -177,6 +177,7 @@ class Api:
         """Start the background task for refreshing the token."""
         logger.debug("Starting background task for refreshing token.")
         self._refresh_task = asyncio.create_task(self._run_refresh_on_loop())
+        print(self._refresh_task)
 
     async def _run_refresh_on_loop(self) -> None:
         """Run the refresh token method on a loop to keep the token fresh."""

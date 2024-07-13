@@ -148,7 +148,7 @@ class User:
         cognito_user.verify_tokens()
 
         if cognito_user.check_token():
-            logger.debug("Refreshed tokens")
+            logger.info("Refreshed tokens")
 
         return cls(cognito=cognito_user)
 
