@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 from typing import ClassVar
 
+from loguru import logger
 from pycognito import Cognito, TokenVerificationException
 from pydantic import Field
 
@@ -145,7 +146,10 @@ class User:
         """Create a User instance from an id token."""
         cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, access_token=access_token, id_token=id_token)
         cognito_user.verify_tokens()
-        cognito_user.check_token()
+
+        if cognito_user.check_token():
+            logger.debug("Refreshed tokens")
+
         return cls(cognito=cognito_user)
 
     def refresh_token(self) -> "User":
