@@ -189,7 +189,7 @@ class Api:
 
     def shutdown(self, *_args) -> None:
         """Shutdown the background task and event loop."""
-        if self._refresh_task:
+        if hasattr(self, "_refresh_task") and self._refresh_task:
             self._refresh_task.cancel()
 
     def __del__(self) -> None:
