@@ -143,6 +143,7 @@ class Otf:
         password: str | None = None,
         access_token: str | None = None,
         id_token: str | None = None,
+        user: OtfUser | None = None,
         refresh_callback: Callable[["OtfUser"], None] | None = None,
     ) -> "Otf":
         """Create a new API instance. Accepts either a username and password or an access token and id token.
@@ -152,6 +153,7 @@ class Otf:
             password (str, None): The password of the user. Default is None.
             access_token (str, None): The access token. Default is None.
             id_token (str, None): The id token. Default is None.
+            user (OtfUser, None): A user object. Default is None.
             refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
 
         Returns:
@@ -163,6 +165,7 @@ class Otf:
             password=password,
             access_token=access_token,
             id_token=id_token,
+            user=user,
             refresh_callback=refresh_callback,
         )
         await self.populate_member_details()
