@@ -121,7 +121,32 @@ class Api:
         self.start_background_refresh()
 
     @classmethod
-    async def create(cls, username: str, password: str) -> "Api":
+    async def create(
+        cls,
+        username: str | None = None,
+        password: str | None = None,
+        access_token: str | None = None,
+        id_token: str | None = None,
+    ) -> "Api":
+        """Create a new API instance. Accepts either a username and password or an access token and id token.
+
+        Args:
+            username (str, None): The username of the user. Default is None.
+            password (str, None): The password of the user. Default is None.
+            access_token (str, None): The access token. Default is None.
+            id_token (str, None): The id token. Default is None.
+
+        Returns:
+            Api: The API instance.
+        """
+
+        self = cls(username=username, password=password, access_token=access_token, id_token=id_token)
+        self.member = await self.get_member_detail()
+        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
+        return self
+
+    @classmethod
+    async def create_with_username(cls, username: str, password: str) -> "Api":
         """Create a new API instance. The username and password are required arguments because even though
         we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
 
