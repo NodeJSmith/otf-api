@@ -140,8 +140,6 @@ class Otf:
             "koji-member-email": self.user.id_claims_data.email,
         }
 
-        self._refresh_task = asyncio.create_task(self.start_background_refresh())
-
     async def populate_member_details(self) -> None:
         """Populate the member and home studio details."""
         self.member = await self.get_member_detail()
@@ -179,17 +177,6 @@ class Otf:
         )
         await self.populate_member_details()
         return self
-
-    async def start_background_refresh(self) -> None:
-        """Start the background task for refreshing the token."""
-        logger.debug("Starting background task for refreshing token.")
-        """Run the refresh token method on a loop to keep the token fresh."""
-        try:
-            while True:
-                await asyncio.sleep(300)
-                self.user.refresh_token()
-        except asyncio.CancelledError:
-            pass
 
     def shutdown(self, *_args) -> None:
         """Shutdown the background task and event loop."""

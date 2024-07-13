@@ -1,4 +1,5 @@
 import asyncio
+import inspect
 import json
 from collections.abc import Callable
 from pathlib import Path
@@ -74,7 +75,17 @@ class OtfUser:
             Callable should accept the user instance as an argument. Defaults to None.
         """
         self.cognito = cognito
+
+        if refresh_callback:
+            if not asyncio.iscoroutinefunction(refresh_callback) and not callable(refresh_callback):
+                raise ValueError("refresh_callback must be a callable function.")
+            sig = inspect.signature(refresh_callback)
+            if len(sig.parameters) != 1:
+                raise ValueError("refresh_callback must accept one argument.")
+
         self.refresh_callback = refresh_callback
+
+        self._refresh_task = asyncio.create_task(self.start_background_refresh())
 
     @classmethod
     def cache_file_exists(cls) -> bool:
@@ -155,17 +166,16 @@ class OtfUser:
         return cls(cognito=cognito_user, refresh_callback=refresh_callback)
 
     def refresh_token(self) -> bool:
-        """Refresh the user's access token."""
+        """Refresh the user's access token.
+
+        Returns:
+            bool: True if the token was refreshed, False otherwise.
+        """
         logger.info("Checking tokens...")
         refreshed = self.cognito.check_token()
         if refreshed:
             logger.info("Refreshed tokens")
             self.save_to_disk()
-            if self.refresh_callback:
-                if asyncio.iscoroutinefunction(self.refresh_callback):
-                    asyncio.create_task(self.refresh_callback(self))  # noqa
-                else:
-                    self.refresh_callback(self)
         return refreshed
 
     @property
@@ -200,3 +210,19 @@ class OtfUser:
             "refresh_token": self.cognito.refresh_token,
         }
         self.token_path.write_text(json.dumps(data))
+
+    async def start_background_refresh(self) -> None:
+        """Start the background task for refreshing the token."""
+        logger.debug("Starting background task for refreshing token.")
+        """Run the refresh token method on a loop to keep the token fresh."""
+        try:
+            while True:
+                await asyncio.sleep(300)
+                refreshed = self.refresh_token()
+                if refreshed and self.refresh_callback:
+                    if asyncio.iscoroutinefunction(self.refresh_callback):
+                        await self.refresh_callback(self)
+                    elif self.refresh_callback:
+                        self.refresh_callback(self)
+        except asyncio.CancelledError:
+            pass
