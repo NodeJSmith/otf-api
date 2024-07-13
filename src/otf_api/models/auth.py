@@ -140,6 +140,13 @@ class User:
         user.save_to_disk()
         return user
 
+    @classmethod
+    def from_token(cls, id_token: str) -> "User":
+        """Create a User instance from an id token."""
+        cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, id_token=id_token)
+        cognito_user.check_token()
+        return cls(cognito=cognito_user)
+
     def refresh_token(self) -> "User":
         """Refresh the user's access token."""
         self.cognito.check_token()

@@ -1,6 +1,7 @@
 import asyncio
 import contextlib
 import json
+import signal
 import typing
 from datetime import date, datetime
 from math import ceil
@@ -78,11 +79,18 @@ class Api:
     user: User
     session: aiohttp.ClientSession
 
-    def __init__(self, username: str, password: str):
+    def __init__(self, username: str | None = None, password: str | None = None, token: str | None = None):
         self.member: MemberDetail
         self.home_studio: StudioDetail
 
-        self.user = User.login(username, password)
+        # Handle shutdown
+        signal.signal(signal.SIGINT, self.shutdown)
+        signal.signal(signal.SIGTERM, self.shutdown)
+
+        if username and password:
+            self.user = User.login(username, password)
+        elif token:
+            self.user = User.from_token(token)
 
         headers = {
             "Authorization": f"Bearer {self.user.cognito.id_token}",
@@ -99,6 +107,8 @@ class Api:
             "koji-member-email": self.user.id_claims_data.email,
         }
 
+        self.start_background_refresh()
+
     @classmethod
     async def create(cls, username: str, password: str) -> "Api":
         """Create a new API instance. The username and password are required arguments because even though
@@ -113,11 +123,41 @@ class Api:
         self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
         return self
 
+    @classmethod
+    async def create_with_token(cls, token: str) -> "Api":
+        """Create a new API instance. The username and password are required arguments because even though
+        we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
+
+        Args:
+            token (str): The token of the user.
+        """
+        self = cls(token=token)
+        self.member = await self.get_member_detail()
+        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
+        return self
+
+    def start_background_refresh(self) -> None:
+        """Start the background task for refreshing the token."""
+        self._refresh_task = asyncio.create_task(self._run_refresh_on_loop())
+
+    async def _run_refresh_on_loop(self) -> None:
+        """Run the refresh token method on a loop to keep the token fresh."""
+        try:
+            while True:
+                await asyncio.sleep(300)
+                self.user = self.user.refresh_token()
+        except asyncio.CancelledError:
+            pass
+
+    def shutdown(self, *_args) -> None:
+        """Shutdown the background task and event loop."""
+        if self._refresh_task:
+            self._refresh_task.cancel()
+
     def __del__(self) -> None:
         if not hasattr(self, "session"):
             return
         try:
-            loop = asyncio.get_event_loop()
             asyncio.create_task(self._close_session())  # noqa
         except RuntimeError:
             loop = asyncio.new_event_loop()
