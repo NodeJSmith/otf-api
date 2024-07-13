@@ -141,9 +141,9 @@ class User:
         return user
 
     @classmethod
-    def from_token(cls, id_token: str) -> "User":
+    def from_token(cls, access_token: str, id_token: str) -> "User":
         """Create a User instance from an id token."""
-        cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, id_token=id_token)
+        cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, access_token=access_token, id_token=id_token)
         cognito_user.check_token()
         return cls(cognito=cognito_user)
 

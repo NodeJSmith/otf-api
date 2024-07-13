@@ -79,7 +79,13 @@ class Api:
     user: User
     session: aiohttp.ClientSession
 
-    def __init__(self, username: str | None = None, password: str | None = None, token: str | None = None):
+    def __init__(
+        self,
+        username: str | None = None,
+        password: str | None = None,
+        access_token: str | None = None,
+        id_token: str | None = None,
+    ):
         self.member: MemberDetail
         self.home_studio: StudioDetail
 
@@ -92,8 +98,10 @@ class Api:
 
         if username and password:
             self.user = User.login(username, password)
-        elif token:
-            self.user = User.from_token(token)
+        elif access_token and id_token:
+            self.user = User.from_token(access_token, id_token)
+        else:
+            raise ValueError("Either username and password or access_token and id_token must be provided.")
 
         headers = {
             "Authorization": f"Bearer {self.user.cognito.id_token}",
@@ -127,14 +135,15 @@ class Api:
         return self
 
     @classmethod
-    async def create_with_token(cls, token: str) -> "Api":
+    async def create_with_token(cls, access_token: str, id_token: str) -> "Api":
         """Create a new API instance. The username and password are required arguments because even though
         we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
 
         Args:
-            token (str): The token of the user.
+            access_token (str): The access token.
+            id_token (str): The id token.
         """
-        self = cls(token=token)
+        self = cls(access_token=access_token, id_token=id_token)
         self.member = await self.get_member_detail()
         self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
         return self
