@@ -1,10 +1,10 @@
 import asyncio
-import inspect
 from collections.abc import Callable
 
 from loguru import logger
 from pycognito import Cognito
 from pydantic import Field
+from pydantic.config import ConfigDict
 
 from otf_api.models.base import OtfItemBase
 
@@ -60,7 +60,9 @@ class AccessClaimsData(OtfItemBase):
 
 
 class OtfUser(OtfItemBase):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
     cognito: Cognito
+    refresh_callback: Callable[["OtfUser"], None] | None = None
 
     def __init__(self, cognito: Cognito, refresh_callback: Callable[["OtfUser"], None] | None = None):
         """Create a new User instance.
@@ -69,16 +71,7 @@ class OtfUser(OtfItemBase):
             cognito (Cognito): The Cognito instance to use.
             refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
         """
-        self.cognito = cognito
-
-        if refresh_callback:
-            if not asyncio.iscoroutinefunction(refresh_callback) and not callable(refresh_callback):
-                raise ValueError("refresh_callback must be a callable function.")
-            sig = inspect.signature(refresh_callback)
-            if len(sig.parameters) != 1:
-                raise ValueError("refresh_callback must accept one argument.")
-
-        self.refresh_callback = refresh_callback
+        super().__init__(cognito=cognito, refresh_callback=refresh_callback)
 
         self._refresh_task = asyncio.create_task(self.start_background_refresh())
 
