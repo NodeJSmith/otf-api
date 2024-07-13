@@ -72,7 +72,6 @@ class OtfUser:
         Args:
             cognito (Cognito): The Cognito instance to use.
             refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
-            Callable should accept the user instance as an argument. Defaults to None.
         """
         self.cognito = cognito
 
@@ -106,7 +105,6 @@ class OtfUser:
             username (str): The username to reauthenticate with.
             password (str): The password to reauthenticate with.
             refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
-            Callable should accept the user instance as an argument. Defaults to None.
 
         Returns:
             OtfUser: The loaded user.
@@ -132,7 +130,6 @@ class OtfUser:
             username (str): The username to login with.
             password (str): The password to login with.
             refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
-            Callable should accept the user instance as an argument. Defaults to None.
 
         Returns:
             OtfUser: The logged in user.

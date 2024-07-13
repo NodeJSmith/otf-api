@@ -103,8 +103,7 @@ class Otf:
             access_token (str, optional): The access token. Default is None.
             id_token (str, optional): The id token. Default is None.
             user (OtfUser, optional): A user object. Default is None.
-            refresh_callback (Callable[["OtfUser"], None], optional): A callback function to run when the token is
-            refreshed. Callable should accept the user object as an argument. Default is None.
+            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
         """
         self.member: MemberDetail
         self.home_studio: StudioDetail
@@ -161,8 +160,7 @@ class Otf:
             password (str, None): The password of the user. Default is None.
             access_token (str, None): The access token. Default is None.
             id_token (str, None): The id token. Default is None.
-            refresh_callback (Callable[["OtfUser"], None], optional): A callback function to run when the token is
-            refreshed. Callable should accept the user object as an argument. Default is None.
+            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
 
         Returns:
             Api: The API instance.
