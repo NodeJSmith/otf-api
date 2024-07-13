@@ -87,7 +87,7 @@ class Otf:
         access_token: str | None = None,
         id_token: str | None = None,
         user: OtfUser | None = None,
-        refresh_callback: typing.Callable | None = None,
+        refresh_callback: Callable[["OtfUser"], None] | None = None,
     ):
         """Create a new API instance.
 
@@ -103,8 +103,8 @@ class Otf:
             access_token (str, optional): The access token. Default is None.
             id_token (str, optional): The id token. Default is None.
             user (OtfUser, optional): A user object. Default is None.
-            refresh_callback (Callable, optional): A callback function to run when the token is refreshed. Callable
-            should accept the user object as an argument. Default is None.
+            refresh_callback (Callable[["OtfUser"], None], optional): A callback function to run when the token is
+            refreshed. Callable should accept the user object as an argument. Default is None.
         """
         self.member: MemberDetail
         self.home_studio: StudioDetail
@@ -119,9 +119,9 @@ class Otf:
         if user:
             self.user = user
         elif username and password:
-            self.user = OtfUser.login(username, password)
+            self.user = OtfUser.login(username, password, refresh_callback=refresh_callback)
         elif access_token and id_token:
-            self.user = OtfUser.from_token(access_token, id_token)
+            self.user = OtfUser.from_token(access_token, id_token, refresh_callback=refresh_callback)
         else:
             raise ValueError("No valid authentication method provided.")
 
@@ -140,7 +140,7 @@ class Otf:
             "koji-member-email": self.user.id_claims_data.email,
         }
 
-        self.start_background_refresh(refresh_callback)
+        self._refresh_task = asyncio.create_task(self.start_background_refresh())
 
     async def populate_member_details(self) -> None:
         """Populate the member and home studio details."""
@@ -154,6 +154,7 @@ class Otf:
         password: str | None = None,
         access_token: str | None = None,
         id_token: str | None = None,
+        refresh_callback: Callable[["OtfUser"], None] | None = None,
     ) -> "Otf":
         """Create a new API instance. Accepts either a username and password or an access token and id token.
 
@@ -162,64 +163,31 @@ class Otf:
             password (str, None): The password of the user. Default is None.
             access_token (str, None): The access token. Default is None.
             id_token (str, None): The id token. Default is None.
+            refresh_callback (Callable[["OtfUser"], None], optional): A callback function to run when the token is
+            refreshed. Callable should accept the user object as an argument. Default is None.
 
         Returns:
             Api: The API instance.
         """
 
-        self = cls(username=username, password=password, access_token=access_token, id_token=id_token)
+        self = cls(
+            username=username,
+            password=password,
+            access_token=access_token,
+            id_token=id_token,
+            refresh_callback=refresh_callback,
+        )
         await self.populate_member_details()
         return self
 
-    @classmethod
-    async def create_with_username(cls, username: str, password: str) -> "Otf":
-        """Create a new API instance. The username and password are required arguments because even though
-        we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
-
-        Args:
-            username (str): The username of the user.
-            password (str): The password of the user.
-        """
-        return cls.create(username=username, password=password)
-
-    @classmethod
-    async def create_with_token(cls, access_token: str, id_token: str) -> "Otf":
-        """Create a new API instance. The username and password are required arguments because even though
-        we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
-
-        Args:
-            access_token (str): The access token.
-            id_token (str): The id token.
-        """
-        return cls.create(access_token=access_token, id_token=id_token)
-
-    def start_background_refresh(self, callback: Callable | None = None) -> None:
-        """Start the background task for refreshing the token.
-
-        Args:
-            callback (Callable, None): A callback function to run when the token is refreshed,
-            the callable should accept the user object as an argument. Defaults to None.
-
-        """
+    async def start_background_refresh(self) -> None:
+        """Start the background task for refreshing the token."""
         logger.debug("Starting background task for refreshing token.")
-        self._refresh_task = asyncio.create_task(self._run_refresh_on_loop(callback))
-
-    async def _run_refresh_on_loop(self, callback: Callable | None = None) -> None:
-        """Run the refresh token method on a loop to keep the token fresh.
-
-        Args:
-            callback (Callable, None): A callback function to run when the token is refreshed,
-            the callable should accept the user object as an argument. Defaults to None.
-        """
+        """Run the refresh token method on a loop to keep the token fresh."""
         try:
             while True:
                 await asyncio.sleep(300)
-                refreshed = self.user.refresh_token()
-                if refreshed and callback:
-                    if asyncio.iscoroutinefunction(callback):
-                        await callback(self.user)
-                    else:
-                        callback(self.user)
+                self.user.refresh_token()
         except asyncio.CancelledError:
             pass
 

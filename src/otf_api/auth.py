@@ -1,4 +1,6 @@
+import asyncio
 import json
+from collections.abc import Callable
 from pathlib import Path
 from typing import ClassVar
 
@@ -63,8 +65,16 @@ class OtfUser:
     token_path: ClassVar[Path] = Path("~/.otf/.tokens").expanduser()
     cognito: Cognito
 
-    def __init__(self, cognito: Cognito):
+    def __init__(self, cognito: Cognito, refresh_callback: Callable[["OtfUser"], None] | None = None):
+        """Create a new User instance.
+
+        Args:
+            cognito (Cognito): The Cognito instance to use.
+            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
+            Callable should accept the user instance as an argument. Defaults to None.
+        """
         self.cognito = cognito
+        self.refresh_callback = refresh_callback
 
     @classmethod
     def cache_file_exists(cls) -> bool:
@@ -76,15 +86,19 @@ class OtfUser:
         return val
 
     @classmethod
-    def load_from_disk(cls, username: str, password: str) -> "OtfUser":
+    def load_from_disk(
+        cls, username: str, password: str, refresh_callback: Callable[["OtfUser"], None] | None = None
+    ) -> "OtfUser":
         """Load a User instance from disk. If the token is invalid, reauthenticate with the provided credentials.
 
         Args:
             username (str): The username to reauthenticate with.
             password (str): The password to reauthenticate with.
+            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
+            Callable should accept the user instance as an argument. Defaults to None.
 
         Returns:
-            User: The loaded user.
+            OtfUser: The loaded user.
 
         """
         attr_dict = json.loads(cls.token_path.read_text())
@@ -92,37 +106,53 @@ class OtfUser:
         cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, **attr_dict)
         try:
             cognito_user.verify_tokens()
-            return cls(cognito=cognito_user)
+            return cls(cognito=cognito_user, refresh_callback=refresh_callback)
         except TokenVerificationException:
             user = cls.login(username, password)
             return user
 
     @classmethod
-    def login(cls, username: str, password: str) -> "OtfUser":
+    def login(
+        cls, username: str, password: str, refresh_callback: Callable[["OtfUser"], None] | None = None
+    ) -> "OtfUser":
         """Login and return a User instance. After a successful login, the user is saved to disk.
 
         Args:
             username (str): The username to login with.
             password (str): The password to login with.
+            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
+            Callable should accept the user instance as an argument. Defaults to None.
 
         Returns:
-            User: The logged in user.
+            OtfUser: The logged in user.
         """
         cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, username=username)
         cognito_user.authenticate(password)
         cognito_user.check_token()
-        user = cls(cognito=cognito_user)
+        user = cls(cognito=cognito_user, refresh_callback=refresh_callback)
         user.save_to_disk()
         return user
 
     @classmethod
-    def from_token(cls, access_token: str, id_token: str) -> "OtfUser":
-        """Create a User instance from an id token."""
+    def from_token(
+        cls, access_token: str, id_token: str, refresh_callback: Callable[["OtfUser"], None] | None = None
+    ) -> "OtfUser":
+        """Create a User instance from an id token.
+
+        Args:
+            access_token (str): The access token.
+            id_token (str): The id token.
+            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
+            Callable should accept the user instance as an argument. Defaults to None.
+
+        Returns:
+            OtfUser: The user instance
+        """
         cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, access_token=access_token, id_token=id_token)
         cognito_user.verify_tokens()
         cognito_user.check_token()
 
-        return cls(cognito=cognito_user)
+        return cls(cognito=cognito_user, refresh_callback=refresh_callback)
 
     def refresh_token(self) -> bool:
         """Refresh the user's access token."""
@@ -131,6 +161,11 @@ class OtfUser:
         if refreshed:
             logger.info("Refreshed tokens")
             self.save_to_disk()
+            if self.refresh_callback:
+                if asyncio.iscoroutinefunction(self.refresh_callback):
+                    asyncio.create_task(self.refresh_callback(self))  # noqa
+                else:
+                    self.refresh_callback(self)
         return refreshed
 
     @property
