@@ -1,4 +1,3 @@
-from .auth import User
 from .responses import (
     BookClass,
     BookingList,
@@ -29,7 +28,6 @@ from .responses import (
 )
 
 __all__ = [
-    "User",
     "ChallengeType",
     "BookingStatus",
     "EquipmentType",

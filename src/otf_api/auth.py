@@ -59,7 +59,7 @@ class AccessClaimsData(OtfItemBase):
         return self.username
 
 
-class User:
+class OtfUser:
     token_path: ClassVar[Path] = Path("~/.otf/.tokens").expanduser()
     cognito: Cognito
 
@@ -76,7 +76,7 @@ class User:
         return val
 
     @classmethod
-    def load_from_disk(cls, username: str, password: str) -> "User":
+    def load_from_disk(cls, username: str, password: str) -> "OtfUser":
         """Load a User instance from disk. If the token is invalid, reauthenticate with the provided credentials.
 
         Args:
@@ -98,7 +98,7 @@ class User:
             return user
 
     @classmethod
-    def login(cls, username: str, password: str) -> "User":
+    def login(cls, username: str, password: str) -> "OtfUser":
         """Login and return a User instance. After a successful login, the user is saved to disk.
 
         Args:
@@ -116,7 +116,7 @@ class User:
         return user
 
     @classmethod
-    def from_token(cls, access_token: str, id_token: str) -> "User":
+    def from_token(cls, access_token: str, id_token: str) -> "OtfUser":
         """Create a User instance from an id token."""
         cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, access_token=access_token, id_token=id_token)
         cognito_user.verify_tokens()
@@ -124,7 +124,7 @@ class User:
 
         return cls(cognito=cognito_user)
 
-    def refresh_token(self) -> "User":
+    def refresh_token(self) -> "OtfUser":
         """Refresh the user's access token."""
         logger.info("Checking tokens...")
         if self.cognito.check_token():
@@ -147,6 +147,13 @@ class User:
     @property
     def id_claims_data(self) -> IdClaimsData:
         return IdClaimsData(**self.cognito.id_claims)
+
+    def get_tokens(self) -> dict[str, str]:
+        return {
+            "id_token": self.cognito.id_token,
+            "access_token": self.cognito.access_token,
+            "refresh_token": self.cognito.refresh_token,
+        }
 
     def save_to_disk(self) -> None:
         self.token_path.parent.mkdir(parents=True, exist_ok=True)

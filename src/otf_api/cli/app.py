@@ -11,7 +11,7 @@ from rich.console import Console
 from rich.theme import Theme
 
 import otf_api
-from otf_api.auth import User
+from otf_api.auth import OtfUser
 from otf_api.cli._utilities import is_async_fn, with_cli_exception_handling
 
 if typing.TYPE_CHECKING:
@@ -91,8 +91,8 @@ class AsyncTyper(typer.Typer):
             self.username = username
             return
 
-        if User.cache_file_exists():
-            self.username = User.username_from_disk()
+        if OtfUser.cache_file_exists():
+            self.username = OtfUser.username_from_disk()
             return
 
         raise ValueError("Username not provided and not found in cache")

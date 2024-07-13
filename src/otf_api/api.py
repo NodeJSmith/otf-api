@@ -11,7 +11,7 @@ import aiohttp
 from loguru import logger
 from yarl import URL
 
-from otf_api.auth import User
+from otf_api.auth import OtfUser
 from otf_api.models.responses.body_composition_list import BodyCompositionList
 from otf_api.models.responses.book_class import BookClass
 from otf_api.models.responses.cancel_booking import CancelBooking
@@ -76,7 +76,7 @@ class Otf:
     """
 
     logger: "Logger" = logger
-    user: User
+    user: OtfUser
     session: aiohttp.ClientSession
 
     def __init__(
@@ -97,9 +97,9 @@ class Otf:
             pass
 
         if username and password:
-            self.user = User.login(username, password)
+            self.user = OtfUser.login(username, password)
         elif access_token and id_token:
-            self.user = User.from_token(access_token, id_token)
+            self.user = OtfUser.from_token(access_token, id_token)
         else:
             raise ValueError("Either username and password or access_token and id_token must be provided.")
 
