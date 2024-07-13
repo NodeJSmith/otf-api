@@ -1,7 +1,6 @@
 import asyncio
 import contextlib
 import json
-import signal
 import typing
 from collections.abc import Callable
 from datetime import date, datetime
@@ -108,13 +107,6 @@ class Otf:
         self.member: MemberDetail
         self.home_studio: StudioDetail
 
-        # Handle shutdown
-        try:
-            signal.signal(signal.SIGINT, self.shutdown)
-            signal.signal(signal.SIGTERM, self.shutdown)
-        except Exception:
-            pass
-
         if user:
             self.user = user
         elif username and password:
@@ -176,14 +168,10 @@ class Otf:
         await self.populate_member_details()
         return self
 
-    def shutdown(self, *_args) -> None:
-        """Shutdown the background task and event loop."""
-        if hasattr(self, "_refresh_task") and self._refresh_task:
-            self._refresh_task.cancel()
-
     def __del__(self) -> None:
         if not hasattr(self, "session"):
             return
+
         try:
             asyncio.create_task(self._close_session())  # noqa
         except RuntimeError:
