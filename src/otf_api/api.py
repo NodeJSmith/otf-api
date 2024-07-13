@@ -3,6 +3,7 @@ import contextlib
 import json
 import signal
 import typing
+from collections.abc import Callable
 from datetime import date, datetime
 from math import ceil
 from typing import Any
@@ -85,7 +86,26 @@ class Otf:
         password: str | None = None,
         access_token: str | None = None,
         id_token: str | None = None,
+        user: OtfUser | None = None,
+        refresh_callback: typing.Callable | None = None,
     ):
+        """Create a new API instance.
+
+        Authentication methods:
+        ---
+        - Provide a username and password.
+        - Provide an access token and id token.
+        - Provide a user object.
+
+        Args:
+            username (str, optional): The username of the user. Default is None.
+            password (str, optional): The password of the user. Default is None.
+            access_token (str, optional): The access token. Default is None.
+            id_token (str, optional): The id token. Default is None.
+            user (OtfUser, optional): A user object. Default is None.
+            refresh_callback (Callable, optional): A callback function to run when the token is refreshed. Callable
+            should accept the user object as an argument. Default is None.
+        """
         self.member: MemberDetail
         self.home_studio: StudioDetail
 
@@ -96,12 +116,14 @@ class Otf:
         except Exception:
             pass
 
-        if username and password:
+        if user:
+            self.user = user
+        elif username and password:
             self.user = OtfUser.login(username, password)
         elif access_token and id_token:
             self.user = OtfUser.from_token(access_token, id_token)
         else:
-            raise ValueError("Either username and password or access_token and id_token must be provided.")
+            raise ValueError("No valid authentication method provided.")
 
         headers = {
             "Authorization": f"Bearer {self.user.cognito.id_token}",
@@ -118,7 +140,12 @@ class Otf:
             "koji-member-email": self.user.id_claims_data.email,
         }
 
-        self.start_background_refresh()
+        self.start_background_refresh(refresh_callback)
+
+    async def populate_member_details(self) -> None:
+        """Populate the member and home studio details."""
+        self.member = await self.get_member_detail()
+        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
 
     @classmethod
     async def create(
@@ -141,8 +168,7 @@ class Otf:
         """
 
         self = cls(username=username, password=password, access_token=access_token, id_token=id_token)
-        self.member = await self.get_member_detail()
-        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
+        await self.populate_member_details()
         return self
 
     @classmethod
@@ -154,10 +180,7 @@ class Otf:
             username (str): The username of the user.
             password (str): The password of the user.
         """
-        self = cls(username, password)
-        self.member = await self.get_member_detail()
-        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
-        return self
+        return cls.create(username=username, password=password)
 
     @classmethod
     async def create_with_token(cls, access_token: str, id_token: str) -> "Otf":
@@ -168,22 +191,35 @@ class Otf:
             access_token (str): The access token.
             id_token (str): The id token.
         """
-        self = cls(access_token=access_token, id_token=id_token)
-        self.member = await self.get_member_detail()
-        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
-        return self
+        return cls.create(access_token=access_token, id_token=id_token)
 
-    def start_background_refresh(self) -> None:
-        """Start the background task for refreshing the token."""
+    def start_background_refresh(self, callback: Callable | None = None) -> None:
+        """Start the background task for refreshing the token.
+
+        Args:
+            callback (Callable, None): A callback function to run when the token is refreshed,
+            the callable should accept the user object as an argument. Defaults to None.
+
+        """
         logger.debug("Starting background task for refreshing token.")
-        self._refresh_task = asyncio.create_task(self._run_refresh_on_loop())
+        self._refresh_task = asyncio.create_task(self._run_refresh_on_loop(callback))
 
-    async def _run_refresh_on_loop(self) -> None:
-        """Run the refresh token method on a loop to keep the token fresh."""
+    async def _run_refresh_on_loop(self, callback: Callable | None = None) -> None:
+        """Run the refresh token method on a loop to keep the token fresh.
+
+        Args:
+            callback (Callable, None): A callback function to run when the token is refreshed,
+            the callable should accept the user object as an argument. Defaults to None.
+        """
         try:
             while True:
                 await asyncio.sleep(300)
-                self.user = self.user.refresh_token()
+                refreshed = self.user.refresh_token()
+                if refreshed and callback:
+                    if asyncio.iscoroutinefunction(callback):
+                        await callback(self.user)
+                    else:
+                        callback(self.user)
         except asyncio.CancelledError:
             pass
 

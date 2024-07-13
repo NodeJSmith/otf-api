@@ -124,13 +124,14 @@ class OtfUser:
 
         return cls(cognito=cognito_user)
 
-    def refresh_token(self) -> "OtfUser":
+    def refresh_token(self) -> bool:
         """Refresh the user's access token."""
         logger.info("Checking tokens...")
-        if self.cognito.check_token():
+        refreshed = self.cognito.check_token()
+        if refreshed:
             logger.info("Refreshed tokens")
             self.save_to_disk()
-        return self
+        return refreshed
 
     @property
     def member_id(self) -> str:
