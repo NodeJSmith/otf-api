@@ -88,6 +88,7 @@ class Api:
     ):
         self.member: MemberDetail
         self.home_studio: StudioDetail
+        self._ref = None
 
         # Handle shutdown
         try:
@@ -142,7 +143,7 @@ class Api:
 
         self = cls(username=username, password=password, access_token=access_token, id_token=id_token)
         self.member = await self.get_member_detail()
-        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
+        self._ref = asyncio.create_task(self._assign_home_studio(self.member.home_studio_id))
         return self
 
     @classmethod
@@ -154,9 +155,7 @@ class Api:
             username (str): The username of the user.
             password (str): The password of the user.
         """
-        self = cls(username, password)
-        self.member = await self.get_member_detail()
-        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
+        self = cls.create(username=username, password=password)
         return self
 
     @classmethod
@@ -168,9 +167,7 @@ class Api:
             access_token (str): The access token.
             id_token (str): The id token.
         """
-        self = cls(access_token=access_token, id_token=id_token)
-        self.member = await self.get_member_detail()
-        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
+        self = cls.create(access_token=access_token, id_token=id_token)
         return self
 
     def start_background_refresh(self) -> None:
@@ -204,6 +201,9 @@ class Api:
     async def _close_session(self) -> None:
         if not self.session.closed:
             await self.session.close()
+
+    async def _assign_home_studio(self, studio_uuid):
+        self.home_studio = await self.get_studio_detail(studio_uuid)
 
     async def _do(
         self,
