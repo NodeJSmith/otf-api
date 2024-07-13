@@ -84,8 +84,11 @@ class Api:
         self.home_studio: StudioDetail
 
         # Handle shutdown
-        signal.signal(signal.SIGINT, self.shutdown)
-        signal.signal(signal.SIGTERM, self.shutdown)
+        try:
+            signal.signal(signal.SIGINT, self.shutdown)
+            signal.signal(signal.SIGTERM, self.shutdown)
+        except Exception:
+            pass
 
         if username and password:
             self.user = User.login(username, password)
