@@ -11,7 +11,7 @@ import aiohttp
 from loguru import logger
 from yarl import URL
 
-from otf_api.models.auth import User
+from otf_api.auth import User
 from otf_api.models.responses.body_composition_list import BodyCompositionList
 from otf_api.models.responses.book_class import BookClass
 from otf_api.models.responses.cancel_booking import CancelBooking
@@ -57,7 +57,7 @@ API_TELEMETRY_BASE_URL = "api.yuzu.orangetheory.com"
 REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "Accept": "application/json"}
 
 
-class Api:
+class Otf:
     """The main class of the otf-api library. Create an instance using the async method `create`.
 
     Example:
@@ -127,7 +127,7 @@ class Api:
         password: str | None = None,
         access_token: str | None = None,
         id_token: str | None = None,
-    ) -> "Api":
+    ) -> "Otf":
         """Create a new API instance. Accepts either a username and password or an access token and id token.
 
         Args:
@@ -146,7 +146,7 @@ class Api:
         return self
 
     @classmethod
-    async def create_with_username(cls, username: str, password: str) -> "Api":
+    async def create_with_username(cls, username: str, password: str) -> "Otf":
         """Create a new API instance. The username and password are required arguments because even though
         we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
 
@@ -160,7 +160,7 @@ class Api:
         return self
 
     @classmethod
-    async def create_with_token(cls, access_token: str, id_token: str) -> "Api":
+    async def create_with_token(cls, access_token: str, id_token: str) -> "Otf":
         """Create a new API instance. The username and password are required arguments because even though
         we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
 

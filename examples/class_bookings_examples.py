@@ -2,7 +2,7 @@ import asyncio
 import os
 from collections import Counter
 
-from otf_api import Api
+from otf_api import Otf
 from otf_api.models.responses.bookings import BookingStatus
 from otf_api.models.responses.classes import ClassType
 
@@ -11,7 +11,7 @@ PASSWORD = os.getenv("OTF_PASSWORD")
 
 
 async def main():
-    otf = await Api.create(USERNAME, PASSWORD)
+    otf = await Otf.create(USERNAME, PASSWORD)
 
     resp = await otf.get_member_purchases()
     print(resp.model_dump_json(indent=4))

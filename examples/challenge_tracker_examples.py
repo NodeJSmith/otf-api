@@ -1,7 +1,7 @@
 import asyncio
 import os
 
-from otf_api import Api
+from otf_api import Otf
 from otf_api.models.responses import ChallengeType, EquipmentType
 
 USERNAME = os.getenv("OTF_EMAIL")
@@ -9,7 +9,7 @@ PASSWORD = os.getenv("OTF_PASSWORD")
 
 
 async def main():
-    otf = await Api.create(USERNAME, PASSWORD)
+    otf = await Otf.create(USERNAME, PASSWORD)
 
     # challenge tracker content is an overview of the challenges OTF runs
     # and your participation in them

@@ -66,32 +66,6 @@ class User:
     def __init__(self, cognito: Cognito):
         self.cognito = cognito
 
-    @property
-    def member_id(self) -> str:
-        return self.id_claims_data.cognito_username
-
-    @property
-    def member_uuid(self) -> str:
-        return self.access_claims_data.sub
-
-    @property
-    def access_claims_data(self) -> AccessClaimsData:
-        return AccessClaimsData(**self.cognito.access_claims)
-
-    @property
-    def id_claims_data(self) -> IdClaimsData:
-        return IdClaimsData(**self.cognito.id_claims)
-
-    def save_to_disk(self) -> None:
-        self.token_path.parent.mkdir(parents=True, exist_ok=True)
-        data = {
-            "username": self.cognito.username,
-            "id_token": self.cognito.id_token,
-            "access_token": self.cognito.access_token,
-            "refresh_token": self.cognito.refresh_token,
-        }
-        self.token_path.write_text(json.dumps(data))
-
     @classmethod
     def cache_file_exists(cls) -> bool:
         return cls.token_path.exists()
@@ -157,3 +131,29 @@ class User:
             logger.info("Refreshed tokens")
             self.save_to_disk()
         return self
+
+    @property
+    def member_id(self) -> str:
+        return self.id_claims_data.cognito_username
+
+    @property
+    def member_uuid(self) -> str:
+        return self.access_claims_data.sub
+
+    @property
+    def access_claims_data(self) -> AccessClaimsData:
+        return AccessClaimsData(**self.cognito.access_claims)
+
+    @property
+    def id_claims_data(self) -> IdClaimsData:
+        return IdClaimsData(**self.cognito.id_claims)
+
+    def save_to_disk(self) -> None:
+        self.token_path.parent.mkdir(parents=True, exist_ok=True)
+        data = {
+            "username": self.cognito.username,
+            "id_token": self.cognito.id_token,
+            "access_token": self.cognito.access_token,
+            "refresh_token": self.cognito.refresh_token,
+        }
+        self.token_path.write_text(json.dumps(data))
