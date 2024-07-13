@@ -146,14 +146,13 @@ class User:
         """Create a User instance from an id token."""
         cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, access_token=access_token, id_token=id_token)
         cognito_user.verify_tokens()
-
-        if cognito_user.check_token():
-            logger.info("Refreshed tokens")
+        cognito_user.check_token()
 
         return cls(cognito=cognito_user)
 
     def refresh_token(self) -> "User":
         """Refresh the user's access token."""
-        self.cognito.check_token()
-        self.save_to_disk()
+        if self.cognito.check_token():
+            logger.info("Refreshed tokens")
+            self.save_to_disk()
         return self
