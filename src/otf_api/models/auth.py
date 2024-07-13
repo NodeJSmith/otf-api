@@ -152,6 +152,7 @@ class User:
 
     def refresh_token(self) -> "User":
         """Refresh the user's access token."""
+        logger.info("Checking tokens...")
         if self.cognito.check_token():
             logger.info("Refreshed tokens")
             self.save_to_disk()
