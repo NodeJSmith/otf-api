@@ -1,6 +1,8 @@
 from typing import Any
 
+from loguru import logger
 from pycognito import AWSSRP, Cognito, MFAChallengeException
+from pycognito.exceptions import TokenVerificationException
 from pydantic import Field
 from pydantic.config import ConfigDict
 
@@ -11,7 +13,41 @@ USER_POOL_ID = "us-east-1_dYDxUeyL1"
 
 
 class OtfCognito(Cognito):
-    device_metadata: dict[str, Any]
+    device_key: str | None = None
+
+    def __init__(
+        self,
+        user_pool_id,
+        client_id,
+        user_pool_region=None,
+        username=None,
+        id_token=None,
+        refresh_token=None,
+        access_token=None,
+        client_secret=None,
+        access_key=None,
+        secret_key=None,
+        session=None,
+        botocore_config=None,
+        boto3_client_kwargs=None,
+        device_key: str | None = None,
+    ):
+        super().__init__(
+            user_pool_id,
+            client_id,
+            user_pool_region=user_pool_region,
+            username=username,
+            id_token=id_token,
+            refresh_token=refresh_token,
+            access_token=access_token,
+            client_secret=client_secret,
+            access_key=access_key,
+            secret_key=secret_key,
+            session=session,
+            botocore_config=botocore_config,
+            boto3_client_kwargs=boto3_client_kwargs,
+        )
+        self.device_key = device_key
 
     def _set_tokens(self, tokens: dict[str, Any]):
         """Set the tokens and device metadata from the response.
@@ -22,11 +58,9 @@ class OtfCognito(Cognito):
         super()._set_tokens(tokens)
 
         if new_metadata := tokens["AuthenticationResult"].get("NewDeviceMetadata"):
-            self.device_metadata = new_metadata
-        elif not hasattr(self, "device_metadata"):
-            self.device_metadata = {}
+            self.device_key = new_metadata["DeviceKey"]
 
-    def authenticate(self, password: str, client_metadata: dict[str, Any] | None = None):
+    def authenticate(self, password: str, client_metadata: dict[str, Any] | None = None, device_key: str | None = None):
         """
         Authenticate the user using the SRP protocol. Overridden to add `confirm_device` call.
 
@@ -51,16 +85,25 @@ class OtfCognito(Cognito):
         # Set the tokens and device metadata
         self._set_tokens(tokens)
 
-        # Confirm the device so we can use the refresh token
-        aws.confirm_device(tokens)
+        if not device_key:
+            # Confirm the device so we can use the refresh token
+            aws.confirm_device(tokens)
+        else:
+            self.device_key = device_key
+            try:
+                self.renew_access_token()
+            except TokenVerificationException:
+                logger.error("Failed to renew access token. Confirming device.")
+                self.device_key = None
+                aws.confirm_device(tokens)
 
     def renew_access_token(self):
         """Sets a new access token on the User using the cached refresh token and device metadata."""
         auth_params = {"REFRESH_TOKEN": self.refresh_token}
         self._add_secret_hash(auth_params, "SECRET_HASH")
 
-        if self.device_metadata:
-            auth_params["DEVICE_KEY"] = self.device_metadata["DeviceKey"]
+        if self.device_key:
+            auth_params["DEVICE_KEY"] = self.device_key
 
         refresh_response = self.client.initiate_auth(
             ClientId=self.client_id, AuthFlow="REFRESH_TOKEN_AUTH", AuthParameters=auth_params
@@ -137,7 +180,9 @@ class OtfUser(OtfItemBase):
         return user
 
     @classmethod
-    def from_token(cls, access_token: str, id_token: str) -> "OtfUser":
+    def from_token(
+        cls, access_token: str, id_token: str, refresh_token: str | None = None, device_key: str | None = None
+    ) -> "OtfUser":
         """Create a User instance from an id token.
 
         Args:
@@ -147,7 +192,14 @@ class OtfUser(OtfItemBase):
         Returns:
             OtfUser: The user instance
         """
-        cognito_user = OtfCognito(USER_POOL_ID, CLIENT_ID, access_token=access_token, id_token=id_token)
+        cognito_user = OtfCognito(
+            USER_POOL_ID,
+            CLIENT_ID,
+            access_token=access_token,
+            id_token=id_token,
+            refresh_token=refresh_token,
+            device_key=device_key,
+        )
         cognito_user.verify_tokens()
         cognito_user.check_token()
 
@@ -170,8 +222,12 @@ class OtfUser(OtfItemBase):
         return IdClaimsData(**self.cognito.id_claims)
 
     def get_tokens(self) -> dict[str, str]:
-        return {
+        tokens = {
             "id_token": self.cognito.id_token,
             "access_token": self.cognito.access_token,
             "refresh_token": self.cognito.refresh_token,
         }
+        if self.cognito.device_metadata:
+            tokens["device_key"] = self.cognito.device_metadata["DeviceKey"]
+
+        return tokens
