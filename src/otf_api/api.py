@@ -1,6 +1,7 @@
 import asyncio
 import contextlib
 import json
+import os
 import typing
 from collections.abc import Callable
 from datetime import date, datetime
@@ -12,32 +13,36 @@ from loguru import logger
 from yarl import URL
 
 from otf_api.auth import OtfUser
-from otf_api.models.responses.body_composition_list import BodyCompositionList
-from otf_api.models.responses.book_class import BookClass
-from otf_api.models.responses.cancel_booking import CancelBooking
-from otf_api.models.responses.classes import ClassType, DoW, OtfClassList
-from otf_api.models.responses.favorite_studios import FavoriteStudioList
-from otf_api.models.responses.lifetime_stats import StatsResponse, StatsTime
-from otf_api.models.responses.performance_summary_detail import PerformanceSummaryDetail
-from otf_api.models.responses.performance_summary_list import PerformanceSummaryList
-from otf_api.models.responses.studio_detail import Pagination, StudioDetail, StudioDetailList
-from otf_api.models.responses.telemetry import Telemetry
-from otf_api.models.responses.telemetry_hr_history import TelemetryHrHistory
-from otf_api.models.responses.telemetry_max_hr import TelemetryMaxHr
-
-from .models import (
+from otf_api.models import (
+    BodyCompositionList,
+    BookClass,
     BookingList,
     BookingStatus,
+    CancelBooking,
     ChallengeTrackerContent,
     ChallengeTrackerDetailList,
     ChallengeType,
+    ClassType,
+    DoW,
     EquipmentType,
+    FavoriteStudioList,
     LatestAgreement,
     MemberDetail,
     MemberMembership,
     MemberPurchaseList,
+    OtfClassList,
     OutOfStudioWorkoutHistoryList,
+    Pagination,
+    PerformanceSummaryDetail,
+    PerformanceSummaryList,
+    StatsResponse,
+    StatsTime,
+    StudioDetail,
+    StudioDetailList,
     StudioServiceList,
+    Telemetry,
+    TelemetryHrHistory,
+    TelemetryMaxHr,
     TotalClasses,
     WorkoutList,
 )
@@ -105,7 +110,7 @@ class Otf:
             refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
         """
         self.member: MemberDetail
-        self.home_studio: StudioDetail
+        self.home_studio_uuid: str
 
         if user:
             self.user = user
@@ -133,8 +138,8 @@ class Otf:
 
     async def populate_member_details(self) -> None:
         """Populate the member and home studio details."""
-        self.member = await self.get_member_detail()
-        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
+        self.member = await self.get_member_detail(False, False, False)
+        self.home_studio_uuid = self.member.home_studio.studio_uuid
 
     @classmethod
     async def create(
@@ -300,9 +305,9 @@ class Otf:
         """
 
         if not studio_uuids:
-            studio_uuids = [self.home_studio.studio_uuid]
-        elif include_home_studio and self.home_studio.studio_uuid not in studio_uuids:
-            studio_uuids.append(self.home_studio.studio_uuid)
+            studio_uuids = [self.home_studio_uuid]
+        elif include_home_studio and self.home_studio_uuid not in studio_uuids:
+            studio_uuids.append(self.home_studio_uuid)
 
         path = "/v1/classes"
 
@@ -338,7 +343,7 @@ class Otf:
             classes_list.classes = [c for c in classes_list.classes if not c.canceled]
 
         for otf_class in classes_list.classes:
-            otf_class.is_home_studio = otf_class.studio.id == self.home_studio.studio_uuid
+            otf_class.is_home_studio = otf_class.studio.id == self.home_studio_uuid
 
         if day_of_week:
             classes_list.classes = [c for c in classes_list.classes if c.day_of_week_enum in day_of_week]
@@ -473,7 +478,7 @@ class Otf:
         for booking in data.bookings:
             if not booking.otf_class:
                 continue
-            if booking.otf_class.studio.studio_uuid == self.home_studio.studio_uuid:
+            if booking.otf_class.studio.studio_uuid == self.home_studio_uuid:
                 booking.is_home_studio = True
             else:
                 booking.is_home_studio = False
@@ -718,7 +723,7 @@ class Otf:
         Returns:
             StudioServiceList: The services available at the studio.
         """
-        studio_uuid = studio_uuid or self.home_studio.studio_uuid
+        studio_uuid = studio_uuid or self.home_studio_uuid
         data = await self._default_request("GET", f"/member/studios/{studio_uuid}/services")
         return StudioServiceList(data=data["data"])
 
@@ -769,7 +774,7 @@ class Otf:
         Returns:
             StudioDetail: Detailed information about the studio.
         """
-        studio_uuid = studio_uuid or self.home_studio.studio_uuid
+        studio_uuid = studio_uuid or self.home_studio_uuid
 
         path = f"/mobile/v1/studios/{studio_uuid}"
         params = {"include": "locations"}
@@ -805,8 +810,11 @@ class Otf:
         """
         path = "/mobile/v1/studios"
 
-        latitude = latitude or self.home_studio.studio_location.latitude
-        longitude = longitude or self.home_studio.studio_location.longitude
+        if not latitude and not longitude:
+            home_studio = await self.get_studio_detail()
+
+            latitude = home_studio.studio_location.latitude
+            longitude = home_studio.studio_location.longitude
 
         if page_size > 50:
             self.logger.warning("The API does not support more than 50 results per page, limiting to 50.")
@@ -957,3 +965,11 @@ class Otf:
 
 def active_time_to_data_points(active_time: int) -> float:
     return active_time / 60 * 2
+
+
+async def main():
+    _ = await Otf.create(os.getenv("OTF_USERNAME"), os.getenv("OTF_PASSWORD"))
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
