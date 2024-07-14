@@ -1,7 +1,6 @@
 import asyncio
 import contextlib
 import json
-import os
 import typing
 from collections.abc import Callable
 from datetime import date, datetime
@@ -965,11 +964,3 @@ class Otf:
 
 def active_time_to_data_points(active_time: int) -> float:
     return active_time / 60 * 2
-
-
-async def main():
-    _ = await Otf.create(os.getenv("OTF_USERNAME"), os.getenv("OTF_PASSWORD"))
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
