@@ -179,6 +179,21 @@ class Otf:
         return data
 
     @classmethod
+    def hydrate(cls, data: dict[str, Any]) -> "Otf":
+        """Create a new API instance from a hydration dictionary.
+
+        Args:
+            data (dict): The hydration dictionary.
+
+        Returns:
+            Otf: The API instance.
+        """
+        user = OtfUser.from_token(
+            data["access_token"], data["id_token"], data.get("refresh_token"), data.get("device_key")
+        )
+        return cls(user=user, home_studio_uuid=data["home_studio_uuid"])
+
+    @classmethod
     async def create(
         cls,
         username: str | None = None,
