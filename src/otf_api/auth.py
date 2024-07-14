@@ -1,3 +1,4 @@
+import typing
 from typing import Any
 
 from loguru import logger
@@ -8,6 +9,10 @@ from pydantic.config import ConfigDict
 
 from otf_api.models.base import OtfItemBase
 
+if typing.TYPE_CHECKING:
+    from boto3.session import Session
+    from botocore.config import Config
+
 CLIENT_ID = "65knvqta6p37efc2l3eh26pl5o"  # from otlive
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
 
@@ -17,19 +22,19 @@ class OtfCognito(Cognito):
 
     def __init__(
         self,
-        user_pool_id,
-        client_id,
-        user_pool_region=None,
-        username=None,
-        id_token=None,
-        refresh_token=None,
-        access_token=None,
-        client_secret=None,
-        access_key=None,
-        secret_key=None,
-        session=None,
-        botocore_config=None,
-        boto3_client_kwargs=None,
+        user_pool_id: str,
+        client_id: str,
+        user_pool_region: str | None = None,
+        username: str | None = None,
+        id_token: str | None = None,
+        refresh_token: str | None = None,
+        access_token: str | None = None,
+        client_secret: str | None = None,
+        access_key: str | None = None,
+        secret_key: str | None = None,
+        session: "Session|None" = None,
+        botocore_config: "Config|None" = None,
+        boto3_client_kwargs: dict[str, Any] | None = None,
         device_key: str | None = None,
     ):
         super().__init__(
@@ -227,7 +232,7 @@ class OtfUser(OtfItemBase):
             "access_token": self.cognito.access_token,
             "refresh_token": self.cognito.refresh_token,
         }
-        if self.cognito.device_metadata:
-            tokens["device_key"] = self.cognito.device_metadata["DeviceKey"]
+        if self.cognito.device_key:
+            tokens["device_key"] = self.cognito.device_key
 
         return tokens
