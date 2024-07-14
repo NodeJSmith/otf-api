@@ -80,7 +80,7 @@ class Otf:
 
     logger: "Logger" = logger
     user: OtfUser
-    session: aiohttp.ClientSession
+    _session: aiohttp.ClientSession
 
     def __init__(
         self,
@@ -89,6 +89,7 @@ class Otf:
         access_token: str | None = None,
         id_token: str | None = None,
         user: OtfUser | None = None,
+        home_studio_uuid: str | None = None,
     ):
         """Create a new API instance.
 
@@ -104,6 +105,7 @@ class Otf:
             access_token (str, optional): The access token. Default is None.
             id_token (str, optional): The id token. Default is None.
             user (OtfUser, optional): A user object. Default is None.
+            home_studio_uuid (str, optional): The home studio UUID. Default is None.
         """
         self.member: MemberDetail
         self.home_studio_uuid: str
@@ -125,8 +127,6 @@ class Otf:
             provided_kwargs = [k for k, v in kwargs.items() if v]
             raise ValueError("No valid authentication method provided: Provided kwargs: " + ", ".join(provided_kwargs))
 
-        self.session = aiohttp.ClientSession(headers=self.headers)
-
         # simplify access to member_id and member_uuid
         self._member_id = self.user.member_id
         self._member_uuid = self.user.member_uuid
@@ -134,6 +134,7 @@ class Otf:
             "koji-member-id": self._member_id,
             "koji-member-email": self.user.id_claims_data.email,
         }
+        self.home_studio_uuid = home_studio_uuid
 
     @property
     def headers(self) -> dict[str, str]:
@@ -148,10 +149,34 @@ class Otf:
             "Accept": "application/json",
         }
 
+    @property
+    def session(self) -> aiohttp.ClientSession:
+        """Get the aiohttp session."""
+        if not getattr(self, "_session", None):
+            self._session = aiohttp.ClientSession(headers=self.headers)
+
+        return self._session
+
     async def populate_member_details(self) -> None:
         """Populate the member and home studio details."""
+        if self.home_studio_uuid is not None:
+            logger.debug("Home studio UUID already set, skipping member details population.")
+            return
+
         self.member = await self.get_member_detail(False, False, False)
         self.home_studio_uuid = self.member.home_studio.studio_uuid
+
+    def get_hydration_dict(self) -> dict[str, Any]:
+        """Get the hydration dictionary to store the user's tokens and home studio UUID.
+
+        This allows the Otf object to be re-created without needing to re-authenticate.
+
+        Returns:
+            dict: The hydration dictionary.
+        """
+        data = self.user.get_tokens()
+        data["home_studio_uuid"] = self.home_studio_uuid
+        return data
 
     @classmethod
     async def create(
@@ -161,6 +186,7 @@ class Otf:
         access_token: str | None = None,
         id_token: str | None = None,
         user: OtfUser | None = None,
+        home_studio_uuid: str | None = None,
     ) -> "Otf":
         """Create a new API instance. Accepts either a username and password or an access token and id token.
 
@@ -170,12 +196,20 @@ class Otf:
             access_token (str, None): The access token. Default is None.
             id_token (str, None): The id token. Default is None.
             user (OtfUser, None): A user object. Default is None.
+            home_studio_uuid (str, None): The home studio UUID. Default is None.
 
         Returns:
             Api: The API instance.
         """
 
-        self = cls(username=username, password=password, access_token=access_token, id_token=id_token, user=user)
+        self = cls(
+            username=username,
+            password=password,
+            access_token=access_token,
+            id_token=id_token,
+            user=user,
+            home_studio_uuid=home_studio_uuid,
+        )
         await self.populate_member_details()
         return self
 
