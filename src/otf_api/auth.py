@@ -1,8 +1,6 @@
-import asyncio
-from collections.abc import Callable
+from typing import Any
 
-from loguru import logger
-from pycognito import Cognito
+from pycognito import AWSSRP, Cognito, MFAChallengeException
 from pydantic import Field
 from pydantic.config import ConfigDict
 
@@ -10,6 +8,64 @@ from otf_api.models.base import OtfItemBase
 
 CLIENT_ID = "65knvqta6p37efc2l3eh26pl5o"  # from otlive
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
+
+
+class OtfCognito(Cognito):
+    device_metadata: dict[str, Any]
+
+    def _set_tokens(self, tokens: dict[str, Any]):
+        """Set the tokens and device metadata from the response.
+
+        Args:
+            tokens (dict): The response from the Cognito service.
+        """
+        super()._set_tokens(tokens)
+
+        if new_metadata := tokens["AuthenticationResult"].get("NewDeviceMetadata"):
+            self.device_metadata = new_metadata
+        elif not hasattr(self, "device_metadata"):
+            self.device_metadata = {}
+
+    def authenticate(self, password: str, client_metadata: dict[str, Any] | None = None):
+        """
+        Authenticate the user using the SRP protocol. Overridden to add `confirm_device` call.
+
+        Args:
+            password (str): The user's password
+            client_metadata (dict, optional): Any additional client metadata to send to Cognito
+        """
+        aws = AWSSRP(
+            username=self.username,
+            password=password,
+            pool_id=self.user_pool_id,
+            client_id=self.client_id,
+            client=self.client,
+            client_secret=self.client_secret,
+        )
+        try:
+            tokens = aws.authenticate_user(client_metadata=client_metadata)
+        except MFAChallengeException as mfa_challenge:
+            self.mfa_tokens = mfa_challenge.get_tokens()
+            raise mfa_challenge
+
+        # Set the tokens and device metadata
+        self._set_tokens(tokens)
+
+        # Confirm the device so we can use the refresh token
+        aws.confirm_device(tokens)
+
+    def renew_access_token(self):
+        """Sets a new access token on the User using the cached refresh token and device metadata."""
+        auth_params = {"REFRESH_TOKEN": self.refresh_token}
+        self._add_secret_hash(auth_params, "SECRET_HASH")
+
+        if self.device_metadata:
+            auth_params["DEVICE_KEY"] = self.device_metadata["DeviceKey"]
+
+        refresh_response = self.client.initiate_auth(
+            ClientId=self.client_id, AuthFlow="REFRESH_TOKEN_AUTH", AuthParameters=auth_params
+        )
+        self._set_tokens(refresh_response)
 
 
 class IdClaimsData(OtfItemBase):
@@ -61,72 +117,41 @@ class AccessClaimsData(OtfItemBase):
 
 class OtfUser(OtfItemBase):
     model_config = ConfigDict(arbitrary_types_allowed=True)
-    cognito: Cognito
-    refresh_callback: Callable[["OtfUser"], None] | None = None
-
-    def __init__(self, cognito: Cognito, refresh_callback: Callable[["OtfUser"], None] | None = None):
-        """Create a new User instance.
-
-        Args:
-            cognito (Cognito): The Cognito instance to use.
-            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
-        """
-        super().__init__(cognito=cognito, refresh_callback=refresh_callback)
-
-        self._refresh_task = asyncio.create_task(self.start_background_refresh())
+    cognito: OtfCognito
 
     @classmethod
-    def login(
-        cls, username: str, password: str, refresh_callback: Callable[["OtfUser"], None] | None = None
-    ) -> "OtfUser":
+    def login(cls, username: str, password: str) -> "OtfUser":
         """Login and return a User instance.
 
         Args:
             username (str): The username to login with.
             password (str): The password to login with.
-            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
 
         Returns:
             OtfUser: The logged in user.
         """
-        cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, username=username)
+        cognito_user = OtfCognito(USER_POOL_ID, CLIENT_ID, username=username)
         cognito_user.authenticate(password)
         cognito_user.check_token()
-        user = cls(cognito=cognito_user, refresh_callback=refresh_callback)
+        user = cls(cognito=cognito_user)
         return user
 
     @classmethod
-    def from_token(
-        cls, access_token: str, id_token: str, refresh_callback: Callable[["OtfUser"], None] | None = None
-    ) -> "OtfUser":
+    def from_token(cls, access_token: str, id_token: str) -> "OtfUser":
         """Create a User instance from an id token.
 
         Args:
             access_token (str): The access token.
             id_token (str): The id token.
-            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
-            Callable should accept the user instance as an argument. Defaults to None.
 
         Returns:
             OtfUser: The user instance
         """
-        cognito_user = Cognito(USER_POOL_ID, CLIENT_ID, access_token=access_token, id_token=id_token)
+        cognito_user = OtfCognito(USER_POOL_ID, CLIENT_ID, access_token=access_token, id_token=id_token)
         cognito_user.verify_tokens()
         cognito_user.check_token()
 
-        return cls(cognito=cognito_user, refresh_callback=refresh_callback)
-
-    def refresh_token(self) -> bool:
-        """Refresh the user's access token.
-
-        Returns:
-            bool: True if the token was refreshed, False otherwise.
-        """
-        logger.info("Checking tokens...")
-        refreshed = self.cognito.check_token()
-        if refreshed:
-            logger.info("Refreshed tokens")
-        return refreshed
+        return cls(cognito=cognito_user)
 
     @property
     def member_id(self) -> str:
@@ -150,19 +175,3 @@ class OtfUser(OtfItemBase):
             "access_token": self.cognito.access_token,
             "refresh_token": self.cognito.refresh_token,
         }
-
-    async def start_background_refresh(self) -> None:
-        """Start the background task for refreshing the token."""
-        logger.debug("Starting background task for refreshing token.")
-        """Run the refresh token method on a loop to keep the token fresh."""
-        try:
-            while True:
-                await asyncio.sleep(300)
-                refreshed = self.refresh_token()
-                if refreshed and self.refresh_callback:
-                    if asyncio.iscoroutinefunction(self.refresh_callback):
-                        await self.refresh_callback(self)
-                    elif self.refresh_callback:
-                        self.refresh_callback(self)
-        except asyncio.CancelledError:
-            pass

@@ -2,7 +2,6 @@ import asyncio
 import contextlib
 import json
 import typing
-from collections.abc import Callable
 from datetime import date, datetime
 from math import ceil
 from typing import Any
@@ -90,7 +89,6 @@ class Otf:
         access_token: str | None = None,
         id_token: str | None = None,
         user: OtfUser | None = None,
-        refresh_callback: Callable[["OtfUser"], None] | None = None,
     ):
         """Create a new API instance.
 
@@ -106,7 +104,6 @@ class Otf:
             access_token (str, optional): The access token. Default is None.
             id_token (str, optional): The id token. Default is None.
             user (OtfUser, optional): A user object. Default is None.
-            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
         """
         self.member: MemberDetail
         self.home_studio_uuid: str
@@ -114,18 +111,13 @@ class Otf:
         if user:
             self.user = user
         elif username and password:
-            self.user = OtfUser.login(username, password, refresh_callback=refresh_callback)
+            self.user = OtfUser.login(username, password)
         elif access_token and id_token:
-            self.user = OtfUser.from_token(access_token, id_token, refresh_callback=refresh_callback)
+            self.user = OtfUser.from_token(access_token, id_token)
         else:
             raise ValueError("No valid authentication method provided.")
 
-        headers = {
-            "Authorization": f"Bearer {self.user.cognito.id_token}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
-        self.session = aiohttp.ClientSession(headers=headers)
+        self.session = aiohttp.ClientSession(headers=self.headers)
 
         # simplify access to member_id and member_uuid
         self._member_id = self.user.member_id
@@ -133,6 +125,19 @@ class Otf:
         self._perf_api_headers = {
             "koji-member-id": self._member_id,
             "koji-member-email": self.user.id_claims_data.email,
+        }
+
+    @property
+    def headers(self) -> dict[str, str]:
+        """Get the headers for the API request."""
+
+        # check the token before making a request in case it has expired
+        self.user.cognito.check_token()
+
+        return {
+            "Authorization": f"Bearer {self.user.cognito.id_token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
         }
 
     async def populate_member_details(self) -> None:
@@ -148,7 +153,6 @@ class Otf:
         access_token: str | None = None,
         id_token: str | None = None,
         user: OtfUser | None = None,
-        refresh_callback: Callable[["OtfUser"], None] | None = None,
     ) -> "Otf":
         """Create a new API instance. Accepts either a username and password or an access token and id token.
 
@@ -158,20 +162,12 @@ class Otf:
             access_token (str, None): The access token. Default is None.
             id_token (str, None): The id token. Default is None.
             user (OtfUser, None): A user object. Default is None.
-            refresh_callback (Callable[[OtfUser], None], optional): The callback to call when the tokens are refreshed.
 
         Returns:
             Api: The API instance.
         """
 
-        self = cls(
-            username=username,
-            password=password,
-            access_token=access_token,
-            id_token=id_token,
-            user=user,
-            refresh_callback=refresh_callback,
-        )
+        self = cls(username=username, password=password, access_token=access_token, id_token=id_token, user=user)
         await self.populate_member_details()
         return self
 
@@ -206,6 +202,12 @@ class Otf:
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
         logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
+
+        # ensure we have headers that contain the most up-to-date token
+        if not headers:
+            headers = self.headers
+        else:
+            headers.update(self.headers)
 
         text = None
         async with self.session.request(method, full_url, headers=headers, params=params, **kwargs) as response:
