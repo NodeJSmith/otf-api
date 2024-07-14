@@ -227,12 +227,12 @@ class OtfUser(OtfItemBase):
         return IdClaimsData(**self.cognito.id_claims)
 
     def get_tokens(self) -> dict[str, str]:
-        tokens = {
+        return {
             "id_token": self.cognito.id_token,
             "access_token": self.cognito.access_token,
             "refresh_token": self.cognito.refresh_token,
         }
-        if self.cognito.device_key:
-            tokens["device_key"] = self.cognito.device_key
 
-        return tokens
+    @property
+    def device_key(self) -> str:
+        return self.cognito.device_key
