@@ -115,7 +115,15 @@ class Otf:
         elif access_token and id_token:
             self.user = OtfUser.from_token(access_token, id_token)
         else:
-            raise ValueError("No valid authentication method provided.")
+            kwargs = {
+                "username": username,
+                "password": password,
+                "access_token": access_token,
+                "id_token": id_token,
+                "user": user,
+            }
+            provided_kwargs = [k for k, v in kwargs.items() if v]
+            raise ValueError("No valid authentication method provided: Provided kwargs: " + ", ".join(provided_kwargs))
 
         self.session = aiohttp.ClientSession(headers=self.headers)
 
