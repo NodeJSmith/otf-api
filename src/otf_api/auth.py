@@ -55,11 +55,15 @@ class OtfCognito(Cognito):
         self.device_key = device_key
 
     @property
-    def device_key(self) -> str:
+    def device_key(self) -> str | None:
         return self._device_key
 
     @device_key.setter
-    def device_key(self, value: str):
+    def device_key(self, value: str | None):
+        if not value:
+            self._device_key = value
+            return
+
         redacted_value = value[:4] + "*" * (len(value) - 8) + value[-4:]
         logger.info(f"Setting device key: {redacted_value}")
         self._device_key = value
