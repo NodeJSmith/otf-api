@@ -1,6 +1,8 @@
 import typing
 from typing import Any
 
+import jwt
+import pendulum
 from loguru import logger
 from pycognito import AWSSRP, Cognito, MFAChallengeException
 from pycognito.exceptions import TokenVerificationException
@@ -116,6 +118,27 @@ class OtfCognito(Cognito):
                 logger.error("Failed to renew access token. Confirming device.")
                 self.device_key = None
                 aws.confirm_device(tokens)
+
+    def check_token(self, renew=True):
+        """
+        Checks the exp attribute of the access_token and either refreshes
+        the tokens by calling the renew_access_tokens method or does nothing
+        :param renew: bool indicating whether to refresh on expiration
+        :return: bool indicating whether access_token has expired
+        """
+        if not self.access_token:
+            raise AttributeError("Access Token Required to Check Token")
+        now = pendulum.now()
+        dec_access_token = jwt.decode(self.access_token, options={"verify_signature": False})
+
+        exp = pendulum.DateTime.fromtimestamp(dec_access_token["exp"])
+        if now > exp.subtract(minutes=15):
+            expired = True
+            if renew:
+                self.renew_access_token()
+        else:
+            expired = False
+        return expired
 
     def renew_access_token(self):
         """Sets a new access token on the User using the cached refresh token and device metadata."""
