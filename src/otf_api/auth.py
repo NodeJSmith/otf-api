@@ -61,6 +61,7 @@ class OtfCognito(Cognito):
     @device_key.setter
     def device_key(self, value: str | None):
         if not value:
+            logger.info("Clearing device key")
             self._device_key = value
             return
 
