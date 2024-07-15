@@ -18,7 +18,7 @@ USER_POOL_ID = "us-east-1_dYDxUeyL1"
 
 
 class OtfCognito(Cognito):
-    device_key: str | None = None
+    _device_key: str | None = None
 
     def __init__(
         self,
@@ -53,6 +53,16 @@ class OtfCognito(Cognito):
             boto3_client_kwargs=boto3_client_kwargs,
         )
         self.device_key = device_key
+
+    @property
+    def device_key(self) -> str:
+        return self._device_key
+
+    @device_key.setter
+    def device_key(self, value: str):
+        redacted_value = value[:4] + "*" * (len(value) - 8) + value[-4:]
+        logger.info(f"Setting device key: {redacted_value}")
+        self._device_key = value
 
     def _set_tokens(self, tokens: dict[str, Any]):
         """Set the tokens and device metadata from the response.
@@ -108,6 +118,7 @@ class OtfCognito(Cognito):
         self._add_secret_hash(auth_params, "SECRET_HASH")
 
         if self.device_key:
+            logger.info("Using device key for refresh token")
             auth_params["DEVICE_KEY"] = self.device_key
 
         refresh_response = self.client.initiate_auth(
