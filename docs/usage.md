@@ -2,7 +2,7 @@
 
 ## Overview
 
-To use the API, you need to create an instance of the `Api` class, providing your email address and password. This will authenticate you with the API and allow you to make requests. When the `Api` object is created it automatically grabs your member details and home studio, to simplify the process of making requests.
+To use the API, you need to create an instance of the `Otf` class, providing your email address and password. This will authenticate you with the API and allow you to make requests. When the `Otf` object is created it automatically grabs your member details and home studio, to simplify the process of making requests.
 
 ### Data
 

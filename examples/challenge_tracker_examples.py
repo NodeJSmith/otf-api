@@ -9,7 +9,7 @@ PASSWORD = os.getenv("OTF_PASSWORD")
 
 
 async def main():
-    otf = await Otf.create(USERNAME, PASSWORD)
+    otf = Otf(USERNAME, PASSWORD)
 
     # challenge tracker content is an overview of the challenges OTF runs
     # and your participation in them

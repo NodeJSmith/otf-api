@@ -8,7 +8,7 @@ PASSWORD = os.getenv("OTF_PASSWORD")
 
 
 async def main():
-    otf = await Otf.create(USERNAME, PASSWORD)
+    otf = otf = Otf(USERNAME, PASSWORD)
 
     # if you need to figure out what studios are in an area, you can call `search_studios_by_geo`
     # which takes latitude, longitude, distance, page_index, and page_size as arguments
