@@ -119,7 +119,7 @@ class OtfCognito(Cognito):
                 self.device_key = None
                 aws.confirm_device(tokens)
 
-    def check_token(self, renew=True):
+    def check_token(self, renew: bool = True) -> bool:
         """
         Checks the exp attribute of the access_token and either refreshes
         the tokens by calling the renew_access_tokens method or does nothing
@@ -153,6 +153,49 @@ class OtfCognito(Cognito):
             ClientId=self.client_id, AuthFlow="REFRESH_TOKEN_AUTH", AuthParameters=auth_params
         )
         self._set_tokens(refresh_response)
+
+    @classmethod
+    def from_token(
+        cls, access_token: str, id_token: str, refresh_token: str | None = None, device_key: str | None = None
+    ) -> "OtfCognito":
+        """Create an OtfCognito instance from an id token.
+
+        Args:
+            access_token (str): The access token.
+            id_token (str): The id token.
+            refresh_token (str, optional): The refresh token. Defaults to None.
+            device_key (str, optional): The device key. Defaults
+
+        Returns:
+            OtfCognito: The user instance
+        """
+        cognito = OtfCognito(
+            USER_POOL_ID,
+            CLIENT_ID,
+            access_token=access_token,
+            id_token=id_token,
+            refresh_token=refresh_token,
+            device_key=device_key,
+        )
+        cognito.verify_tokens()
+        cognito.check_token()
+        return cognito
+
+    @classmethod
+    def login(cls, username: str, password: str) -> "OtfCognito":
+        """Create an OtfCognito instance from a username and password.
+
+        Args:
+            username (str): The username to login with.
+            password (str): The password to login with.
+
+        Returns:
+            OtfCognito: The logged in user.
+        """
+        cognito_user = OtfCognito(USER_POOL_ID, CLIENT_ID, username=username)
+        cognito_user.authenticate(password)
+        cognito_user.check_token()
+        return cognito_user
 
 
 class IdClaimsData(OtfItemBase):
@@ -206,48 +249,42 @@ class OtfUser(OtfItemBase):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     cognito: OtfCognito
 
-    @classmethod
-    def login(cls, username: str, password: str) -> "OtfUser":
-        """Login and return a User instance.
+    def __init__(
+        self,
+        username: str | None = None,
+        password: str | None = None,
+        id_token: str | None = None,
+        access_token: str | None = None,
+        refresh_token: str | None = None,
+        device_key: str | None = None,
+        cognito: OtfCognito | None = None,
+    ):
+        """Create a User instance.
 
         Args:
-            username (str): The username to login with.
-            password (str): The password to login with.
+            username (str, optional): The username to login with. Defaults to None.
+            password (str, optional): The password to login with. Defaults to None.
+            id_token (str, optional): The id token. Defaults to None.
+            access_token (str, optional): The access token. Defaults to None.
+            refresh_token (str, optional): The refresh token. Defaults to None.
+            device_key (str, optional): The device key. Defaults to None.
+            cognito (OtfCognito, optional): A Cognito instance. Defaults to None.
 
-        Returns:
-            OtfUser: The logged in user.
+        Raises:
+            ValueError: Must provide either username and password or id token
+
+
         """
-        cognito_user = OtfCognito(USER_POOL_ID, CLIENT_ID, username=username)
-        cognito_user.authenticate(password)
-        cognito_user.check_token()
-        user = cls(cognito=cognito_user)
-        return user
+        if cognito:
+            cognito = cognito
+        elif username and password:
+            cognito = OtfCognito.login(username, password)
+        elif access_token and id_token:
+            cognito = OtfCognito.from_token(access_token, id_token, refresh_token, device_key)
+        else:
+            raise ValueError("Must provide either username and password or id token.")
 
-    @classmethod
-    def from_token(
-        cls, access_token: str, id_token: str, refresh_token: str | None = None, device_key: str | None = None
-    ) -> "OtfUser":
-        """Create a User instance from an id token.
-
-        Args:
-            access_token (str): The access token.
-            id_token (str): The id token.
-
-        Returns:
-            OtfUser: The user instance
-        """
-        cognito_user = OtfCognito(
-            USER_POOL_ID,
-            CLIENT_ID,
-            access_token=access_token,
-            id_token=id_token,
-            refresh_token=refresh_token,
-            device_key=device_key,
-        )
-        cognito_user.verify_tokens()
-        cognito_user.check_token()
-
-        return cls(cognito=cognito_user)
+        super().__init__(cognito=cognito)
 
     @property
     def member_id(self) -> str:
