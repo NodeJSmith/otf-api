@@ -12,10 +12,9 @@ from rich.theme import Theme
 
 import otf_api
 from otf_api.cli._utilities import is_async_fn, with_cli_exception_handling
-from otf_api.models.auth import User
 
 if typing.TYPE_CHECKING:
-    from otf_api.api import Api
+    from otf_api import Otf
 
 
 class OutputType(str, Enum):
@@ -79,7 +78,7 @@ class AsyncTyper(typer.Typer):
         self.console = Console(highlight=False, theme=theme, color_system="auto")
 
         # TODO: clean these up later, just don't want warnings everywhere that these could be None
-        self.api: Api = None  # type: ignore
+        self.api: Otf = None  # type: ignore
         self.username: str = None  # type: ignore
         self.password: str = None  # type: ignore
         self.output: OutputType = None  # type: ignore
@@ -89,10 +88,6 @@ class AsyncTyper(typer.Typer):
     def set_username(self, username: str | None = None) -> None:
         if username:
             self.username = username
-            return
-
-        if User.cache_file_exists():
-            self.username = User.username_from_disk()
             return
 
         raise ValueError("Username not provided and not found in cache")

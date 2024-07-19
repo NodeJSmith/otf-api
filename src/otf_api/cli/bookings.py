@@ -56,7 +56,7 @@ async def list_bookings(
     bk_status = BookingStatus.get_from_key_insensitive(status.value) if status else None
 
     if not base_app.api:
-        base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+        base_app.api = await otf_api.Otf.create(base_app.username, base_app.password)
     bookings = await base_app.api.get_bookings(start_date, end_date, bk_status, limit, exclude_cancelled)
 
     if base_app.output == "json":
@@ -82,7 +82,7 @@ async def book(class_uuid: str = typer.Option(help="Class UUID to cancel")) -> N
     logger.info(f"Booking class {class_uuid}")
 
     if not base_app.api:
-        base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+        base_app.api = await otf_api.Otf.create(base_app.username, base_app.password)
     booking = await base_app.api.book_class(class_uuid)
 
     base_app.console.print(booking)
@@ -115,7 +115,7 @@ async def book_interactive(
             class_type_enums = None
 
         if not base_app.api:
-            base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+            base_app.api = await otf_api.Otf.create(base_app.username, base_app.password)
 
         classes = await base_app.api.get_classes(
             studio_uuids,
@@ -152,7 +152,7 @@ async def cancel_interactive() -> None:
 
     with base_app.console.status("Getting bookings...", spinner="arc"):
         if not base_app.api:
-            base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+            base_app.api = await otf_api.Otf.create(base_app.username, base_app.password)
         bookings = await base_app.api.get_bookings()
 
     result = prompt_select_from_table(
@@ -177,7 +177,7 @@ async def cancel(booking_uuid: str = typer.Option(help="Booking UUID to cancel")
     logger.info(f"Cancelling booking {booking_uuid}")
 
     if not base_app.api:
-        base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+        base_app.api = await otf_api.Otf.create(base_app.username, base_app.password)
     booking = await base_app.api.cancel_booking(booking_uuid)
 
     base_app.console.print(booking)
@@ -211,7 +211,7 @@ async def list_classes(
     class_type_enum = ClassType.get_from_key_insensitive(class_type.value) if class_type else None
 
     if not base_app.api:
-        base_app.api = await otf_api.Api.create(base_app.username, base_app.password)
+        base_app.api = await otf_api.Otf.create(base_app.username, base_app.password)
     classes = await base_app.api.get_classes(
         studio_uuids, include_home_studio, start_date, end_date, limit, class_type_enum, exclude_cancelled
     )

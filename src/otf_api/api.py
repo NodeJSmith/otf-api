@@ -7,36 +7,41 @@ from math import ceil
 from typing import Any
 
 import aiohttp
+import requests
 from loguru import logger
 from yarl import URL
 
-from otf_api.models.auth import User
-from otf_api.models.responses.body_composition_list import BodyCompositionList
-from otf_api.models.responses.book_class import BookClass
-from otf_api.models.responses.cancel_booking import CancelBooking
-from otf_api.models.responses.classes import ClassType, DoW, OtfClassList
-from otf_api.models.responses.favorite_studios import FavoriteStudioList
-from otf_api.models.responses.lifetime_stats import StatsResponse, StatsTime
-from otf_api.models.responses.performance_summary_detail import PerformanceSummaryDetail
-from otf_api.models.responses.performance_summary_list import PerformanceSummaryList
-from otf_api.models.responses.studio_detail import Pagination, StudioDetail, StudioDetailList
-from otf_api.models.responses.telemetry import Telemetry
-from otf_api.models.responses.telemetry_hr_history import TelemetryHrHistory
-from otf_api.models.responses.telemetry_max_hr import TelemetryMaxHr
-
-from .models import (
+from otf_api.auth import OtfUser
+from otf_api.models import (
+    BodyCompositionList,
+    BookClass,
     BookingList,
     BookingStatus,
+    CancelBooking,
     ChallengeTrackerContent,
     ChallengeTrackerDetailList,
     ChallengeType,
+    ClassType,
+    DoW,
     EquipmentType,
+    FavoriteStudioList,
     LatestAgreement,
     MemberDetail,
     MemberMembership,
     MemberPurchaseList,
+    OtfClassList,
     OutOfStudioWorkoutHistoryList,
+    Pagination,
+    PerformanceSummaryDetail,
+    PerformanceSummaryList,
+    StatsResponse,
+    StatsTime,
+    StudioDetail,
+    StudioDetailList,
     StudioServiceList,
+    Telemetry,
+    TelemetryHrHistory,
+    TelemetryMaxHr,
     TotalClasses,
     WorkoutList,
 )
@@ -56,40 +61,55 @@ API_TELEMETRY_BASE_URL = "api.yuzu.orangetheory.com"
 REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "Accept": "application/json"}
 
 
-class Api:
-    """The main class of the otf-api library. Create an instance using the async method `create`.
-
-    Example:
-        ---
-        ```python
-        import asyncio
-        from otf_api import Api
-
-        async def main():
-            otf = await Api.create("username", "password")
-            print(otf.member)
-
-        if __name__ == "__main__":
-            asyncio.run(main())
-        ```
-    """
-
+class Otf:
     logger: "Logger" = logger
-    user: User
-    session: aiohttp.ClientSession
+    user: OtfUser
+    _session: aiohttp.ClientSession
 
-    def __init__(self, username: str, password: str):
+    def __init__(
+        self,
+        username: str | None = None,
+        password: str | None = None,
+        access_token: str | None = None,
+        id_token: str | None = None,
+        refresh_token: str | None = None,
+        device_key: str | None = None,
+        user: OtfUser | None = None,
+    ):
+        """Create a new Otf instance.
+
+        Authentication methods:
+        ---
+        - Provide a username and password.
+        - Provide an access token and id token.
+        - Provide a user object.
+
+        Args:
+            username (str, optional): The username of the user. Default is None.
+            password (str, optional): The password of the user. Default is None.
+            access_token (str, optional): The access token. Default is None.
+            id_token (str, optional): The id token. Default is None.
+            refresh_token (str, optional): The refresh token. Default is None.
+            device_key (str, optional): The device key. Default is None.
+            user (OtfUser, optional): A user object. Default is None.
+        """
+
         self.member: MemberDetail
-        self.home_studio: StudioDetail
+        self.home_studio_uuid: str
 
-        self.user = User.login(username, password)
-
-        headers = {
-            "Authorization": f"Bearer {self.user.cognito.id_token}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
-        self.session = aiohttp.ClientSession(headers=headers)
+        if user:
+            self.user = user
+        elif username and password or (access_token and id_token):
+            self.user = OtfUser(
+                username=username,
+                password=password,
+                access_token=access_token,
+                id_token=id_token,
+                refresh_token=refresh_token,
+                device_key=device_key,
+            )
+        else:
+            raise ValueError("No valid authentication method provided")
 
         # simplify access to member_id and member_uuid
         self._member_id = self.user.member_id
@@ -98,26 +118,48 @@ class Api:
             "koji-member-id": self._member_id,
             "koji-member-email": self.user.id_claims_data.email,
         }
+        self.member = self._get_member_details_sync()
+        self.home_studio_uuid = self.member.home_studio.studio_uuid
 
-    @classmethod
-    async def create(cls, username: str, password: str) -> "Api":
-        """Create a new API instance. The username and password are required arguments because even though
-        we cache the token, they expire so quickly that we usually end up needing to re-authenticate.
+    def _get_member_details_sync(self) -> MemberDetail:
+        """Get the member details synchronously.
 
-        Args:
-            username (str): The username of the user.
-            password (str): The password of the user.
+        This is used to get the member details when the API is first initialized, to let use initialize
+        without needing to await the member details.
+
+        Returns:
+            MemberDetail: The member details.
         """
-        self = cls(username, password)
-        self.member = await self.get_member_detail()
-        self.home_studio = await self.get_studio_detail(self.member.home_studio.studio_uuid)
-        return self
+        url = f"https://{API_BASE_URL}/member/members/{self._member_id}"
+        resp = requests.get(url, headers=self.headers)
+        return MemberDetail(**resp.json()["data"])
+
+    @property
+    def headers(self) -> dict[str, str]:
+        """Get the headers for the API request."""
+
+        # check the token before making a request in case it has expired
+
+        self.user.cognito.check_token()
+        return {
+            "Authorization": f"Bearer {self.user.cognito.id_token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+
+    @property
+    def session(self) -> aiohttp.ClientSession:
+        """Get the aiohttp session."""
+        if not getattr(self, "_session", None):
+            self._session = aiohttp.ClientSession(headers=self.headers)
+
+        return self._session
 
     def __del__(self) -> None:
         if not hasattr(self, "session"):
             return
+
         try:
-            loop = asyncio.get_event_loop()
             asyncio.create_task(self._close_session())  # noqa
         except RuntimeError:
             loop = asyncio.new_event_loop()
@@ -145,6 +187,12 @@ class Api:
 
         logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
 
+        # ensure we have headers that contain the most up-to-date token
+        if not headers:
+            headers = self.headers
+        else:
+            headers.update(self.headers)
+
         text = None
         async with self.session.request(method, full_url, headers=headers, params=params, **kwargs) as response:
             with contextlib.suppress(Exception):
@@ -155,10 +203,8 @@ class Api:
             except aiohttp.ClientResponseError as e:
                 logger.exception(f"Error making request: {e}")
                 logger.exception(f"Response: {text}")
-                # raise
             except Exception as e:
                 logger.exception(f"Error making request: {e}")
-                # raise
 
             return await response.json()
 
@@ -242,9 +288,9 @@ class Api:
         """
 
         if not studio_uuids:
-            studio_uuids = [self.home_studio.studio_uuid]
-        elif include_home_studio and self.home_studio.studio_uuid not in studio_uuids:
-            studio_uuids.append(self.home_studio.studio_uuid)
+            studio_uuids = [self.home_studio_uuid]
+        elif include_home_studio and self.home_studio_uuid not in studio_uuids:
+            studio_uuids.append(self.home_studio_uuid)
 
         path = "/v1/classes"
 
@@ -280,7 +326,7 @@ class Api:
             classes_list.classes = [c for c in classes_list.classes if not c.canceled]
 
         for otf_class in classes_list.classes:
-            otf_class.is_home_studio = otf_class.studio.id == self.home_studio.studio_uuid
+            otf_class.is_home_studio = otf_class.studio.id == self.home_studio_uuid
 
         if day_of_week:
             classes_list.classes = [c for c in classes_list.classes if c.day_of_week_enum in day_of_week]
@@ -415,7 +461,7 @@ class Api:
         for booking in data.bookings:
             if not booking.otf_class:
                 continue
-            if booking.otf_class.studio.studio_uuid == self.home_studio.studio_uuid:
+            if booking.otf_class.studio.studio_uuid == self.home_studio_uuid:
                 booking.is_home_studio = True
             else:
                 booking.is_home_studio = False
@@ -660,7 +706,7 @@ class Api:
         Returns:
             StudioServiceList: The services available at the studio.
         """
-        studio_uuid = studio_uuid or self.home_studio.studio_uuid
+        studio_uuid = studio_uuid or self.home_studio_uuid
         data = await self._default_request("GET", f"/member/studios/{studio_uuid}/services")
         return StudioServiceList(data=data["data"])
 
@@ -711,7 +757,7 @@ class Api:
         Returns:
             StudioDetail: Detailed information about the studio.
         """
-        studio_uuid = studio_uuid or self.home_studio.studio_uuid
+        studio_uuid = studio_uuid or self.home_studio_uuid
 
         path = f"/mobile/v1/studios/{studio_uuid}"
         params = {"include": "locations"}
@@ -747,8 +793,11 @@ class Api:
         """
         path = "/mobile/v1/studios"
 
-        latitude = latitude or self.home_studio.studio_location.latitude
-        longitude = longitude or self.home_studio.studio_location.longitude
+        if not latitude and not longitude:
+            home_studio = await self.get_studio_detail()
+
+            latitude = home_studio.studio_location.latitude
+            longitude = home_studio.studio_location.longitude
 
         if page_size > 50:
             self.logger.warning("The API does not support more than 50 results per page, limiting to 50.")
