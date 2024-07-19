@@ -7,6 +7,7 @@ from math import ceil
 from typing import Any
 
 import aiohttp
+import requests
 from loguru import logger
 from yarl import URL
 
@@ -61,23 +62,6 @@ REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "A
 
 
 class Otf:
-    """The main class of the otf-api library. Create an instance using the async method `create`.
-
-    Example:
-        ---
-        ```python
-        import asyncio
-        from otf_api import Api
-
-        async def main():
-            otf = await Api.create("username", "password")
-            print(otf.member)
-
-        if __name__ == "__main__":
-            asyncio.run(main())
-        ```
-    """
-
     logger: "Logger" = logger
     user: OtfUser
     _session: aiohttp.ClientSession
@@ -88,10 +72,11 @@ class Otf:
         password: str | None = None,
         access_token: str | None = None,
         id_token: str | None = None,
+        refresh_token: str | None = None,
+        device_key: str | None = None,
         user: OtfUser | None = None,
-        home_studio_uuid: str | None = None,
     ):
-        """Create a new API instance.
+        """Create a new Otf instance.
 
         Authentication methods:
         ---
@@ -104,28 +89,27 @@ class Otf:
             password (str, optional): The password of the user. Default is None.
             access_token (str, optional): The access token. Default is None.
             id_token (str, optional): The id token. Default is None.
+            refresh_token (str, optional): The refresh token. Default is None.
+            device_key (str, optional): The device key. Default is None.
             user (OtfUser, optional): A user object. Default is None.
-            home_studio_uuid (str, optional): The home studio UUID. Default is None.
         """
+
         self.member: MemberDetail
         self.home_studio_uuid: str
 
         if user:
             self.user = user
-        elif username and password:
-            self.user = OtfUser.login(username, password)
-        elif access_token and id_token:
-            self.user = OtfUser.from_token(access_token, id_token)
+        elif username and password or (access_token and id_token):
+            self.user = OtfUser(
+                username=username,
+                password=password,
+                access_token=access_token,
+                id_token=id_token,
+                refresh_token=refresh_token,
+                device_key=device_key,
+            )
         else:
-            kwargs = {
-                "username": username,
-                "password": password,
-                "access_token": access_token,
-                "id_token": id_token,
-                "user": user,
-            }
-            provided_kwargs = [k for k, v in kwargs.items() if v]
-            raise ValueError("No valid authentication method provided: Provided kwargs: " + ", ".join(provided_kwargs))
+            raise ValueError("No valid authentication method provided")
 
         # simplify access to member_id and member_uuid
         self._member_id = self.user.member_id
@@ -134,15 +118,29 @@ class Otf:
             "koji-member-id": self._member_id,
             "koji-member-email": self.user.id_claims_data.email,
         }
-        self.home_studio_uuid = home_studio_uuid
+        self.member = self._get_member_details_sync()
+        self.home_studio_uuid = self.member.home_studio.studio_uuid
+
+    def _get_member_details_sync(self) -> MemberDetail:
+        """Get the member details synchronously.
+
+        This is used to get the member details when the API is first initialized, to let use initialize
+        without needing to await the member details.
+
+        Returns:
+            MemberDetail: The member details.
+        """
+        url = f"https://{API_BASE_URL}/member/members/{self._member_id}"
+        resp = requests.get(url, headers=self.headers)
+        return MemberDetail(**resp.json()["data"])
 
     @property
     def headers(self) -> dict[str, str]:
         """Get the headers for the API request."""
 
         # check the token before making a request in case it has expired
-        self.user.cognito.check_token()
 
+        self.user.cognito.check_token()
         return {
             "Authorization": f"Bearer {self.user.cognito.id_token}",
             "Content-Type": "application/json",
@@ -156,77 +154,6 @@ class Otf:
             self._session = aiohttp.ClientSession(headers=self.headers)
 
         return self._session
-
-    async def populate_member_details(self) -> None:
-        """Populate the member and home studio details."""
-        if self.home_studio_uuid is not None:
-            logger.debug("Home studio UUID already set, skipping member details population.")
-            return
-
-        self.member = await self.get_member_detail(False, False, False)
-        self.home_studio_uuid = self.member.home_studio.studio_uuid
-
-    def get_hydration_dict(self) -> dict[str, Any]:
-        """Get the hydration dictionary to store the user's tokens and home studio UUID.
-
-        This allows the Otf object to be re-created without needing to re-authenticate.
-
-        Returns:
-            dict: The hydration dictionary.
-        """
-        data = self.user.get_tokens()
-        data["home_studio_uuid"] = self.home_studio_uuid
-        return data
-
-    @classmethod
-    def hydrate(cls, data: dict[str, Any], device_key: str | None = None) -> "Otf":
-        """Create a new API instance from a hydration dictionary.
-
-        Args:
-            data (dict): The hydration dictionary.
-
-        Returns:
-            Otf: The API instance.
-        """
-        user = OtfUser.from_token(
-            data["access_token"], data["id_token"], data.get("refresh_token"), device_key=device_key
-        )
-        return cls(user=user, home_studio_uuid=data["home_studio_uuid"])
-
-    @classmethod
-    async def create(
-        cls,
-        username: str | None = None,
-        password: str | None = None,
-        access_token: str | None = None,
-        id_token: str | None = None,
-        user: OtfUser | None = None,
-        home_studio_uuid: str | None = None,
-    ) -> "Otf":
-        """Create a new API instance. Accepts either a username and password or an access token and id token.
-
-        Args:
-            username (str, None): The username of the user. Default is None.
-            password (str, None): The password of the user. Default is None.
-            access_token (str, None): The access token. Default is None.
-            id_token (str, None): The id token. Default is None.
-            user (OtfUser, None): A user object. Default is None.
-            home_studio_uuid (str, None): The home studio UUID. Default is None.
-
-        Returns:
-            Api: The API instance.
-        """
-
-        self = cls(
-            username=username,
-            password=password,
-            access_token=access_token,
-            id_token=id_token,
-            user=user,
-            home_studio_uuid=home_studio_uuid,
-        )
-        await self.populate_member_details()
-        return self
 
     def __del__(self) -> None:
         if not hasattr(self, "session"):
@@ -276,10 +203,8 @@ class Otf:
             except aiohttp.ClientResponseError as e:
                 logger.exception(f"Error making request: {e}")
                 logger.exception(f"Response: {text}")
-                # raise
             except Exception as e:
                 logger.exception(f"Error making request: {e}")
-                # raise
 
             return await response.json()
 
