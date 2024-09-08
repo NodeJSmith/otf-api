@@ -63,8 +63,9 @@ class OtfCognito(Cognito):
     @device_key.setter
     def device_key(self, value: str | None):
         if not value:
-            logger.info("Clearing device key")
-            self._device_key = value
+            if hasattr(self, "_device_key") and self._device_key:
+                logger.info("Clearing device key")
+                self._device_key = value
             return
 
         redacted_value = value[:4] + "*" * (len(value) - 8) + value[-4:]
