@@ -33,7 +33,7 @@ class Studio(OtfItemBase):
 class Class(OtfItemBase):
     ot_base_class_uuid: str | None = None
     starts_at_local: str
-    name: str
+    name: str | None = None
     coach: Coach
     studio: Studio
 
@@ -56,7 +56,7 @@ class Ratings(OtfItemBase):
 
 
 class PerformanceSummaryEntry(OtfItemBase):
-    performance_summary_id: str = Field(..., alias="id")
+    id: str = Field(..., alias="id")
     details: Details
     ratable: bool
     otf_class: Class = Field(..., alias="class")

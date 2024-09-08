@@ -30,7 +30,6 @@ from .responses import (
     TelemetryHrHistory,
     TelemetryMaxHr,
     TotalClasses,
-    WorkoutList,
 )
 
 __all__ = [
@@ -66,5 +65,4 @@ __all__ = [
     "TelemetryHrHistory",
     "TelemetryMaxHr",
     "TotalClasses",
-    "WorkoutList",
 ]
