@@ -3,11 +3,7 @@ from enum import Enum
 from typing import ClassVar
 
 from humanize import precisedelta
-from inflection import humanize
 from pydantic import Field
-from rich.style import Style
-from rich.styled import Styled
-from rich.table import Table
 
 from otf_api.models.base import OtfItemBase, OtfListBase
 
@@ -176,80 +172,7 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
         dow = self.starts_at_local.strftime("%A")
         return DoW.get_case_insensitive(dow)
 
-    @property
-    def sidebar_data(self) -> Table:
-        data = {
-            "class_date": self.date,
-            "class_time": self.time.strip(),
-            "class_name": self.name,
-            "class_id": self.id_val,
-            "available": self.has_availability,
-            "waitlist_available": self.waitlist_available,
-            "studio_address": self.studio.address.line1,
-            "coach_name": self.coach.first_name,
-            "waitlist_size": self.waitlist_size,
-            "max_capacity": self.max_capacity,
-        }
-
-        if not self.full:
-            del data["waitlist_available"]
-            del data["waitlist_size"]
-
-        table = Table(expand=True, show_header=False, show_footer=False)
-        table.add_column("Key", style="cyan", ratio=1)
-        table.add_column("Value", style="magenta", ratio=2)
-
-        for key, value in data.items():
-            if value is False:
-                table.add_row(key, Styled(str(value), style="red"))
-            else:
-                table.add_row(key, str(value))
-
-        return table
-
-    def get_style(self, is_selected: bool = False) -> Style:
-        style = super().get_style(is_selected)
-        if self.is_booked:
-            style = Style(color="grey58")
-        return style
-
-    @classmethod
-    def attr_to_column_header(cls, attr: str) -> str:
-        attr_map = {k: humanize(k) for k in cls.model_fields}
-        overrides = {
-            "day_of_week": "Class DoW",
-            "date": "Class Date",
-            "time": "Class Time",
-            "duration": "Class Duration",
-            "name": "Class Name",
-            "is_home_studio": "Home Studio",
-            "is_booked": "Booked",
-        }
-
-        attr_map.update(overrides)
-
-        return attr_map.get(attr, attr)
-
 
 class OtfClassList(OtfListBase):
     collection_field: ClassVar[str] = "classes"
     classes: list[OtfClass]
-
-    @staticmethod
-    def book_class_columns() -> list[str]:
-        return [
-            "day_of_week",
-            "date",
-            "time",
-            "duration",
-            "name",
-            "studio.name",
-            "is_home_studio",
-            "is_booked",
-        ]
-
-    def to_table(self, columns: list[str] | None = None) -> Table:
-        if not columns:
-            columns = self.book_class_columns()
-
-        return super().to_table(columns)

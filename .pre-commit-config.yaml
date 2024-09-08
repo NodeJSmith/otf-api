@@ -10,7 +10,7 @@ repos:
       - id: check-yaml
         args: [--unsafe]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.9
+    rev: v0.6.4
     hooks:
       - id: ruff
         language_version: python3

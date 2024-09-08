@@ -1,14 +1,9 @@
 import inspect
 import typing
-from enum import Enum
-from typing import Any, ClassVar, TypeVar
+from typing import ClassVar, TypeVar
 
 from box import Box
-from inflection import humanize
 from pydantic import BaseModel, ConfigDict
-from rich.style import Style
-from rich.styled import Styled
-from rich.table import Table
 
 if typing.TYPE_CHECKING:
     from pydantic.main import IncEx
@@ -138,50 +133,6 @@ class BetterDumperMixin:
 class OtfItemBase(BetterDumperMixin, BaseModel):
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
 
-    def convert_row_value_types(self, row: list[Any]) -> list[str]:
-        for i, val in enumerate(row):
-            if isinstance(val, bool):
-                row[i] = str(val)
-                continue
-
-            if isinstance(val, Enum):
-                row[i] = val.name
-                continue
-
-            if val is None:
-                row[i] = ""
-                continue
-
-            row[i] = str(val)
-
-        return row
-
-    def get_style(self, is_selected: bool = False) -> Style:
-        return Style(color="blue", bold=True) if is_selected else Style(color="white")
-
-    def to_row(self, attributes: list[str], is_selected: bool = False) -> list[Styled]:
-        style = self.get_style(is_selected)
-
-        boxed_self = Box(self.model_dump(), box_dots=True)
-        row = [boxed_self.get(attr, "") for attr in attributes]
-        row = self.convert_row_value_types(row)
-        styled = [Styled(cell, style=style) for cell in row]
-
-        prefix = "> " if is_selected else "  "
-        styled.insert(0, Styled(prefix, style=style))
-
-        return styled
-
-    @property
-    def sidebar_data(self) -> Table | None:
-        return None
-
-    @classmethod
-    def attr_to_column_header(cls, attr: str) -> str:
-        attr_map = {k: humanize(k) for k in cls.model_fields}
-
-        return attr_map.get(attr, attr)
-
 
 class OtfListBase(BaseModel):
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -190,18 +141,6 @@ class OtfListBase(BaseModel):
     @property
     def collection(self) -> list[OtfItemBase]:
         return getattr(self, self.collection_field)
-
-    def to_table(self, columns: list[str]) -> Table:
-        table = Table(expand=True, show_header=True, show_footer=False)
-
-        table.add_column()
-        for column in columns:
-            table.add_column(OtfItemBase.attr_to_column_header(column))
-
-        for item in self.collection:
-            table.add_row(*item.to_row(columns))
-
-        return table
 
     def to_json(self, **kwargs) -> str:
         kwargs.setdefault("indent", 4)
