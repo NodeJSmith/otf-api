@@ -21,7 +21,6 @@ from .telemetry import Telemetry
 from .telemetry_hr_history import TelemetryHrHistory
 from .telemetry_max_hr import TelemetryMaxHr
 from .total_classes import TotalClasses
-from .workouts import WorkoutList
 
 __all__ = [
     "BodyCompositionList",
@@ -56,5 +55,4 @@ __all__ = [
     "TelemetryHrHistory",
     "TelemetryMaxHr",
     "TotalClasses",
-    "WorkoutList",
 ]

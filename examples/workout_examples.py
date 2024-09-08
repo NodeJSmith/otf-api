@@ -50,12 +50,12 @@ async def main():
 
     # you can get detailed information about a specific performance summary by calling `get_performance_summary`
     # which takes a performance_summary_id as an argument
-    data = await otf.get_performance_summary(data_list.summaries[0].performance_summary_id)
+    data = await otf.get_performance_summary(data_list.summaries[0].id)
     print(data.model_dump_json(indent=4))
 
     """
     {
-        "id": "29dd97f4-3418-4247-b35c-37eabc5e17f3",
+        "class_history_uuid": "29dd97f4-3418-4247-b35c-37eabc5e17f3",
         "details": {
             "calories_burned": 506,
             "splat_points": 18,
@@ -106,61 +106,11 @@ async def main():
     }
     """
 
-    # workouts is a similar endpoint but returns more data - this is what OTLive uses to display workout history
-    # this endpoint takes no arguments and returns all workouts back to, as far as we can tell, around 2019
-    workouts = await otf.get_workouts()
-    print(workouts.workouts[0].model_dump_json(indent=4))
-    """
-    {
-        "studio_number": "8292",
-        "studio_name": "AnyTown OH - East",
-        "class_type": "Orange 60 Min 2G",
-        "active_time": 3413,
-        "coach": "Coach",
-        "member_uuid": "b4df31a6-fa54-4a7f-85eb-1f5b613c6414",
-        "class_date": "2024-06-11 09:45:00+00:00",
-        "total_calories": 506,
-        "avg_hr": 149,
-        "max_hr": 180,
-        "avg_percent_hr": 78,
-        "max_percent_hr": 94,
-        "total_splat_points": 18,
-        "red_zone_time_second": 137,
-        "orange_zone_time_second": 979,
-        "green_zone_time_second": 1415,
-        "blue_zone_time_second": 769,
-        "black_zone_time_second": 113,
-        "step_count": 3314,
-        "class_history_uuid": "c71658c3-46e7-410b-8ffa-9a8ffd3828fa",
-        "class_id": "30299",
-        "date_created": "2024-06-11 10:43:00+00:00",
-        "date_updated": "2024-06-11 10:43:00+00:00",
-        "is_intro": false,
-        "is_leader": false,
-        "member_email": null,
-        "member_name": "Member Name",
-        "member_performance_id": "0cbc39d3-bb9b-4021-8006-8eb23c272f0d",
-        "minute_by_minute_hr": [
-            108,
-            147,
-            149,
-           ...
-        ],
-        "source": "OTbeat Live",
-        "studio_account_uuid": "studio-number-0325",
-        "version": "1",
-        "workout_type": {
-            "id": 101,
-            "display_name": "Studio Workout",
-            "icon": ""
-        }
-    }
-    """
-
     # telemetry is a detailed record of a specific workout - minute by minute, or more granular if desired
     # this endpoint takes a class_history_uuid, as well as a number of max data points - if you do not pass
     # this value it will attempt to return enough data points for 30 second intervals
-    telemetry = await otf.get_telemetry(workouts.workouts[0].class_history_uuid)
+
+    telemetry = await otf.get_telemetry(performance_summary_id=data_list.summaries[0].id)
     print(telemetry.model_dump_json(indent=4))
 
     """

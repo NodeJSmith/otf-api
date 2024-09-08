@@ -3,7 +3,6 @@ import contextlib
 import json
 import typing
 from datetime import date, datetime
-from math import ceil
 from typing import Any
 
 import aiohttp
@@ -43,7 +42,6 @@ from otf_api.models import (
     TelemetryHrHistory,
     TelemetryMaxHr,
     TotalClasses,
-    WorkoutList,
 )
 
 
@@ -226,32 +224,15 @@ class Otf:
         """Perform an API request to the performance summary API."""
         return await self._do(method, API_IO_BASE_URL, url, params, headers)
 
-    async def get_workouts(self) -> WorkoutList:
-        """Get the list of workouts from OT Live.
+    async def get_body_composition_list(self) -> BodyCompositionList:
+        """Get the member's body composition list.
 
         Returns:
-            WorkoutList: The list of workouts.
-
-        Info:
-            ---
-            This returns data from the same api the [OT Live website](https://otlive.orangetheory.com/) uses.
-            It is quite a bit of data, and all workouts going back to ~2019. The data includes the class history
-            UUID, which can be used to get telemetry data for a specific workout.
+            Any: The member's body composition list.
         """
+        data = await self._default_request("GET", f"/member/members/{self._member_uuid}/body-composition")
 
-        res = await self._default_request("GET", "/virtual-class/in-studio-workouts")
-
-        return WorkoutList(workouts=res["data"])
-
-    async def get_total_classes(self) -> TotalClasses:
-        """Get the member's total classes. This is a simple object reflecting the total number of classes attended,
-        both in-studio and OT Live.
-
-        Returns:
-            TotalClasses: The member's total classes.
-        """
-        data = await self._default_request("GET", "/mobile/v1/members/classes/summary")
-        return TotalClasses(**data["data"])
+        return BodyCompositionList(data=data["data"])
 
     async def get_classes(
         self,
@@ -345,6 +326,16 @@ class Otf:
             otf_class.is_booked = otf_class.ot_class_uuid in booked_classes
 
         return classes_list
+
+    async def get_total_classes(self) -> TotalClasses:
+        """Get the member's total classes. This is a simple object reflecting the total number of classes attended,
+        both in-studio and OT Live.
+
+        Returns:
+            TotalClasses: The member's total classes.
+        """
+        data = await self._default_request("GET", "/mobile/v1/members/classes/summary")
+        return TotalClasses(**data["data"])
 
     async def book_class(self, class_uuid: str) -> BookClass | typing.Any:
         """Book a class by class_uuid.
@@ -860,16 +851,15 @@ class Otf:
         res = await self._telemetry_request("GET", path, params=params)
         return TelemetryMaxHr(**res)
 
-    async def get_telemetry(self, class_history_uuid: str, max_data_points: int = 0) -> Telemetry:
-        """Get the telemetry for a class history.
+    async def get_telemetry(self, performance_summary_id: str, max_data_points: int = 120) -> Telemetry:
+        """Get the telemetry for a performance summary.
 
         This returns an object that contains the max heartrate, start/end bpm for each zone,
         and a list of telemetry items that contain the heartrate, splat points, calories, and timestamp.
 
         Args:
-            class_history_uuid (str): The class history UUID.
-            max_data_points (int): The max data points to use for the telemetry. Default is 0, which will attempt to\
-            get the max data points from the workout. If the workout is not found, it will default to 120 data points.
+            performance_summary_id (str): The performance summary id.
+            max_data_points (int): The max data points to use for the telemetry. Default is 120.
 
         Returns:
             TelemetryItem: The telemetry for the class history.
@@ -877,29 +867,9 @@ class Otf:
         """
         path = "/v1/performance/summary"
 
-        max_data_points = max_data_points or await self._get_max_data_points(class_history_uuid)
-
-        params = {"classHistoryUuid": class_history_uuid, "maxDataPoints": max_data_points}
+        params = {"classHistoryUuid": performance_summary_id, "maxDataPoints": max_data_points}
         res = await self._telemetry_request("GET", path, params=params)
         return Telemetry(**res)
-
-    async def _get_max_data_points(self, class_history_uuid: str) -> int:
-        """Get the max data points to use for the telemetry.
-
-        Attempts to get the amount of active time for the workout from the OT Live API. If the workout is not found,
-        it will default to 120 data points. If it is found, it will calculate the amount of data points needed based on
-        the active time. This should amount to a data point per 30 seconds, roughly.
-
-        Args:
-            class_history_uuid (str): The class history UUID.
-
-        Returns:
-            int: The max data points to use.
-        """
-        workouts = await self.get_workouts()
-        workout = workouts.by_class_history_uuid.get(class_history_uuid)
-        max_data_points = 120 if workout is None else ceil(active_time_to_data_points(workout.active_time))
-        return max_data_points
 
     # the below do not return any data for me, so I can't test them
 
@@ -934,17 +904,3 @@ class Otf:
 
         data = self._default_request("GET", f"/member/wearables/{self._member_id}/wearable-daily", params=params)
         return data
-
-    async def get_body_composition_list(self) -> BodyCompositionList:
-        """Get the member's body composition list.
-
-        Returns:
-            Any: The member's body composition list.
-        """
-        data = await self._default_request("GET", f"/member/members/{self._member_uuid}/body-composition")
-
-        return BodyCompositionList(data=data["data"])
-
-
-def active_time_to_data_points(active_time: int) -> float:
-    return active_time / 60 * 2
