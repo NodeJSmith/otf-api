@@ -25,6 +25,14 @@ class TreadData(OtfItemBase):
     agg_tread_distance: int = Field(..., alias="aggTreadDistance")
 
 
+class RowData(OtfItemBase):
+    row_speed: float = Field(..., alias="rowSpeed")
+    row_pps: float = Field(..., alias="rowPps")
+    row_Spm: float = Field(..., alias="rowSpm")
+    agg_row_distance: int = Field(..., alias="aggRowDistance")
+    row_pace: int = Field(..., alias="rowPace")
+
+
 class TelemetryItem(OtfItemBase):
     relative_timestamp: int = Field(..., alias="relativeTimestamp")
     hr: int
@@ -36,6 +44,7 @@ class TelemetryItem(OtfItemBase):
         description="The timestamp of the telemetry item, calculated from the class start time and relative timestamp.",
     )
     tread_data: TreadData | None = Field(None, alias="treadData")
+    row_data: RowData | None = Field(None, alias="rowData")
 
 
 class Telemetry(OtfItemBase):
