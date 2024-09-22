@@ -22,7 +22,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-aiohttp = "3.8.*"
+aiohttp = "3.10.*"
 humanize = "^4.9.0"
 inflection = "0.5.*"
 loguru = "0.7.2"
