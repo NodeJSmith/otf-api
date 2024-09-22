@@ -34,6 +34,7 @@ class Class(OtfItemBase):
     ot_base_class_uuid: str | None = None
     starts_at_local: str
     name: str | None = None
+    type: str | None = None
     coach: Coach
     studio: Studio
 
