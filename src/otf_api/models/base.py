@@ -131,11 +131,11 @@ class BetterDumperMixin:
 
 
 class OtfItemBase(BetterDumperMixin, BaseModel):
-    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True, extra="allow")
 
 
 class OtfListBase(BaseModel):
-    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
+    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True, extra="allow")
     collection_field: ClassVar[str] = "data"
 
     @property
