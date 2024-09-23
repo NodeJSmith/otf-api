@@ -1,9 +1,9 @@
 from datetime import datetime
-from typing import Any
+from typing import Any, ClassVar
 
 from pydantic import Field
 
-from otf_api.models.base import OtfItemBase
+from otf_api.models.base import OtfItemBase, OtfListBase
 
 
 class MetricEntry(OtfItemBase):
@@ -64,5 +64,6 @@ class ChallengeTrackerDetail(OtfItemBase):
     challenge_histories: list[ChallengeHistory] = Field(..., alias="ChallengeHistories")
 
 
-class ChallengeTrackerDetailList(OtfItemBase):
+class ChallengeTrackerDetailList(OtfListBase):
+    collection_field: ClassVar[str] = "details"
     details: list[ChallengeTrackerDetail]

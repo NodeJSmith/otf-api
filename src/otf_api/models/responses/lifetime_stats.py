@@ -1,6 +1,8 @@
 from enum import Enum
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf_api.models.base import OtfItemBase
 
 
 class StatsTime(str, Enum):
@@ -19,20 +21,20 @@ class StatsType(str, Enum):
     All = "allStats"
 
 
-class OutStudioMixin(BaseModel):
+class OutStudioMixin(OtfItemBase):
     walking_distance: float = Field(..., alias="walkingDistance")
     running_distance: float = Field(..., alias="runningDistance")
     cycling_distance: float = Field(..., alias="cyclingDistance")
 
 
-class InStudioMixin(BaseModel):
+class InStudioMixin(OtfItemBase):
     treadmill_distance: float = Field(..., alias="treadmillDistance")
     treadmill_elevation_gained: float = Field(..., alias="treadmillElevationGained")
     rower_distance: float = Field(..., alias="rowerDistance")
     rower_watt: float = Field(..., alias="rowerWatt")
 
 
-class BaseStatsData(BaseModel):
+class BaseStatsData(OtfItemBase):
     calories: float
     splat_point: float = Field(..., alias="splatPoint")
     total_black_zone: float = Field(..., alias="totalBlackZone")
@@ -56,7 +58,7 @@ class AllStatsData(OutStudioMixin, InStudioMixin, BaseStatsData):
     pass
 
 
-class OutStudioTimeStats(BaseModel):
+class OutStudioTimeStats(OtfItemBase):
     last_year: OutStudioStatsData = Field(..., alias="lastYear")
     this_year: OutStudioStatsData = Field(..., alias="thisYear")
     last_month: OutStudioStatsData = Field(..., alias="lastMonth")
@@ -66,7 +68,7 @@ class OutStudioTimeStats(BaseModel):
     all_time: OutStudioStatsData = Field(..., alias="allTime")
 
 
-class InStudioTimeStats(BaseModel):
+class InStudioTimeStats(OtfItemBase):
     last_year: InStudioStatsData = Field(..., alias="lastYear")
     this_year: InStudioStatsData = Field(..., alias="thisYear")
     last_month: InStudioStatsData = Field(..., alias="lastMonth")
@@ -76,7 +78,7 @@ class InStudioTimeStats(BaseModel):
     all_time: InStudioStatsData = Field(..., alias="allTime")
 
 
-class AllStatsTimeStats(BaseModel):
+class AllStatsTimeStats(OtfItemBase):
     last_year: AllStatsData = Field(..., alias="lastYear")
     this_year: AllStatsData = Field(..., alias="thisYear")
     last_month: AllStatsData = Field(..., alias="lastMonth")
@@ -86,7 +88,7 @@ class AllStatsTimeStats(BaseModel):
     all_time: AllStatsData = Field(..., alias="allTime")
 
 
-class StatsResponse(BaseModel):
+class StatsResponse(OtfItemBase):
     all_stats: AllStatsTimeStats = Field(..., alias="allStats")
     in_studio: InStudioTimeStats = Field(..., alias="inStudio")
     out_studio: OutStudioTimeStats = Field(..., alias="outStudio")

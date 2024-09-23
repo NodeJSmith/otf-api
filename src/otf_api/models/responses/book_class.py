@@ -1,19 +1,21 @@
 from datetime import datetime
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf_api.models.base import OtfItemBase
 
 
-class MemberProfile(BaseModel):
+class MemberProfile(OtfItemBase):
     is_latest_agreement_signed: bool = Field(..., alias="isLatestAgreementSigned")
 
 
-class StudioProfiles(BaseModel):
+class StudioProfiles(OtfItemBase):
     studio_id: int = Field(..., alias="studioId")
     is_franchise_agreement_enabled: int = Field(..., alias="isFranchiseAgreementEnabled")
 
 
-class HomeStudio(BaseModel):
+class HomeStudio(OtfItemBase):
     studio_uuid: str = Field(..., alias="studioUUId")
     studio_name: str = Field(..., alias="studioName")
     description: str
@@ -28,7 +30,7 @@ class HomeStudio(BaseModel):
     studio_profiles: StudioProfiles = Field(..., alias="studioProfiles")
 
 
-class MemberService(BaseModel):
+class MemberService(OtfItemBase):
     member_service_id: int = Field(..., alias="memberServiceId")
     member_service_uuid: str = Field(..., alias="memberServiceUUId")
     service_name: str = Field(..., alias="serviceName")
@@ -49,13 +51,13 @@ class MemberService(BaseModel):
     is_deleted: bool = Field(..., alias="isDeleted")
 
 
-class ServiceItem(BaseModel):
+class ServiceItem(OtfItemBase):
     service_id: int = Field(..., alias="serviceId")
     name: str
     member_service: MemberService = Field(..., alias="MemberService")
 
 
-class Member(BaseModel):
+class Member(OtfItemBase):
     member_id: int = Field(..., alias="memberId")
     member_uuid: str = Field(..., alias="memberUUId")
     cognito_id: str = Field(..., alias="cognitoId")
@@ -107,7 +109,7 @@ class Member(BaseModel):
     notes: str
 
 
-class Studio(BaseModel):
+class Studio(OtfItemBase):
     studio_uuid: str = Field(..., alias="studioUUId")
     studio_name: str = Field(..., alias="studioName")
     description: str
@@ -121,12 +123,12 @@ class Studio(BaseModel):
     cr_waitlist_flag_last_updated: datetime = Field(..., alias="crWaitlistFlagLastUpdated")
 
 
-class Location(BaseModel):
+class Location(OtfItemBase):
     location_id: int = Field(..., alias="locationId")
     location_uuid: str = Field(..., alias="locationUUId")
 
 
-class Coach(BaseModel):
+class Coach(OtfItemBase):
     coach_uuid: str = Field(..., alias="coachUUId")
     first_name: str = Field(..., alias="firstName")
     last_name: str = Field(..., alias="lastName")
@@ -134,7 +136,7 @@ class Coach(BaseModel):
     name: str
 
 
-class Class(BaseModel):
+class Class(OtfItemBase):
     class_id: int = Field(..., alias="classId")
     class_uuid: str = Field(..., alias="classUUId")
     mbo_studio_id: int = Field(..., alias="mboStudioId")
@@ -175,16 +177,16 @@ class Class(BaseModel):
     attributes: dict[str, Any]
 
 
-class Class1(BaseModel):
+class Class1(OtfItemBase):
     mbo_studio_id: int = Field(..., alias="mboStudioId")
     studio_uuid: str = Field(..., alias="studioUUId")
 
 
-class CustomData(BaseModel):
+class CustomData(OtfItemBase):
     otf_class: Class1 = Field(..., alias="class")
 
 
-class SavedBooking(BaseModel):
+class SavedBooking(OtfItemBase):
     class_booking_id: int = Field(..., alias="classBookingId")
     class_booking_uuid: str = Field(..., alias="classBookingUUId")
     studio_id: int = Field(..., alias="studioId")
@@ -211,19 +213,19 @@ class SavedBooking(BaseModel):
     attributes: dict[str, Any]
 
 
-class FieldModel(BaseModel):
+class FieldModel(OtfItemBase):
     xsi_nil: str = Field(..., alias="xsiNil")
 
 
-class FacilitySquareFeet(BaseModel):
+class FacilitySquareFeet(OtfItemBase):
     field_: FieldModel
 
 
-class TreatmentRooms(BaseModel):
+class TreatmentRooms(OtfItemBase):
     field_: FieldModel
 
 
-class Location1(BaseModel):
+class Location1(OtfItemBase):
     site_id: str | Any = Field(..., alias="siteId")
     business_description: str | Any = Field(..., alias="businessDescription")
     additional_image_ur_ls: str | Any = Field(..., alias="additionalImageUrLs")
@@ -247,38 +249,38 @@ class Location1(BaseModel):
     longitude: str
 
 
-class MaxCapacity(BaseModel):
+class MaxCapacity(OtfItemBase):
     field_: FieldModel | Any
 
 
-class WebCapacity(BaseModel):
+class WebCapacity(OtfItemBase):
     field_: FieldModel | Any
 
 
-class TotalBookedWaitlist(BaseModel):
+class TotalBookedWaitlist(OtfItemBase):
     field_: FieldModel | Any
 
 
-class WebBooked(BaseModel):
+class WebBooked(OtfItemBase):
     field_: FieldModel | Any
 
 
-class SemesterId(BaseModel):
+class SemesterId(OtfItemBase):
     field_: FieldModel | Any
 
 
-class Program(BaseModel):
+class Program(OtfItemBase):
     id: str
     name: str
     schedule_type: str = Field(..., alias="scheduleType")
     cancel_offset: str = Field(..., alias="cancelOffset")
 
 
-class DefaultTimeLength(BaseModel):
+class DefaultTimeLength(OtfItemBase):
     field_: FieldModel
 
 
-class SessionType(BaseModel):
+class SessionType(OtfItemBase):
     default_time_length: DefaultTimeLength = Field(..., alias="defaultTimeLength")
     program_id: str = Field(..., alias="programId")
     num_deducted: str = Field(..., alias="numDeducted")
@@ -289,7 +291,7 @@ class SessionType(BaseModel):
     available_for_add_on: str = Field(..., alias="availableForAddOn")
 
 
-class ClassDescription(BaseModel):
+class ClassDescription(OtfItemBase):
     id: str
     name: str
     description: str
@@ -300,7 +302,7 @@ class ClassDescription(BaseModel):
     session_type: SessionType = Field(..., alias="sessionType")
 
 
-class Staff(BaseModel):
+class Staff(OtfItemBase):
     email: str
     mobile_phone: str = Field(..., alias="mobilePhone")
     state: str
@@ -318,25 +320,25 @@ class Staff(BaseModel):
     is_male: str = Field(..., alias="isMale")
 
 
-class AgreementDate(BaseModel):
+class AgreementDate(OtfItemBase):
     field_: FieldModel
 
 
-class ReleasedBy(BaseModel):
+class ReleasedBy(OtfItemBase):
     field_: FieldModel
 
 
-class Liability(BaseModel):
+class Liability(OtfItemBase):
     is_released: str = Field(..., alias="isReleased")
     agreement_date: AgreementDate = Field(..., alias="agreementDate")
     released_by: ReleasedBy = Field(..., alias="releasedBy")
 
 
-class FirstAppointmentDate(BaseModel):
+class FirstAppointmentDate(OtfItemBase):
     field_: FieldModel
 
 
-class Client(BaseModel):
+class Client(OtfItemBase):
     notes: str
     mobile_provider: str = Field(..., alias="mobileProvider")
     appointment_gender_preference: str = Field(..., alias="appointmentGenderPreference")
@@ -369,7 +371,7 @@ class Client(BaseModel):
     member_uuid: str = Field(..., alias="memberUUId")
 
 
-class MboClass(BaseModel):
+class MboClass(OtfItemBase):
     class_schedule_id: str = Field(..., alias="classScheduleId")
     location: Location1
     max_capacity: MaxCapacity = Field(..., alias="maxCapacity")
@@ -394,12 +396,12 @@ class MboClass(BaseModel):
     client: Client
 
 
-class MboResponseItem(BaseModel):
+class MboResponseItem(OtfItemBase):
     class_booking_uuid: str | Any = Field(..., alias="classBookingUUId")
     action: str | Any
     otf_class: MboClass | Any = Field(..., alias="class")
 
 
-class BookClass(BaseModel):
+class BookClass(OtfItemBase):
     saved_bookings: list[SavedBooking] = Field(..., alias="savedBookings")
     mbo_response: list[MboResponseItem] = Field(..., alias="mboResponse")

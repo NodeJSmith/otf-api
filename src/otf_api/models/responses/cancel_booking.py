@@ -1,9 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf_api.models.base import OtfItemBase
 
 
-class Studio(BaseModel):
+class Studio(OtfItemBase):
     studio_uuid: str = Field(..., alias="studioUUId")
     studio_name: str = Field(..., alias="studioName")
     description: str
@@ -17,7 +19,7 @@ class Studio(BaseModel):
     cr_waitlist_flag_last_updated: datetime = Field(..., alias="crWaitlistFlagLastUpdated")
 
 
-class Coach(BaseModel):
+class Coach(OtfItemBase):
     coach_uuid: str = Field(..., alias="coachUUId")
     name: str
     first_name: str = Field(..., alias="firstName")
@@ -25,7 +27,7 @@ class Coach(BaseModel):
     mbo_coach_id: int = Field(..., alias="mboCoachId")
 
 
-class Class(BaseModel):
+class Class(OtfItemBase):
     class_uuid: str = Field(..., alias="classUUId")
     name: str
     description: str
@@ -40,7 +42,7 @@ class Class(BaseModel):
     coach: Coach
 
 
-class HomeStudio(BaseModel):
+class HomeStudio(OtfItemBase):
     studio_uuid: str = Field(..., alias="studioUUId")
     studio_name: str = Field(..., alias="studioName")
     description: str
@@ -54,7 +56,7 @@ class HomeStudio(BaseModel):
     cr_waitlist_flag_last_updated: datetime = Field(..., alias="crWaitlistFlagLastUpdated")
 
 
-class Member(BaseModel):
+class Member(OtfItemBase):
     member_id: int = Field(..., alias="memberId")
     member_uuid: str = Field(..., alias="memberUUId")
     email: str
@@ -67,7 +69,7 @@ class Member(BaseModel):
     home_studio: HomeStudio = Field(..., alias="homeStudio")
 
 
-class CancelBooking(BaseModel):
+class CancelBooking(OtfItemBase):
     class_booking_id: int = Field(..., alias="classBookingId")
     class_booking_uuid: str = Field(..., alias="classBookingUUId")
     studio_id: int = Field(..., alias="studioId")
