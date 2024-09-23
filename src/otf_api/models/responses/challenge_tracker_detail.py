@@ -22,15 +22,15 @@ class BenchmarkHistory(OtfItemBase):
     date_created: datetime = Field(..., alias="DateCreated")
     date_updated: datetime = Field(..., alias="DateUpdated")
     class_time: datetime = Field(..., alias="ClassTime")
-    challenge_sub_category_id: None = Field(..., alias="ChallengeSubCategoryId")
+    challenge_sub_category_id: int | None = Field(..., alias="ChallengeSubCategoryId")
     class_id: int = Field(..., alias="ClassId")
     substitute_id: int | None = Field(..., alias="SubstituteId")
     weight_lbs: int = Field(..., alias="WeightLBS")
     class_name: str = Field(..., alias="ClassName")
     coach_name: str = Field(..., alias="CoachName")
     coach_image_url: str = Field(..., alias="CoachImageUrl")
-    workout_type_id: None = Field(..., alias="WorkoutTypeId")
-    workout_id: None = Field(..., alias="WorkoutId")
+    workout_type_id: int | None = Field(..., alias="WorkoutTypeId")
+    workout_id: int | None = Field(..., alias="WorkoutId")
     linked_challenges: list[Any] = Field(
         ..., alias="LinkedChallenges"
     )  # not sure what this will be, never seen it before
@@ -50,7 +50,7 @@ class ChallengeHistory(OtfItemBase):
 
 class ChallengeTrackerDetail(OtfItemBase):
     challenge_category_id: int = Field(..., alias="ChallengeCategoryId")
-    challenge_sub_category_id: None = Field(..., alias="ChallengeSubCategoryId")
+    challenge_sub_category_id: int | None = Field(..., alias="ChallengeSubCategoryId")
     equipment_id: int = Field(..., alias="EquipmentId")
     equipment_name: str = Field(..., alias="EquipmentName")
     metric_entry: MetricEntry = Field(..., alias="MetricEntry")

@@ -35,8 +35,8 @@ class Language(OtfItemBase):
 
 class StudioLocationLocalized(OtfItemBase):
     language: Language
-    studio_name: None = Field(..., alias="studioName")
-    studio_address: None = Field(..., alias="studioAddress")
+    studio_name: str | None = Field(..., alias="studioName")
+    studio_address: str | None = Field(..., alias="studioAddress")
 
 
 class StudioProfiles(OtfItemBase):

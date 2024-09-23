@@ -79,11 +79,11 @@ class CancelBooking(OtfItemBase):
     mbo_member_id: str = Field(..., alias="mboMemberId")
     mbo_class_id: int = Field(..., alias="mboClassId")
     mbo_visit_id: int = Field(..., alias="mboVisitId")
-    mbo_waitlist_entry_id: None = Field(..., alias="mboWaitlistEntryId")
+    mbo_waitlist_entry_id: int | None = Field(..., alias="mboWaitlistEntryId")
     mbo_sync_message: str = Field(..., alias="mboSyncMessage")
     status: str
     booked_date: datetime = Field(..., alias="bookedDate")
-    checked_in_date: None = Field(..., alias="checkedInDate")
+    checked_in_date: datetime | None = Field(..., alias="checkedInDate")
     cancelled_date: datetime = Field(..., alias="cancelledDate")
     created_by: str = Field(..., alias="createdBy")
     created_date: datetime = Field(..., alias="createdDate")
