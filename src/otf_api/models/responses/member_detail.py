@@ -101,7 +101,7 @@ class MemberDetail(OtfItemBase):
     state: None
     postal_code: None = Field(..., alias="postalCode")
     phone_number: str = Field(..., alias="phoneNumber")
-    home_phone: str = Field(..., alias="homePhone")
+    home_phone: str | None = Field(..., alias="homePhone")
     work_phone: None = Field(..., alias="workPhone")
     phone_type: None = Field(..., alias="phoneType")
     birth_day: date | str = Field(..., alias="birthDay")
