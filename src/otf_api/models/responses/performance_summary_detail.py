@@ -1,7 +1,9 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from otf_api.models.base import OtfItemBase
 
 
-class ZoneTimeMinutes(BaseModel):
+class ZoneTimeMinutes(OtfItemBase):
     gray: int
     blue: int
     green: int
@@ -9,7 +11,7 @@ class ZoneTimeMinutes(BaseModel):
     red: int
 
 
-class HeartRate(BaseModel):
+class HeartRate(OtfItemBase):
     max_hr: int
     peak_hr: int
     peak_hr_percent: int
@@ -17,19 +19,19 @@ class HeartRate(BaseModel):
     avg_hr_percent: int
 
 
-class PerformanceMetricFloat(BaseModel):
+class PerformanceMetricFloat(OtfItemBase):
     display_value: float
     display_unit: str
     metric_value: float
 
 
-class PerformanceMetricString(BaseModel):
+class PerformanceMetricString(OtfItemBase):
     display_value: str
     display_unit: str
     metric_value: str
 
 
-class BaseEquipment(BaseModel):
+class BaseEquipment(OtfItemBase):
     avg_pace: PerformanceMetricString
     avg_speed: PerformanceMetricFloat
     max_pace: PerformanceMetricString
@@ -50,12 +52,12 @@ class Rower(BaseEquipment):
     max_cadence: PerformanceMetricFloat
 
 
-class EquipmentData(BaseModel):
+class EquipmentData(OtfItemBase):
     treadmill: Treadmill
     rower: Rower
 
 
-class Details(BaseModel):
+class Details(OtfItemBase):
     calories_burned: int
     splat_points: int
     step_count: int
@@ -65,12 +67,12 @@ class Details(BaseModel):
     equipment_data: EquipmentData
 
 
-class Class(BaseModel):
+class Class(OtfItemBase):
     starts_at_local: str
     name: str
 
 
-class PerformanceSummaryDetail(BaseModel):
+class PerformanceSummaryDetail(OtfItemBase):
     id: str
     details: Details
     ratable: bool

@@ -1,8 +1,9 @@
 from datetime import datetime
+from typing import ClassVar
 
 from pydantic import Field
 
-from otf_api.models.base import OtfItemBase
+from otf_api.models.base import OtfItemBase, OtfListBase
 
 
 class Country(OtfItemBase):
@@ -107,5 +108,6 @@ class Pagination(OtfItemBase):
     total_pages: int = Field(..., alias="totalPages")
 
 
-class StudioDetailList(OtfItemBase):
+class StudioDetailList(OtfListBase):
+    collection_field: ClassVar[str] = "studios"
     studios: list[StudioDetail]
