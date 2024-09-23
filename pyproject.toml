@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "otf-api"
-version = "0.6.0"
+version = "0.6.1"
 description = "Python OrangeTheory Fitness API Client"
 authors = ["Jessica Smith <j.smith.git1@gmail.com>"]
 license = "MIT"
