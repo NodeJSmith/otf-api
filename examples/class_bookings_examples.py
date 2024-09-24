@@ -4,7 +4,7 @@ from collections import Counter
 
 from otf_api import Otf
 from otf_api.models.responses.bookings import BookingStatus
-from otf_api.models.responses.classes import ClassType
+from otf_api.models.responses.classes import ClassType, DoW
 
 USERNAME = os.getenv("OTF_EMAIL")
 PASSWORD = os.getenv("OTF_PASSWORD")
@@ -27,7 +27,7 @@ async def main():
     # You can pass a list of studio_uuids or, if you want to get classes from your home studio, leave it empty
     # this also takes a start date, end date, and limit - these are not sent to the API, they are used in the
     # client to filter the results
-    classes = await otf.get_classes(studio_uuids)
+    classes = await otf.get_classes(studio_uuids, day_of_week=[DoW.tuesday, DoW.thursday, DoW.saturday])
 
     # get all statuses
     class_types = dict(
