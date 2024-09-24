@@ -35,35 +35,9 @@ class ClassType(str, Enum):
     OTHER = "Other"
 
     @classmethod
-    def all_statuses(cls) -> list[str]:
-        return list(cls.__members__.values())
-
-    @classmethod
-    def get_from_key_insensitive(cls, key: str) -> "ClassType":
-        lcase_to_actual = {item.lower(): item for item in cls._member_map_}
-        val = cls.__members__.get(lcase_to_actual[key.lower()])
-        if not val:
-            raise ValueError(f"Invalid ClassType: {key}")
-        return val
-
-    @classmethod
     def get_case_insensitive(cls, value: str) -> str:
         lcase_to_actual = {item.value.lower(): item.value for item in cls}
         return lcase_to_actual[value.lower()]
-
-
-class ClassTypeCli(str, Enum):
-    """Flipped enum so that the CLI does not have values with spaces"""
-
-    ORANGE_60_MIN_2G = "Orange_60_Min_2G"
-    TREAD_50 = "Tread_50"
-    STRENGTH_50 = "Strength_50"
-    ORANGE_3G = "Orange_3G"
-    ORANGE_60_TORNADO = "Orange_60_Tornado"
-    ORANGE_TORNADO = "Orange_Tornado"
-    ORANGE_90_MIN_3G = "Orange_90_Min_3G"
-    VIP_CLASS = "VIP_Class"
-    OTHER = "Other"
 
 
 class Address(OtfItemBase):
@@ -162,10 +136,6 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
     @property
     def has_availability(self) -> bool:
         return not self.full
-
-    @property
-    def id_val(self) -> str:
-        return self.ot_class_uuid
 
     @property
     def day_of_week_enum(self) -> DoW:
