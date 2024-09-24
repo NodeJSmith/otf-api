@@ -1,10 +1,9 @@
 import asyncio
 import os
-from collections import Counter
 
 from otf_api import Otf
 from otf_api.models.responses.bookings import BookingStatus
-from otf_api.models.responses.classes import ClassType, DoW
+from otf_api.models.responses.classes import DoW
 
 USERNAME = os.getenv("OTF_EMAIL")
 PASSWORD = os.getenv("OTF_PASSWORD")
@@ -28,17 +27,6 @@ async def main():
     # this also takes a start date, end date, and limit - these are not sent to the API, they are used in the
     # client to filter the results
     classes = await otf.get_classes(studio_uuids, day_of_week=[DoW.tuesday, DoW.thursday, DoW.saturday])
-
-    # get all statuses
-    class_types = dict(
-        sorted(
-            Counter([c.name for c in classes.classes if c.class_type == ClassType.OTHER]).items(),
-            key=lambda x: x[1],
-            reverse=True,
-        )
-    )
-
-    print(class_types)
 
     print(classes.classes[0].model_dump_json(indent=4))
 
@@ -72,7 +60,68 @@ async def main():
     # You can pass a start_date, end_date, status, and limit as arguments
 
     bookings = await otf.get_bookings()
+
+    print("Next Upcoming Class:")
     print(bookings.bookings[0].model_dump_json(indent=4))
+
+    """
+    {
+        "class_booking_id": 870700285,
+        "class_booking_uuid": "a36d76b1-0a55-4143-b96b-646e7520ca39",
+        "studio_id": 1234,
+        "class_id": 376344282,
+        "is_intro": false,
+        "member_id": 234488148,
+        "status": "Booked",
+        "booked_date": "2024-09-10T04:26:11Z",
+        "checked_in_date": null,
+        "cancelled_date": null,
+        "created_date": "2024-09-10T04:26:11Z",
+        "updated_date": "2024-09-10T04:26:13Z",
+        "is_deleted": false,
+        "waitlist_position": null,
+        "otf_class": {
+            "starts_at_local": "2024-09-28T10:30:00",
+            "ends_at_local": "2024-09-28T11:20:00",
+            "name": "Tread 50",
+            "class_uuid": "82ec9b55-950a-484f-818f-cd2344ce83fd",
+            "is_available": true,
+            "is_cancelled": false,
+            "program_name": "Group Fitness",
+            "coach_id": 1204786,
+            "studio": {
+                "studio_uuid": "49e360d1-f8ef-4091-a23f-61b321cb283c",
+                "studio_name": "AnyTown OH - East",
+                "description": "",
+                "status": "Active",
+                "time_zone": "America/Chicago",
+                "studio_id": 1267,
+                "allows_cr_waitlist": true
+            },
+            "coach": {
+                "coach_uuid": "973516a8-0c6b-41ec-916c-1da9913b9a16",
+                "name": "Friendly",
+                "first_name": "Friendly",
+                "last_name": "Coach"
+            },
+            "location": {
+                "address_one": "123 S Main St",
+                "address_two": null,
+                "city": "AnyTown",
+                "country": null,
+                "distance": null,
+                "latitude": 91.73407745,
+                "location_name": null,
+                "longitude": -80.92264626,
+                "phone_number": "2042348963",
+                "postal_code": "11111",
+                "state": "Ohio"
+            },
+            "virtual_class": null
+        },
+        "is_home_studio": true
+    }
+    """
 
 
 if __name__ == "__main__":

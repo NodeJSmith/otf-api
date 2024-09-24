@@ -153,6 +153,13 @@ async def main():
                     "tread_speed": 1.34,
                     "tread_incline": 1.0,
                     "agg_tread_distance": 9
+                },
+                "row_data": {
+                    "row_speed": 1.0,
+                    "row_pps": 0.0,
+                    "row_Spm": 0.0,
+                    "agg_row_distance": 0,
+                    "row_pace": 0
                 }
             },
             {
@@ -165,6 +172,13 @@ async def main():
                     "tread_speed": 2.46,
                     "tread_incline": 1.0,
                     "agg_tread_distance": 62
+                },
+                "row_data": {
+                    "row_speed": 1.0,
+                    "row_pps": 0.0,
+                    "row_Spm": 0.0,
+                    "agg_row_distance": 0,
+                    "row_pace": 0
                 }
             },
             ...

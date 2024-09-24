@@ -1,5 +1,7 @@
 Simple API client for interacting with the OrangeTheory Fitness APIs.
 
+Review the [documentation](https://otf-api.readthedocs.io/en/stable/).
+
 
 This library allows access to the OrangeTheory API to retrieve workouts and performance data, class schedules, studio information, and bookings.
 
