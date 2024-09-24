@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import ClassVar, Self
+from typing import ClassVar
 
 from humanize import precisedelta
 from pydantic import Field
@@ -18,7 +18,7 @@ class DoW(str, Enum):
     sunday = "sunday"
 
     @classmethod
-    def get_case_insensitive(cls, value: str) -> Self:
+    def get_case_insensitive(cls, value: str) -> "DoW":
         lcase_to_actual = {item.value.lower(): item for item in cls}
         return lcase_to_actual[value.lower()]
 
