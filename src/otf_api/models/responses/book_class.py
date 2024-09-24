@@ -70,16 +70,16 @@ class Member(OtfItemBase):
     first_name: str = Field(..., alias="firstName")
     last_name: str = Field(..., alias="lastName")
     email: str
-    profile_picture_url: None = Field(..., alias="profilePictureUrl")
+    profile_picture_url: str | None = Field(..., alias="profilePictureUrl")
     alternate_emails: None = Field(..., alias="alternateEmails")
-    address_line1: None = Field(..., alias="addressLine1")
-    address_line2: None = Field(..., alias="addressLine2")
-    city: None
-    state: None
-    postal_code: None = Field(..., alias="postalCode")
+    address_line1: str | None = Field(..., alias="addressLine1")
+    address_line2: str | None = Field(..., alias="addressLine2")
+    city: str | None
+    state: str | None
+    postal_code: str | None = Field(..., alias="postalCode")
     phone_number: str = Field(..., alias="phoneNumber")
     home_phone: str = Field(..., alias="homePhone")
-    work_phone: None = Field(..., alias="workPhone")
+    work_phone: str | None = Field(..., alias="workPhone")
     phone_type: None = Field(..., alias="phoneType")
     birth_day: str = Field(..., alias="birthDay")
     cc_last4: str = Field(..., alias="ccLast4")
@@ -195,13 +195,13 @@ class SavedBooking(OtfItemBase):
     member_id: int = Field(..., alias="memberId")
     mbo_member_id: str = Field(..., alias="mboMemberId")
     mbo_class_id: int = Field(..., alias="mboClassId")
-    mbo_visit_id: None = Field(..., alias="mboVisitId")
-    mbo_waitlist_entry_id: None = Field(..., alias="mboWaitlistEntryId")
-    mbo_sync_message: None = Field(..., alias="mboSyncMessage")
+    mbo_visit_id: int | None = Field(..., alias="mboVisitId")
+    mbo_waitlist_entry_id: int | None = Field(..., alias="mboWaitlistEntryId")
+    mbo_sync_message: str | None = Field(..., alias="mboSyncMessage")
     status: str
     booked_date: datetime = Field(..., alias="bookedDate")
-    checked_in_date: None = Field(..., alias="checkedInDate")
-    cancelled_date: None = Field(..., alias="cancelledDate")
+    checked_in_date: datetime | None = Field(..., alias="checkedInDate")
+    cancelled_date: datetime | None = Field(..., alias="cancelledDate")
     created_by: str | None = Field(None, alias="createdBy")
     created_date: datetime | None = Field(None, alias="createdDate")
     updated_by: str | None = Field(None, alias="updatedBy")
@@ -376,7 +376,7 @@ class MboClass(OtfItemBase):
     location: Location1
     max_capacity: MaxCapacity = Field(..., alias="maxCapacity")
     web_capacity: WebCapacity = Field(..., alias="webCapacity")
-    total_booked: None = Field(..., alias="totalBooked")
+    total_booked: int | None = Field(..., alias="totalBooked")
     total_booked_waitlist: TotalBookedWaitlist = Field(..., alias="totalBookedWaitlist")
     web_booked: WebBooked = Field(..., alias="webBooked")
     semester_id: SemesterId = Field(..., alias="semesterId")

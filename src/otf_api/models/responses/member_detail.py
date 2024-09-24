@@ -93,16 +93,16 @@ class MemberDetail(OtfItemBase):
     first_name: str = Field(..., alias="firstName")
     last_name: str = Field(..., alias="lastName")
     email: str
-    profile_picture_url: None = Field(..., alias="profilePictureUrl")
+    profile_picture_url: str | None = Field(..., alias="profilePictureUrl")
     alternate_emails: None = Field(..., alias="alternateEmails")
-    address_line1: None = Field(..., alias="addressLine1")
-    address_line2: None = Field(..., alias="addressLine2")
-    city: None
-    state: None
-    postal_code: None = Field(..., alias="postalCode")
+    address_line1: str | None = Field(..., alias="addressLine1")
+    address_line2: str | None = Field(..., alias="addressLine2")
+    city: str | None
+    state: str | None
+    postal_code: str | None = Field(..., alias="postalCode")
     phone_number: str = Field(..., alias="phoneNumber")
     home_phone: str | None = Field(..., alias="homePhone")
-    work_phone: None = Field(..., alias="workPhone")
+    work_phone: str | None = Field(..., alias="workPhone")
     phone_type: None = Field(..., alias="phoneType")
     birth_day: date | str = Field(..., alias="birthDay")
     cc_last4: str = Field(..., alias="ccLast4")
