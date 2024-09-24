@@ -2,7 +2,6 @@ from datetime import datetime
 from enum import Enum
 from typing import ClassVar
 
-from inflection import humanize
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase, OtfListBase
@@ -17,10 +16,6 @@ class StudioStatus(str, Enum):
     TEMP_CLOSED = "Temporarily Closed"
     PERM_CLOSED = "Permanently Closed"
 
-    @classmethod
-    def all_statuses(cls) -> list[str]:
-        return list(cls.__members__.values())
-
 
 class BookingStatus(str, Enum):
     CheckedIn = "Checked In"
@@ -33,46 +28,6 @@ class BookingStatus(str, Enum):
     CheckinPending = "Checkin Pending"
     CheckinRequested = "Checkin Requested"
     CheckinCancelled = "Checkin Cancelled"
-
-    @classmethod
-    def get_from_key_insensitive(cls, key: str) -> "BookingStatus":
-        lcase_to_actual = {item.lower(): item for item in cls._member_map_}
-        val = cls.__members__.get(lcase_to_actual[key.lower()])
-        if not val:
-            raise ValueError(f"Invalid BookingStatus: {key}")
-        return val
-
-    @classmethod
-    def get_case_insensitive(cls, value: str) -> str:
-        lcase_to_actual = {item.value.lower(): item.value for item in cls}
-        return lcase_to_actual[value.lower()]
-
-    @classmethod
-    def all_statuses(cls) -> list[str]:
-        return list(cls.__members__.values())
-
-
-class BookingStatusCli(str, Enum):
-    """Flipped enum so that the CLI does not have values with spaces"""
-
-    CheckedIn = "CheckedIn"
-    CancelCheckinPending = "CancelCheckinPending"
-    CancelCheckinRequested = "CancelCheckinRequested"
-    Cancelled = "Cancelled"
-    LateCancelled = "LateCancelled"
-    Booked = "Booked"
-    Waitlisted = "Waitlisted"
-    CheckinPending = "CheckinPending"
-    CheckinRequested = "CheckinRequested"
-    CheckinCancelled = "CheckinCancelled"
-
-    @classmethod
-    def to_standard_case_insensitive(cls, key: str) -> BookingStatus:
-        lcase_to_actual = {item.lower(): item for item in cls._member_map_}
-        val = cls.__members__.get(lcase_to_actual[key.lower()])
-        if not val:
-            raise ValueError(f"Invalid BookingStatus: {key}")
-        return BookingStatus(val)
 
     @classmethod
     def get_case_insensitive(cls, value: str) -> str:
@@ -162,23 +117,6 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
     location: Location
     virtual_class: bool | None = Field(None, alias="virtualClass")
 
-    @classmethod
-    def attr_to_column_header(cls, attr: str) -> str:
-        attr_map = {k: humanize(k) for k in cls.model_fields}
-        overrides = {
-            "day_of_week": "Class DoW",
-            "date": "Class Date",
-            "time": "Class Time",
-            "duration": "Class Duration",
-            "name": "Class Name",
-            "is_home_studio": "Home Studio",
-            "is_booked": "Booked",
-        }
-
-        attr_map.update(overrides)
-
-        return attr_map.get(attr, attr)
-
 
 class Member(OtfItemBase):
     member_uuid: str = Field(alias="memberUUId")
@@ -215,10 +153,6 @@ class Booking(OtfItemBase):
     waitlist_position: int | None = Field(None, alias="waitlistPosition")
     otf_class: OtfClass = Field(alias="class")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
-
-    @property
-    def id_val(self) -> str:
-        return self.class_booking_id
 
 
 class BookingList(OtfListBase):

@@ -1,4 +1,5 @@
 import pytest
+
 from otf_api.api import Otf
 
 

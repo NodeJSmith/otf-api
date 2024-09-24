@@ -21,32 +21,3 @@ class ChallengeType(int, Enum):
     RemixInSix = 65
     Push = 66
     BackAtIt = 84
-
-
-class HistoryBookingStatus(str, Enum):
-    Attended = "Attended"
-    Cancelled = "Cancelled"
-    LateCancelled = "Late Cancelled"
-
-    @classmethod
-    def all_statuses(cls) -> list[str]:
-        return list(cls.__members__.values())
-
-
-class HistoryClassStatus(str, Enum):
-    CheckedIn = "Checked In"
-    CancelCheckinPending = "Cancel Checkin Pending"
-    CancelCheckinRequested = "Cancel Checkin Requested"
-    LateCancelled = "Late Cancelled"
-    Booked = "Booked"
-    Waitlisted = "Waitlisted"
-    CheckinPending = "Checkin Pending"
-    CheckinRequested = "Checkin Requested"
-    CheckinCancelled = "Checkin Cancelled"
-    Pending = "Pending"
-    Confirmed = "Confirmed"
-    Requested = "Requested"
-
-    @classmethod
-    def all_statuses(cls) -> list[str]:
-        return list(cls.__members__.values())

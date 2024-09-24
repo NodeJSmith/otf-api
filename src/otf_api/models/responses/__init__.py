@@ -5,7 +5,7 @@ from .cancel_booking import CancelBooking
 from .challenge_tracker_content import ChallengeTrackerContent
 from .challenge_tracker_detail import ChallengeTrackerDetailList
 from .classes import ClassType, DoW, OtfClassList
-from .enums import ChallengeType, EquipmentType, HistoryClassStatus
+from .enums import ChallengeType, EquipmentType
 from .favorite_studios import FavoriteStudioList
 from .latest_agreement import LatestAgreement
 from .lifetime_stats import StatsResponse, StatsTime
@@ -35,7 +35,6 @@ __all__ = [
     "DoW",
     "EquipmentType",
     "FavoriteStudioList",
-    "HistoryClassStatus",
     "LatestAgreement",
     "MemberDetail",
     "MemberMembership",
