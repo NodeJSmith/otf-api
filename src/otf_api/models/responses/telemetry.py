@@ -35,7 +35,7 @@ class RowData(OtfItemBase):
 
 class TelemetryItem(OtfItemBase):
     relative_timestamp: int = Field(..., alias="relativeTimestamp")
-    hr: int
+    hr: int | None = None
     agg_splats: int = Field(..., alias="aggSplats")
     agg_calories: int = Field(..., alias="aggCalories")
     timestamp: datetime | None = Field(
