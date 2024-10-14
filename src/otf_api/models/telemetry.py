@@ -28,7 +28,7 @@ class TreadData(OtfItemBase):
 class RowData(OtfItemBase):
     row_speed: float = Field(..., alias="rowSpeed")
     row_pps: float = Field(..., alias="rowPps")
-    row_Spm: float = Field(..., alias="rowSpm")
+    row_spm: float = Field(..., alias="rowSpm")
     agg_row_distance: int = Field(..., alias="aggRowDistance")
     row_pace: int = Field(..., alias="rowPace")
 
