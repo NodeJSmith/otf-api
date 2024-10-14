@@ -72,8 +72,8 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
     is_cancelled: bool = Field(alias="isCancelled")
     program_name: str | None = Field(None, alias="programName")
     coach_id: int | None = Field(None, alias="coachId")
-    studio: Studio | None = None
-    coach: Coach | None = None
+    studio: Studio
+    coach: Coach
     location: Location | None = None
     virtual_class: bool | None = Field(None, alias="virtualClass")
 
