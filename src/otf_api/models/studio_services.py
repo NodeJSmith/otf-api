@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pydantic import Field
 
-from otf_api.models.base import OtfItemBase, OtfListBase
+from otf_api.models.base import OtfItemBase
 
 
 class Currency(OtfItemBase):
@@ -53,5 +53,5 @@ class StudioService(OtfItemBase):
     studio: Studio
 
 
-class StudioServiceList(OtfListBase):
+class StudioServiceList(OtfItemBase):
     data: list[StudioService]

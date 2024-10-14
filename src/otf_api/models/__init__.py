@@ -1,14 +1,14 @@
 from .body_composition_list import BodyCompositionList
 from .book_class import BookClass
-from .bookings import BookingList, BookingStatus
+from .bookings import Booking, BookingList
 from .cancel_booking import CancelBooking
 from .challenge_tracker_content import ChallengeTrackerContent
 from .challenge_tracker_detail import ChallengeTrackerDetailList
-from .classes import ClassType, DoW, OtfClassList
-from .enums import ChallengeType, EquipmentType
+from .classes import OtfClass, OtfClassList
+from .enums import BookingStatus, ChallengeType, ClassType, DoW, EquipmentType, StatsTime, StudioStatus
 from .favorite_studios import FavoriteStudioList
 from .latest_agreement import LatestAgreement
-from .lifetime_stats import StatsResponse, StatsTime
+from .lifetime_stats import StatsResponse
 from .member_detail import MemberDetail
 from .member_membership import MemberMembership
 from .member_purchases import MemberPurchaseList
@@ -25,6 +25,7 @@ from .total_classes import TotalClasses
 __all__ = [
     "BodyCompositionList",
     "BookClass",
+    "Booking",
     "BookingList",
     "BookingStatus",
     "CancelBooking",
@@ -40,6 +41,7 @@ __all__ = [
     "MemberMembership",
     "MemberPurchaseList",
     "OtfClassList",
+    "OtfClass",
     "OutOfStudioWorkoutHistoryList",
     "Pagination",
     "PerformanceSummaryDetail",

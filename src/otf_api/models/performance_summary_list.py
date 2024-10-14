@@ -1,8 +1,6 @@
-from typing import ClassVar
-
 from pydantic import Field
 
-from otf_api.models.base import OtfItemBase, OtfListBase
+from otf_api.models.base import OtfItemBase
 
 
 class ZoneTimeMinutes(OtfItemBase):
@@ -66,6 +64,5 @@ class PerformanceSummaryEntry(OtfItemBase):
     ratings: Ratings | None = None
 
 
-class PerformanceSummaryList(OtfListBase):
-    collection_field: ClassVar[str] = "summaries"
+class PerformanceSummaryList(OtfItemBase):
     summaries: list[PerformanceSummaryEntry]

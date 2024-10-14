@@ -59,6 +59,7 @@ ignore = [
     "PD901",  # pandas-vet - pandas-df-variable-name
     "RUF015", # ruff - unnecessary-iterable-allocation-for-first-element
     "PTH118", # flake8-use-pathlib - os-path-join
+    "DTZ002",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.

@@ -1,9 +1,8 @@
 from datetime import datetime
-from typing import ClassVar
 
 from pydantic import Field
 
-from otf_api.models.base import OtfItemBase, OtfListBase
+from otf_api.models.base import OtfItemBase
 
 
 class Location(OtfItemBase):
@@ -32,7 +31,7 @@ class StudioLocation(OtfItemBase):
     bill_to_country_id: int = Field(..., alias="billToCountryId")
     bill_to_country: str = Field(..., alias="billToCountry")
     ship_to_address: str = Field(..., alias="shipToAddress")
-    ship_to_address2: str | None = Field(..., alias="shipToAddress2")
+    ship_to_address2: str | None = Field(None, alias="shipToAddress2")
     ship_to_city: str = Field(..., alias="shipToCity")
     ship_to_state: str = Field(..., alias="shipToState")
     ship_to_postal_code: str = Field(..., alias="shipToPostalCode")
@@ -40,7 +39,7 @@ class StudioLocation(OtfItemBase):
     ship_to_country_id: int = Field(..., alias="shipToCountryId")
     ship_to_country: str = Field(..., alias="shipToCountry")
     physical_address: str = Field(..., alias="physicalAddress")
-    physical_address2: str | None = Field(..., alias="physicalAddress2")
+    physical_address2: str | None = Field(None, alias="physicalAddress2")
     physical_city: str = Field(..., alias="physicalCity")
     physical_state: str = Field(..., alias="physicalState")
     physical_postal_code: str = Field(..., alias="physicalPostalCode")
@@ -57,30 +56,30 @@ class FavoriteStudio(OtfItemBase):
     studio_uuid: str = Field(..., alias="studioUUId")
     mbo_studio_id: int = Field(..., alias="mboStudioId")
     studio_name: str = Field(..., alias="studioName")
-    area_id: int | None = Field(..., alias="areaId")
-    market_id: int | None = Field(..., alias="marketId")
-    state_id: int | None = Field(..., alias="stateId")
+    area_id: int | None = Field(None, alias="areaId")
+    market_id: int | None = Field(None, alias="marketId")
+    state_id: int | None = Field(None, alias="stateId")
     studio_physical_location_id: int = Field(..., alias="studioPhysicalLocationId")
     studio_number: str = Field(..., alias="studioNumber")
     description: str | None = None
-    studio_version: str | None = Field(..., alias="studioVersion")
+    studio_version: str | None = Field(None, alias="studioVersion")
     studio_token: str = Field(..., alias="studioToken")
     studio_status: str = Field(..., alias="studioStatus")
     open_date: datetime = Field(..., alias="openDate")
     studio_type_id: int = Field(..., alias="studioTypeId")
-    pos_type_id: int | None = Field(..., alias="posTypeId")
-    logo_url: str | None = Field(..., alias="logoUrl")
-    page_color1: str | None = Field(..., alias="pageColor1")
-    page_color2: str | None = Field(..., alias="pageColor2")
-    page_color3: str | None = Field(..., alias="pageColor3")
-    page_color4: str | None = Field(..., alias="pageColor4")
+    pos_type_id: int | None = Field(None, alias="posTypeId")
+    logo_url: str | None = Field(None, alias="logoUrl")
+    page_color1: str | None = Field(None, alias="pageColor1")
+    page_color2: str | None = Field(None, alias="pageColor2")
+    page_color3: str | None = Field(None, alias="pageColor3")
+    page_color4: str | None = Field(None, alias="pageColor4")
     accepts_visa_master_card: bool = Field(..., alias="acceptsVisaMasterCard")
     accepts_american_express: bool = Field(..., alias="acceptsAmericanExpress")
     accepts_discover: bool = Field(..., alias="acceptsDiscover")
     accepts_ach: bool = Field(..., alias="acceptsACH")
-    sms_package_enabled: bool | None = Field(..., alias="smsPackageEnabled")
-    allows_dashboard_access: bool | None = Field(..., alias="allowsDashboardAccess")
-    pricing_level: str | None = Field(..., alias="pricingLevel")
+    sms_package_enabled: bool | None = Field(None, alias="smsPackageEnabled")
+    allows_dashboard_access: bool | None = Field(None, alias="allowsDashboardAccess")
+    pricing_level: str | None = Field(None, alias="pricingLevel")
     contact_email: str = Field(..., alias="contactEmail")
     time_zone: str = Field(..., alias="timeZone")
     environment: str
@@ -95,8 +94,7 @@ class FavoriteStudio(OtfItemBase):
     studio_location: StudioLocation = Field(..., alias="studioLocation")
 
 
-class FavoriteStudioList(OtfListBase):
-    collection_field: ClassVar[str] = "studios"
+class FavoriteStudioList(OtfItemBase):
     studios: list[FavoriteStudio]
 
     @property

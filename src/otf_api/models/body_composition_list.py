@@ -3,9 +3,9 @@ from datetime import datetime
 from enum import Enum
 
 import pint
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, Field, field_validator
 
-from otf_api.models.base import OtfItemBase, OtfListBase
+from otf_api.models.base import OtfItemBase
 
 ureg = pint.UnitRegistry()
 
@@ -101,7 +101,6 @@ def get_body_fat_percent_dividers_female(age: int) -> list[float]:
 
 
 class LeanBodyMass(OtfItemBase):
-    model_config: ConfigDict = ConfigDict(extra="ignore")
     left_arm: float = Field(..., alias="lbmOfLeftArm")
     left_leg: float = Field(..., alias="lbmOfLeftLeg")
     right_arm: float = Field(..., alias="lbmOfRightArm")
@@ -110,7 +109,6 @@ class LeanBodyMass(OtfItemBase):
 
 
 class LeanBodyMassPercent(OtfItemBase):
-    model_config: ConfigDict = ConfigDict(extra="ignore")
     left_arm: float = Field(..., alias="lbmPercentOfLeftArm")
     left_leg: float = Field(..., alias="lbmPercentOfLeftLeg")
     right_arm: float = Field(..., alias="lbmPercentOfRightArm")
@@ -119,7 +117,6 @@ class LeanBodyMassPercent(OtfItemBase):
 
 
 class BodyFatMass(OtfItemBase):
-    model_config: ConfigDict = ConfigDict(extra="ignore")
     control: float = Field(..., alias="bfmControl")
     left_arm: float = Field(..., alias="bfmOfLeftArm")
     left_leg: float = Field(..., alias="bfmOfLeftLeg")
@@ -129,7 +126,6 @@ class BodyFatMass(OtfItemBase):
 
 
 class BodyFatMassPercent(OtfItemBase):
-    model_config: ConfigDict = ConfigDict(extra="ignore")
     left_arm: float = Field(..., alias="bfmPercentOfLeftArm")
     left_leg: float = Field(..., alias="bfmPercentOfLeftLeg")
     right_arm: float = Field(..., alias="bfmPercentOfRightArm")
@@ -138,7 +134,6 @@ class BodyFatMassPercent(OtfItemBase):
 
 
 class TotalBodyWeight(OtfItemBase):
-    model_config: ConfigDict = ConfigDict(extra="ignore")
     right_arm: float = Field(..., alias="tbwOfRightArm")
     left_arm: float = Field(..., alias="tbwOfLeftArm")
     trunk: float = Field(..., alias="tbwOfTrunk")
@@ -147,7 +142,6 @@ class TotalBodyWeight(OtfItemBase):
 
 
 class IntraCellularWater(OtfItemBase):
-    model_config: ConfigDict = ConfigDict(extra="ignore")
     right_arm: float = Field(..., alias="icwOfRightArm")
     left_arm: float = Field(..., alias="icwOfLeftArm")
     trunk: float = Field(..., alias="icwOfTrunk")
@@ -156,7 +150,6 @@ class IntraCellularWater(OtfItemBase):
 
 
 class ExtraCellularWater(OtfItemBase):
-    model_config: ConfigDict = ConfigDict(extra="ignore")
     right_arm: float = Field(..., alias="ecwOfRightArm")
     left_arm: float = Field(..., alias="ecwOfLeftArm")
     trunk: float = Field(..., alias="ecwOfTrunk")
@@ -165,7 +158,6 @@ class ExtraCellularWater(OtfItemBase):
 
 
 class ExtraCellularWaterOverTotalBodyWater(OtfItemBase):
-    model_config: ConfigDict = ConfigDict(extra="ignore")
     right_arm: float = Field(..., alias="ecwOverTBWOfRightArm")
     left_arm: float = Field(..., alias="ecwOverTBWOfLeftArm")
     trunk: float = Field(..., alias="ecwOverTBWOfTrunk")
@@ -199,9 +191,6 @@ class BodyCompositionData(OtfItemBase):
     percent_body_fat: float = Field(..., alias="pbf")
     basal_metabolic_rate: float = Field(..., alias="bmr")
     in_body_type: str = Field(..., alias="inBodyType")
-
-    body_fat_mass: float = Field(..., alias="bfm")
-    skeletal_muscle_mass: float = Field(..., alias="smm")
 
     # excluded because they are only useful for end result of calculations
     body_fat_mass_dividers: list[float] = Field(..., alias="bfmGraphScale", exclude=True)
@@ -302,5 +291,5 @@ class BodyCompositionData(OtfItemBase):
         )
 
 
-class BodyCompositionList(OtfListBase):
+class BodyCompositionList(OtfItemBase):
     data: list[BodyCompositionData]
