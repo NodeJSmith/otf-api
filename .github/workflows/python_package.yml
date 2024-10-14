@@ -60,21 +60,3 @@ jobs:
 
       - name: Publish distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-
-  # create-release:
-  #   name: Create a release
-  #   environment:
-  #     name: release
-  #     url: https://pypi.org/p/otf-api
-  #   needs: [publish-pypi-dists]
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
-
-  #   steps:
-  #     - name: Release
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         generate_release_notes: true
-  #         files: "./dist"
-  #         make_latest: true

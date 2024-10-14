@@ -1,24 +1,6 @@
-from enum import Enum
-
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
-
-
-class StatsTime(str, Enum):
-    LastYear = "lastYear"
-    ThisYear = "thisYear"
-    LastMonth = "lastMonth"
-    ThisMonth = "thisMonth"
-    LastWeek = "lastWeek"
-    ThisWeek = "thisWeek"
-    AllTime = "allTime"
-
-
-class StatsType(str, Enum):
-    Home = "outStudio"
-    Studio = "inStudio"
-    All = "allStats"
 
 
 class OutStudioMixin(OtfItemBase):

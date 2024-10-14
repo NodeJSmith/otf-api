@@ -1,7 +1,6 @@
 from datetime import date, datetime
-from typing import Any
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from otf_api.models.base import OtfItemBase
 
@@ -15,12 +14,6 @@ class Address(OtfItemBase):
     territory: str
     postal_code: str = Field(..., alias="postalCode")
     country: str
-
-    def __init__(self, **data):
-        if "memberaddressUUId" in data:
-            data["memberAddressUUId"] = data.pop("memberaddressUUId")
-
-        super().__init__(**data)
 
 
 class MemberCreditCard(OtfItemBase):
@@ -93,18 +86,18 @@ class MemberDetail(OtfItemBase):
     first_name: str = Field(..., alias="firstName")
     last_name: str = Field(..., alias="lastName")
     email: str
-    profile_picture_url: str | None = Field(..., alias="profilePictureUrl")
+    profile_picture_url: str | None = Field(None, alias="profilePictureUrl")
     alternate_emails: None = Field(..., alias="alternateEmails")
-    address_line1: str | None = Field(..., alias="addressLine1")
-    address_line2: str | None = Field(..., alias="addressLine2")
+    address_line1: str | None = Field(None, alias="addressLine1")
+    address_line2: str | None = Field(None, alias="addressLine2")
     city: str | None
     state: str | None
-    postal_code: str | None = Field(..., alias="postalCode")
+    postal_code: str | None = Field(None, alias="postalCode")
     phone_number: str = Field(..., alias="phoneNumber")
-    home_phone: str | None = Field(..., alias="homePhone")
-    work_phone: str | None = Field(..., alias="workPhone")
+    home_phone: str | None = Field(None, alias="homePhone")
+    work_phone: str | None = Field(None, alias="workPhone")
     phone_type: None = Field(..., alias="phoneType")
-    birth_day: date | str = Field(..., alias="birthDay")
+    birth_day: date = Field(..., alias="birthDay")
     cc_last4: str = Field(..., alias="ccLast4")
     cc_type: str = Field(..., alias="ccType")
     gender: str
@@ -133,7 +126,11 @@ class MemberDetail(OtfItemBase):
     otf_acs_id: str = Field(..., alias="otfAcsId")
     member_class_summary: MemberClassSummary | None = Field(None, alias="memberClassSummary")
 
-    def __init__(self, **data: Any):
-        super().__init__(**data)
-        if self.birth_day and isinstance(self.birth_day, str):
-            self.birth_day = datetime.strptime(self.birth_day, "%Y-%m-%d").date()  # noqa
+    @field_validator("birth_day")
+    @classmethod
+    def validate_birth_day(cls, value: date | str | None, **_kwargs) -> date | None:
+        if value is None:
+            return value
+        if not isinstance(value, date):
+            return datetime.strptime(value, "%Y-%m-%d").date()  # noqa
+        return value

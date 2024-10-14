@@ -2,7 +2,7 @@ import asyncio
 import os
 
 from otf_api import Otf
-from otf_api.models.responses import ChallengeType, EquipmentType
+from otf_api.models import ChallengeType, EquipmentType
 
 USERNAME = os.getenv("OTF_EMAIL")
 PASSWORD = os.getenv("OTF_PASSWORD")
