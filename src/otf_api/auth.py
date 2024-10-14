@@ -1,9 +1,9 @@
 import typing
+from datetime import datetime, timedelta
+from logging import getLogger
 from typing import Any
 
 import jwt
-import pendulum
-from loguru import logger
 from pycognito import AWSSRP, Cognito, MFAChallengeException
 from pycognito.exceptions import TokenVerificationException
 from pydantic import Field
@@ -15,6 +15,7 @@ if typing.TYPE_CHECKING:
     from boto3.session import Session
     from botocore.config import Config
 
+LOGGER = getLogger(__name__)
 CLIENT_ID = "65knvqta6p37efc2l3eh26pl5o"  # from otlive
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
 
@@ -64,12 +65,12 @@ class OtfCognito(Cognito):
     def device_key(self, value: str | None):
         if not value:
             if self._device_key:
-                logger.info("Clearing device key")
+                LOGGER.debug("Clearing device key")
             self._device_key = value
             return
 
         redacted_value = value[:4] + "*" * (len(value) - 8) + value[-4:]
-        logger.info(f"Setting device key: {redacted_value}")
+        LOGGER.debug(f"Setting device key: {redacted_value}")
         self._device_key = value
 
     def _set_tokens(self, tokens: dict[str, Any]):
@@ -116,7 +117,7 @@ class OtfCognito(Cognito):
             try:
                 self.renew_access_token()
             except TokenVerificationException:
-                logger.error("Failed to renew access token. Confirming device.")
+                LOGGER.error("Failed to renew access token. Confirming device.")
                 self.device_key = None
                 aws.confirm_device(tokens)
 
@@ -129,11 +130,11 @@ class OtfCognito(Cognito):
         """
         if not self.access_token:
             raise AttributeError("Access Token Required to Check Token")
-        now = pendulum.now()
+        now = datetime.now()  # noqa
         dec_access_token = jwt.decode(self.access_token, options={"verify_signature": False})
 
-        exp = pendulum.DateTime.fromtimestamp(dec_access_token["exp"])
-        if now > exp.subtract(minutes=15):
+        exp = datetime.fromtimestamp(dec_access_token["exp"])  # noqa
+        if now > exp - timedelta(minutes=15):
             expired = True
             if renew:
                 self.renew_access_token()
@@ -147,7 +148,7 @@ class OtfCognito(Cognito):
         self._add_secret_hash(auth_params, "SECRET_HASH")
 
         if self.device_key:
-            logger.info("Using device key for refresh token")
+            LOGGER.debug("Using device key for refresh token")
             auth_params["DEVICE_KEY"] = self.device_key
 
         refresh_response = self.client.initiate_auth(
@@ -311,5 +312,5 @@ class OtfUser(OtfItemBase):
         }
 
     @property
-    def device_key(self) -> str:
+    def device_key(self):
         return self.cognito.device_key
