@@ -1,22 +1,22 @@
 import asyncio
 import contextlib
 import json
-import typing
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
+from logging import Logger, getLogger
 from typing import Any
 
 import aiohttp
 import requests
-from loguru import logger
 from yarl import URL
 
 from otf_api import models
 from otf_api.auth import OtfUser
-from otf_api.exceptions import AlreadyBookedError
-
-if typing.TYPE_CHECKING:
-    from loguru import Logger
-
+from otf_api.exceptions import (
+    AlreadyBookedError,
+    BookingAlreadyCancelledError,
+    BookingNotFoundError,
+    OutsideSchedulingWindowError,
+)
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
@@ -25,7 +25,7 @@ REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "A
 
 
 class Otf:
-    logger: "Logger" = logger
+    logger: "Logger" = getLogger(__file__)
     user: OtfUser
     _session: aiohttp.ClientSession
 
@@ -148,7 +148,7 @@ class Otf:
 
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
-        logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
+        self.logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
 
         # ensure we have headers that contain the most up-to-date token
         if not headers:
@@ -164,10 +164,10 @@ class Otf:
             try:
                 response.raise_for_status()
             except aiohttp.ClientResponseError as e:
-                logger.exception(f"Error making request: {e}")
-                logger.exception(f"Response: {text}")
+                self.logger.exception(f"Error making request: {e}")
+                self.logger.exception(f"Response: {text}")
             except Exception as e:
-                logger.exception(f"Error making request: {e}")
+                self.logger.exception(f"Error making request: {e}")
 
             return await response.json()
 
@@ -210,6 +210,7 @@ class Otf:
         exclude_cancelled: bool = False,
         day_of_week: list[models.DoW] | None = None,
         start_time: list[str] | None = None,
+        exclude_unbookable: bool = True,
     ):
         """Get the classes for the user.
 
@@ -228,6 +229,8 @@ class Otf:
             exclude_cancelled (bool): Whether to exclude cancelled classes. Default is False.
             day_of_week (list[DoW] | None): The days of the week to filter by. Default is None.
             start_time (list[str] | None): The start time to filter by. Default is None.
+            exclude_unbookable (bool): Whether to exclude classes that are outside the scheduling window. Default is\
+            True.
 
         Returns:
             OtfClassList: The classes for the user.
@@ -238,11 +241,7 @@ class Otf:
         elif include_home_studio and self.home_studio_uuid not in studio_uuids:
             studio_uuids.append(self.home_studio_uuid)
 
-        path = "/v1/classes"
-
-        params = {"studio_ids": studio_uuids}
-
-        classes_resp = await self._classes_request("GET", path, params=params)
+        classes_resp = await self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
         classes_list = models.OtfClassList(classes=classes_resp["items"])
 
         if start_date:
@@ -284,6 +283,11 @@ class Otf:
 
         classes_list.classes = list(filter(lambda c: not c.canceled, classes_list.classes))
 
+        if exclude_unbookable:
+            # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
+            max_date = datetime.today().date() + timedelta(days=29)
+            classes_list.classes = [c for c in classes_list.classes if c.starts_at_local.date() <= max_date]
+
         booking_resp = await self.get_bookings(start_date, end_date, status=models.BookingStatus.Booked)
         booked_classes = {b.otf_class.class_uuid for b in booking_resp.bookings}
 
@@ -302,21 +306,77 @@ class Otf:
         data = await self._default_request("GET", "/mobile/v1/members/classes/summary")
         return models.TotalClasses(**data["data"])
 
-    async def book_class(self, class_uuid: str):
-        """Book a class by class_uuid.
+    async def get_booking(self, booking_uuid: str):
+        """Get a specific booking by booking_uuid.
 
         Args:
-            class_uuid (str): The class UUID to book.
+            booking_uuid (str): The booking UUID to get.
 
         Returns:
-            None: The response is empty.
+            BookingList: The booking.
+
+        Raises:
+            ValueError: If booking_uuid is None or empty string.
+        """
+        if not booking_uuid:
+            raise ValueError("booking_uuid is required")
+
+        data = await self._default_request("GET", f"/member/members/{self._member_id}/bookings/{booking_uuid}")
+        return models.Booking(**data["data"])
+
+    async def get_booking_by_class(self, class_: str | models.OtfClass):
+        """Get a specific booking by class_uuid or OtfClass object.
+
+        Args:
+            class_ (str | OtfClass): The class UUID or the OtfClass object to get the booking for.
+
+        Returns:
+            Booking: The booking.
+
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ValueError: If class_uuid is None or empty string.
         """
 
-        bookings = await self.get_bookings()
+        class_uuid = class_.ot_class_uuid if isinstance(class_, models.OtfClass) else class_
 
-        for booking in bookings.bookings:
+        if not class_uuid:
+            raise ValueError("class_uuid is required")
+
+        all_bookings = await self.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
+
+        for booking in all_bookings.bookings:
             if booking.otf_class.class_uuid == class_uuid:
-                raise AlreadyBookedError(f"Class {class_uuid} is already booked.")
+                return booking
+
+        raise BookingNotFoundError(f"Booking for class {class_uuid} not found.")
+
+    async def book_class(self, class_: str | models.OtfClass):
+        """Book a class by providing either the class_uuid or the OtfClass object.
+
+        Args:
+            class_ (str | OtfClass): The class UUID or the OtfClass object to book.
+
+        Returns:
+            Booking: The booking.
+
+        Raises:
+            AlreadyBookedError: If the class is already booked.
+            OutsideSchedulingWindowError: If the class is outside the scheduling window.
+            ValueError: If class_uuid is None or empty string.
+            Exception: If there is an error booking the class.
+        """
+
+        class_uuid = class_.ot_class_uuid if isinstance(class_, models.OtfClass) else class_
+        if not class_uuid:
+            raise ValueError("class_uuid is required")
+
+        with contextlib.suppress(BookingNotFoundError):
+            existing_booking = await self.get_booking_by_class(class_uuid)
+            if existing_booking.status != models.BookingStatus.Cancelled:
+                raise AlreadyBookedError(
+                    f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.class_booking_uuid
+                )
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
@@ -325,25 +385,50 @@ class Otf:
         if resp["code"] == "ERROR":
             if resp["data"]["errorCode"] == "603":
                 raise AlreadyBookedError(f"Class {class_uuid} is already booked.")
+            if resp["data"]["errorCode"] == "602":
+                raise OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
+
             raise Exception(f"Error booking class {class_uuid}: {json.dumps(resp)}")
 
-        data = models.BookClass(**resp["data"])
-        return data
+        # get the booking details - we will only use this to get the booking_uuid
+        book_class = models.BookClass(**resp["data"])
 
-    async def cancel_booking(self, booking_uuid: str):
-        """Cancel a class by booking_uuid.
+        booking = await self.get_booking(book_class.booking_uuid)
+
+        return booking
+
+    async def cancel_booking(self, booking: str | models.Booking):
+        """Cancel a booking by providing either the booking_uuid or the Booking object.
 
         Args:
-            booking_uuid (str): The booking UUID to cancel.
+            booking (str | Booking): The booking UUID or the Booking object to cancel.
 
         Returns:
-            None: The response is empty.
+            CancelBooking: The cancelled booking.
+
+        Raises:
+            ValueError: If booking_uuid is None or empty string
+            BookingNotFoundError: If the booking does not exist.
         """
+        booking_uuid = booking.class_booking_uuid if isinstance(booking, models.Booking) else booking
+
+        if not booking_uuid:
+            raise ValueError("booking_uuid is required")
+
+        try:
+            await self.get_booking(booking_uuid)
+        except Exception:
+            raise BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
 
         params = {"confirmed": "true"}
         resp = await self._default_request(
             "DELETE", f"/member/members/{self._member_id}/bookings/{booking_uuid}", params=params
         )
+        if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
+            raise BookingAlreadyCancelledError(
+                f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
+            )
+
         return models.CancelBooking(**resp["data"])
 
     async def get_bookings(
@@ -392,7 +477,7 @@ class Otf:
         """
 
         if exclude_cancelled and status == models.BookingStatus.Cancelled:
-            logger.warning(
+            self.logger.warning(
                 "Cannot exclude cancelled bookings when status is Cancelled. Setting exclude_cancelled to False."
             )
             exclude_cancelled = False
@@ -617,7 +702,8 @@ class Otf:
 
         data = await self._default_request("GET", f"/performance/v2/{self._member_id}/over-time/{select_time.value}")
 
-        return models.StatsResponse(**data["data"])
+        stats = models.StatsResponse(**data["data"])
+        return stats
 
     async def get_out_of_studio_workout_history(self):
         """Get the member's out of studio workout history.
@@ -627,7 +713,7 @@ class Otf:
         """
         data = await self._default_request("GET", f"/member/members/{self._member_id}/out-of-studio-workout")
 
-        return models.OutOfStudioWorkoutHistoryList(data=data["data"])
+        return models.OutOfStudioWorkoutHistoryList(workouts=data["data"])
 
     async def get_favorite_studios(self):
         """Get the member's favorite studios.
