@@ -1,22 +1,22 @@
 import asyncio
 import contextlib
 import json
-import typing
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
+from logging import Logger, getLogger
 from typing import Any
 
 import aiohttp
 import requests
-from loguru import logger
 from yarl import URL
 
 from otf_api import models
 from otf_api.auth import OtfUser
-from otf_api.exceptions import AlreadyBookedError
-
-if typing.TYPE_CHECKING:
-    from loguru import Logger
-
+from otf_api.exceptions import (
+    AlreadyBookedError,
+    BookingAlreadyCancelledError,
+    BookingNotFoundError,
+    OutsideSchedulingWindowError,
+)
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
@@ -25,7 +25,7 @@ REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "A
 
 
 class Otf:
-    logger: "Logger" = logger
+    logger: "Logger" = getLogger(__file__)
     user: OtfUser
     _session: aiohttp.ClientSession
 
@@ -148,7 +148,7 @@ class Otf:
 
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
-        logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
+        self.logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
 
         # ensure we have headers that contain the most up-to-date token
         if not headers:
@@ -164,10 +164,10 @@ class Otf:
             try:
                 response.raise_for_status()
             except aiohttp.ClientResponseError as e:
-                logger.exception(f"Error making request: {e}")
-                logger.exception(f"Response: {text}")
+                self.logger.exception(f"Error making request: {e}")
+                self.logger.exception(f"Response: {text}")
             except Exception as e:
-                logger.exception(f"Error making request: {e}")
+                self.logger.exception(f"Error making request: {e}")
 
             return await response.json()
 
@@ -189,16 +189,6 @@ class Otf:
         """Perform an API request to the performance summary API."""
         return await self._do(method, API_IO_BASE_URL, url, params, headers)
 
-    async def get_body_composition_list(self):
-        """Get the member's body composition list.
-
-        Returns:
-            Any: The member's body composition list.
-        """
-        data = await self._default_request("GET", f"/member/members/{self._member_uuid}/body-composition")
-
-        return models.BodyCompositionList(data=data["data"])
-
     async def get_classes(
         self,
         studio_uuids: list[str] | None = None,
@@ -210,7 +200,8 @@ class Otf:
         exclude_cancelled: bool = False,
         day_of_week: list[models.DoW] | None = None,
         start_time: list[str] | None = None,
-    ):
+        exclude_unbookable: bool = True,
+    ) -> models.OtfClassList:
         """Get the classes for the user.
 
         Returns a list of classes that are available for the user, based on the studio UUIDs provided. If no studio
@@ -228,6 +219,8 @@ class Otf:
             exclude_cancelled (bool): Whether to exclude cancelled classes. Default is False.
             day_of_week (list[DoW] | None): The days of the week to filter by. Default is None.
             start_time (list[str] | None): The start time to filter by. Default is None.
+            exclude_unbookable (bool): Whether to exclude classes that are outside the scheduling window. Default is\
+            True.
 
         Returns:
             OtfClassList: The classes for the user.
@@ -238,11 +231,7 @@ class Otf:
         elif include_home_studio and self.home_studio_uuid not in studio_uuids:
             studio_uuids.append(self.home_studio_uuid)
 
-        path = "/v1/classes"
-
-        params = {"studio_ids": studio_uuids}
-
-        classes_resp = await self._classes_request("GET", path, params=params)
+        classes_resp = await self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
         classes_list = models.OtfClassList(classes=classes_resp["items"])
 
         if start_date:
@@ -284,6 +273,11 @@ class Otf:
 
         classes_list.classes = list(filter(lambda c: not c.canceled, classes_list.classes))
 
+        if exclude_unbookable:
+            # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
+            max_date = datetime.today().date() + timedelta(days=29)
+            classes_list.classes = [c for c in classes_list.classes if c.starts_at_local.date() <= max_date]
+
         booking_resp = await self.get_bookings(start_date, end_date, status=models.BookingStatus.Booked)
         booked_classes = {b.otf_class.class_uuid for b in booking_resp.bookings}
 
@@ -292,31 +286,77 @@ class Otf:
 
         return classes_list
 
-    async def get_total_classes(self):
-        """Get the member's total classes. This is a simple object reflecting the total number of classes attended,
-        both in-studio and OT Live.
-
-        Returns:
-            TotalClasses: The member's total classes.
-        """
-        data = await self._default_request("GET", "/mobile/v1/members/classes/summary")
-        return models.TotalClasses(**data["data"])
-
-    async def book_class(self, class_uuid: str):
-        """Book a class by class_uuid.
+    async def get_booking(self, booking_uuid: str) -> models.Booking:
+        """Get a specific booking by booking_uuid.
 
         Args:
-            class_uuid (str): The class UUID to book.
+            booking_uuid (str): The booking UUID to get.
 
         Returns:
-            None: The response is empty.
+            BookingList: The booking.
+
+        Raises:
+            ValueError: If booking_uuid is None or empty string.
+        """
+        if not booking_uuid:
+            raise ValueError("booking_uuid is required")
+
+        data = await self._default_request("GET", f"/member/members/{self._member_id}/bookings/{booking_uuid}")
+        return models.Booking(**data["data"])
+
+    async def get_booking_by_class(self, class_: str | models.OtfClass) -> models.Booking:
+        """Get a specific booking by class_uuid or OtfClass object.
+
+        Args:
+            class_ (str | OtfClass): The class UUID or the OtfClass object to get the booking for.
+
+        Returns:
+            Booking: The booking.
+
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ValueError: If class_uuid is None or empty string.
         """
 
-        bookings = await self.get_bookings()
+        class_uuid = class_.ot_class_uuid if isinstance(class_, models.OtfClass) else class_
 
-        for booking in bookings.bookings:
+        if not class_uuid:
+            raise ValueError("class_uuid is required")
+
+        all_bookings = await self.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
+
+        for booking in all_bookings.bookings:
             if booking.otf_class.class_uuid == class_uuid:
-                raise AlreadyBookedError(f"Class {class_uuid} is already booked.")
+                return booking
+
+        raise BookingNotFoundError(f"Booking for class {class_uuid} not found.")
+
+    async def book_class(self, class_: str | models.OtfClass) -> models.Booking:
+        """Book a class by providing either the class_uuid or the OtfClass object.
+
+        Args:
+            class_ (str | OtfClass): The class UUID or the OtfClass object to book.
+
+        Returns:
+            Booking: The booking.
+
+        Raises:
+            AlreadyBookedError: If the class is already booked.
+            OutsideSchedulingWindowError: If the class is outside the scheduling window.
+            ValueError: If class_uuid is None or empty string.
+            Exception: If there is an error booking the class.
+        """
+
+        class_uuid = class_.ot_class_uuid if isinstance(class_, models.OtfClass) else class_
+        if not class_uuid:
+            raise ValueError("class_uuid is required")
+
+        with contextlib.suppress(BookingNotFoundError):
+            existing_booking = await self.get_booking_by_class(class_uuid)
+            if existing_booking.status != models.BookingStatus.Cancelled:
+                raise AlreadyBookedError(
+                    f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.class_booking_uuid
+                )
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
@@ -325,25 +365,50 @@ class Otf:
         if resp["code"] == "ERROR":
             if resp["data"]["errorCode"] == "603":
                 raise AlreadyBookedError(f"Class {class_uuid} is already booked.")
+            if resp["data"]["errorCode"] == "602":
+                raise OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
+
             raise Exception(f"Error booking class {class_uuid}: {json.dumps(resp)}")
 
-        data = models.BookClass(**resp["data"])
-        return data
+        # get the booking details - we will only use this to get the booking_uuid
+        book_class = models.BookClass(**resp["data"])
 
-    async def cancel_booking(self, booking_uuid: str):
-        """Cancel a class by booking_uuid.
+        booking = await self.get_booking(book_class.booking_uuid)
+
+        return booking
+
+    async def cancel_booking(self, booking: str | models.Booking):
+        """Cancel a booking by providing either the booking_uuid or the Booking object.
 
         Args:
-            booking_uuid (str): The booking UUID to cancel.
+            booking (str | Booking): The booking UUID or the Booking object to cancel.
 
         Returns:
-            None: The response is empty.
+            CancelBooking: The cancelled booking.
+
+        Raises:
+            ValueError: If booking_uuid is None or empty string
+            BookingNotFoundError: If the booking does not exist.
         """
+        booking_uuid = booking.class_booking_uuid if isinstance(booking, models.Booking) else booking
+
+        if not booking_uuid:
+            raise ValueError("booking_uuid is required")
+
+        try:
+            await self.get_booking(booking_uuid)
+        except Exception:
+            raise BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
 
         params = {"confirmed": "true"}
         resp = await self._default_request(
             "DELETE", f"/member/members/{self._member_id}/bookings/{booking_uuid}", params=params
         )
+        if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
+            raise BookingAlreadyCancelledError(
+                f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
+            )
+
         return models.CancelBooking(**resp["data"])
 
     async def get_bookings(
@@ -392,7 +457,7 @@ class Otf:
         """
 
         if exclude_cancelled and status == models.BookingStatus.Cancelled:
-            logger.warning(
+            self.logger.warning(
                 "Cannot exclude cancelled bookings when status is Cancelled. Setting exclude_cancelled to False."
             )
             exclude_cancelled = False
@@ -430,7 +495,7 @@ class Otf:
 
         return data
 
-    async def _get_bookings_old(self, status: models.BookingStatus | None = None):
+    async def _get_bookings_old(self, status: models.BookingStatus | None = None) -> models.BookingList:
         """Get the member's bookings.
 
         Args:
@@ -473,73 +538,11 @@ class Otf:
 
         status_value = status.value if status else None
 
-        params = {"status": status_value}
-
-        res = await self._default_request("GET", f"/member/members/{self._member_id}/bookings", params=params)
+        res = await self._default_request(
+            "GET", f"/member/members/{self._member_id}/bookings", params={"status": status_value}
+        )
 
         return models.BookingList(bookings=res["data"])
-
-    async def get_challenge_tracker_content(self):
-        """Get the member's challenge tracker content.
-
-        Returns:
-            ChallengeTrackerContent: The member's challenge tracker content.
-        """
-        data = await self._default_request("GET", f"/challenges/v3.1/member/{self._member_id}")
-        return models.ChallengeTrackerContent(**data["Dto"])
-
-    async def get_challenge_tracker_detail(
-        self,
-        equipment_id: models.EquipmentType,
-        challenge_type_id: models.ChallengeType,
-        challenge_sub_type_id: int = 0,
-    ):
-        """Get the member's challenge tracker details.
-
-        Args:
-            equipment_id (EquipmentType): The equipment ID.
-            challenge_type_id (ChallengeType): The challenge type ID.
-            challenge_sub_type_id (int): The challenge sub type ID. Default is 0.
-
-        Returns:
-            ChallengeTrackerDetailList: The member's challenge tracker details.
-
-        Notes:
-            ---
-            I'm not sure what the challenge_sub_type_id is supposed to be, so it defaults to 0.
-
-        """
-        params = {
-            "equipmentId": equipment_id.value,
-            "challengeTypeId": challenge_type_id.value,
-            "challengeSubTypeId": challenge_sub_type_id,
-        }
-
-        data = await self._default_request("GET", f"/challenges/v3/member/{self._member_id}/benchmarks", params=params)
-
-        return models.ChallengeTrackerDetailList(details=data["Dto"])
-
-    async def get_challenge_tracker_participation(self, challenge_type_id: models.ChallengeType):
-        """Get the member's participation in a challenge.
-
-        Args:
-            challenge_type_id (ChallengeType): The challenge type ID.
-
-        Returns:
-            Any: The member's participation in the challenge.
-
-        Notes:
-            ---
-            I've never gotten this to return anything other than invalid response. I'm not sure if it's a bug
-            in my code or the API.
-
-        """
-        params = {"challengeTypeId": challenge_type_id.value}
-
-        data = await self._default_request(
-            "GET", f"/challenges/v1/member/{self._member_id}/participation", params=params
-        )
-        return data
 
     async def get_member_detail(
         self, include_addresses: bool = True, include_class_summary: bool = True, include_credit_card: bool = False
@@ -581,7 +584,7 @@ class Otf:
         data = await self._default_request("GET", f"/member/members/{self._member_id}", params=params)
         return models.MemberDetail(**data["data"])
 
-    async def get_member_membership(self):
+    async def get_member_membership(self) -> models.MemberMembership:
         """Get the member's membership details.
 
         Returns:
@@ -591,7 +594,7 @@ class Otf:
         data = await self._default_request("GET", f"/member/members/{self._member_id}/memberships")
         return models.MemberMembership(**data["data"])
 
-    async def get_member_purchases(self):
+    async def get_member_purchases(self) -> models.MemberPurchaseList:
         """Get the member's purchases, including monthly subscriptions and class packs.
 
         Returns:
@@ -600,7 +603,9 @@ class Otf:
         data = await self._default_request("GET", f"/member/members/{self._member_id}/purchases")
         return models.MemberPurchaseList(data=data["data"])
 
-    async def get_member_lifetime_stats(self, select_time: models.StatsTime = models.StatsTime.AllTime):
+    async def get_member_lifetime_stats(
+        self, select_time: models.StatsTime = models.StatsTime.AllTime
+    ) -> models.StatsResponse:
         """Get the member's lifetime stats.
 
         Args:
@@ -617,29 +622,10 @@ class Otf:
 
         data = await self._default_request("GET", f"/performance/v2/{self._member_id}/over-time/{select_time.value}")
 
-        return models.StatsResponse(**data["data"])
+        stats = models.StatsResponse(**data["data"])
+        return stats
 
-    async def get_out_of_studio_workout_history(self):
-        """Get the member's out of studio workout history.
-
-        Returns:
-            OutOfStudioWorkoutHistoryList: The member's out of studio workout history.
-        """
-        data = await self._default_request("GET", f"/member/members/{self._member_id}/out-of-studio-workout")
-
-        return models.OutOfStudioWorkoutHistoryList(data=data["data"])
-
-    async def get_favorite_studios(self):
-        """Get the member's favorite studios.
-
-        Returns:
-            FavoriteStudioList: The member's favorite studios.
-        """
-        data = await self._default_request("GET", f"/member/members/{self._member_id}/favorite-studios")
-
-        return models.FavoriteStudioList(studios=data["data"])
-
-    async def get_latest_agreement(self):
+    async def get_latest_agreement(self) -> models.LatestAgreement:
         """Get the latest agreement for the member.
 
         Returns:
@@ -653,7 +639,27 @@ class Otf:
         data = await self._default_request("GET", "/member/agreements/9d98fb27-0f00-4598-ad08-5b1655a59af6")
         return models.LatestAgreement(**data["data"])
 
-    async def get_studio_services(self, studio_uuid: str | None = None):
+    async def get_out_of_studio_workout_history(self) -> models.OutOfStudioWorkoutHistoryList:
+        """Get the member's out of studio workout history.
+
+        Returns:
+            OutOfStudioWorkoutHistoryList: The member's out of studio workout history.
+        """
+        data = await self._default_request("GET", f"/member/members/{self._member_id}/out-of-studio-workout")
+
+        return models.OutOfStudioWorkoutHistoryList(workouts=data["data"])
+
+    async def get_favorite_studios(self) -> models.FavoriteStudioList:
+        """Get the member's favorite studios.
+
+        Returns:
+            FavoriteStudioList: The member's favorite studios.
+        """
+        data = await self._default_request("GET", f"/member/members/{self._member_id}/favorite-studios")
+
+        return models.FavoriteStudioList(studios=data["data"])
+
+    async def get_studio_services(self, studio_uuid: str | None = None) -> models.StudioServiceList:
         """Get the services available at a specific studio. If no studio UUID is provided, the member's home studio
         will be used.
 
@@ -668,41 +674,7 @@ class Otf:
         data = await self._default_request("GET", f"/member/studios/{studio_uuid}/services")
         return models.StudioServiceList(data=data["data"])
 
-    async def get_performance_summaries(self, limit: int = 30):
-        """Get a list of performance summaries for the authenticated user.
-
-        Args:
-            limit (int): The maximum number of performance summaries to return. Defaults to 30.
-
-        Returns:
-            PerformanceSummaryList: A list of performance summaries.
-
-        Developer Notes:
-            ---
-            In the app, this is referred to as 'getInStudioWorkoutHistory'.
-
-        """
-
-        path = "/v1/performance-summaries"
-        params = {"limit": limit}
-        res = await self._performance_summary_request("GET", path, headers=self._perf_api_headers, params=params)
-        return models.PerformanceSummaryList(summaries=res["items"])
-
-    async def get_performance_summary(self, performance_summary_id: str):
-        """Get a detailed performance summary for a given workout.
-
-        Args:
-            performance_summary_id (str): The ID of the performance summary to retrieve.
-
-        Returns:
-            PerformanceSummaryDetail: A detailed performance summary.
-        """
-
-        path = f"/v1/performance-summaries/{performance_summary_id}"
-        res = await self._performance_summary_request("GET", path, headers=self._perf_api_headers)
-        return models.PerformanceSummaryDetail(**res)
-
-    async def get_studio_detail(self, studio_uuid: str | None = None):
+    async def get_studio_detail(self, studio_uuid: str | None = None) -> models.StudioDetail:
         """Get detailed information about a specific studio. If no studio UUID is provided, it will default to the
         user's home studio.
 
@@ -728,7 +700,7 @@ class Otf:
         distance: float = 50,
         page_index: int = 1,
         page_size: int = 50,
-    ):
+    ) -> models.StudioDetailList:
         """Search for studios by geographic location.
 
         Args:
@@ -785,7 +757,127 @@ class Otf:
 
         return models.StudioDetailList(studios=all_results)
 
-    async def get_hr_history(self):
+    async def get_total_classes(self) -> models.TotalClasses:
+        """Get the member's total classes. This is a simple object reflecting the total number of classes attended,
+        both in-studio and OT Live.
+
+        Returns:
+            TotalClasses: The member's total classes.
+        """
+        data = await self._default_request("GET", "/mobile/v1/members/classes/summary")
+        return models.TotalClasses(**data["data"])
+
+    async def get_body_composition_list(self) -> models.BodyCompositionList:
+        """Get the member's body composition list.
+
+        Returns:
+            Any: The member's body composition list.
+        """
+        data = await self._default_request("GET", f"/member/members/{self._member_uuid}/body-composition")
+
+        return models.BodyCompositionList(data=data["data"])
+
+    async def get_challenge_tracker_content(self) -> models.ChallengeTrackerContent:
+        """Get the member's challenge tracker content.
+
+        Returns:
+            ChallengeTrackerContent: The member's challenge tracker content.
+        """
+        data = await self._default_request("GET", f"/challenges/v3.1/member/{self._member_id}")
+        return models.ChallengeTrackerContent(**data["Dto"])
+
+    async def get_challenge_tracker_detail(
+        self,
+        equipment_id: models.EquipmentType,
+        challenge_type_id: models.ChallengeType,
+        challenge_sub_type_id: int = 0,
+    ):
+        """Get the member's challenge tracker details.
+
+        Args:
+            equipment_id (EquipmentType): The equipment ID.
+            challenge_type_id (ChallengeType): The challenge type ID.
+            challenge_sub_type_id (int): The challenge sub type ID. Default is 0.
+
+        Returns:
+            ChallengeTrackerDetailList: The member's challenge tracker details.
+
+        Notes:
+            ---
+            I'm not sure what the challenge_sub_type_id is supposed to be, so it defaults to 0.
+
+        """
+        params = {
+            "equipmentId": equipment_id.value,
+            "challengeTypeId": challenge_type_id.value,
+            "challengeSubTypeId": challenge_sub_type_id,
+        }
+
+        data = await self._default_request("GET", f"/challenges/v3/member/{self._member_id}/benchmarks", params=params)
+
+        return models.ChallengeTrackerDetailList(details=data["Dto"])
+
+    async def get_challenge_tracker_participation(self, challenge_type_id: models.ChallengeType) -> Any:
+        """Get the member's participation in a challenge.
+
+        Args:
+            challenge_type_id (ChallengeType): The challenge type ID.
+
+        Returns:
+            Any: The member's participation in the challenge.
+
+        Notes:
+            ---
+            I've never gotten this to return anything other than invalid response. I'm not sure if it's a bug
+            in my code or the API.
+
+        """
+
+        data = await self._default_request(
+            "GET",
+            f"/challenges/v1/member/{self._member_id}/participation",
+            params={"challengeTypeId": challenge_type_id.value},
+        )
+        return data
+
+    async def get_performance_summaries(self, limit: int = 30) -> models.PerformanceSummaryList:
+        """Get a list of performance summaries for the authenticated user.
+
+        Args:
+            limit (int): The maximum number of performance summaries to return. Defaults to 30.
+
+        Returns:
+            PerformanceSummaryList: A list of performance summaries.
+
+        Developer Notes:
+            ---
+            In the app, this is referred to as 'getInStudioWorkoutHistory'.
+
+        """
+
+        res = await self._performance_summary_request(
+            "GET",
+            "/v1/performance-summaries",
+            headers=self._perf_api_headers,
+            params={"limit": limit},
+        )
+        return models.PerformanceSummaryList(summaries=res["items"])
+
+    async def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummaryDetail:
+        """Get a detailed performance summary for a given workout.
+
+        Args:
+            performance_summary_id (str): The ID of the performance summary to retrieve.
+
+        Returns:
+            PerformanceSummaryDetail: A detailed performance summary.
+        """
+
+        path = f"/v1/performance-summaries/{performance_summary_id}"
+        res = await self._performance_summary_request("GET", path, headers=self._perf_api_headers)
+        return models.PerformanceSummaryDetail(**res)
+
+    async def get_hr_history(self) -> models.TelemetryHrHistory:
         """Get the heartrate history for the user.
 
         Returns a list of history items that contain the max heartrate, start/end bpm for each zone,
@@ -801,7 +893,7 @@ class Otf:
         res = await self._telemetry_request("GET", path, params=params)
         return models.TelemetryHrHistory(**res)
 
-    async def get_max_hr(self):
+    async def get_max_hr(self) -> models.TelemetryMaxHr:
         """Get the max heartrate for the user.
 
         Returns a simple object that has the member_uuid and the max_hr.
@@ -816,7 +908,7 @@ class Otf:
         res = await self._telemetry_request("GET", path, params=params)
         return models.TelemetryMaxHr(**res)
 
-    async def get_telemetry(self, performance_summary_id: str, max_data_points: int = 120):
+    async def get_telemetry(self, performance_summary_id: str, max_data_points: int = 120) -> models.Telemetry:
         """Get the telemetry for a performance summary.
 
         This returns an object that contains the max heartrate, start/end bpm for each zone,
@@ -838,7 +930,7 @@ class Otf:
 
     # the below do not return any data for me, so I can't test them
 
-    async def _get_member_services(self, active_only: bool = True):
+    async def _get_member_services(self, active_only: bool = True) -> Any:
         """Get the member's services.
 
         Args:
@@ -853,7 +945,7 @@ class Otf:
         )
         return data
 
-    async def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None):
+    async def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> Any:
         """Get data from the member's aspire wearable.
 
         Note: I don't have an aspire wearable, so I can't test this.

@@ -111,6 +111,7 @@ async def main():
     # this value it will attempt to return enough data points for 30 second intervals
 
     telemetry = await otf.get_telemetry(performance_summary_id=data_list.summaries[0].id)
+    telemetry.telemetry = telemetry.telemetry[:2]
     print(telemetry.model_dump_json(indent=4))
 
     """
