@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from typing import Any
 
 from pydantic import Field, field_validator
 
@@ -73,6 +74,10 @@ class MemberClassSummary(OtfItemBase):
     last_class_studio_visited: int = Field(..., alias="lastClassStudioVisited")
 
 
+class MemberReferrer(OtfItemBase):
+    member_referrer_uuid: str = Field(..., alias="memberReferrerUUId")
+
+
 class MemberDetail(OtfItemBase):
     member_id: int = Field(..., alias="memberId")
     member_uuid: str = Field(..., alias="memberUUId")
@@ -101,7 +106,7 @@ class MemberDetail(OtfItemBase):
     cc_last4: str = Field(..., alias="ccLast4")
     cc_type: str = Field(..., alias="ccType")
     gender: str
-    liability: None
+    liability: Any
     locale: str
     weight: int
     weight_measure: str = Field(..., alias="weightMeasure")
@@ -113,7 +118,7 @@ class MemberDetail(OtfItemBase):
     year_imported: int = Field(..., alias="yearImported")
     is_member_verified: bool = Field(..., alias="isMemberVerified")
     lead_prospect: bool = Field(..., alias="leadProspect")
-    created_by: str = Field(..., alias="createdBy")
+    created_by: str | None = Field(None, alias="createdBy")
     created_date: datetime = Field(..., alias="createdDate")
     updated_by: str = Field(..., alias="updatedBy")
     updated_date: datetime = Field(..., alias="updatedDate")
@@ -122,7 +127,7 @@ class MemberDetail(OtfItemBase):
     member_credit_card: MemberCreditCard | None = Field(None, alias="memberCreditCard")
     home_studio: HomeStudio = Field(..., alias="homeStudio")
     member_profile: MemberProfile = Field(..., alias="memberProfile")
-    member_referrer: None = Field(..., alias="memberReferrer")
+    member_referrer: None | MemberReferrer = Field(None, alias="memberReferrer")
     otf_acs_id: str = Field(..., alias="otfAcsId")
     member_class_summary: MemberClassSummary | None = Field(None, alias="memberClassSummary")
 

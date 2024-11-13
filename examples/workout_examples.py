@@ -8,7 +8,7 @@ PASSWORD = os.getenv("OTF_PASSWORD")
 
 
 async def main():
-    otf = otf = Otf(USERNAME, PASSWORD)
+    otf = Otf(USERNAME, PASSWORD)
 
     resp = await otf.get_member_lifetime_stats()
     print(resp.model_dump_json(indent=4))
