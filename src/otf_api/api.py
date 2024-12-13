@@ -62,7 +62,7 @@ class Otf:
 
         if user:
             self.user = user
-        elif username and password or (access_token and id_token):
+        elif (username and password) or (access_token and id_token):
             self.user = OtfUser(
                 username=username,
                 password=password,
