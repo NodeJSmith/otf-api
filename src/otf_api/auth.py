@@ -16,7 +16,7 @@ if typing.TYPE_CHECKING:
     from botocore.config import Config
 
 LOGGER = getLogger(__name__)
-CLIENT_ID = "65knvqta6p37efc2l3eh26pl5o"  # from otlive
+CLIENT_ID = "1457d19r0pcjgmp5agooi0rb1b"  # from otlive
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
 
 
