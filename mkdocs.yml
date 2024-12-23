@@ -3,11 +3,10 @@ repo_url: https://github.com/nodejsmith/otf-api
 repo_name: otf-api
 nav:
   - Home: index.md
+  - Code Reference: reference/
   - Usage: usage.md
   - Contributing: contributing.md
   - Authors: authors.md
-  - Changelog: changelog.md
-  - Code Reference: reference/
 theme:
   name: material
   language: en
