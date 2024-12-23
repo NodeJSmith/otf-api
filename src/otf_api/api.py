@@ -125,10 +125,10 @@ class Otf:
             return
 
         try:
-            asyncio.create_task(self.session.close())  # noqa
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
+            loop = asyncio.get_running_loop()
             loop.run_until_complete(self.session.close())
+        except RuntimeError:
+            asyncio.run(self.session.close())
 
     async def _do(
         self,
