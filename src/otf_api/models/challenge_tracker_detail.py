@@ -48,6 +48,15 @@ class ChallengeHistory(OtfItemBase):
     benchmark_histories: list[BenchmarkHistory] = Field(..., alias="BenchmarkHistories")
 
 
+class Goal(OtfItemBase):
+    goal: int | Any = Field(None, alias="Goal")
+    goal_period: str | Any = Field(None, alias="GoalPeriod")
+    overall_goal: int | Any = Field(None, alias="OverallGoal")
+    overall_goal_period: str | Any = Field(None, alias="OverallGoalPeriod")
+    min_overall: int | Any = Field(None, alias="MinOverall")
+    min_overall_period: str | Any = Field(None, alias="MinOverallPeriod")
+
+
 class ChallengeTrackerDetail(OtfItemBase):
     challenge_category_id: int = Field(..., alias="ChallengeCategoryId")
     challenge_sub_category_id: int | None = Field(None, alias="ChallengeSubCategoryId")
@@ -60,7 +69,7 @@ class ChallengeTrackerDetail(OtfItemBase):
     last_record: float | str = Field(..., alias="LastRecord")
     previous_record: float | str = Field(..., alias="PreviousRecord")
     unit: str | None = Field(None, alias="Unit")
-    goals: None = Field(..., alias="Goals")
+    goals: Goal | None = Field(None, alias="Goals")
     challenge_histories: list[ChallengeHistory] = Field(..., alias="ChallengeHistories")
 
 
