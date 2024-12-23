@@ -1,3 +1,4 @@
+import logging
 from logging import basicConfig
 
 from .api import Otf
@@ -8,6 +9,7 @@ LOG_FMT = "{asctime} - {module}.{funcName}:{lineno} - {levelname} - {message}"
 DATE_FMT = "%Y-%m-%d %H:%M:%S%z"
 
 basicConfig(level="INFO", style="{", format=LOG_FMT, datefmt=DATE_FMT)
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 __version__ = "0.9.1"
 
