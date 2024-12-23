@@ -22,10 +22,10 @@ API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
 API_TELEMETRY_BASE_URL = "api.yuzu.orangetheory.com"
 REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "Accept": "application/json"}
+LOGGER = getLogger(__name__)
 
 
 class Otf:
-    logger: "Logger" = getLogger(__file__)
     user: OtfUser
     _session: aiohttp.ClientSession
 
@@ -148,7 +148,7 @@ class Otf:
 
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
-        self.logger.debug(f"Making {method!r} request to {full_url}, params: {params}")
+        LOGGER.debug(f"Making {method!r} request to {full_url}, params: {params}")
 
         # ensure we have headers that contain the most up-to-date token
         if not headers:
@@ -164,10 +164,10 @@ class Otf:
             try:
                 response.raise_for_status()
             except aiohttp.ClientResponseError as e:
-                self.logger.exception(f"Error making request: {e}")
-                self.logger.exception(f"Response: {text}")
+                LOGGER.exception(f"Error making request: {e}")
+                LOGGER.exception(f"Response: {text}")
             except Exception as e:
-                self.logger.exception(f"Error making request: {e}")
+                LOGGER.exception(f"Error making request: {e}")
 
             return await response.json()
 
@@ -457,7 +457,7 @@ class Otf:
         """
 
         if exclude_cancelled and status == models.BookingStatus.Cancelled:
-            self.logger.warning(
+            LOGGER.warning(
                 "Cannot exclude cancelled bookings when status is Cancelled. Setting exclude_cancelled to False."
             )
             exclude_cancelled = False
@@ -728,11 +728,11 @@ class Otf:
             longitude = home_studio.studio_location.longitude
 
         if page_size > 50:
-            self.logger.warning("The API does not support more than 50 results per page, limiting to 50.")
+            LOGGER.warning("The API does not support more than 50 results per page, limiting to 50.")
             page_size = 50
 
         if page_index < 1:
-            self.logger.warning("Page index must be greater than 0, setting to 1.")
+            LOGGER.warning("Page index must be greater than 0, setting to 1.")
             page_index = 1
 
         params = {
