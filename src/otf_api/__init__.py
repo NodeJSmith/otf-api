@@ -9,7 +9,7 @@ DATE_FMT = "%Y-%m-%d %H:%M:%S%z"
 
 basicConfig(level="INFO", style="{", format=LOG_FMT, datefmt=DATE_FMT)
 
-__version__ = "0.8.3-dev4"
+__version__ = "0.9.0"
 
 
 __all__ = ["Otf", "OtfSync", "OtfUser"]
