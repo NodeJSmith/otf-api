@@ -1,3 +1,4 @@
+import warnings
 from datetime import datetime
 
 from humanize import precisedelta
@@ -15,11 +16,11 @@ class OtfClassTimeMixin:
         return self.starts_at_local.strftime("%A")
 
     @property
-    def date(self) -> str:
+    def date_str(self) -> str:
         return self.starts_at_local.strftime("%Y-%m-%d")
 
     @property
-    def time(self) -> str:
+    def time_str(self) -> str:
         """Returns time in 12 hour clock format, with no leading 0"""
         val = self.starts_at_local.strftime("%I:%M %p")
         if val[0] == "0":
@@ -28,7 +29,8 @@ class OtfClassTimeMixin:
         return val
 
     @property
-    def duration(self) -> str:
+    def duration_str(self) -> str:
+        """Returns the duration of the class in human readable format"""
         duration = self.ends_at_local - self.starts_at_local
         human_val: str = precisedelta(duration, minimum_unit="minutes")
         if human_val == "1 hour and 30 minutes":
@@ -42,3 +44,20 @@ class OtfClassTimeMixin:
                 return class_type
 
         return ClassType.OTHER
+
+    @property
+    def date(self) -> str:
+        warnings.warn("date is deprecated, use date_str instead", DeprecationWarning)
+        return self.date_str
+
+    @property
+    def time(self) -> str:
+        """Returns time in 12 hour clock format, with no leading 0"""
+        warnings.warn("time is deprecated, use time_str instead", DeprecationWarning)
+        return self.time_str
+
+    @property
+    def duration(self) -> str:
+        """Returns the duration of the class in human readable format"""
+        warnings.warn("duration is deprecated, use duration_str instead", DeprecationWarning)
+        return self.duration_str
