@@ -6,7 +6,7 @@ from getpass import getpass
 from otf_api import Otf
 from otf_api.models.classes import DoW
 
-USERNAME = os.getenv("OTF_EMAIL")
+USERNAME = os.getenv("OTF_EMAIL") or input("Enter your OTF email: ")
 PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
