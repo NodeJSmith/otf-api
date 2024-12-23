@@ -1,11 +1,9 @@
+import warnings
 from datetime import datetime
-from logging import getLogger
 
 from humanize import precisedelta
 
 from otf_api.models.enums import ClassType
-
-logger = getLogger(__name__)
 
 
 class OtfClassTimeMixin:
@@ -49,17 +47,17 @@ class OtfClassTimeMixin:
 
     @property
     def date(self) -> str:
-        logger.warning("date is deprecated, use date_str instead")
+        warnings.warn("date is deprecated, use date_str instead", DeprecationWarning)
         return self.date_str
 
     @property
     def time(self) -> str:
         """Returns time in 12 hour clock format, with no leading 0"""
-        logger.warning("time is deprecated, use time_str instead")
+        warnings.warn("time is deprecated, use time_str instead", DeprecationWarning)
         return self.time_str
 
     @property
     def duration(self) -> str:
         """Returns the duration of the class in human readable format"""
-        logger.warning("duration is deprecated, use duration_str instead")
+        warnings.warn("duration is deprecated, use duration_str instead", DeprecationWarning)
         return self.duration_str
