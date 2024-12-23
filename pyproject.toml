@@ -28,6 +28,7 @@ inflection = "0.5.*"
 pint = "0.24.*"
 pycognito = "2024.5.1"
 pydantic = "2.7.3"
+httpx = ">=0.27.2"
 
 [tool.poetry.group.dev.dependencies]
 aioresponses = "0.7.6"
