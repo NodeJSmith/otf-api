@@ -11,7 +11,7 @@ DATE_FMT = "%Y-%m-%d %H:%M:%S%z"
 basicConfig(level="INFO", style="{", format=LOG_FMT, datefmt=DATE_FMT)
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
-__version__ = "0.9.1"
+__version__ = "0.9.2"
 
 
 __all__ = ["Otf", "OtfSync", "OtfUser"]
