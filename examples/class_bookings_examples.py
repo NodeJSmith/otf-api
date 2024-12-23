@@ -1,16 +1,17 @@
 import asyncio
 import os
 from datetime import datetime
+from getpass import getpass
 
 from otf_api import Otf
 from otf_api.models.classes import DoW
 
 USERNAME = os.getenv("OTF_EMAIL")
-PASSWORD = os.getenv("OTF_PASSWORD")
+PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
 async def main():
-    otf = otf = Otf(USERNAME, PASSWORD)
+    otf = Otf(USERNAME, PASSWORD)
 
     resp = await otf.get_bookings(start_date=datetime.today().date())
     print(resp.model_dump_json(indent=4))

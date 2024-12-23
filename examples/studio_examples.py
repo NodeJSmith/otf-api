@@ -1,14 +1,15 @@
 import asyncio
 import os
+from getpass import getpass
 
 from otf_api import Otf
 
 USERNAME = os.getenv("OTF_EMAIL")
-PASSWORD = os.getenv("OTF_PASSWORD")
+PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
 async def main():
-    otf = otf = Otf(USERNAME, PASSWORD)
+    otf = Otf(USERNAME, PASSWORD)
 
     # if you need to figure out what studios are in an area, you can call `search_studios_by_geo`
     # which takes latitude, longitude, distance, page_index, and page_size as arguments

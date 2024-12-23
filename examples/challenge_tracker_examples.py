@@ -1,11 +1,12 @@
 import asyncio
 import os
+from getpass import getpass
 
 from otf_api import Otf
 from otf_api.models import ChallengeType, EquipmentType
 
 USERNAME = os.getenv("OTF_EMAIL")
-PASSWORD = os.getenv("OTF_PASSWORD")
+PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
 async def main():
