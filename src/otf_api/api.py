@@ -111,6 +111,16 @@ class Otf:
             "Accept": "application/json",
         }
 
+    async def __aenter__(self):
+        # Create the session only once when entering the context
+        self._session = aiohttp.ClientSession()
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        # Close the session when exiting the context
+        if self._session is not None:
+            await self._session.close()
+
     @property
     def session(self):
         """Get the aiohttp session."""
