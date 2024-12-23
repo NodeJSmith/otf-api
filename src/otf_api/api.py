@@ -1,8 +1,9 @@
 import asyncio
+import atexit
 import contextlib
 import json
 from datetime import date, datetime, timedelta
-from logging import Logger, getLogger
+from logging import getLogger
 from typing import Any
 
 import aiohttp
@@ -115,22 +116,19 @@ class Otf:
         """Get the aiohttp session."""
         if not getattr(self, "_session", None):
             self._session = aiohttp.ClientSession(headers=self.headers)
+            atexit.register(self._close_session)
 
         return self._session
 
-    def __del__(self) -> None:
-        if not hasattr(self, "session"):
+    def _close_session(self) -> None:
+        if not hasattr(self, "_session"):
             return
 
         try:
-            asyncio.create_task(self._close_session())  # noqa
+            asyncio.create_task(self.session.close())  # noqa
         except RuntimeError:
             loop = asyncio.new_event_loop()
-            loop.run_until_complete(self._close_session())
-
-    async def _close_session(self) -> None:
-        if not self.session.closed:
-            await self.session.close()
+            loop.run_until_complete(self.session.close())
 
     async def _do(
         self,
