@@ -4,11 +4,8 @@ current_version = "0.8.2"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)(?:-(?P<dev_l>dev)(?P<dev>0|[1-9]\\d*))?"
 
 serialize = ["{major}.{minor}.{patch}-{dev_l}{dev}", "{major}.{minor}.{patch}"]
-commit = true
-commit_message = "Bump version: {current_version} → {new_version}"
-tag = true
-tag_name = "v{new_version}"
-tag_message = "Bump version: {current_version} → {new_version}"
+commit = false
+tag = false
 
 [tool.bumpversion.parts.minor]
 optional = false
