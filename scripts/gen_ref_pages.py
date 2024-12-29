@@ -28,8 +28,6 @@ for path in sorted(src.rglob("*.py")):
 
     if path.name == "api.py":
         title_parts = ["Otf API", "Otf"]
-    elif path.name == "api_sync.py":
-        title_parts = ["Otf API", "OtfSync"]
     else:
         title_parts = []
         for part in parts:

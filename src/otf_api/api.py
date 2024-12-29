@@ -1,13 +1,12 @@
-import asyncio
 import atexit
 import contextlib
 import json
-from datetime import date, datetime, timedelta
+import warnings
+from datetime import date, datetime, time, timedelta
 from logging import getLogger
 from typing import Any
 
-import aiohttp
-import requests
+import httpx
 from yarl import URL
 
 from otf_api import models
@@ -28,7 +27,7 @@ LOGGER = getLogger(__name__)
 
 class Otf:
     user: OtfUser
-    _session: aiohttp.ClientSession
+    _session: httpx.Client
 
     def __init__(
         self,
@@ -82,21 +81,8 @@ class Otf:
             "koji-member-id": self._member_id,
             "koji-member-email": self.user.id_claims_data.email,
         }
-        self.member = self._get_member_details_sync()
+        self.member = self.get_member_detail()
         self.home_studio_uuid = self.member.home_studio.studio_uuid
-
-    def _get_member_details_sync(self):
-        """Get the member details synchronously.
-
-        This is used to get the member details when the API is first initialized, to let use initialize
-        without needing to await the member details.
-
-        Returns:
-            MemberDetail: The member details.
-        """
-        url = f"https://{API_BASE_URL}/member/members/{self._member_id}"
-        resp = requests.get(url, headers=self.headers)
-        return models.MemberDetail(**resp.json()["data"])
 
     @property
     def headers(self):
@@ -111,21 +97,21 @@ class Otf:
             "Accept": "application/json",
         }
 
-    async def __aenter__(self):
+    def __enter__(self):
         # Create the session only once when entering the context
-        self._session = aiohttp.ClientSession()
+        self._session = httpx.Client(headers=self.headers)
         return self
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         # Close the session when exiting the context
         if self._session is not None:
-            await self._session.close()
+            self._session.close()
 
     @property
     def session(self):
-        """Get the aiohttp session."""
+        """Get the httpx session."""
         if not getattr(self, "_session", None):
-            self._session = aiohttp.ClientSession(headers=self.headers)
+            self._session = httpx.Client(headers=self.headers)
             atexit.register(self._close_session)
 
         return self._session
@@ -134,13 +120,9 @@ class Otf:
         if not hasattr(self, "_session"):
             return
 
-        try:
-            loop = asyncio.get_running_loop()
-            loop.run_until_complete(self.session.close())
-        except RuntimeError:
-            asyncio.run(self.session.close())
+        self._session.close()
 
-    async def _do(
+    def _do(
         self,
         method: str,
         base_url: str,
@@ -164,50 +146,47 @@ class Otf:
         else:
             headers.update(self.headers)
 
-        text = None
-        async with self.session.request(method, full_url, headers=headers, params=params, **kwargs) as response:
-            with contextlib.suppress(Exception):
-                text = await response.text()
+        response = self.session.request(method, full_url, headers=headers, params=params, **kwargs)
 
-            try:
-                response.raise_for_status()
-            except aiohttp.ClientResponseError as e:
-                LOGGER.exception(f"Error making request: {e}")
-                LOGGER.exception(f"Response: {text}")
-            except Exception as e:
-                LOGGER.exception(f"Error making request: {e}")
+        try:
+            response.raise_for_status()
+        except httpx.RequestError as e:
+            LOGGER.exception(f"Error making request: {e}")
+            LOGGER.exception(f"Response: {response.text}")
+        except Exception as e:
+            LOGGER.exception(f"Error making request: {e}")
 
-            return await response.json()
+        return response.json()
 
-    async def _classes_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+    def _classes_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the classes API."""
-        return await self._do(method, API_IO_BASE_URL, url, params)
+        return self._do(method, API_IO_BASE_URL, url, params)
 
-    async def _default_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs: Any) -> Any:
+    def _default_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs: Any) -> Any:
         """Perform an API request to the default API."""
-        return await self._do(method, API_BASE_URL, url, params, **kwargs)
+        return self._do(method, API_BASE_URL, url, params, **kwargs)
 
-    async def _telemetry_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+    def _telemetry_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the Telemetry API."""
-        return await self._do(method, API_TELEMETRY_BASE_URL, url, params)
+        return self._do(method, API_TELEMETRY_BASE_URL, url, params)
 
-    async def _performance_summary_request(
+    def _performance_summary_request(
         self, method: str, url: str, headers: dict[str, str], params: dict[str, Any] | None = None
     ) -> Any:
         """Perform an API request to the performance summary API."""
-        return await self._do(method, API_IO_BASE_URL, url, params, headers)
+        return self._do(method, API_IO_BASE_URL, url, params, headers)
 
-    async def get_classes(
+    def get_classes(
         self,
         studio_uuids: list[str] | None = None,
-        include_home_studio: bool = True,
-        start_date: str | None = None,
-        end_date: str | None = None,
+        include_home_studio: bool | None = None,
+        start_date: str | date | datetime | None = None,
+        end_date: str | date | datetime | None = None,
         limit: int | None = None,
         class_type: models.ClassType | list[models.ClassType] | None = None,
-        exclude_cancelled: bool = False,
-        day_of_week: list[models.DoW] | None = None,
-        start_time: list[str] | None = None,
+        exclude_cancelled: bool = True,
+        day_of_week: list[models.DoW] | models.DoW | None = None,
+        start_time: list[str] | str | list[time] | time | None = None,
         exclude_unbookable: bool = True,
     ) -> models.OtfClassList:
         """Get the classes for the user.
@@ -219,14 +198,17 @@ class Otf:
             studio_uuids (list[str] | None): The studio UUIDs to get the classes for. Default is None, which will\
             default to the user's home studio only.
             include_home_studio (bool): Whether to include the home studio in the classes. Default is True.
-            start_date (str | None): The start date to get classes for, in the format "YYYY-MM-DD". Default is None.
-            end_date (str | None): The end date to get classes for, in the format "YYYY-MM-DD". Default is None.
+            start_date (str | date | datetime | None): The earliest classes to include in results. Default is None.\
+            If a string is provided, it must be in the format "YYYY-MM-DD".
+            end_date (str | date | datetime | None): The latest classes to include in results. Default is None.\
+            If a string is provided, it must be in the format "YYYY-MM-DD".
             limit (int | None): Limit the number of classes returned. Default is None.
             class_type (ClassType | list[ClassType] | None): The class type to filter by. Default is None. Multiple\
-            class types can be provided, if there are multiple there will be a call per class type.
-            exclude_cancelled (bool): Whether to exclude cancelled classes. Default is False.
-            day_of_week (list[DoW] | None): The days of the week to filter by. Default is None.
-            start_time (list[str] | None): The start time to filter by. Default is None.
+            class types can be provided as a list.
+            exclude_cancelled (bool): Whether to exclude classes that were cancelled by the studio. Default is True.
+            day_of_week (list[DoW] | DoW | None): The days of the week to filter by. Default is None.
+            start_time (list[str] | str | list[time] | time | None): The start time of the classes to filter by.\
+            Default is None. If a string is provided, it must be in the format "HH:MM".
             exclude_unbookable (bool): Whether to exclude classes that are outside the scheduling window. Default is\
             True.
 
@@ -236,22 +218,15 @@ class Otf:
 
         if not studio_uuids:
             studio_uuids = [self.home_studio_uuid]
-        elif include_home_studio and self.home_studio_uuid not in studio_uuids:
-            studio_uuids.append(self.home_studio_uuid)
 
-        classes_resp = await self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
-        classes_list = models.OtfClassList(classes=classes_resp["items"])
+        if len(studio_uuids) > 50:
+            raise ValueError("Cannot request classes for more than 50 studios at a time.")
 
-        if start_date:
-            start_dtme = datetime.strptime(start_date, "%Y-%m-%d")  # noqa
-            classes_list.classes = [c for c in classes_list.classes if c.starts_at_local >= start_dtme]
-
-        if end_date:
-            end_dtme = datetime.strptime(end_date, "%Y-%m-%d")  # noqa
-            classes_list.classes = [c for c in classes_list.classes if c.ends_at_local <= end_dtme]
-
-        if limit:
-            classes_list.classes = classes_list.classes[:limit]
+        if include_home_studio and self.home_studio_uuid not in studio_uuids:
+            if len(studio_uuids) == 50:
+                LOGGER.warning("Cannot include home studio, request already includes 50 studios.")
+            else:
+                studio_uuids.append(self.home_studio_uuid)
 
         if class_type and isinstance(class_type, str):
             class_type = [class_type]
@@ -259,10 +234,52 @@ class Otf:
         if day_of_week and not isinstance(day_of_week, list):
             day_of_week = [day_of_week]
 
-        if start_time and not isinstance(start_time, list):
-            start_time = [start_time]
+        if start_time:
+            if isinstance(start_time, str | time):
+                start_time = [start_time]
+            assert isinstance(start_time, list), "start_time must be a list"
+
+            if any(isinstance(t, str) for t in start_time):
+                warnings.warn(
+                    "Providing start_time as a string is deprecated. Please provide a time object or "
+                    "list of time objects."
+                )
+                start_time_from_str = [datetime.strptime(t, "%H:%M").time() for t in start_time]
+                start_time_from_time = [t for t in start_time if isinstance(t, time)]
+                start_time = start_time_from_str + start_time_from_time
+
+        if start_date:
+            if isinstance(start_date, str):
+                warnings.warn(
+                    "Providing start_date as a string is deprecated. Please provide a date or datetime object."
+                )
+                start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+            elif isinstance(start_date, datetime):
+                start_date = start_date.date()
+
+        if end_date:
+            if isinstance(end_date, str):
+                warnings.warn("Providing end_date as a string is deprecated. Please provide a date or datetime object.")
+                end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+            elif isinstance(end_date, datetime):
+                end_date = end_date.date()
+
+        classes_resp = self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
+        classes_list = models.OtfClassList(classes=classes_resp["items"])
+
+        if start_date:
+            assert isinstance(start_date, date | datetime), "start_date must be a date or datetime object"
+            classes_list.classes = [c for c in classes_list.classes if c.starts_at_local.date() >= start_date]
+
+        if end_date:
+            assert isinstance(end_date, date | datetime), "end_date must be a date or datetime object"
+            classes_list.classes = [c for c in classes_list.classes if c.ends_at_local.date() <= end_date]
+
+        if limit:
+            classes_list.classes = classes_list.classes[:limit]
 
         if class_type:
+            assert all(isinstance(c, models.ClassType) for c in class_type), "class_type must be a list of ClassType"
             classes_list.classes = [c for c in classes_list.classes if c.class_type in class_type]
 
         if exclude_cancelled:
@@ -272,21 +289,22 @@ class Otf:
             otf_class.is_home_studio = otf_class.studio.id == self.home_studio_uuid
 
         if day_of_week:
+            assert all(isinstance(d, models.DoW) for d in day_of_week), "day_of_week must be a list of DoW"
             classes_list.classes = [c for c in classes_list.classes if c.day_of_week_enum in day_of_week]
 
         if start_time:
+            assert isinstance(start_time, list), "start_time must be a list"
+            assert all(isinstance(t, time) for t in start_time), "start_time must be a list of time objects"
             classes_list.classes = [
-                c for c in classes_list.classes if any(c.time.strip().startswith(t) for t in start_time)
+                c for c in classes_list.classes if any(c.starts_at_local.time() == t for t in start_time)
             ]
-
-        classes_list.classes = list(filter(lambda c: not c.canceled, classes_list.classes))
 
         if exclude_unbookable:
             # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
             max_date = datetime.today().date() + timedelta(days=29)
             classes_list.classes = [c for c in classes_list.classes if c.starts_at_local.date() <= max_date]
 
-        booking_resp = await self.get_bookings(start_date, end_date, status=models.BookingStatus.Booked)
+        booking_resp = self.get_bookings(start_date, end_date, status=models.BookingStatus.Booked)
         booked_classes = {b.otf_class.class_uuid for b in booking_resp.bookings}
 
         for otf_class in classes_list.classes:
@@ -294,7 +312,7 @@ class Otf:
 
         return classes_list
 
-    async def get_booking(self, booking_uuid: str) -> models.Booking:
+    def get_booking(self, booking_uuid: str) -> models.Booking:
         """Get a specific booking by booking_uuid.
 
         Args:
@@ -309,10 +327,10 @@ class Otf:
         if not booking_uuid:
             raise ValueError("booking_uuid is required")
 
-        data = await self._default_request("GET", f"/member/members/{self._member_id}/bookings/{booking_uuid}")
+        data = self._default_request("GET", f"/member/members/{self._member_id}/bookings/{booking_uuid}")
         return models.Booking(**data["data"])
 
-    async def get_booking_by_class(self, class_: str | models.OtfClass) -> models.Booking:
+    def get_booking_by_class(self, class_: str | models.OtfClass) -> models.Booking:
         """Get a specific booking by class_uuid or OtfClass object.
 
         Args:
@@ -331,7 +349,7 @@ class Otf:
         if not class_uuid:
             raise ValueError("class_uuid is required")
 
-        all_bookings = await self.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
+        all_bookings = self.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
 
         for booking in all_bookings.bookings:
             if booking.otf_class.class_uuid == class_uuid:
@@ -339,7 +357,7 @@ class Otf:
 
         raise BookingNotFoundError(f"Booking for class {class_uuid} not found.")
 
-    async def book_class(self, class_: str | models.OtfClass) -> models.Booking:
+    def book_class(self, class_: str | models.OtfClass) -> models.Booking:
         """Book a class by providing either the class_uuid or the OtfClass object.
 
         Args:
@@ -360,7 +378,7 @@ class Otf:
             raise ValueError("class_uuid is required")
 
         with contextlib.suppress(BookingNotFoundError):
-            existing_booking = await self.get_booking_by_class(class_uuid)
+            existing_booking = self.get_booking_by_class(class_uuid)
             if existing_booking.status != models.BookingStatus.Cancelled:
                 raise AlreadyBookedError(
                     f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.class_booking_uuid
@@ -368,7 +386,7 @@ class Otf:
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
-        resp = await self._default_request("PUT", f"/member/members/{self._member_id}/bookings", json=body)
+        resp = self._default_request("PUT", f"/member/members/{self._member_id}/bookings", json=body)
 
         if resp["code"] == "ERROR":
             if resp["data"]["errorCode"] == "603":
@@ -381,11 +399,11 @@ class Otf:
         # get the booking details - we will only use this to get the booking_uuid
         book_class = models.BookClass(**resp["data"])
 
-        booking = await self.get_booking(book_class.booking_uuid)
+        booking = self.get_booking(book_class.booking_uuid)
 
         return booking
 
-    async def cancel_booking(self, booking: str | models.Booking):
+    def cancel_booking(self, booking: str | models.Booking):
         """Cancel a booking by providing either the booking_uuid or the Booking object.
 
         Args:
@@ -404,12 +422,12 @@ class Otf:
             raise ValueError("booking_uuid is required")
 
         try:
-            await self.get_booking(booking_uuid)
+            self.get_booking(booking_uuid)
         except Exception:
             raise BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
 
         params = {"confirmed": "true"}
-        resp = await self._default_request(
+        resp = self._default_request(
             "DELETE", f"/member/members/{self._member_id}/bookings/{booking_uuid}", params=params
         )
         if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
@@ -419,7 +437,7 @@ class Otf:
 
         return models.CancelBooking(**resp["data"])
 
-    async def get_bookings(
+    def get_bookings(
         self,
         start_date: date | str | None = None,
         end_date: date | str | None = None,
@@ -480,7 +498,7 @@ class Otf:
 
         params = {"startDate": start_date, "endDate": end_date, "statuses": status_value}
 
-        res = await self._default_request("GET", f"/member/members/{self._member_id}/bookings", params=params)
+        res = self._default_request("GET", f"/member/members/{self._member_id}/bookings", params=params)
 
         bookings = res["data"][:limit] if limit else res["data"]
 
@@ -503,7 +521,7 @@ class Otf:
 
         return data
 
-    async def _get_bookings_old(self, status: models.BookingStatus | None = None) -> models.BookingList:
+    def _get_bookings_old(self, status: models.BookingStatus | None = None) -> models.BookingList:
         """Get the member's bookings.
 
         Args:
@@ -546,13 +564,13 @@ class Otf:
 
         status_value = status.value if status else None
 
-        res = await self._default_request(
+        res = self._default_request(
             "GET", f"/member/members/{self._member_id}/bookings", params={"status": status_value}
         )
 
         return models.BookingList(bookings=res["data"])
 
-    async def get_member_detail(
+    def get_member_detail(
         self, include_addresses: bool = True, include_class_summary: bool = True, include_credit_card: bool = False
     ):
         """Get the member details.
@@ -589,29 +607,29 @@ class Otf:
 
         params = {"include": ",".join(include)} if include else None
 
-        data = await self._default_request("GET", f"/member/members/{self._member_id}", params=params)
+        data = self._default_request("GET", f"/member/members/{self._member_id}", params=params)
         return models.MemberDetail(**data["data"])
 
-    async def get_member_membership(self) -> models.MemberMembership:
+    def get_member_membership(self) -> models.MemberMembership:
         """Get the member's membership details.
 
         Returns:
             MemberMembership: The member's membership details.
         """
 
-        data = await self._default_request("GET", f"/member/members/{self._member_id}/memberships")
+        data = self._default_request("GET", f"/member/members/{self._member_id}/memberships")
         return models.MemberMembership(**data["data"])
 
-    async def get_member_purchases(self) -> models.MemberPurchaseList:
+    def get_member_purchases(self) -> models.MemberPurchaseList:
         """Get the member's purchases, including monthly subscriptions and class packs.
 
         Returns:
             MemberPurchaseList: The member's purchases.
         """
-        data = await self._default_request("GET", f"/member/members/{self._member_id}/purchases")
+        data = self._default_request("GET", f"/member/members/{self._member_id}/purchases")
         return models.MemberPurchaseList(data=data["data"])
 
-    async def get_member_lifetime_stats(
+    def get_member_lifetime_stats(
         self, select_time: models.StatsTime = models.StatsTime.AllTime
     ) -> models.StatsResponse:
         """Get the member's lifetime stats.
@@ -628,12 +646,12 @@ class Otf:
             Any: The member's lifetime stats.
         """
 
-        data = await self._default_request("GET", f"/performance/v2/{self._member_id}/over-time/{select_time.value}")
+        data = self._default_request("GET", f"/performance/v2/{self._member_id}/over-time/{select_time.value}")
 
         stats = models.StatsResponse(**data["data"])
         return stats
 
-    async def get_latest_agreement(self) -> models.LatestAgreement:
+    def get_latest_agreement(self) -> models.LatestAgreement:
         """Get the latest agreement for the member.
 
         Returns:
@@ -644,30 +662,30 @@ class Otf:
             In this context, "latest" means the most recent agreement with a specific ID, not the most recent agreement
             in general. The agreement ID is hardcoded in the endpoint, so it will always return the same agreement.
         """
-        data = await self._default_request("GET", "/member/agreements/9d98fb27-0f00-4598-ad08-5b1655a59af6")
+        data = self._default_request("GET", "/member/agreements/9d98fb27-0f00-4598-ad08-5b1655a59af6")
         return models.LatestAgreement(**data["data"])
 
-    async def get_out_of_studio_workout_history(self) -> models.OutOfStudioWorkoutHistoryList:
+    def get_out_of_studio_workout_history(self) -> models.OutOfStudioWorkoutHistoryList:
         """Get the member's out of studio workout history.
 
         Returns:
             OutOfStudioWorkoutHistoryList: The member's out of studio workout history.
         """
-        data = await self._default_request("GET", f"/member/members/{self._member_id}/out-of-studio-workout")
+        data = self._default_request("GET", f"/member/members/{self._member_id}/out-of-studio-workout")
 
         return models.OutOfStudioWorkoutHistoryList(workouts=data["data"])
 
-    async def get_favorite_studios(self) -> models.FavoriteStudioList:
+    def get_favorite_studios(self) -> models.FavoriteStudioList:
         """Get the member's favorite studios.
 
         Returns:
             FavoriteStudioList: The member's favorite studios.
         """
-        data = await self._default_request("GET", f"/member/members/{self._member_id}/favorite-studios")
+        data = self._default_request("GET", f"/member/members/{self._member_id}/favorite-studios")
 
         return models.FavoriteStudioList(studios=data["data"])
 
-    async def get_studio_services(self, studio_uuid: str | None = None) -> models.StudioServiceList:
+    def get_studio_services(self, studio_uuid: str | None = None) -> models.StudioServiceList:
         """Get the services available at a specific studio. If no studio UUID is provided, the member's home studio
         will be used.
 
@@ -679,10 +697,10 @@ class Otf:
             StudioServiceList: The services available at the studio.
         """
         studio_uuid = studio_uuid or self.home_studio_uuid
-        data = await self._default_request("GET", f"/member/studios/{studio_uuid}/services")
+        data = self._default_request("GET", f"/member/studios/{studio_uuid}/services")
         return models.StudioServiceList(data=data["data"])
 
-    async def get_studio_detail(self, studio_uuid: str | None = None) -> models.StudioDetail:
+    def get_studio_detail(self, studio_uuid: str | None = None) -> models.StudioDetail:
         """Get detailed information about a specific studio. If no studio UUID is provided, it will default to the
         user's home studio.
 
@@ -698,10 +716,10 @@ class Otf:
         path = f"/mobile/v1/studios/{studio_uuid}"
         params = {"include": "locations"}
 
-        res = await self._default_request("GET", path, params=params)
+        res = self._default_request("GET", path, params=params)
         return models.StudioDetail(**res["data"])
 
-    async def search_studios_by_geo(
+    def search_studios_by_geo(
         self,
         latitude: float | None = None,
         longitude: float | None = None,
@@ -730,7 +748,7 @@ class Otf:
         path = "/mobile/v1/studios"
 
         if not latitude and not longitude:
-            home_studio = await self.get_studio_detail()
+            home_studio = self.get_studio_detail()
 
             latitude = home_studio.studio_location.latitude
             longitude = home_studio.studio_location.longitude
@@ -754,7 +772,7 @@ class Otf:
         all_results: list[models.StudioDetail] = []
 
         while True:
-            res = await self._default_request("GET", path, params=params)
+            res = self._default_request("GET", path, params=params)
             pagination = models.Pagination(**res["data"].pop("pagination"))
             all_results.extend([models.StudioDetail(**studio) for studio in res["data"]["studios"]])
 
@@ -765,36 +783,36 @@ class Otf:
 
         return models.StudioDetailList(studios=all_results)
 
-    async def get_total_classes(self) -> models.TotalClasses:
+    def get_total_classes(self) -> models.TotalClasses:
         """Get the member's total classes. This is a simple object reflecting the total number of classes attended,
         both in-studio and OT Live.
 
         Returns:
             TotalClasses: The member's total classes.
         """
-        data = await self._default_request("GET", "/mobile/v1/members/classes/summary")
+        data = self._default_request("GET", "/mobile/v1/members/classes/summary")
         return models.TotalClasses(**data["data"])
 
-    async def get_body_composition_list(self) -> models.BodyCompositionList:
+    def get_body_composition_list(self) -> models.BodyCompositionList:
         """Get the member's body composition list.
 
         Returns:
             Any: The member's body composition list.
         """
-        data = await self._default_request("GET", f"/member/members/{self._member_uuid}/body-composition")
+        data = self._default_request("GET", f"/member/members/{self._member_uuid}/body-composition")
 
         return models.BodyCompositionList(data=data["data"])
 
-    async def get_challenge_tracker_content(self) -> models.ChallengeTrackerContent:
+    def get_challenge_tracker_content(self) -> models.ChallengeTrackerContent:
         """Get the member's challenge tracker content.
 
         Returns:
             ChallengeTrackerContent: The member's challenge tracker content.
         """
-        data = await self._default_request("GET", f"/challenges/v3.1/member/{self._member_id}")
+        data = self._default_request("GET", f"/challenges/v3.1/member/{self._member_id}")
         return models.ChallengeTrackerContent(**data["Dto"])
 
-    async def get_challenge_tracker_detail(
+    def get_challenge_tracker_detail(
         self,
         equipment_id: models.EquipmentType,
         challenge_type_id: models.ChallengeType,
@@ -821,11 +839,11 @@ class Otf:
             "challengeSubTypeId": challenge_sub_type_id,
         }
 
-        data = await self._default_request("GET", f"/challenges/v3/member/{self._member_id}/benchmarks", params=params)
+        data = self._default_request("GET", f"/challenges/v3/member/{self._member_id}/benchmarks", params=params)
 
         return models.ChallengeTrackerDetailList(details=data["Dto"])
 
-    async def get_challenge_tracker_participation(self, challenge_type_id: models.ChallengeType) -> Any:
+    def get_challenge_tracker_participation(self, challenge_type_id: models.ChallengeType) -> Any:
         """Get the member's participation in a challenge.
 
         Args:
@@ -841,14 +859,14 @@ class Otf:
 
         """
 
-        data = await self._default_request(
+        data = self._default_request(
             "GET",
             f"/challenges/v1/member/{self._member_id}/participation",
             params={"challengeTypeId": challenge_type_id.value},
         )
         return data
 
-    async def get_performance_summaries(self, limit: int = 30) -> models.PerformanceSummaryList:
+    def get_performance_summaries(self, limit: int = 30) -> models.PerformanceSummaryList:
         """Get a list of performance summaries for the authenticated user.
 
         Args:
@@ -863,7 +881,7 @@ class Otf:
 
         """
 
-        res = await self._performance_summary_request(
+        res = self._performance_summary_request(
             "GET",
             "/v1/performance-summaries",
             headers=self._perf_api_headers,
@@ -871,7 +889,7 @@ class Otf:
         )
         return models.PerformanceSummaryList(summaries=res["items"])
 
-    async def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummaryDetail:
+    def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummaryDetail:
         """Get a detailed performance summary for a given workout.
 
         Args:
@@ -882,10 +900,10 @@ class Otf:
         """
 
         path = f"/v1/performance-summaries/{performance_summary_id}"
-        res = await self._performance_summary_request("GET", path, headers=self._perf_api_headers)
+        res = self._performance_summary_request("GET", path, headers=self._perf_api_headers)
         return models.PerformanceSummaryDetail(**res)
 
-    async def get_hr_history(self) -> models.TelemetryHrHistory:
+    def get_hr_history(self) -> models.TelemetryHrHistory:
         """Get the heartrate history for the user.
 
         Returns a list of history items that contain the max heartrate, start/end bpm for each zone,
@@ -898,10 +916,10 @@ class Otf:
         path = "/v1/physVars/maxHr/history"
 
         params = {"memberUuid": self._member_id}
-        res = await self._telemetry_request("GET", path, params=params)
+        res = self._telemetry_request("GET", path, params=params)
         return models.TelemetryHrHistory(**res)
 
-    async def get_max_hr(self) -> models.TelemetryMaxHr:
+    def get_max_hr(self) -> models.TelemetryMaxHr:
         """Get the max heartrate for the user.
 
         Returns a simple object that has the member_uuid and the max_hr.
@@ -913,10 +931,10 @@ class Otf:
 
         params = {"memberUuid": self._member_id}
 
-        res = await self._telemetry_request("GET", path, params=params)
+        res = self._telemetry_request("GET", path, params=params)
         return models.TelemetryMaxHr(**res)
 
-    async def get_telemetry(self, performance_summary_id: str, max_data_points: int = 120) -> models.Telemetry:
+    def get_telemetry(self, performance_summary_id: str, max_data_points: int = 120) -> models.Telemetry:
         """Get the telemetry for a performance summary.
 
         This returns an object that contains the max heartrate, start/end bpm for each zone,
@@ -933,12 +951,12 @@ class Otf:
         path = "/v1/performance/summary"
 
         params = {"classHistoryUuid": performance_summary_id, "maxDataPoints": max_data_points}
-        res = await self._telemetry_request("GET", path, params=params)
+        res = self._telemetry_request("GET", path, params=params)
         return models.Telemetry(**res)
 
     # the below do not return any data for me, so I can't test them
 
-    async def _get_member_services(self, active_only: bool = True) -> Any:
+    def _get_member_services(self, active_only: bool = True) -> Any:
         """Get the member's services.
 
         Args:
@@ -948,12 +966,12 @@ class Otf:
             Any: The member's service
         ."""
         active_only_str = "true" if active_only else "false"
-        data = await self._default_request(
+        data = self._default_request(
             "GET", f"/member/members/{self._member_id}/services", params={"activeOnly": active_only_str}
         )
         return data
 
-    async def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> Any:
+    def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> Any:
         """Get data from the member's aspire wearable.
 
         Note: I don't have an aspire wearable, so I can't test this.

@@ -20,7 +20,7 @@ class Studio(OtfItemBase):
     name: str
     mbo_studio_id: str
     time_zone: str
-    currency_code: str
+    currency_code: str | None = None
     address: Address
     phone_number: str
     latitude: float
@@ -67,8 +67,8 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
 
     @property
     def day_of_week_enum(self) -> DoW:
-        dow = self.starts_at_local.strftime("%A")
-        return DoW.get_case_insensitive(dow)
+        dow = self.starts_at_local.strftime("%A").upper()
+        return DoW(dow)
 
     @property
     def actual_class_uuid(self) -> str:
@@ -78,3 +78,9 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
 
 class OtfClassList(OtfItemBase):
     classes: list[OtfClass]
+
+    def __len__(self) -> int:
+        return len(self.classes)
+
+    def __iter__(self):
+        return iter(self.classes)

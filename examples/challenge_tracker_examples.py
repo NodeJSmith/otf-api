@@ -1,4 +1,3 @@
-import asyncio
 import os
 from getpass import getpass
 
@@ -9,12 +8,11 @@ USERNAME = os.getenv("OTF_EMAIL") or input("Enter your OTF email: ")
 PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
-async def main():
-    async with Otf(USERNAME, PASSWORD) as otf:
-
+def main():
+    with Otf(USERNAME, PASSWORD) as otf:
         # challenge tracker content is an overview of the challenges OTF runs
         # and your participation in them
-        challenge_tracker_content = await otf.get_challenge_tracker_content()
+        challenge_tracker_content = otf.get_challenge_tracker_content()
         print(challenge_tracker_content.benchmarks[0].model_dump_json(indent=4))
 
         """
@@ -53,7 +51,7 @@ async def main():
 
         # challenge tracker details are detailed information about specific challenges
         # this endpoint takes an equipment type and a challenge type as arguments
-        tread_challenge_details = await otf.get_challenge_tracker_detail(EquipmentType.Treadmill, ChallengeType.Other)
+        tread_challenge_details = otf.get_challenge_tracker_detail(EquipmentType.Treadmill, ChallengeType.Other)
         print(tread_challenge_details.details[0].model_dump_json(indent=4))
 
         """
@@ -111,4 +109,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import Enum, StrEnum
 
 
-class StudioStatus(str, Enum):
+class StudioStatus(StrEnum):
     OTHER = "OTHER"
     ACTIVE = "Active"
     INACTIVE = "Inactive"
@@ -10,7 +10,7 @@ class StudioStatus(str, Enum):
     PERM_CLOSED = "Permanently Closed"
 
 
-class BookingStatus(str, Enum):
+class BookingStatus(StrEnum):
     CheckedIn = "Checked In"
     CancelCheckinPending = "Cancel Checkin Pending"
     CancelCheckinRequested = "Cancel Checkin Requested"
@@ -23,22 +23,17 @@ class BookingStatus(str, Enum):
     CheckinCancelled = "Checkin Cancelled"
 
 
-class DoW(str, Enum):
-    MONDAY = "monday"
-    TUESDAY = "tuesday"
-    WEDNESDAY = "wednesday"
-    THURSDAY = "thursday"
-    FRIDAY = "friday"
-    SATURDAY = "saturday"
-    SUNDAY = "sunday"
-
-    @classmethod
-    def get_case_insensitive(cls, value: str) -> "DoW":
-        lcase_to_actual = {item.value.lower(): item for item in cls}
-        return lcase_to_actual[value.lower()]
+class DoW(StrEnum):
+    MONDAY = "Monday"
+    TUESDAY = "Tuesday"
+    WEDNESDAY = "Wednesday"
+    THURSDAY = "Thursday"
+    FRIDAY = "Friday"
+    SATURDAY = "Saturday"
+    SUNDAY = "Sunday"
 
 
-class ClassType(str, Enum):
+class ClassType(StrEnum):
     ORANGE_60_MIN_2G = "Orange 60 Min 2G"
     TREAD_50 = "Tread 50"
     STRENGTH_50 = "Strength 50"
@@ -55,7 +50,7 @@ class ClassType(str, Enum):
         return lcase_to_actual[value.lower()]
 
 
-class StatsTime(str, Enum):
+class StatsTime(StrEnum):
     LastYear = "lastYear"
     ThisYear = "thisYear"
     LastMonth = "lastMonth"
