@@ -137,5 +137,5 @@ class MemberDetail(OtfItemBase):
         if value is None:
             return value
         if not isinstance(value, date):
-            return datetime.strptime(value, "%Y-%m-%d").date()  # noqa
+            return datetime.strptime(value, "%Y-%m-%d").date()
         return value

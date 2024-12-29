@@ -1,59 +1,39 @@
 from datetime import datetime
 
-from pydantic import Field
+from inflection import camelize
+from pydantic import Field, model_validator
 
 from otf_api.models.base import OtfItemBase
+from otf_api.models.mixins import AddressMixin, PhoneLongitudeLatitudeMixin
 
 
-class Location(OtfItemBase):
+class Location(PhoneLongitudeLatitudeMixin, AddressMixin):
     location_id: int = Field(..., alias="locationId")
     location_uuid: str = Field(..., alias="locationUUId")
     studio_id: int = Field(..., alias="studioId")
     mbo_location_id: int = Field(..., alias="mboLocationId")
     mbo_studio_id: int = Field(..., alias="mboStudioId")
-    latitude: float
-    longitude: float
-    address1: str
-    address2: str | None = None
-    city: str
-    state: str
-    phone: str
-    postal_code: str = Field(..., alias="postalCode")
 
 
-class StudioLocation(OtfItemBase):
-    bill_to_address: str = Field(..., alias="billToAddress")
-    bill_to_address2: str = Field(..., alias="billToAddress2")
-    bill_to_city: str = Field(..., alias="billToCity")
-    bill_to_state: str = Field(..., alias="billToState")
-    bill_to_postal_code: str = Field(..., alias="billToPostalCode")
-    bill_to_region: str = Field(..., alias="billToRegion")
-    bill_to_country_id: int = Field(..., alias="billToCountryId")
-    bill_to_country: str = Field(..., alias="billToCountry")
-    ship_to_address: str = Field(..., alias="shipToAddress")
-    ship_to_address2: str | None = Field(None, alias="shipToAddress2")
-    ship_to_city: str = Field(..., alias="shipToCity")
-    ship_to_state: str = Field(..., alias="shipToState")
-    ship_to_postal_code: str = Field(..., alias="shipToPostalCode")
-    ship_to_region: str = Field(..., alias="shipToRegion")
-    ship_to_country_id: int = Field(..., alias="shipToCountryId")
-    ship_to_country: str = Field(..., alias="shipToCountry")
-    physical_address: str = Field(..., alias="physicalAddress")
-    physical_address2: str | None = Field(None, alias="physicalAddress2")
-    physical_city: str = Field(..., alias="physicalCity")
-    physical_state: str = Field(..., alias="physicalState")
-    physical_postal_code: str = Field(..., alias="physicalPostalCode")
-    physical_region: str = Field(..., alias="physicalRegion")
-    physical_country_id: int = Field(..., alias="physicalCountryId")
-    physical_country: str = Field(..., alias="physicalCountry")
-    phone_number: str = Field(..., alias="phoneNumber")
-    latitude: str
-    longitude: str
+class StudioLocation(PhoneLongitudeLatitudeMixin, AddressMixin):
+    studio_location_id: int | None = Field(None, alias="studioLocationId", exclude=True, repr=False)
+    billing_address: AddressMixin | None = Field(None, exclude=True, repr=False)
+    shipping_address: AddressMixin | None = Field(None, exclude=True, repr=False)
+
+    @model_validator(mode="before")
+    @classmethod
+    def handle_addresses(cls, values):
+        for prefix, field in [("billTo", "billing_address"), ("shipTo", "shipping_address")]:
+            address_values = {k.replace(prefix, ""): v for k, v in values.items() if k.startswith(prefix)}
+            address_values = {camelize(k, uppercase_first_letter=False): v for k, v in address_values.items()}
+            values[field] = AddressMixin(**address_values)
+
+        return values
 
 
 class FavoriteStudio(OtfItemBase):
-    studio_id: int = Field(..., alias="studioId")
-    studio_uuid: str = Field(..., alias="studioUUId")
+    studio_uuid: str = Field(..., alias="studioUUId", description="The studio UUID, used by API")
+    studio_id: int = Field(..., alias="studioId", description="Not used by API", exclude=True, repr=False)
     mbo_studio_id: int = Field(..., alias="mboStudioId")
     studio_name: str = Field(..., alias="studioName")
     area_id: int | None = Field(None, alias="areaId")
@@ -96,10 +76,6 @@ class FavoriteStudio(OtfItemBase):
 
 class FavoriteStudioList(OtfItemBase):
     studios: list[FavoriteStudio]
-
-    @property
-    def studio_ids(self) -> list[int]:
-        return [studio.studio_id for studio in self.studios]
 
     @property
     def studio_uuids(self) -> list[str]:

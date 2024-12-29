@@ -4,27 +4,16 @@ from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import DoW
-from otf_api.models.mixins import OtfClassTimeMixin
+from otf_api.models.mixins import AddressMixin, OtfClassTimeMixin, PhoneLongitudeLatitudeMixin
 
 
-class Address(OtfItemBase):
-    line1: str
-    city: str
-    state: str
-    country: str
-    postal_code: str
-
-
-class Studio(OtfItemBase):
-    id: str
+class Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
+    studio_uuid: str = Field(alias="id")
     name: str
-    mbo_studio_id: str
+    mbo_studio_id: str = Field(exclude=True)
     time_zone: str
     currency_code: str | None = None
-    address: Address
-    phone_number: str
-    latitude: float
-    longitude: float
+    address: AddressMixin
 
 
 class Coach(OtfItemBase):
@@ -35,7 +24,7 @@ class Coach(OtfItemBase):
 
 class OtfClass(OtfItemBase, OtfClassTimeMixin):
     id: str
-    ot_class_uuid: str = Field(
+    class_uuid: str = Field(
         alias="ot_base_class_uuid",
         description="The OTF class UUID, this is what shows in a booking response and how you can book a class.",
     )
@@ -52,7 +41,7 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
     waitlist_size: int
     full: bool
     waitlist_available: bool
-    canceled: bool
+    is_cancelled: bool = Field(alias="canceled")
     mbo_class_id: str
     mbo_class_schedule_id: str
     mbo_class_description_id: str
@@ -69,11 +58,6 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
     def day_of_week_enum(self) -> DoW:
         dow = self.starts_at_local.strftime("%A").upper()
         return DoW(dow)
-
-    @property
-    def actual_class_uuid(self) -> str:
-        """The UUID used to book the class"""
-        return self.ot_class_uuid
 
 
 class OtfClassList(OtfItemBase):

@@ -1,9 +1,43 @@
-import warnings
 from datetime import datetime
 
 from humanize import precisedelta
+from pydantic import AliasChoices, Field, model_validator
 
+from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import ClassType
+
+
+class PhoneLongitudeLatitudeMixin(OtfItemBase):
+    phone_number: str | None = Field(None, alias=AliasChoices("phone", "phoneNumber"))
+    latitude: float | None = Field(None, alias=AliasChoices("latitude"))
+    longitude: float | None = Field(None, alias=AliasChoices("longitude"))
+
+
+class AddressMixin(OtfItemBase):
+    address_line1: str = Field(None, alias=AliasChoices("line1", "address1", "address", "physicalAddress"))
+    address_line2: str | None = Field(None, alias=AliasChoices("line2", "address2", "physicalAddress2"))
+    city: str | None = Field(None, alias=AliasChoices("city", "physicalCity"))
+    postal_code: str | None = Field(None, alias=AliasChoices("postal_code", "postalCode", "physicalPostalCode"))
+    state: str | None = Field(None, alias=AliasChoices("state", "physicalState"))
+    country: str | None = Field(None, alias=AliasChoices("country", "physicalCountry"))
+    region: str | None = Field(None, exclude=True, repr=False, alias=AliasChoices("physicalRegion", "region"))
+    country_id: int | None = Field(None, exclude=True, repr=False, alias=AliasChoices("physicalCountryId", "countryId"))
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_country(cls, values):
+        if set(values.keys()) == set(
+            ["phone", "latitude", "longitude", "address1", "address2", "city", "state", "postalCode"]
+        ):
+            values = {k: v for k, v in values.items() if v and str(v) != "0.00000000"}
+
+        if "country" in values and isinstance(values["country"], dict):
+            values["country_currency"] = values.pop("country")
+
+        if "physicalCountry" in values and isinstance(values["physicalCountry"], dict):
+            values["country_currency"] = values.pop("physicalCountry")
+
+        return values
 
 
 class OtfClassTimeMixin:
@@ -14,19 +48,6 @@ class OtfClassTimeMixin:
     @property
     def day_of_week(self) -> str:
         return self.starts_at_local.strftime("%A")
-
-    @property
-    def date_str(self) -> str:
-        return self.starts_at_local.strftime("%Y-%m-%d")
-
-    @property
-    def time_str(self) -> str:
-        """Returns time in 12 hour clock format, with no leading 0"""
-        val = self.starts_at_local.strftime("%I:%M %p")
-        if val[0] == "0":
-            val = " " + val[1:]
-
-        return val
 
     @property
     def duration_str(self) -> str:
@@ -44,20 +65,3 @@ class OtfClassTimeMixin:
                 return class_type
 
         return ClassType.OTHER
-
-    @property
-    def date(self) -> str:
-        warnings.warn("date is deprecated, use date_str instead", DeprecationWarning)
-        return self.date_str
-
-    @property
-    def time(self) -> str:
-        """Returns time in 12 hour clock format, with no leading 0"""
-        warnings.warn("time is deprecated, use time_str instead", DeprecationWarning)
-        return self.time_str
-
-    @property
-    def duration(self) -> str:
-        """Returns the duration of the class in human readable format"""
-        warnings.warn("duration is deprecated, use duration_str instead", DeprecationWarning)
-        return self.duration_str

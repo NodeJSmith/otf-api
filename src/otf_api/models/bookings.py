@@ -1,26 +1,21 @@
-from collections.abc import Hashable
 from datetime import datetime
-from typing import Any
 
-from pydantic import Field
+from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import BookingStatus, StudioStatus
-from otf_api.models.mixins import OtfClassTimeMixin
+from otf_api.models.mixins import AddressMixin, OtfClassTimeMixin, PhoneLongitudeLatitudeMixin
 
 
-class Location(OtfItemBase):
-    address_one: str | None = Field(None, alias="address1")
-    address_two: str | None = Field(alias="address2")
-    city: str | None = None
-    country: str | None = None
-    distance: float | None = None
-    location_name: str | None = Field(None, alias="locationName")
-    latitude: float | None = Field(None, alias="latitude")
-    longitude: float | None = Field(None, alias="longitude")
-    phone_number: str | None = Field(None, alias="phone")
-    postal_code: str | None = Field(None, alias="postalCode")
-    state: str | None = None
+class CountryCurrency(OtfItemBase):
+    country_currency_code: str = Field(..., alias="countryCurrencyCode")
+    currency_id: int | None = Field(None, alias=AliasPath("defaultCurrency", "currencyId"))
+    currency_alphabetic_code: str | None = Field(None, alias=AliasPath("defaultCurrency", "currencyAlphabeticCode"))
+
+
+class Location(PhoneLongitudeLatitudeMixin, AddressMixin):
+    distance: float | None = Field(None, alias="distance", exclude=True, repr=False)
+    location_name: str | None = Field(None, alias="locationName", exclude=True, repr=False)
 
 
 class Coach(OtfItemBase):
@@ -32,25 +27,16 @@ class Coach(OtfItemBase):
     profile_picture_url: str | None = Field(None, alias="profilePictureUrl", exclude=True)
 
 
-class StudioLocation(OtfItemBase):
-    latitude: float | None = Field(None, alias="latitude")
-    longitude: float | None = Field(None, alias="longitude")
-    phone_number: str | None = Field(None, alias="phoneNumber")
-    physical_city: str | None = Field(None, alias="physicalCity")
-    physical_address: str | None = Field(None, alias="physicalAddress")
-    physical_address2: str | None = Field(None, alias="physicalAddress2")
-    physical_state: str | None = Field(None, alias="physicalState")
-    physical_postal_code: str | None = Field(None, alias="physicalPostalCode")
-    physical_region: str | None = Field(None, alias="physicalRegion", exclude=True)
-    physical_country_id: int | None = Field(None, alias="physicalCountryId", exclude=True)
-    physical_country: str | None = Field(None, alias="physicalCountry")
-    country: dict[Hashable, Any] | None = Field(None, alias="country", exclude=True)
+class StudioLocation(PhoneLongitudeLatitudeMixin, AddressMixin):
+    physical_region: str | None = Field(None, alias="physicalRegion", exclude=True, repr=False)
+    physical_country_id: int | None = Field(None, alias="physicalCountryId", exclude=True, repr=False)
+    country_currency: CountryCurrency | None = Field(None, alias="country_currency", exclude=True, repr=False)
 
 
 class Studio(OtfItemBase):
     studio_uuid: str = Field(alias="studioUUId")
     studio_name: str = Field(alias="studioName")
-    studio_id: int = Field(alias="studioId")
+    studio_id: int = Field(alias="studioId", exclude=True, description="Not used by API")
     description: str | None = None
     contact_email: str | None = Field(None, alias="contactEmail", exclude=True)
     status: StudioStatus | None = None
