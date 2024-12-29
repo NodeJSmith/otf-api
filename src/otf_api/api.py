@@ -266,7 +266,7 @@ class Otf:
         data = self._default_request("GET", f"/member/members/{self._member_id}/bookings/{booking_uuid}")
         return models.Booking(**data["data"])
 
-    def get_booking_by_class(self, class_: str | models.OtfClass) -> models.Booking:
+    def get_booking_from_class(self, class_: str | models.OtfClass) -> models.Booking:
         """Get a specific booking by class_uuid or OtfClass object.
 
         Args:
@@ -280,16 +280,15 @@ class Otf:
             ValueError: If class_uuid is None or empty string.
         """
 
-        class_uuid = class_.ot_class_uuid if isinstance(class_, models.OtfClass) else class_
+        class_uuid = class_.class_uuid if isinstance(class_, models.OtfClass) else class_
 
         if not class_uuid:
             raise ValueError("class_uuid is required")
 
         all_bookings = self.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
 
-        for booking in all_bookings.bookings:
-            if booking.otf_class.class_uuid == class_uuid:
-                return booking
+        if booking := all_bookings.get_booking_from_class_uuid(class_uuid):
+            return booking
 
         raise BookingNotFoundError(f"Booking for class {class_uuid} not found.")
 
@@ -309,12 +308,12 @@ class Otf:
             Exception: If there is an error booking the class.
         """
 
-        class_uuid = class_.ot_class_uuid if isinstance(class_, models.OtfClass) else class_
+        class_uuid = class_.class_uuid if isinstance(class_, models.OtfClass) else class_
         if not class_uuid:
             raise ValueError("class_uuid is required")
 
         with contextlib.suppress(BookingNotFoundError):
-            existing_booking = self.get_booking_by_class(class_uuid)
+            existing_booking = self.get_booking_from_class(class_uuid)
             if existing_booking.status != models.BookingStatus.Cancelled:
                 raise AlreadyBookedError(
                     f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.class_booking_uuid
