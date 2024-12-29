@@ -685,6 +685,50 @@ class Otf:
 
         return models.FavoriteStudioList(studios=data["data"])
 
+    def add_favorite_studio(self, studio_uuids: list[str] | str) -> None:
+        """Add a studio to the member's favorite studios.
+
+        Args:
+            studio_uuids (list[str] | str): The studio UUID or list of studio UUIDs to add to the member's favorite\
+            studios. If a string is provided, it will be converted to a list.
+
+        Returns:
+            None
+        """
+        if isinstance(studio_uuids, str):
+            studio_uuids = [studio_uuids]
+
+        if not studio_uuids:
+            raise ValueError("studio_uuids is required")
+
+        body = {"studioUUIds": studio_uuids}
+        resp = self._default_request("POST", "/mobile/v1/members/favorite-studios", json=body)
+
+        new_faves = resp.get("data", {}).get("studios", [])
+
+        return [models.StudioDetail(**studio) for studio in new_faves]
+
+    def remove_favorite_studio(self, studio_uuids: list[str] | str) -> None:
+        """Remove a studio from the member's favorite studios.
+
+        Args:
+            studio_uuids (list[str] | str): The studio UUID or list of studio UUIDs to remove from the member's\
+            favorite studios. If a string is provided, it will be converted to a list.
+
+        Returns:
+            None
+        """
+        if isinstance(studio_uuids, str):
+            studio_uuids = [studio_uuids]
+
+        if not studio_uuids:
+            raise ValueError("studio_uuids is required")
+
+        body = {"studioUUIds": studio_uuids}
+        resp = self._default_request("DELETE", "/mobile/v1/members/favorite-studios", json=body)
+
+        return resp
+
     def get_studio_services(self, studio_uuid: str | None = None) -> models.StudioServiceList:
         """Get the services available at a specific studio. If no studio UUID is provided, the member's home studio
         will be used.
