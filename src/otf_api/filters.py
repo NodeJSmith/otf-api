@@ -2,7 +2,7 @@ from datetime import date, time
 
 from pydantic import BaseModel, field_validator
 
-from otf_api.models import ClassType, DoW
+from otf_api.models import ClassType, DoW, OtfClass
 
 
 class ClassFilter(BaseModel):
@@ -40,3 +40,16 @@ class ClassFilter(BaseModel):
             return [ClassType.get_case_insensitive(i) for i in v]
 
         return v
+
+    def filter_classes(self, classes: list[OtfClass]) -> list[OtfClass]:
+        if self.start_date:
+            classes = [c for c in classes if c.starts_at_local.date() >= self.start_date]
+        if self.end_date:
+            classes = [c for c in classes if c.starts_at_local.date() <= self.end_date]
+        if self.class_type:
+            classes = [c for c in classes if c.class_type in self.class_type]
+        if self.day_of_week:
+            classes = [c for c in classes if c.day_of_week in self.day_of_week]
+        if self.start_time:
+            classes = [c for c in classes if c.starts_at_local.time() in self.start_time]
+        return classes

@@ -179,14 +179,10 @@ class Otf:
         self,
         studio_uuids: list[str] | None = None,
         include_home_studio: bool | None = None,
-        start_date: str | date | datetime | None = None,
-        end_date: str | date | datetime | None = None,
         limit: int | None = None,
-        class_type: models.ClassType | list[models.ClassType] | None = None,
         exclude_cancelled: bool = True,
-        day_of_week: list[models.DoW] | models.DoW | None = None,
-        start_time: list[str] | str | list[time] | time | None = None,
         exclude_unbookable: bool = True,
+        filters: list[filters.ClassFilter] | filters.ClassFilter | None = None,
     ) -> models.OtfClassList:
         """Get the classes for the user.
 
@@ -197,19 +193,12 @@ class Otf:
             studio_uuids (list[str] | None): The studio UUIDs to get the classes for. Default is None, which will\
             default to the user's home studio only.
             include_home_studio (bool): Whether to include the home studio in the classes. Default is True.
-            start_date (str | date | datetime | None): The earliest classes to include in results. Default is None.\
-            If a string is provided, it must be in the format "YYYY-MM-DD".
-            end_date (str | date | datetime | None): The latest classes to include in results. Default is None.\
-            If a string is provided, it must be in the format "YYYY-MM-DD".
             limit (int | None): Limit the number of classes returned. Default is None.
-            class_type (ClassType | list[ClassType] | None): The class type to filter by. Default is None. Multiple\
-            class types can be provided as a list.
             exclude_cancelled (bool): Whether to exclude classes that were cancelled by the studio. Default is True.
-            day_of_week (list[DoW] | DoW | None): The days of the week to filter by. Default is None.
-            start_time (list[str] | str | list[time] | time | None): The start time of the classes to filter by.\
-            Default is None. If a string is provided, it must be in the format "HH:MM".
             exclude_unbookable (bool): Whether to exclude classes that are outside the scheduling window. Default is\
             True.
+            filters (list[ClassFilter] | ClassFilter | None): A list of filters to apply to the classes. Filters are\
+            applied in the order they are provided. Default is None.
 
         Returns:
             OtfClassList: The classes for the user.
@@ -227,87 +216,35 @@ class Otf:
             else:
                 studio_uuids.append(self.home_studio_uuid)
 
-        if class_type and isinstance(class_type, str):
-            class_type = [class_type]
-
-        if day_of_week and not isinstance(day_of_week, list):
-            day_of_week = [day_of_week]
-
-        if start_time:
-            if isinstance(start_time, str | time):
-                start_time = [start_time]
-            assert isinstance(start_time, list), "start_time must be a list"
-
-            if any(isinstance(t, str) for t in start_time):
-                warnings.warn(
-                    "Providing start_time as a string is deprecated. Please provide a time object or "
-                    "list of time objects."
-                )
-                start_time_from_str = [datetime.strptime(t, "%H:%M").time() for t in start_time]
-                start_time_from_time = [t for t in start_time if isinstance(t, time)]
-                start_time = start_time_from_str + start_time_from_time
-
-        if start_date:
-            if isinstance(start_date, str):
-                warnings.warn(
-                    "Providing start_date as a string is deprecated. Please provide a date or datetime object."
-                )
-                start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
-            elif isinstance(start_date, datetime):
-                start_date = start_date.date()
-
-        if end_date:
-            if isinstance(end_date, str):
-                warnings.warn("Providing end_date as a string is deprecated. Please provide a date or datetime object.")
-                end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
-            elif isinstance(end_date, datetime):
-                end_date = end_date.date()
-
         classes_resp = self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
         classes_list = models.OtfClassList(classes=classes_resp["items"])
 
-        if start_date:
-            assert isinstance(start_date, date | datetime), "start_date must be a date or datetime object"
-            classes_list.classes = [c for c in classes_list.classes if c.starts_at_local.date() >= start_date]
-
-        if end_date:
-            assert isinstance(end_date, date | datetime), "end_date must be a date or datetime object"
-            classes_list.classes = [c for c in classes_list.classes if c.ends_at_local.date() <= end_date]
-
-        if limit:
-            classes_list.classes = classes_list.classes[:limit]
-
-        if class_type:
-            assert all(isinstance(c, models.ClassType) for c in class_type), "class_type must be a list of ClassType"
-            classes_list.classes = [c for c in classes_list.classes if c.class_type in class_type]
-
         if exclude_cancelled:
-            classes_list.classes = [c for c in classes_list.classes if not c.canceled]
+            classes_list.classes = [c for c in classes_list.classes if not c.is_cancelled]
 
         for otf_class in classes_list.classes:
-            otf_class.is_home_studio = otf_class.studio.id == self.home_studio_uuid
-
-        if day_of_week:
-            assert all(isinstance(d, models.DoW) for d in day_of_week), "day_of_week must be a list of DoW"
-            classes_list.classes = [c for c in classes_list.classes if c.day_of_week_enum in day_of_week]
-
-        if start_time:
-            assert isinstance(start_time, list), "start_time must be a list"
-            assert all(isinstance(t, time) for t in start_time), "start_time must be a list of time objects"
-            classes_list.classes = [
-                c for c in classes_list.classes if any(c.starts_at_local.time() == t for t in start_time)
-            ]
+            otf_class.is_home_studio = otf_class.studio.studio_uuid == self.home_studio_uuid
 
         if exclude_unbookable:
             # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
             max_date = datetime.today().date() + timedelta(days=29)
             classes_list.classes = [c for c in classes_list.classes if c.starts_at_local.date() <= max_date]
 
-        booking_resp = self.get_bookings(start_date, end_date, status=models.BookingStatus.Booked)
+        booking_resp = self.get_bookings(status=models.BookingStatus.Booked)
         booked_classes = {b.otf_class.class_uuid for b in booking_resp.bookings}
 
         for otf_class in classes_list.classes:
-            otf_class.is_booked = otf_class.ot_class_uuid in booked_classes
+            otf_class.is_booked = otf_class.class_uuid in booked_classes
+
+        if limit:
+            classes_list.classes = classes_list.classes[:limit]
+
+        if filters:
+            if not isinstance(filters, list):
+                filters = [filters]
+
+            for f in filters:
+                classes_list.classes = f.filter_classes(classes_list.classes)
 
         return classes_list
 
