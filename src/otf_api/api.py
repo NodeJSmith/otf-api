@@ -1,15 +1,14 @@
 import atexit
 import contextlib
 import json
-import warnings
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, timedelta
 from logging import getLogger
 from typing import Any
 
 import httpx
 from yarl import URL
 
-from otf_api import models
+from otf_api import filters, models
 from otf_api.auth import OtfUser
 from otf_api.exceptions import (
     AlreadyBookedError,
@@ -85,7 +84,7 @@ class Otf:
         self.home_studio_uuid = self.member.home_studio.studio_uuid
 
     @property
-    def headers(self):
+    def headers(self) -> dict[str, str]:
         """Get the headers for the API request."""
 
         # check the token before making a request in case it has expired
@@ -97,18 +96,18 @@ class Otf:
             "Accept": "application/json",
         }
 
-    def __enter__(self):
+    def __enter__(self) -> "Otf":
         # Create the session only once when entering the context
         self._session = httpx.Client(headers=self.headers)
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         # Close the session when exiting the context
         if self._session is not None:
             self._session.close()
 
     @property
-    def session(self):
+    def session(self) -> httpx.Client:
         """Get the httpx session."""
         if not getattr(self, "_session", None):
             self._session = httpx.Client(headers=self.headers)
@@ -445,7 +444,7 @@ class Otf:
         limit: int | None = None,
         exclude_cancelled: bool = True,
         exclude_checkedin: bool = True,
-    ):
+    ) -> models.BookingList:
         """Get the member's bookings.
 
         Args:
