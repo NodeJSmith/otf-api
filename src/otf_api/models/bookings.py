@@ -117,3 +117,18 @@ class Booking(OtfItemBase):
 
 class BookingList(OtfItemBase):
     bookings: list[Booking]
+
+    def __len__(self) -> int:
+        return len(self.bookings)
+
+    def __iter__(self):
+        return iter(self.bookings)
+
+    def get_booking_from_class_uuid(self, class_uuid: str) -> Booking | None:
+        for booking in self.bookings:
+            if booking.otf_class.class_uuid == class_uuid:
+                return booking
+        return None
+
+    def __getitem__(self, item) -> Booking:
+        return self.bookings[item]

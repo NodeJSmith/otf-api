@@ -55,3 +55,12 @@ class StudioService(OtfItemBase):
 
 class StudioServiceList(OtfItemBase):
     data: list[StudioService]
+
+    def __len__(self) -> int:
+        return len(self.data)
+
+    def __iter__(self):
+        return iter(self.data)
+
+    def __getitem__(self, item) -> StudioService:
+        return self.data[item]

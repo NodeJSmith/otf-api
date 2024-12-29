@@ -84,3 +84,6 @@ class OtfClassList(OtfItemBase):
 
     def __iter__(self):
         return iter(self.classes)
+
+    def __getitem__(self, item) -> OtfClass:
+        return self.classes[item]

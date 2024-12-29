@@ -104,3 +104,12 @@ class FavoriteStudioList(OtfItemBase):
     @property
     def studio_uuids(self) -> list[str]:
         return [studio.studio_uuid for studio in self.studios]
+
+    def __iter__(self):
+        return iter(self.studios)
+
+    def __len__(self):
+        return len(self.studios)
+
+    def __getitem__(self, item) -> FavoriteStudio:
+        return self.studios[item]

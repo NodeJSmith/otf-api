@@ -133,3 +133,12 @@ class MemberPurchase(OtfItemBase):
 
 class MemberPurchaseList(OtfItemBase):
     data: list[MemberPurchase]
+
+    def __iter__(self):
+        return iter(self.data)
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, item) -> MemberPurchase:
+        return self.data[item]

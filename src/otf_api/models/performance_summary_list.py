@@ -66,3 +66,12 @@ class PerformanceSummaryEntry(OtfItemBase):
 
 class PerformanceSummaryList(OtfItemBase):
     summaries: list[PerformanceSummaryEntry]
+
+    def __iter__(self):
+        return iter(self.summaries)
+
+    def __len__(self):
+        return len(self.summaries)
+
+    def __getitem__(self, item) -> PerformanceSummaryEntry:
+        return self.summaries[item]
