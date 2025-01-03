@@ -151,8 +151,15 @@ class Otf:
         except httpx.RequestError as e:
             LOGGER.exception(f"Error making request: {e}")
             LOGGER.exception(f"Response: {response.text}")
+            raise
         except Exception as e:
             LOGGER.exception(f"Error making request: {e}")
+            raise
+
+        if isinstance(response, dict) and "code" in response and response["code"] != "SUCCESS":
+            LOGGER.error(f"Error making request: {response}")
+            LOGGER.error(f"Response: {response.text}")
+            raise Exception(f"Error making request: {response}")
 
         return response.json()
 
