@@ -25,6 +25,8 @@ LOGGER = getLogger(__name__)
 
 
 class Otf:
+    member: models.MemberDetail
+    home_studio_uuid: str
     user: OtfUser
     _session: httpx.Client
 
@@ -56,9 +58,6 @@ class Otf:
             user (OtfUser, optional): A user object. Default is None.
         """
 
-        self.member: models.MemberDetail
-        self.home_studio_uuid: str
-
         if user:
             self.user = user
         elif (username and password) or (access_token and id_token):
@@ -73,15 +72,15 @@ class Otf:
         else:
             raise ValueError("No valid authentication method provided")
 
-        # simplify access to member_id and member_uuid
-        self._member_id = self.user.member_id
-        self._member_uuid = self.user.member_uuid
-        self._perf_api_headers = {
-            "koji-member-id": self._member_id,
-            "koji-member-email": self.user.id_claims_data.email,
-        }
         self.member = self.get_member_detail()
         self.home_studio_uuid = self.member.home_studio.studio_uuid
+
+        self.member_uuid = self.member.member_uuid
+        self._cognito_id = self.member.cognito_id
+        self._perf_api_headers = {
+            "koji-member-id": self.member_uuid,
+            "koji-member-email": self.user.id_claims_data.email,
+        }
 
     @property
     def headers(self) -> dict[str, str]:
@@ -263,7 +262,7 @@ class Otf:
         if not booking_uuid:
             raise ValueError("booking_uuid is required")
 
-        data = self._default_request("GET", f"/member/members/{self._member_id}/bookings/{booking_uuid}")
+        data = self._default_request("GET", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}")
         return models.Booking(**data["data"])
 
     def get_booking_from_class(self, class_: str | models.OtfClass) -> models.Booking:
@@ -321,7 +320,7 @@ class Otf:
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
-        resp = self._default_request("PUT", f"/member/members/{self._member_id}/bookings", json=body)
+        resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
 
         if resp["code"] == "ERROR":
             if resp["data"]["errorCode"] == "603":
@@ -363,7 +362,7 @@ class Otf:
 
         params = {"confirmed": "true"}
         resp = self._default_request(
-            "DELETE", f"/member/members/{self._member_id}/bookings/{booking_uuid}", params=params
+            "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params=params
         )
         if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
             raise BookingAlreadyCancelledError(
@@ -433,7 +432,7 @@ class Otf:
 
         params = {"startDate": start_date, "endDate": end_date, "statuses": status_value}
 
-        res = self._default_request("GET", f"/member/members/{self._member_id}/bookings", params=params)
+        res = self._default_request("GET", f"/member/members/{self.member_uuid}/bookings", params=params)
 
         bookings = res["data"][:limit] if limit else res["data"]
 
@@ -500,7 +499,7 @@ class Otf:
         status_value = status.value if status else None
 
         res = self._default_request(
-            "GET", f"/member/members/{self._member_id}/bookings", params={"status": status_value}
+            "GET", f"/member/members/{self.member_uuid}/bookings", params={"status": status_value}
         )
 
         return models.BookingList(bookings=res["data"])
@@ -542,7 +541,7 @@ class Otf:
 
         params = {"include": ",".join(include)} if include else None
 
-        data = self._default_request("GET", f"/member/members/{self._member_id}", params=params)
+        data = self._default_request("GET", f"/member/members/{self.user.member_id}", params=params)
         return models.MemberDetail(**data["data"])
 
     def get_member_membership(self) -> models.MemberMembership:
@@ -552,7 +551,7 @@ class Otf:
             MemberMembership: The member's membership details.
         """
 
-        data = self._default_request("GET", f"/member/members/{self._member_id}/memberships")
+        data = self._default_request("GET", f"/member/members/{self.member_uuid}/memberships")
         return models.MemberMembership(**data["data"])
 
     def get_member_purchases(self) -> models.MemberPurchaseList:
@@ -561,7 +560,7 @@ class Otf:
         Returns:
             MemberPurchaseList: The member's purchases.
         """
-        data = self._default_request("GET", f"/member/members/{self._member_id}/purchases")
+        data = self._default_request("GET", f"/member/members/{self.member_uuid}/purchases")
         return models.MemberPurchaseList(data=data["data"])
 
     def get_member_lifetime_stats(
@@ -581,7 +580,7 @@ class Otf:
             Any: The member's lifetime stats.
         """
 
-        data = self._default_request("GET", f"/performance/v2/{self._member_id}/over-time/{select_time.value}")
+        data = self._default_request("GET", f"/performance/v2/{self.member_uuid}/over-time/{select_time.value}")
 
         stats = models.StatsResponse(**data["data"])
         return stats
@@ -606,7 +605,7 @@ class Otf:
         Returns:
             OutOfStudioWorkoutHistoryList: The member's out of studio workout history.
         """
-        data = self._default_request("GET", f"/member/members/{self._member_id}/out-of-studio-workout")
+        data = self._default_request("GET", f"/member/members/{self.member_uuid}/out-of-studio-workout")
 
         return models.OutOfStudioWorkoutHistoryList(workouts=data["data"])
 
@@ -616,7 +615,7 @@ class Otf:
         Returns:
             FavoriteStudioList: The member's favorite studios.
         """
-        data = self._default_request("GET", f"/member/members/{self._member_id}/favorite-studios")
+        data = self._default_request("GET", f"/member/members/{self.member_uuid}/favorite-studios")
 
         return models.FavoriteStudioList(studios=data["data"])
 
@@ -778,7 +777,7 @@ class Otf:
         Returns:
             Any: The member's body composition list.
         """
-        data = self._default_request("GET", f"/member/members/{self._member_uuid}/body-composition")
+        data = self._default_request("GET", f"/member/members/{self._cognito_id}/body-composition")
 
         return models.BodyCompositionList(data=data["data"])
 
@@ -788,7 +787,7 @@ class Otf:
         Returns:
             ChallengeTrackerContent: The member's challenge tracker content.
         """
-        data = self._default_request("GET", f"/challenges/v3.1/member/{self._member_id}")
+        data = self._default_request("GET", f"/challenges/v3.1/member/{self.member_uuid}")
         return models.ChallengeTrackerContent(**data["Dto"])
 
     def get_challenge_tracker_detail(
@@ -818,7 +817,7 @@ class Otf:
             "challengeSubTypeId": challenge_sub_type_id,
         }
 
-        data = self._default_request("GET", f"/challenges/v3/member/{self._member_id}/benchmarks", params=params)
+        data = self._default_request("GET", f"/challenges/v3/member/{self.member_uuid}/benchmarks", params=params)
 
         return models.ChallengeTrackerDetailList(details=data["Dto"])
 
@@ -840,7 +839,7 @@ class Otf:
 
         data = self._default_request(
             "GET",
-            f"/challenges/v1/member/{self._member_id}/participation",
+            f"/challenges/v1/member/{self.member_uuid}/participation",
             params={"challengeTypeId": challenge_type_id.value},
         )
         return data
@@ -894,7 +893,7 @@ class Otf:
         """
         path = "/v1/physVars/maxHr/history"
 
-        params = {"memberUuid": self._member_id}
+        params = {"memberUuid": self.member_uuid}
         res = self._telemetry_request("GET", path, params=params)
         return models.TelemetryHrHistory(**res)
 
@@ -908,7 +907,7 @@ class Otf:
         """
         path = "/v1/physVars/maxHr"
 
-        params = {"memberUuid": self._member_id}
+        params = {"memberUuid": self.member_uuid}
 
         res = self._telemetry_request("GET", path, params=params)
         return models.TelemetryMaxHr(**res)
@@ -946,7 +945,7 @@ class Otf:
         ."""
         active_only_str = "true" if active_only else "false"
         data = self._default_request(
-            "GET", f"/member/members/{self._member_id}/services", params={"activeOnly": active_only_str}
+            "GET", f"/member/members/{self.member_uuid}/services", params={"activeOnly": active_only_str}
         )
         return data
 
@@ -964,5 +963,5 @@ class Otf:
         """
         params = {"datetime": datetime, "unit": unit}
 
-        data = self._default_request("GET", f"/member/wearables/{self._member_id}/wearable-daily", params=params)
+        data = self._default_request("GET", f"/member/wearables/{self.member_uuid}/wearable-daily", params=params)
         return data
