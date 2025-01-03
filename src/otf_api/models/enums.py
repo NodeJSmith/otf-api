@@ -49,6 +49,22 @@ class ClassType(StrEnum):
         lcase_to_actual = {item.value.lower(): item.value for item in cls}
         return lcase_to_actual[value.lower()]
 
+    @staticmethod
+    def get_standard_class_types() -> list["ClassType"]:
+        """Returns 2G/3G/Tornado - 60/90 minute classes"""
+        return [
+            ClassType.ORANGE_60_MIN_2G,
+            ClassType.ORANGE_3G,
+            ClassType.ORANGE_60_TORNADO,
+            ClassType.ORANGE_TORNADO,
+            ClassType.ORANGE_90_MIN_3G,
+        ]
+
+    @staticmethod
+    def get_tread_strength_class_types() -> list["ClassType"]:
+        """Returns Tread/Strength 50 minute classes"""
+        return [ClassType.TREAD_50, ClassType.STRENGTH_50]
+
 
 class StatsTime(StrEnum):
     LastYear = "lastYear"
