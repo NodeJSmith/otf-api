@@ -37,7 +37,6 @@ class Otf:
         access_token: str | None = None,
         id_token: str | None = None,
         refresh_token: str | None = None,
-        device_key: str | None = None,
         user: OtfUser | None = None,
     ):
         """Create a new Otf instance.
@@ -67,7 +66,6 @@ class Otf:
                 access_token=access_token,
                 id_token=id_token,
                 refresh_token=refresh_token,
-                device_key=device_key,
             )
         else:
             raise ValueError("No valid authentication method provided")
@@ -76,28 +74,17 @@ class Otf:
         self.home_studio_uuid = self.member.home_studio.studio_uuid
 
         self.member_uuid = self.member.member_uuid
-        self._cognito_id = self.member.cognito_id
-        self._perf_api_headers = {
-            "koji-member-id": self.member_uuid,
-            "koji-member-email": self.user.id_claims_data.email,
-        }
+        self._perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
 
     @property
     def headers(self) -> dict[str, str]:
         """Get the headers for the API request."""
 
-        # check the token before making a request in case it has expired
-
-        self.user.cognito.check_token()
-        return {
-            "Authorization": f"Bearer {self.user.cognito.id_token}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
+        return {"Content-Type": "application/json", "Accept": "application/json"}
 
     def __enter__(self) -> "Otf":
         # Create the session only once when entering the context
-        self._session = httpx.Client(headers=self.headers)
+        self._session = httpx.Client(headers=self.headers, auth=self.user.auth)
         return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
@@ -109,7 +96,7 @@ class Otf:
     def session(self) -> httpx.Client:
         """Get the httpx session."""
         if not getattr(self, "_session", None):
-            self._session = httpx.Client(headers=self.headers)
+            self._session = httpx.Client(headers=self.headers, auth=self.user.auth)
             atexit.register(self._close_session)
 
         return self._session
@@ -131,18 +118,13 @@ class Otf:
     ) -> Any:
         """Perform an API request."""
 
+        headers = self.headers | (headers or {})
         params = params or {}
         params = {k: v for k, v in params.items() if v is not None}
 
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
         LOGGER.debug(f"Making {method!r} request to {full_url}, params: {params}")
-
-        # ensure we have headers that contain the most up-to-date token
-        if not headers:
-            headers = self.headers
-        else:
-            headers.update(self.headers)
 
         response = self.session.request(method, full_url, headers=headers, params=params, **kwargs)
 
@@ -790,7 +772,7 @@ class Otf:
         Returns:
             Any: The member's body composition list.
         """
-        data = self._default_request("GET", f"/member/members/{self._cognito_id}/body-composition")
+        data = self._default_request("GET", f"/member/members/{self.member.cognito_id}/body-composition")
 
         return models.BodyCompositionList(data=data["data"])
 
