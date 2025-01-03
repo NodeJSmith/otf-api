@@ -1,14 +1,22 @@
 import json
 import socket
+from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
 from typing import Any, ClassVar
 
 import attrs
 import boto3
+import httpx
 from botocore import UNSIGNED
 from botocore.config import Config
 from pycognito import AWSSRP, Cognito
+
+
+class TokenType(StrEnum):
+    ID_TOKEN = "id_token"
+    ACCESS_TOKEN = "access_token"
+
 
 LOGGER = getLogger(__name__)
 
@@ -36,6 +44,69 @@ def get_cached_device_data() -> dict[str, str]:
         return {}
 
 
+class HttpxCognitoAuth(httpx.Auth):
+    def __init__(
+        self,
+        username: str | None = None,
+        password: str | None = None,
+        user_pool_id: str | None = None,
+        user_pool_region: str | None = None,
+        client_id: str | None = None,
+        cognito: Cognito = None,
+        http_header: str = "Authorization",
+        http_header_prefix: str = "Bearer ",
+        auth_token_type: TokenType = TokenType.ID_TOKEN,
+        boto3_client_kwargs=None,
+    ):
+        """HTTPX Authentication extension for Cognito User Pools.
+
+        Args:
+            username (str, optional): Cognito User. Defaults to None.
+            password (str, optional): Password of Cognito User. Defaults to None.
+            user_pool_id (str, optional): Cognito User Pool. Defaults to None.
+            user_pool_region (str, optional): Region of the Cognito User Pool. Defaults to None.
+            client_id (str, optional): Cognito Client ID / Application. Defaults to None.
+            cognito (Cognito, optional): Provide a preconfigured `pycognito.Cognito` instead of `username`, `password`\
+                etc. Defaults to None.
+            http_header (str, optional): The HTTP Header to populate. Defaults to "Authorization".
+            http_header_prefix (str, optional): Prefix a value before the token. Defaults to "Bearer ".
+            auth_token_type (TokenType, optional): Whether to populate the header with ID_TOKEN or ACCESS_TOKEN.\
+                Defaults to TokenType.ID_TOKEN.
+            boto3_client_kwargs (dict, optional): Keyword args to pass to Boto3 for client creation. Defaults to None.
+        """
+
+        if cognito:
+            self.cognito_client = cognito
+        else:
+            self.cognito_client = Cognito(
+                user_pool_id=user_pool_id,
+                client_id=client_id,
+                user_pool_region=user_pool_region,
+                username=username,
+                boto3_client_kwargs=boto3_client_kwargs,
+            )
+
+        self.username = username
+        self.__password = password
+        self.http_header = http_header
+        self.http_header_prefix = http_header_prefix
+        self.token_type = auth_token_type
+
+    def auth_flow(self, request):
+        # Send the request, with a custom `X-Authentication` header.
+        if not self.cognito_client.access_token:
+            self.cognito_client.authenticate(password=self.__password)
+
+        # Checks if token is expired and fetches a new token if available
+        self.cognito_client.check_token(renew=True)
+
+        token = getattr(self.cognito_client, self.token_type.value)
+
+        request.headers[self.http_header] = self.http_header_prefix + token
+
+        yield request
+
+
 @attrs.define(init=False)
 class OtfUser:
     CLIENT_ID: ClassVar[str] = "1457d19r0pcjgmp5agooi0rb1b"  # from android app
@@ -46,6 +117,7 @@ class OtfUser:
     member_uuid: str
     email_address: str
     aws: AWSSRP
+    auth: HttpxCognitoAuth
 
     def __init__(
         self,
@@ -89,6 +161,13 @@ class OtfUser:
         self.member_id = self.cognito.id_claims["cognito:username"]
         self.member_uuid = self.cognito.access_claims["sub"]
         self.email_address = self.cognito.id_claims["email"]
+
+        self.auth = HttpxCognitoAuth(
+            user_pool_id=self.USER_POOL_ID,
+            client_id=self.CLIENT_ID,
+            cognito=self.cognito,
+            boto3_client_kwargs={"config": Config(signature_version=UNSIGNED)},
+        )
 
     def authenticate(
         self,
