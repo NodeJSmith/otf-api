@@ -1,255 +1,51 @@
-import typing
-from datetime import datetime, timedelta
+import json
+import socket
 from logging import getLogger
-from typing import Any
+from pathlib import Path
+from typing import Any, ClassVar
 
-import jwt
-from pycognito import AWSSRP, Cognito, MFAChallengeException
-from pycognito.exceptions import TokenVerificationException
-from pydantic import Field
-from pydantic.config import ConfigDict
-
-from otf_api.models.base import OtfItemBase
-
-if typing.TYPE_CHECKING:
-    from boto3.session import Session
-    from botocore.config import Config
+import attrs
+import boto3
+from botocore import UNSIGNED
+from botocore.config import Config
+from pycognito import AWSSRP, Cognito
 
 LOGGER = getLogger(__name__)
-CLIENT_ID = "1457d19r0pcjgmp5agooi0rb1b"  # from otlive
-USER_POOL_ID = "us-east-1_dYDxUeyL1"
+
+DEVICE_KEY_CACHE_PATH = Path("~/.otf-api/device_key_cache.json").expanduser()
+DEVICE_KEY_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 
-class OtfCognito(Cognito):
-    _device_key: str | None = None
+def get_cached_device_data() -> dict[str, str]:
+    keys = ["device_key", "device_group_key", "device_password"]
 
-    def __init__(
-        self,
-        user_pool_id: str,
-        client_id: str,
-        user_pool_region: str | None = None,
-        username: str | None = None,
-        id_token: str | None = None,
-        refresh_token: str | None = None,
-        access_token: str | None = None,
-        client_secret: str | None = None,
-        access_key: str | None = None,
-        secret_key: str | None = None,
-        session: "Session|None" = None,
-        botocore_config: "Config|None" = None,
-        boto3_client_kwargs: dict[str, Any] | None = None,
-        device_key: str | None = None,
-    ):
-        super().__init__(
-            user_pool_id,
-            client_id,
-            user_pool_region=user_pool_region,
-            username=username,
-            id_token=id_token,
-            refresh_token=refresh_token,
-            access_token=access_token,
-            client_secret=client_secret,
-            access_key=access_key,
-            secret_key=secret_key,
-            session=session,
-            botocore_config=botocore_config,
-            boto3_client_kwargs=boto3_client_kwargs,
-        )
-        self.device_key = device_key
+    try:
+        if not DEVICE_KEY_CACHE_PATH.exists():
+            return {}
 
-    @property
-    def device_key(self) -> str | None:
-        return self._device_key
+        if DEVICE_KEY_CACHE_PATH.stat().st_size == 0:
+            return {}
 
-    @device_key.setter
-    def device_key(self, value: str | None):
-        if not value:
-            if self._device_key:
-                LOGGER.debug("Clearing device key")
-            self._device_key = value
-            return
+        device_data: dict[str, str] = json.loads(DEVICE_KEY_CACHE_PATH.read_text())
+        if set(device_data.keys()).issuperset(set(keys)):
+            return {k: v for k, v in device_data.items() if k in keys}
 
-        redacted_value = value[:4] + "*" * (len(value) - 8) + value[-4:]
-        LOGGER.debug(f"Setting device key: {redacted_value}")
-        self._device_key = value
-
-    def _set_tokens(self, tokens: dict[str, Any]):
-        """Set the tokens and device metadata from the response.
-
-        Args:
-            tokens (dict): The response from the Cognito service.
-        """
-        super()._set_tokens(tokens)
-
-        if new_metadata := tokens["AuthenticationResult"].get("NewDeviceMetadata"):
-            self.device_key = new_metadata["DeviceKey"]
-
-    def authenticate(self, password: str, client_metadata: dict[str, Any] | None = None, device_key: str | None = None):
-        """
-        Authenticate the user using the SRP protocol. Overridden to add `confirm_device` call.
-
-        Args:
-            password (str): The user's password
-            client_metadata (dict, optional): Any additional client metadata to send to Cognito
-        """
-        aws = AWSSRP(
-            username=self.username,
-            password=password,
-            pool_id=self.user_pool_id,
-            client_id=self.client_id,
-            client=self.client,
-            client_secret=self.client_secret,
-        )
-        try:
-            tokens = aws.authenticate_user(client_metadata=client_metadata)
-        except MFAChallengeException as mfa_challenge:
-            self.mfa_tokens = mfa_challenge.get_tokens()
-            raise mfa_challenge
-
-        # Set the tokens and device metadata
-        self._set_tokens(tokens)
-
-        if not device_key:
-            # Confirm the device so we can use the refresh token
-            aws.confirm_device(tokens)
-        else:
-            self.device_key = device_key
-            try:
-                self.renew_access_token()
-            except TokenVerificationException:
-                LOGGER.error("Failed to renew access token. Confirming device.")
-                self.device_key = None
-                aws.confirm_device(tokens)
-
-    def check_token(self, renew: bool = True) -> bool:
-        """
-        Checks the exp attribute of the access_token and either refreshes
-        the tokens by calling the renew_access_tokens method or does nothing
-        :param renew: bool indicating whether to refresh on expiration
-        :return: bool indicating whether access_token has expired
-        """
-        if not self.access_token:
-            raise AttributeError("Access Token Required to Check Token")
-        now = datetime.now()  # noqa
-        dec_access_token = jwt.decode(self.access_token, options={"verify_signature": False})
-
-        exp = datetime.fromtimestamp(dec_access_token["exp"])  # noqa
-        if now > exp - timedelta(minutes=15):
-            expired = True
-            if renew:
-                self.renew_access_token()
-        else:
-            expired = False
-        return expired
-
-    def renew_access_token(self):
-        """Sets a new access token on the User using the cached refresh token and device metadata."""
-        auth_params = {"REFRESH_TOKEN": self.refresh_token}
-        self._add_secret_hash(auth_params, "SECRET_HASH")
-
-        if self.device_key:
-            LOGGER.debug("Using device key for refresh token")
-            auth_params["DEVICE_KEY"] = self.device_key
-
-        refresh_response = self.client.initiate_auth(
-            ClientId=self.client_id, AuthFlow="REFRESH_TOKEN_AUTH", AuthParameters=auth_params
-        )
-        self._set_tokens(refresh_response)
-
-    @classmethod
-    def from_token(
-        cls, access_token: str, id_token: str, refresh_token: str | None = None, device_key: str | None = None
-    ) -> "OtfCognito":
-        """Create an OtfCognito instance from an id token.
-
-        Args:
-            access_token (str): The access token.
-            id_token (str): The id token.
-            refresh_token (str, optional): The refresh token. Defaults to None.
-            device_key (str, optional): The device key. Defaults
-
-        Returns:
-            OtfCognito: The user instance
-        """
-        cognito = OtfCognito(
-            USER_POOL_ID,
-            CLIENT_ID,
-            access_token=access_token,
-            id_token=id_token,
-            refresh_token=refresh_token,
-            device_key=device_key,
-        )
-        cognito.verify_tokens()
-        cognito.check_token()
-        return cognito
-
-    @classmethod
-    def login(cls, username: str, password: str) -> "OtfCognito":
-        """Create an OtfCognito instance from a username and password.
-
-        Args:
-            username (str): The username to login with.
-            password (str): The password to login with.
-
-        Returns:
-            OtfCognito: The logged in user.
-        """
-        cognito_user = OtfCognito(USER_POOL_ID, CLIENT_ID, username=username)
-        cognito_user.authenticate(password)
-        cognito_user.check_token()
-        return cognito_user
+        return {}
+    except Exception:
+        LOGGER.exception("Failed to read device key cache")
+        return {}
 
 
-class IdClaimsData(OtfItemBase):
-    sub: str
-    email_verified: bool
-    iss: str
-    cognito_username: str = Field(alias="cognito:username")
-    given_name: str
-    locale: str
-    home_studio_id: str = Field(alias="custom:home_studio_id")
-    aud: str
-    event_id: str
-    token_use: str
-    auth_time: int
-    exp: int
-    is_migration: str = Field(alias="custom:isMigration")
-    iat: int
-    family_name: str
-    email: str
-    koji_person_id: str = Field(alias="custom:koji_person_id")
+@attrs.define(init=False)
+class OtfUser:
+    CLIENT_ID: ClassVar[str] = "1457d19r0pcjgmp5agooi0rb1b"  # from android app
+    USER_POOL_ID: ClassVar[str] = "us-east-1_dYDxUeyL1"
 
-    @property
-    def member_uuid(self) -> str:
-        return self.cognito_username
-
-    @property
-    def full_name(self) -> str:
-        return f"{self.given_name} {self.family_name}"
-
-
-class AccessClaimsData(OtfItemBase):
-    sub: str
-    device_key: str
-    iss: str
-    client_id: str
-    event_id: str
-    token_use: str
-    scope: str
-    auth_time: int
-    exp: int
-    iat: int
-    jti: str
-    username: str
-
-    @property
-    def member_uuid(self) -> str:
-        return self.username
-
-
-class OtfUser(OtfItemBase):
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-    cognito: OtfCognito
+    cognito: Cognito
+    member_id: str
+    member_uuid: str
+    email_address: str
+    aws: AWSSRP
 
     def __init__(
         self,
@@ -258,8 +54,9 @@ class OtfUser(OtfItemBase):
         id_token: str | None = None,
         access_token: str | None = None,
         refresh_token: str | None = None,
-        device_key: str | None = None,
-        cognito: OtfCognito | None = None,
+        cognito: Cognito | None = None,
+        cache_device_data: bool = True,
+        remember_device: bool = True,
     ):
         """Create a User instance.
 
@@ -269,48 +66,148 @@ class OtfUser(OtfItemBase):
             id_token (str, optional): The id token. Defaults to None.
             access_token (str, optional): The access token. Defaults to None.
             refresh_token (str, optional): The refresh token. Defaults to None.
-            device_key (str, optional): The device key. Defaults to None.
-            cognito (OtfCognito, optional): A Cognito instance. Defaults to None.
+            cognito (Cognito, optional): A Cognito instance. Defaults to None.
+            cache_device_data (bool, optional): Whether to cache the device data. Defaults to True.
+            remember_device (bool, optional): Whether to remember the device. Defaults to True. Ignored\
+                if cache_device_data is False.
 
         Raises:
-            ValueError: Must provide either username and password or id token
-
-
+            ValueError: If neither username/password nor id/access tokens are provided.
         """
+
+        self.authenticate(
+            username=username,
+            password=password,
+            id_token=id_token,
+            access_token=access_token,
+            refresh_token=refresh_token,
+            cognito=cognito,
+            cache_device_data=cache_device_data,
+            remember_device=remember_device,
+        )
+
+        self.member_id = self.cognito.id_claims["cognito:username"]
+        self.member_uuid = self.cognito.access_claims["sub"]
+        self.email_address = self.cognito.id_claims["email"]
+
+    def authenticate(
+        self,
+        username: str | None = None,
+        password: str | None = None,
+        id_token: str | None = None,
+        access_token: str | None = None,
+        refresh_token: str | None = None,
+        cognito: Cognito | None = None,
+        cache_device_data: bool = True,
+        remember_device: bool = True,
+    ) -> None:
+        # this is to avoid boto3 trying to find credentials in the environment/local machine
+        # when those credentials are not desired and may slow down the sign in process (sometimes by a lot)
+        # https://github.com/boto/botocore/issues/1395#issuecomment-902244525
+        client = boto3.client("cognito-idp", config=Config(signature_version=UNSIGNED))
+        kwargs = {"pool_id": self.USER_POOL_ID, "client_id": self.CLIENT_ID}
+
         if cognito:
-            cognito = cognito
-        elif username and password:
-            cognito = OtfCognito.login(username, password)
-        elif access_token and id_token:
-            cognito = OtfCognito.from_token(access_token, id_token, refresh_token, device_key)
-        else:
-            raise ValueError("Must provide either username and password or id token.")
+            self.cognito = cognito
+            self.validate_cognito_tokens()
+            return
 
-        super().__init__(cognito=cognito)
+        if username and password:
+            dd = get_cached_device_data()
+            kwargs = kwargs | dd | {"username": username, "password": password}
 
-    @property
-    def member_id(self) -> str:
-        return self.id_claims_data.cognito_username
+            self.aws = AWSSRP(**kwargs, client=client)
+            tokens = self.aws.authenticate_user()
+            auth_result: dict[str, Any] = tokens["AuthenticationResult"]
+            if cache_device_data and not dd:
+                self.handle_device_setup(remember_device, tokens)
 
-    @property
-    def member_uuid(self) -> str:
-        return self.access_claims_data.sub
+            self.setup_cognito(auth_result["AccessToken"], auth_result["IdToken"], auth_result.get("RefreshToken"))
+            return
 
-    @property
-    def access_claims_data(self) -> AccessClaimsData:
-        return AccessClaimsData(**self.cognito.access_claims)
+        if access_token and id_token:
+            self.setup_cognito(access_token, id_token, refresh_token)
+            return
 
-    @property
-    def id_claims_data(self) -> IdClaimsData:
-        return IdClaimsData(**self.cognito.id_claims)
+        raise ValueError("Must provide either username/password or id/access tokens.")
 
-    def get_tokens(self) -> dict[str, str]:
-        return {
-            "id_token": self.cognito.id_token,
-            "access_token": self.cognito.access_token,
-            "refresh_token": self.cognito.refresh_token,
-        }
+    def setup_cognito(self, access_token: str, id_token: str, refresh_token: str | None = None) -> None:
+        """Set up the Cognito instance and validate the tokens.
 
-    @property
-    def device_key(self):
-        return self.cognito.device_key
+        Args:
+            access_token (str): The access token.
+            id_token (str): The id token.
+            refresh_token (str, optional): The refresh token. Defaults to None.
+        """
+        config = Config(signature_version=UNSIGNED)
+        self.cognito = Cognito(
+            self.USER_POOL_ID,
+            self.CLIENT_ID,
+            access_token=access_token,
+            id_token=id_token,
+            refresh_token=refresh_token,
+            botocore_config=config,
+        )
+        self.validate_cognito_tokens()
+
+    def validate_cognito_tokens(self) -> None:
+        """Validate the Cognito tokens. Will refresh the tokens if necessary."""
+        self.cognito.check_token()
+        self.cognito.verify_tokens()
+
+    def handle_device_setup(self, remember_device: bool, tokens: dict[str, Any]) -> None:
+        """Confirms the device with AWS and caches the device data for future use.
+
+        Args:
+            remember_device (bool): Whether to remember the device.
+            tokens (dict): The tokens from the AWS SRP instance.
+        """
+        try:
+            hostname = socket.gethostname()
+            device_name = f"{hostname}-otf-api"
+        except Exception:
+            LOGGER.exception("Failed to get device name")
+            return
+
+        try:
+            auth_result = tokens["AuthenticationResult"]
+            new_device_metadata = auth_result.get("NewDeviceMetadata")
+            if not new_device_metadata:
+                LOGGER.debug("No new device metadata")
+                return
+
+            device_key = new_device_metadata["DeviceKey"]
+            device_group_key = new_device_metadata["DeviceGroupKey"]
+        except KeyError:
+            LOGGER.error("Failed to get device key and group key")
+            return
+
+        try:
+            _, device_password = self.aws.confirm_device(tokens=tokens, device_name=device_name)
+            _ = self.aws.update_device_status(remember_device, auth_result["AccessToken"], device_key)
+        except Exception:
+            LOGGER.exception("Failed to confirm device")
+            return
+
+        try:
+            dd = {"device_key": device_key, "device_group_key": device_group_key, "device_password": device_password}
+            DEVICE_KEY_CACHE_PATH.write_text(json.dumps(dd, indent=4, default=str))
+        except Exception:
+            LOGGER.exception("Failed to write device key cache")
+            return
+
+    def forget_device(self) -> None:
+        """Forget the device from AWS and delete the device key cache."""
+        access_token = self.cognito.access_token
+        dd = get_cached_device_data()
+        if not dd:
+            LOGGER.debug("No device data to forget")
+            return
+
+        device_key = dd["device_key"]
+
+        resp = self.aws.forget_device(access_token=access_token, device_key=device_key)
+        LOGGER.debug(resp)
+
+        DEVICE_KEY_CACHE_PATH.unlink()
+        LOGGER.debug("Device key cache deleted")
