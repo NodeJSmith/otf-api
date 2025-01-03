@@ -203,8 +203,8 @@ class Otf:
             exclude_cancelled (bool): Whether to exclude classes that were cancelled by the studio. Default is True.
             exclude_unbookable (bool): Whether to exclude classes that are outside the scheduling window. Default is\
             True.
-            filters (list[ClassFilter] | ClassFilter | None): A list of filters to apply to the classes. Filters are\
-            applied in the order they are provided. Default is None.
+            filters (list[ClassFilter] | ClassFilter | None): A list of filters to apply to the classes, or a single\
+            filter. Filters are applied as an OR operation. Default is None.
 
         Returns:
             OtfClassList: The classes for the user.
@@ -246,11 +246,17 @@ class Otf:
             classes_list.classes = classes_list.classes[:limit]
 
         if filters:
+            filtered_classes: list[models.OtfClass] = []
+
             if not isinstance(filters, list):
                 filters = [filters]
 
             for f in filters:
-                classes_list.classes = f.filter_classes(classes_list.classes)
+                filtered_classes.extend(f.filter_classes(classes_list.classes))
+
+            # remove duplicates
+            classes_list.classes = list({c.class_uuid: c for c in filtered_classes}.values())
+            classes_list.classes = sorted(classes_list.classes, key=lambda x: (x.starts_at_local, x.name))
 
         return classes_list
 
