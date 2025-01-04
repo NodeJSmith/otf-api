@@ -1,8 +1,10 @@
 import os
-from datetime import datetime
+from datetime import datetime, time
 from getpass import getpass
 
 from otf_api import Otf
+from otf_api.filters import ClassFilter
+from otf_api.models import ClassType
 from otf_api.models.classes import DoW
 
 USERNAME = os.getenv("OTF_EMAIL") or input("Enter your OTF email: ")
@@ -18,11 +20,14 @@ def main():
 
         studio_uuids = [studio.studio_uuid for studio in studios.studios]
 
-        # To get upcoming classes you can call the `get_classes` method
-        # You can pass a list of studio_uuids or, if you want to get classes from your home studio, leave it empty
-        # this also takes a start date, end date, and limit - these are not sent to the API, they are used in the
-        # client to filter the results
-        classes = otf.get_classes(studio_uuids, day_of_week=[DoW.TUESDAY, DoW.THURSDAY, DoW.SATURDAY])
+        cf = ClassFilter(
+            day_of_week=[DoW.TUESDAY, DoW.THURSDAY],
+            start_time=time(9, 45),
+            class_type=ClassType.get_standard_class_types(),
+        )
+        cf2 = ClassFilter(day_of_week=DoW.SATURDAY, start_time=time(10, 30), class_type=ClassType.TREAD_50)
+
+        classes = otf.get_classes(studio_uuids=studio_uuids, filters=[cf, cf2])
 
         print(classes.classes[0].model_dump_json(indent=4))
 
