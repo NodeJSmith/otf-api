@@ -37,7 +37,9 @@ class Otf:
         access_token: str | None = None,
         id_token: str | None = None,
         refresh_token: str | None = None,
-        user: OtfUser | None = None,
+        cache_device_data: bool = True,
+        remember_device: bool = True,
+        cache_tokens_plaintext: bool = False,
     ):
         """Create a new Otf instance.
 
@@ -53,22 +55,21 @@ class Otf:
             access_token (str, optional): The access token. Default is None.
             id_token (str, optional): The id token. Default is None.
             refresh_token (str, optional): The refresh token. Default is None.
-            device_key (str, optional): The device key. Default is None.
-            user (OtfUser, optional): A user object. Default is None.
+            cache_device_data (bool, optional): Whether to cache the device data. Default is True.
+            remember_device (bool, optional): Whether to remember the device. Default is True.
+            cache_tokens_plaintext (bool, optional): Whether to cache the tokens in plaintext. Default is False.
         """
 
-        if user:
-            self.user = user
-        elif (username and password) or (access_token and id_token):
-            self.user = OtfUser(
-                username=username,
-                password=password,
-                access_token=access_token,
-                id_token=id_token,
-                refresh_token=refresh_token,
-            )
-        else:
-            raise ValueError("No valid authentication method provided")
+        self.user = OtfUser(
+            username=username,
+            password=password,
+            access_token=access_token,
+            id_token=id_token,
+            refresh_token=refresh_token,
+            cache_device_data=cache_device_data,
+            remember_device=remember_device,
+            cache_tokens_plaintext=cache_tokens_plaintext,
+        )
 
         self.member = self.get_member_detail()
         self.home_studio_uuid = self.member.home_studio.studio_uuid
