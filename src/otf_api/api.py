@@ -5,108 +5,57 @@ from datetime import date, datetime, timedelta
 from logging import getLogger
 from typing import Any
 
+import attrs
 import httpx
 from yarl import URL
 
+from otf_api import exceptions as exc
 from otf_api import filters, models
-from otf_api.auth import OtfUser
-from otf_api.exceptions import (
-    AlreadyBookedError,
-    BookingAlreadyCancelledError,
-    BookingNotFoundError,
-    OutsideSchedulingWindowError,
-)
+from otf_api.auth import OtfAuth, OtfUser
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
 API_TELEMETRY_BASE_URL = "api.yuzu.orangetheory.com"
-REQUEST_HEADERS = {"Authorization": None, "Content-Type": "application/json", "Accept": "application/json"}
 LOGGER = getLogger(__name__)
 
 
+@attrs.define(init=False)
 class Otf:
     member: models.MemberDetail
-    home_studio_uuid: str
     user: OtfUser
-    _session: httpx.Client
+    session: httpx.Client
 
-    def __init__(
-        self,
-        username: str | None = None,
-        password: str | None = None,
-        access_token: str | None = None,
-        id_token: str | None = None,
-        refresh_token: str | None = None,
-        cache_device_data: bool = True,
-        remember_device: bool = True,
-        cache_tokens_plaintext: bool = False,
-    ):
-        """Create a new Otf instance.
-
-        Authentication methods:
-        ---
-        - Provide a username and password.
-        - Provide an access token and id token.
-        - Provide a user object.
+    def __init__(self, auth: OtfAuth | None = None, user: OtfUser | None = None):
+        """Initialize the OTF API client. Either an auth object or a user object must be provided.
 
         Args:
-            username (str, optional): The username of the user. Default is None.
-            password (str, optional): The password of the user. Default is None.
-            access_token (str, optional): The access token. Default is None.
-            id_token (str, optional): The id token. Default is None.
-            refresh_token (str, optional): The refresh token. Default is None.
-            cache_device_data (bool, optional): Whether to cache the device data. Default is True.
-            remember_device (bool, optional): Whether to remember the device. Default is True.
-            cache_tokens_plaintext (bool, optional): Whether to cache the tokens in plaintext. Default is False.
+            auth (OtfAuth): The authentication object to use.
+            user (OtfUser): The user object to use.
         """
+        if user:
+            self.user = user
+            self.user.validate_cognito_tokens()
+        elif auth:
+            self.user = OtfUser(auth)
+        else:
+            raise ValueError("Either auth or user must be provided.")
 
-        self.user = OtfUser(
-            username=username,
-            password=password,
-            access_token=access_token,
-            id_token=id_token,
-            refresh_token=refresh_token,
-            cache_device_data=cache_device_data,
-            remember_device=remember_device,
-            cache_tokens_plaintext=cache_tokens_plaintext,
+        self.session = httpx.Client(
+            headers={"Content-Type": "application/json", "Accept": "application/json"}, auth=self.user.httpx_auth
         )
+        atexit.register(self.session.close)
 
         self.member = self.get_member_detail()
-        self.home_studio_uuid = self.member.home_studio.studio_uuid
-
-        self.member_uuid = self.member.member_uuid
-        self._perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
 
     @property
-    def headers(self) -> dict[str, str]:
-        """Get the headers for the API request."""
-
-        return {"Content-Type": "application/json", "Accept": "application/json"}
-
-    def __enter__(self) -> "Otf":
-        # Create the session only once when entering the context
-        self._session = httpx.Client(headers=self.headers, auth=self.user.auth)
-        return self
-
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
-        # Close the session when exiting the context
-        if self._session is not None:
-            self._session.close()
+    def member_uuid(self) -> str:
+        """Get the member UUID."""
+        return self.member.member_uuid
 
     @property
-    def session(self) -> httpx.Client:
-        """Get the httpx session."""
-        if not getattr(self, "_session", None):
-            self._session = httpx.Client(headers=self.headers, auth=self.user.auth)
-            atexit.register(self._close_session)
-
-        return self._session
-
-    def _close_session(self) -> None:
-        if not hasattr(self, "_session"):
-            return
-
-        self._session.close()
+    def home_studio_uuid(self) -> str:
+        """Get the home studio UUID."""
+        return self.member.home_studio.studio_uuid
 
     def _do(
         self,
@@ -119,7 +68,7 @@ class Otf:
     ) -> Any:
         """Perform an API request."""
 
-        headers = self.headers | (headers or {})
+        headers = headers or {}
         params = params or {}
         params = {k: v for k, v in params.items() if v is not None}
 
@@ -159,9 +108,11 @@ class Otf:
         return self._do(method, API_TELEMETRY_BASE_URL, url, params)
 
     def _performance_summary_request(
-        self, method: str, url: str, headers: dict[str, str], params: dict[str, Any] | None = None
+        self, method: str, url: str, headers: dict[str, str] | None = None, params: dict[str, Any] | None = None
     ) -> Any:
         """Perform an API request to the performance summary API."""
+        perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
+        headers = (headers or {}) | perf_api_headers
         return self._do(method, API_IO_BASE_URL, url, params, headers)
 
     def get_classes(
@@ -261,11 +212,11 @@ class Otf:
         data = self._default_request("GET", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}")
         return models.Booking(**data["data"])
 
-    def get_booking_from_class(self, class_: str | models.OtfClass) -> models.Booking:
+    def get_booking_from_class(self, otf_class: str | models.OtfClass) -> models.Booking:
         """Get a specific booking by class_uuid or OtfClass object.
 
         Args:
-            class_ (str | OtfClass): The class UUID or the OtfClass object to get the booking for.
+            otf_class (str | OtfClass): The class UUID or the OtfClass object to get the booking for.
 
         Returns:
             Booking: The booking.
@@ -275,7 +226,7 @@ class Otf:
             ValueError: If class_uuid is None or empty string.
         """
 
-        class_uuid = class_.class_uuid if isinstance(class_, models.OtfClass) else class_
+        class_uuid = otf_class.class_uuid if isinstance(otf_class, models.OtfClass) else otf_class
 
         if not class_uuid:
             raise ValueError("class_uuid is required")
@@ -285,13 +236,13 @@ class Otf:
         if booking := all_bookings.get_booking_from_class_uuid(class_uuid):
             return booking
 
-        raise BookingNotFoundError(f"Booking for class {class_uuid} not found.")
+        raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
 
-    def book_class(self, class_: str | models.OtfClass) -> models.Booking:
+    def book_class(self, otf_class: str | models.OtfClass) -> models.Booking:
         """Book a class by providing either the class_uuid or the OtfClass object.
 
         Args:
-            class_ (str | OtfClass): The class UUID or the OtfClass object to book.
+            otf_class (str | OtfClass): The class UUID or the OtfClass object to book.
 
         Returns:
             Booking: The booking.
@@ -300,17 +251,17 @@ class Otf:
             AlreadyBookedError: If the class is already booked.
             OutsideSchedulingWindowError: If the class is outside the scheduling window.
             ValueError: If class_uuid is None or empty string.
-            Exception: If there is an error booking the class.
+            OtfException: If there is an error booking the class.
         """
 
-        class_uuid = class_.class_uuid if isinstance(class_, models.OtfClass) else class_
+        class_uuid = otf_class.class_uuid if isinstance(otf_class, models.OtfClass) else otf_class
         if not class_uuid:
             raise ValueError("class_uuid is required")
 
-        with contextlib.suppress(BookingNotFoundError):
+        with contextlib.suppress(exc.BookingNotFoundError):
             existing_booking = self.get_booking_from_class(class_uuid)
             if existing_booking.status != models.BookingStatus.Cancelled:
-                raise AlreadyBookedError(
+                raise exc.AlreadyBookedError(
                     f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.class_booking_uuid
                 )
 
@@ -320,11 +271,11 @@ class Otf:
 
         if resp["code"] == "ERROR":
             if resp["data"]["errorCode"] == "603":
-                raise AlreadyBookedError(f"Class {class_uuid} is already booked.")
+                raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
             if resp["data"]["errorCode"] == "602":
-                raise OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
+                raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
 
-            raise Exception(f"Error booking class {class_uuid}: {json.dumps(resp)}")
+            raise exc.OtfException(f"Error booking class {class_uuid}: {json.dumps(resp)}")
 
         # get the booking details - we will only use this to get the booking_uuid
         book_class = models.BookClass(**resp["data"])
@@ -354,14 +305,14 @@ class Otf:
         try:
             self.get_booking(booking_uuid)
         except Exception:
-            raise BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
+            raise exc.BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
 
         params = {"confirmed": "true"}
         resp = self._default_request(
             "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params=params
         )
         if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
-            raise BookingAlreadyCancelledError(
+            raise exc.BookingAlreadyCancelledError(
                 f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
             )
 
@@ -855,12 +806,7 @@ class Otf:
 
         """
 
-        res = self._performance_summary_request(
-            "GET",
-            "/v1/performance-summaries",
-            headers=self._perf_api_headers,
-            params={"limit": limit},
-        )
+        res = self._performance_summary_request("GET", "/v1/performance-summaries", params={"limit": limit})
         return models.PerformanceSummaryList(summaries=res["items"])
 
     def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummaryDetail:
@@ -874,7 +820,7 @@ class Otf:
         """
 
         path = f"/v1/performance-summaries/{performance_summary_id}"
-        res = self._performance_summary_request("GET", path, headers=self._perf_api_headers)
+        res = self._performance_summary_request("GET", path)
         return models.PerformanceSummaryDetail(**res)
 
     def get_hr_history(self) -> models.TelemetryHrHistory:
@@ -928,6 +874,66 @@ class Otf:
         res = self._telemetry_request("GET", path, params=params)
         return models.Telemetry(**res)
 
+    def get_sms_notification_settings(self):
+        res = self._default_request("GET", url="/sms/v1/preferences", params={"phoneNumber": self.member.phone_number})
+
+        return res["data"]
+
+    def update_sms_notification_settings(self, promotional_enabled: bool, transactional_enabled: bool):
+        url = "/sms/v1/preferences"
+
+        body = {
+            "promosms": promotional_enabled,
+            "source": "OTF",
+            "transactionalsms": transactional_enabled,
+            "phoneNumber": self.member.phone_number,
+        }
+
+        res = self._default_request("POST", url, json=body)
+
+        return res["data"]
+
+    def update_email_notification_settings(self, promotional_enabled: bool, transactional_enabled: bool):
+        body = {
+            "promotionalEmail": promotional_enabled,
+            "source": "OTF",
+            "transactionalEmail": transactional_enabled,
+            "email": self.member.email,
+        }
+
+        res = self._default_request("POST", "/otfmailing/v2/preferences", json=body)
+
+        return res["data"]
+
+    def update_member_name(self, first_name: str | None = None, last_name: str | None = None) -> models.MemberDetail:
+        """Update the member's name. Will return the original member details if no names are provided.
+
+        Args:
+            first_name (str | None): The first name to update to. Default is None.
+            last_name (str | None): The last name to update to. Default is None.
+
+        Returns:
+            MemberDetail: The updated member details or the original member details if no changes were made.
+        """
+
+        if not first_name and not last_name:
+            LOGGER.warning("No names provided, nothing to update.")
+            return self.member
+
+        first_name = first_name or self.member.first_name
+        last_name = last_name or self.member.last_name
+
+        if first_name == self.member.first_name and last_name == self.member.last_name:
+            LOGGER.warning("No changes to names, nothing to update.")
+            return self.member
+
+        path = f"/member/members/{self.member_uuid}"
+        body = {"firstName": first_name, "lastName": last_name}
+
+        res = self._default_request("PUT", path, json=body)
+
+        return models.MemberDetail(**res["data"])
+
     # the below do not return any data for me, so I can't test them
 
     def _get_member_services(self, active_only: bool = True) -> Any:
@@ -937,8 +943,8 @@ class Otf:
             active_only (bool): Whether to only include active services. Default is True.
 
         Returns:
-            Any: The member's service
-        ."""
+            Any: The member's services.
+        """
         active_only_str = "true" if active_only else "false"
         data = self._default_request(
             "GET", f"/member/members/{self.member_uuid}/services", params={"activeOnly": active_only_str}
