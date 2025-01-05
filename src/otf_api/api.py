@@ -1,6 +1,5 @@
 import atexit
 import contextlib
-import json
 from datetime import date, datetime, timedelta
 from logging import getLogger
 from typing import Any
@@ -76,7 +75,8 @@ class Otf:
 
         LOGGER.debug(f"Making {method!r} request to {full_url}, params: {params}")
 
-        response = self.session.request(method, full_url, headers=headers, params=params, **kwargs)
+        request = self.session.build_request(method, full_url, headers=headers, params=params, **kwargs)
+        response = self.session.send(request)
 
         try:
             response.raise_for_status()
@@ -91,7 +91,7 @@ class Otf:
         if isinstance(response, dict) and "code" in response and response["code"] != "SUCCESS":
             LOGGER.error(f"Error making request: {response}")
             LOGGER.error(f"Response: {response.text}")
-            raise Exception(f"Error making request: {response}")
+            raise exc.OtfRequestError("Error making request", response=response, request=request)
 
         return response.json()
 
@@ -267,17 +267,23 @@ class Otf:
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
-        resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
+        try:
+            resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
+        except exc.OtfRequestError as e:
+            resp = e.response
 
-        if resp["code"] == "ERROR":
-            if resp["data"]["errorCode"] == "603":
-                raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
-            if resp["data"]["errorCode"] == "602":
-                raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
+            if resp["code"] == "ERROR":
+                if resp["data"]["errorCode"] == "603":
+                    raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
+                if resp["data"]["errorCode"] == "602":
+                    raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
 
-            raise exc.OtfException(f"Error booking class {class_uuid}: {json.dumps(resp)}")
+            raise
+        except Exception as e:
+            raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
 
-        # get the booking details - we will only use this to get the booking_uuid
+        # get the booking details - we will only use this to get the booking_uuid so that we can return a Booking object
+        # using `get_booking`; this is an attempt to improve on OTF's terrible data model
         book_class = models.BookClass(**resp["data"])
 
         booking = self.get_booking(book_class.booking_uuid)

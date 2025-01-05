@@ -2,6 +2,18 @@ class OtfException(Exception):
     """Base class for all exceptions in this package."""
 
 
+class OtfRequestError(OtfException):
+    """Raised when an error occurs while making a request to the OTF API."""
+
+    response: dict
+    request: dict
+
+    def __init__(self, message: str, response: dict, request: dict):
+        super().__init__(message)
+        self.response = response
+        self.request = request
+
+
 class BookingError(OtfException):
     """Base class for booking-related errors, with an optional booking UUID attribute."""
 
