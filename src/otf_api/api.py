@@ -40,7 +40,9 @@ class Otf:
             raise ValueError("Either auth or user must be provided.")
 
         self.session = httpx.Client(
-            headers={"Content-Type": "application/json", "Accept": "application/json"}, auth=self.user.httpx_auth
+            headers={"Content-Type": "application/json", "Accept": "application/json"},
+            auth=self.user.httpx_auth,
+            timeout=httpx.Timeout(10.0, connect=60.0),
         )
         atexit.register(self.session.close)
 
