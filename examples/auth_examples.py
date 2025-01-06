@@ -15,7 +15,7 @@ def main():
     - cache_tokens_plaintext: bool - Whether to cache the tokens in plaintext in the config file - this is an obvious
         security risk, but it's useful for development purposes. If you want to do this, it is at your own risk. The
         benefit is that after you log in with your username/password once, you can use the cached tokens to log in
-        without providing them again.
+        without providing your password again.
     """
 
     # This is the most configurable way to access the API but also the most verbose
