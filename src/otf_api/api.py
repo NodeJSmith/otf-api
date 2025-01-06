@@ -10,7 +10,7 @@ from yarl import URL
 
 from otf_api import exceptions as exc
 from otf_api import filters, models
-from otf_api.auth import OtfAuth, OtfUser
+from otf_api.auth import OTF_AUTH_TYPE, OtfUser
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
@@ -24,11 +24,11 @@ class Otf:
     user: OtfUser
     session: httpx.Client
 
-    def __init__(self, auth: OtfAuth | None = None, user: OtfUser | None = None):
+    def __init__(self, auth: OTF_AUTH_TYPE | None = None, user: OtfUser | None = None):
         """Initialize the OTF API client. Either an auth object or a user object must be provided.
 
         Args:
-            auth (OtfAuth): The authentication object to use.
+            auth (OTF_AUTH_TYPE): The authentication object to use.
             user (OtfUser): The user object to use.
         """
         if user:
