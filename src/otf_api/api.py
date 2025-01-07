@@ -265,6 +265,17 @@ class Otf:
                     f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.class_booking_uuid
                 )
 
+        if isinstance(otf_class, models.OtfClass):
+            all_bookings = self.get_bookings()
+            booking_starts_at_map = {b.otf_class.starts_at_local: b for b in all_bookings.bookings}
+            if otf_class.starts_at_local in booking_starts_at_map:
+                conflicting_booking = booking_starts_at_map[otf_class.starts_at_local]
+                conflicting_class_uuid = conflicting_booking.otf_class.class_uuid
+                raise exc.ConflictingBookingError(
+                    f"You already have a booking that conflicts with this class ({conflicting_class_uuid}).",
+                    booking_uuid=conflicting_booking.class_booking_uuid,
+                )
+
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
         try:

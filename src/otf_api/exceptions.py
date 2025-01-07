@@ -31,6 +31,10 @@ class AlreadyBookedError(BookingError):
     """Raised when attempting to book a class that is already booked."""
 
 
+class ConflictingBookingError(BookingError):
+    """Raised when attempting to book a class that conflicts with an existing booking."""
+
+
 class BookingAlreadyCancelledError(BookingError):
     """Raised when attempting to cancel a booking that is already cancelled."""
 
