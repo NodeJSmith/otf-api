@@ -1,3 +1,6 @@
+from httpx import Request, Response
+
+
 class OtfException(Exception):
     """Base class for all exceptions in this package."""
 
@@ -5,10 +8,10 @@ class OtfException(Exception):
 class OtfRequestError(OtfException):
     """Raised when an error occurs while making a request to the OTF API."""
 
-    response: dict
-    request: dict
+    response: Response
+    request: Request
 
-    def __init__(self, message: str, response: dict, request: dict):
+    def __init__(self, message: str, response: Response, request: Request):
         super().__init__(message)
         self.response = response
         self.request = request

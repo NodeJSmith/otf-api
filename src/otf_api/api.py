@@ -86,14 +86,12 @@ class Otf:
             LOGGER.exception(f"Error making request: {e}")
             LOGGER.exception(f"Response: {response.text}")
             raise
+        except httpx.HTTPStatusError as e:
+            LOGGER.exception(f"Error making request: {e}")
+            raise exc.OtfRequestError("Error making request", response=response, request=request)
         except Exception as e:
             LOGGER.exception(f"Error making request: {e}")
             raise
-
-        if isinstance(response, dict) and "code" in response and response["code"] != "SUCCESS":
-            LOGGER.error(f"Error making request: {response}")
-            LOGGER.error(f"Response: {response.text}")
-            raise exc.OtfRequestError("Error making request", response=response, request=request)
 
         return response.json()
 
@@ -272,12 +270,12 @@ class Otf:
         try:
             resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
         except exc.OtfRequestError as e:
-            resp = e.response
+            resp_obj = e.response.json()
 
-            if resp["code"] == "ERROR":
-                if resp["data"]["errorCode"] == "603":
+            if resp_obj["code"] == "ERROR":
+                if resp_obj["data"]["errorCode"] == "603":
                     raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
-                if resp["data"]["errorCode"] == "602":
+                if resp_obj["data"]["errorCode"] == "602":
                     raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
 
             raise
