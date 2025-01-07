@@ -10,8 +10,6 @@ PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 def main():
     """
     OtfAuthConfig provides three options currently:
-    - cache_device_data: bool - Whether to register/cache device data with AWS Cognito
-        I'm not sure if there is any benefit to this at this point, but in general this is used to allow skipping MFA
     - cache_tokens_plaintext: bool - Whether to cache the tokens in plaintext in the config file - this is an obvious
         security risk, but it's useful for development purposes. If you want to do this, it is at your own risk. The
         benefit is that after you log in with your username/password once, you can use the cached tokens to log in
@@ -20,7 +18,7 @@ def main():
 
     # This is the most configurable way to access the API but also the most verbose
 
-    auth_config = OtfAuthConfig(cache_device_data=True, cache_tokens_plaintext=True)
+    auth_config = OtfAuthConfig(cache_tokens_plaintext=True)
 
     auth = OtfAuth.create(USERNAME, PASSWORD, config=auth_config)
     user = OtfUser(auth=auth)

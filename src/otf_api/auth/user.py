@@ -1,14 +1,9 @@
-import typing
 from logging import getLogger
 
 import attrs
 
-from otf_api.auth.auth import OTF_AUTH_TYPE, OtfAuth, OtfAuthConfig, OtfBasicAuth
+from otf_api.auth.auth import OTF_AUTH_TYPE, OtfAuth, OtfAuthConfig, OtfBasicAuth, OtfCognito
 from otf_api.auth.utils import HttpxCognitoAuth
-
-if typing.TYPE_CHECKING:
-    from pycognito import Cognito
-
 
 LOGGER = getLogger(__name__)
 
@@ -42,7 +37,7 @@ class OtfUser:
         self.httpx_auth = HttpxCognitoAuth(cognito=self.cognito)
 
     @property
-    def cognito(self) -> "Cognito":
+    def cognito(self) -> OtfCognito:
         """Get the Cognito instance."""
         return self.otf_auth.cognito
 
@@ -105,11 +100,11 @@ class OtfUser:
         return cls(auth)
 
     @classmethod
-    def from_cognito(cls, cognito: "Cognito", config: OtfAuthConfig | None = None) -> "OtfUser":
-        """Create a User instance from a Cognito instance.
+    def from_cognito(cls, cognito: OtfCognito, config: OtfAuthConfig | None = None) -> "OtfUser":
+        """Create a User instance from a OtfCognito instance.
 
         Args:
-            cognito (Cognito): The Cognito instance.
+            cognito (OtfCognito): The OtfCognito instance.
             config (OtfAuthConfig, optional): The configuration. Defaults to None.
 
         Returns:

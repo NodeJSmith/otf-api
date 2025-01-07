@@ -12,7 +12,6 @@ class OtfAuthConfig:
     DEVICE_DATA_KEYS: ClassVar[list[str]] = ["device_key", "device_group_key", "device_password"]
     TOKEN_KEYS: ClassVar[list[str]] = ["access_token", "id_token", "refresh_token"]
 
-    cache_device_data: bool = True
     cache_tokens_plaintext: bool = False
 
     cache_path: Path = attrs.field(init=False)
