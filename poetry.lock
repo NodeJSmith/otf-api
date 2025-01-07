@@ -1528,6 +1528,20 @@ mypyc = ["setuptools (>=50)"]
 reports = ["lxml"]
 
 [[package]]
+name = "mypy-boto3-cognito-idp"
+version = "1.35.93"
+description = "Type annotations for boto3 CognitoIdentityProvider 1.35.93 service generated with mypy-boto3-builder 8.8.0"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "mypy_boto3_cognito_idp-1.35.93-py3-none-any.whl", hash = "sha256:34db0f9032e344e9582c2f7018f7594e517a27d56c9223190d7469f863c4caee"},
+    {file = "mypy_boto3_cognito_idp-1.35.93.tar.gz", hash = "sha256:a41b6161fd2058c77abc8c7cc02fced3cc94bda9eb9699ccaa1d2221b8b1bfe7"},
+]
+
+[package.dependencies]
+typing-extensions = {version = "*", markers = "python_version < \"3.12\""}
+
+[[package]]
 name = "mypy-extensions"
 version = "1.0.0"
 description = "Type system extensions for programs checked with the mypy type checker."
@@ -2812,4 +2826,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "0671d1f74aea730762ad7c0f2ee9c191540e305fb3a227c63d6161757b2138fd"
+content-hash = "7a7077d60cc75116f07c270abeebf61a81b5c91fd3fd331e5bd0b5e08fe032dc"

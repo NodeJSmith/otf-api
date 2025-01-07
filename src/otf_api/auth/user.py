@@ -130,3 +130,15 @@ class OtfUser:
         """
         auth = OtfAuth.from_cache(config)
         return cls(auth)
+
+    @classmethod
+    def has_cached_credentials(cls, config: OtfAuthConfig | None = None) -> bool:
+        """Check if there are cached credentials.
+
+        Args:
+            config (OtfAuthConfig, optional): The configuration. Defaults to None.
+
+        Returns:
+            bool: True if there are cached credentials, False otherwise.
+        """
+        return OtfAuth.has_cached_credentials(config)

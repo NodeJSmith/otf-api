@@ -31,6 +31,19 @@ class OtfAuth:
             self.config = OtfAuthConfig()
 
     @staticmethod
+    def has_cached_credentials(config: OtfAuthConfig | None = None) -> bool:
+        """Check if there are cached credentials.
+
+        Args:
+            config (OtfAuthConfig, optional): The configuration. Defaults to None.
+
+        Returns:
+            bool: True if there are cached credentials, False otherwise.
+        """
+        config = config or OtfAuthConfig()
+        return config.token_cache.get_cached_data() is not None
+
+    @staticmethod
     def from_cache(config: OtfAuthConfig | None = None) -> "OtfTokenAuth":
         """Attempt to get an authentication object from the cache. If no tokens are found, raise a ValueError.
 
