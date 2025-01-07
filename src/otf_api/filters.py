@@ -1,4 +1,4 @@
-from datetime import date, time
+from datetime import date, datetime, time
 
 from pydantic import BaseModel, field_validator
 
@@ -43,6 +43,13 @@ class ClassFilter(BaseModel):
         Returns:
             list[OtfClass]: The filtered list of classes.
         """
+        # in case these are set after the class is created
+        if self.start_date and isinstance(self.start_date, datetime):
+            self.start_date = self.start_date.date()
+
+        if self.end_date and isinstance(self.end_date, datetime):
+            self.end_date = self.end_date.date()
+
         if self.start_date:
             classes = [c for c in classes if c.starts_at_local.date() >= self.start_date]
 
