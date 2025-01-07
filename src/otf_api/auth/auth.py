@@ -18,6 +18,9 @@ if typing.TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 CLIENT_ID = "1457d19r0pcjgmp5agooi0rb1b"  # from android app
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
+REGION = "us-east-1"
+
+BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
 
 
 class OtfAuth:
@@ -120,7 +123,7 @@ class OtfAuth:
             access_token=tokens.access_token,
             id_token=tokens.id_token,
             refresh_token=tokens.refresh_token,
-            botocore_config=Config(signature_version=UNSIGNED),
+            botocore_config=BOTO_CONFIG,
         )
 
         self.validate_cognito_tokens()
@@ -155,7 +158,7 @@ class OtfBasicAuth(OtfAuth):
         kwargs = {
             "pool_id": USER_POOL_ID,
             "client_id": CLIENT_ID,
-            "client": boto3.client("cognito-idp", config=Config(signature_version=UNSIGNED)),
+            "client": boto3.client("cognito-idp", config=BOTO_CONFIG),
         }
 
         dd = self.config.dd_cache.get_cached_data() if self.config.cache_device_data else {}
