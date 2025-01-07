@@ -41,7 +41,7 @@ class OtfAuth:
             bool: True if there are cached credentials, False otherwise.
         """
         config = config or OtfAuthConfig()
-        return config.token_cache.get_cached_data() is not None
+        return bool(config.token_cache.get_cached_data())
 
     @staticmethod
     def from_cache(config: OtfAuthConfig | None = None) -> "OtfTokenAuth":
