@@ -2,7 +2,7 @@ from logging import getLogger
 
 import attrs
 
-from otf_api.auth.auth import OTF_AUTH_TYPE, OtfAuth, OtfAuthConfig, OtfBasicAuth, OtfCognito
+from otf_api.auth.auth import OTF_AUTH_TYPE, OtfAuth, OtfBasicAuth, OtfCognito
 from otf_api.auth.utils import HttpxCognitoAuth
 
 LOGGER = getLogger(__name__)
@@ -57,83 +57,64 @@ class OtfUser:
         """Clear the cache."""
         self.otf_auth.clear_cache()
 
-    def clear_cached_tokens(self) -> None:
-        """Clear the cached tokens."""
-        self.otf_auth.clear_cached_tokens()
-
-    def clear_cached_device_data(self) -> None:
-        """Clear the cached device data."""
-        self.otf_auth.clear_cached_device_data()
-
     @classmethod
-    def login(cls, username: str, password: str, config: OtfAuthConfig | None = None) -> "OtfUser":
+    def login(cls, username: str, password: str) -> "OtfUser":
         """Create a User instance from a username and password.
 
         Args:
             username (str): The username.
             password (str): The password.
-            config (OtfAuthConfig, optional): The configuration. Defaults to None.
 
         Returns:
             OtfUser: The User instance
         """
-        auth = OtfAuth.create(username=username, password=password, config=config)
+        auth = OtfAuth.create(username=username, password=password)
         return cls(auth)
 
     @classmethod
-    def from_tokens(
-        cls, access_token: str, id_token: str, refresh_token: str | None = None, config: OtfAuthConfig | None = None
-    ) -> "OtfUser":
+    def from_tokens(cls, access_token: str, id_token: str, refresh_token: str | None = None) -> "OtfUser":
         """Create a User instance from tokens.
 
         Args:
             access_token (str): The access token.
             id_token (str): The id token.
             refresh_token (str, optional): The refresh token. Defaults to None.
-            config (OtfAuthConfig, optional): The configuration. Defaults to None.
 
         Returns:
             OtfUser: The User instance
         """
 
-        auth = OtfAuth.create(access_token=access_token, id_token=id_token, refresh_token=refresh_token, config=config)
+        auth = OtfAuth.create(access_token=access_token, id_token=id_token, refresh_token=refresh_token)
         return cls(auth)
 
     @classmethod
-    def from_cognito(cls, cognito: OtfCognito, config: OtfAuthConfig | None = None) -> "OtfUser":
+    def from_cognito(cls, cognito: OtfCognito) -> "OtfUser":
         """Create a User instance from a OtfCognito instance.
 
         Args:
             cognito (OtfCognito): The OtfCognito instance.
-            config (OtfAuthConfig, optional): The configuration. Defaults to None.
 
         Returns:
             OtfUser: The User instance
         """
-        auth = OtfAuth.create(cognito=cognito, config=config)
+        auth = OtfAuth.create(cognito=cognito)
         return cls(auth)
 
     @classmethod
-    def from_cache(cls, config: OtfAuthConfig | None = None) -> "OtfUser":
+    def from_cache(cls) -> "OtfUser":
         """Create a User instance from cached tokens.
 
-        Args:
-            config (OtfAuthConfig, optional): The configuration. Defaults to None.
-
         Returns:
             OtfUser: The User instance
         """
-        auth = OtfAuth.from_cache(config)
+        auth = OtfAuth.from_cache()
         return cls(auth)
 
     @classmethod
-    def has_cached_credentials(cls, config: OtfAuthConfig | None = None) -> bool:
+    def has_cached_credentials(cls) -> bool:
         """Check if there are cached credentials.
-
-        Args:
-            config (OtfAuthConfig, optional): The configuration. Defaults to None.
 
         Returns:
             bool: True if there are cached credentials, False otherwise.
         """
-        return OtfAuth.has_cached_credentials(config)
+        return OtfAuth.has_cached_credentials()

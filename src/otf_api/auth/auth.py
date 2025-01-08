@@ -1,6 +1,7 @@
 import socket
 import typing
 from logging import getLogger
+from pathlib import Path
 from typing import ClassVar, Literal
 
 import attrs
@@ -9,8 +10,8 @@ from botocore import UNSIGNED
 from botocore.config import Config
 from pycognito import AWSSRP, Cognito
 
-from otf_api.auth.config import OtfAuthConfig
 from otf_api.auth.utils import CognitoTokens
+from otf_api.utils import CacheableData
 
 if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_idp import CognitoIdentityProviderClient
@@ -22,6 +23,11 @@ USER_POOL_ID = "us-east-1_dYDxUeyL1"
 REGION = "us-east-1"
 
 BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
+CRED_CACHE = CacheableData("creds", Path("~/.otf-api"))
+
+DEVICE_KEYS = ["device_key", "device_group_key", "device_password"]
+DEVICE_KEYS_NO_PWD = ["device_key", "device_group_key"]
+TOKEN_KEYS = ["access_token", "id_token", "refresh_token"]
 
 
 class OtfCognito(Cognito):
@@ -36,7 +42,7 @@ class OtfCognito(Cognito):
         auth_params = {"REFRESH_TOKEN": self.refresh_token}
         self._add_secret_hash(auth_params, "SECRET_HASH")
 
-        if dd := self.auth.config.dd_cache.get_cached_data():
+        if dd := CRED_CACHE.get_cached_data():
             auth_params["DEVICE_KEY"] = dd["device_key"]
 
         refresh_response = self.client.initiate_auth(
@@ -44,16 +50,22 @@ class OtfCognito(Cognito):
         )
         self._set_tokens(refresh_response)
 
+        CRED_CACHE.write_to_cache(self.tokens)
+
+    @property
+    def tokens(self) -> dict[str, str]:
+        tokens = {
+            "access_token": self.access_token,
+            "id_token": self.id_token,
+            "refresh_token": self.refresh_token,
+        }
+        return {k: v for k, v in tokens.items() if v}
+
 
 class OtfAuth:
     auth_type: ClassVar[Literal["basic", "token", "cognito"]]
 
     cognito: OtfCognito
-    config: OtfAuthConfig
-
-    def __attrs_post_init__(self) -> None:
-        if not hasattr(self, "config"):
-            self.config = OtfAuthConfig()
 
     @property
     def access_token(self) -> str:
@@ -74,41 +86,31 @@ class OtfAuth:
         raise AttributeError("No refresh token found")
 
     @staticmethod
-    def has_cached_credentials(config: OtfAuthConfig | None = None) -> bool:
+    def has_cached_credentials() -> bool:
         """Check if there are cached credentials.
-
-        Args:
-            config (OtfAuthConfig, optional): The configuration. Defaults to None.
 
         Returns:
             bool: True if there are cached credentials, False otherwise.
         """
-        config = config or OtfAuthConfig()
-        return bool(config.token_cache.get_cached_data())
+
+        return bool(CRED_CACHE.get_cached_data())
 
     @staticmethod
-    def from_cache(config: OtfAuthConfig | None = None) -> "OtfTokenAuth":
+    def from_cache() -> "OtfTokenAuth":
         """Attempt to get an authentication object from the cache. If no tokens are found, raise a ValueError.
 
         If config is not provided the default configuration will be used, with plaintext token caching enabled.
-
-        Args:
-            config (OtfAuthConfig, optional): The configuration. Defaults to None.
 
         Raises:
             ValueError: If no tokens are found in the cache.
         """
 
-        config = config or OtfAuthConfig(cache_tokens_plaintext=True)
-        tokens = config.token_cache.get_cached_data()
+        tokens = CRED_CACHE.get_cached_data()
         if not tokens:
             raise ValueError("No tokens found in cache")
 
         return OtfTokenAuth(
-            access_token=tokens["access_token"],
-            id_token=tokens["id_token"],
-            refresh_token=tokens.get("refresh_token"),
-            auth_config=config,
+            access_token=tokens["access_token"], id_token=tokens["id_token"], refresh_token=tokens.get("refresh_token")
         )
 
     @staticmethod
@@ -119,7 +121,6 @@ class OtfAuth:
         access_token: str | None = None,
         refresh_token: str | None = None,
         cognito: OtfCognito | None = None,
-        config: OtfAuthConfig | None = None,
     ) -> "OTF_AUTH_TYPE":
         """Create an authentication object.
 
@@ -127,16 +128,13 @@ class OtfAuth:
 
         Raises a ValueError if none of the required parameters are provided.
         """
-        config = config or OtfAuthConfig()
 
         if username and password:
-            return OtfBasicAuth(username=username, password=password, config=config)
+            return OtfBasicAuth(username=username, password=password)
         if id_token and access_token:
-            return OtfTokenAuth(
-                _id_token=id_token, _access_token=access_token, _refresh_token=refresh_token, auth_config=config
-            )
+            return OtfTokenAuth(id_token=id_token, access_token=access_token, refresh_token=refresh_token)
         if cognito:
-            return OtfCognitoAuth(cognito=cognito, auth_config=config)
+            return OtfCognitoAuth(cognito=cognito)
 
         raise ValueError("Must provide username/password or id/access tokens or cognito object")
 
@@ -147,11 +145,11 @@ class OtfAuth:
 
     def clear_cached_tokens(self) -> None:
         """Clear the cached tokens."""
-        self.config.token_cache.clear_cache()
+        CRED_CACHE.clear_cache(TOKEN_KEYS)
 
     def clear_cached_device_data(self) -> None:
         """Clear the cached device data."""
-        self.config.dd_cache.clear_cache()
+        CRED_CACHE.clear_cache(DEVICE_KEYS)
 
     def authenticate(self) -> None:
         raise NotImplementedError
@@ -173,13 +171,7 @@ class OtfAuth:
         self.cognito.check_token()
         self.cognito.verify_tokens()
 
-        if self.config.cache_tokens_plaintext:
-            tokens = {
-                "access_token": self.cognito.access_token,
-                "id_token": self.cognito.id_token,
-                "refresh_token": self.cognito.refresh_token,
-            }
-            self.config.token_cache.write_to_cache(tokens)
+        CRED_CACHE.write_to_cache(self.cognito.tokens)
 
         # ensure the cognito instance has the auth object
         # we'll need this for the device key during refresh
@@ -192,7 +184,6 @@ class OtfBasicAuth(OtfAuth):
 
     username: str
     password: str
-    config: OtfAuthConfig = attrs.field(factory=OtfAuthConfig)
 
     def get_awssrp(self) -> AWSSRP:
         # this is to avoid boto3 trying to find credentials in the environment/local machine
@@ -205,7 +196,7 @@ class OtfBasicAuth(OtfAuth):
             "client": boto3.client("cognito-idp", config=BOTO_CONFIG),
         }
 
-        dd = self.config.dd_cache.get_cached_data()
+        dd = CRED_CACHE.get_cached_data(DEVICE_KEYS)
 
         kwargs = kwargs | dd | {"username": self.username, "password": self.password}
 
@@ -235,7 +226,7 @@ class OtfBasicAuth(OtfAuth):
         Args:
             tokens (dict): The tokens from the AWS SRP instance.
         """
-        if self.config.dd_cache.get_cached_data():
+        if CRED_CACHE.get_cached_data():
             LOGGER.debug("Skipping device setup")
 
         try:
@@ -245,13 +236,8 @@ class OtfBasicAuth(OtfAuth):
             LOGGER.exception("Failed to get device name")
             return
 
-        try:
-            if not tokens.device_key:
-                LOGGER.debug("No new device metadata")
-                return
-
-        except KeyError:
-            LOGGER.error("Failed to get device key and group key")
+        if not tokens.device_key:
+            LOGGER.debug("No new device metadata")
             return
 
         aws = self.get_awssrp()
@@ -270,7 +256,7 @@ class OtfBasicAuth(OtfAuth):
                 "device_group_key": tokens.device_group_key,
                 "device_password": device_password,
             }
-            self.config.dd_cache.write_to_cache(dd)
+            CRED_CACHE.write_to_cache(dd)
         except Exception:
             LOGGER.exception("Failed to write device key cache")
             return
@@ -279,7 +265,7 @@ class OtfBasicAuth(OtfAuth):
         """Forget the device from AWS and delete the device key cache."""
 
         access_token = self.cognito.access_token
-        dd = self.config.dd_cache.get_cached_data()
+        dd = CRED_CACHE.get_cached_data()
         if not dd:
             LOGGER.debug("No device data to forget")
             return
@@ -299,11 +285,9 @@ class OtfTokenAuth(OtfAuth):
     _access_token: str
     _id_token: str
     _refresh_token: str | None = None
-    auth_config: OtfAuthConfig = attrs.field(factory=OtfAuthConfig)
 
     def authenticate(self) -> None:
-        dd = self.auth_config.dd_cache.get_cached_data()
-        dd.pop("device_password", None)  # remove device password, not attribute of CognitoTokens
+        dd = CRED_CACHE.get_cached_data(DEVICE_KEYS_NO_PWD)
         tokens = CognitoTokens(
             access_token=self._access_token, id_token=self._id_token, refresh_token=self._refresh_token, **dd
         )
@@ -337,7 +321,6 @@ class OtfCognitoAuth(OtfAuth):
     auth_type: ClassVar[Literal["basic", "token", "cognito"]] = "cognito"
 
     cognito: OtfCognito
-    auth_config: OtfAuthConfig = attrs.field(factory=OtfAuthConfig)
 
     def authenticate(self) -> None:
         self.cognito.check_token(renew=True)

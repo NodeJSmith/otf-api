@@ -12,15 +12,14 @@ class CacheableData:
     """Represents a cacheable data object, with methods to read and write to cache."""
 
     name: str
-    keys: list[str]
     cache_dir: Path
 
     @property
     def cache_path(self) -> Path:
         """The path to the cache file."""
-        return self.cache_dir.joinpath(f"{self.name}_cache.json")
+        return self.cache_dir.expanduser().joinpath(f"{self.name}_cache.json")
 
-    def get_cached_data(self) -> dict[str, str]:
+    def get_cached_data(self, keys: list[str] | None = None) -> dict[str, str]:
         """Reads the cache file and returns the data if it exists and is valid.
 
         Returns:
@@ -35,10 +34,12 @@ class CacheableData:
                 return {}
 
             data: dict[str, str] = json.loads(self.cache_path.read_text())
-            if set(data.keys()).issuperset(set(self.keys)):
-                return {k: v for k, v in data.items() if k in self.keys}
+            if not keys:
+                return data
 
-            return {}
+            if set(data.keys()).issuperset(set(keys)):
+                return {k: v for k, v in data.items() if k in keys}
+            raise ValueError(f"Data must contain all keys: {keys}")
         except Exception:
             LOGGER.exception(f"Failed to read {self.cache_path.name}")
             return {}
@@ -47,18 +48,24 @@ class CacheableData:
         """Writes the data to the cache file."""
         LOGGER.debug(f"Writing {self.name} to cache ({self.cache_path})")
 
-        if not all(k in data for k in self.keys):
-            raise ValueError(f"Data must contain all keys: {self.keys}")
+        existing_data = self.get_cached_data()
+        data = {**existing_data, **data}
 
-        data = {k: v for k, v in data.items() if k in self.keys}
+        self.cache_path.write_text(json.dumps(data, indent=4, default=str))
 
-        try:
-            self.cache_path.write_text(json.dumps(data, indent=4, default=str))
-        except Exception:
-            LOGGER.exception(f"Failed to write {self.cache_path.name}")
-
-    def clear_cache(self) -> None:
+    def clear_cache(self, keys: list[str] | None = None) -> None:
         """Deletes the cache file if it exists."""
-        if self.cache_path.exists():
+        if not self.cache_path.exists():
+            return
+
+        if not keys:
             self.cache_path.unlink()
             LOGGER.debug(f"{self.name} cache deleted")
+
+        assert isinstance(keys, list), "Keys must be a list"
+
+        data = self.get_cached_data()
+        for key in keys:
+            data.pop(key, None)
+
+        self.write_to_cache(data)
