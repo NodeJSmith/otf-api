@@ -50,6 +50,11 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
     is_booked: bool | None = Field(None, description="Custom helper field to determine if class is already booked")
 
+    def __str__(self) -> str:
+        starts_at_str = self.starts_at_local.strftime("%Y-%m-%d %H:%M:%S")
+        coach_name = self.coach.first_name
+        return f"{starts_at_str} {self.name} with {coach_name}"
+
     @property
     def has_availability(self) -> bool:
         return not self.full

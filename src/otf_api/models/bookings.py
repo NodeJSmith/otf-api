@@ -100,6 +100,12 @@ class Booking(OtfItemBase):
     otf_class: OtfClass = Field(alias="class")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
+    def __str__(self) -> str:
+        class_starts_at_str = self.otf_class.starts_at_local.strftime("%Y-%m-%d %H:%M:%S")
+        class_name = self.otf_class.name
+        coach_name = self.otf_class.coach.name
+        return f"{class_starts_at_str} {class_name} with {coach_name}"
+
 
 class BookingList(OtfItemBase):
     bookings: list[Booking]
