@@ -51,9 +51,18 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
     is_booked: bool | None = Field(None, description="Custom helper field to determine if class is already booked")
 
     def __str__(self) -> str:
-        starts_at_str = self.starts_at_local.strftime("%Y-%m-%d %H:%M:%S")
+        starts_at_str = self.starts_at_local.strftime("%a %b %d, %I:%M %p")
         coach_name = self.coach.first_name
-        return f"{starts_at_str} {self.name} with {coach_name}"
+        booked_str = ""
+        if self.is_booked:
+            booked_str = "Booked"
+        elif self.has_availability:
+            booked_str = "Available"
+        elif self.waitlist_available:
+            booked_str = "Waitlist Available"
+        else:
+            booked_str = "Full"
+        return f"Class: {starts_at_str} {self.name} - {coach_name} ({booked_str})"
 
     @property
     def has_availability(self) -> bool:
