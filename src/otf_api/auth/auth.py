@@ -55,6 +55,24 @@ class OtfAuth:
         if not hasattr(self, "config"):
             self.config = OtfAuthConfig()
 
+    @property
+    def access_token(self) -> str:
+        if hasattr(self, "cognito") and self.cognito.access_token:
+            return self.cognito.access_token
+        raise AttributeError("No access token found")
+
+    @property
+    def id_token(self) -> str:
+        if hasattr(self, "cognito") and self.cognito.id_token:
+            return self.cognito.id_token
+        raise AttributeError("No id token found")
+
+    @property
+    def refresh_token(self) -> str:
+        if hasattr(self, "cognito") and self.cognito.refresh_token:
+            return self.cognito.refresh_token
+        raise AttributeError("No refresh token found")
+
     @staticmethod
     def has_cached_credentials(config: OtfAuthConfig | None = None) -> bool:
         """Check if there are cached credentials.
@@ -115,7 +133,7 @@ class OtfAuth:
             return OtfBasicAuth(username=username, password=password, config=config)
         if id_token and access_token:
             return OtfTokenAuth(
-                id_token=id_token, access_token=access_token, refresh_token=refresh_token, auth_config=config
+                _id_token=id_token, _access_token=access_token, _refresh_token=refresh_token, auth_config=config
             )
         if cognito:
             return OtfCognitoAuth(cognito=cognito, auth_config=config)
@@ -278,18 +296,40 @@ class OtfBasicAuth(OtfAuth):
 class OtfTokenAuth(OtfAuth):
     auth_type: ClassVar[Literal["basic", "token", "cognito"]] = "token"
 
-    access_token: str
-    id_token: str
-    refresh_token: str | None = None
+    _access_token: str
+    _id_token: str
+    _refresh_token: str | None = None
     auth_config: OtfAuthConfig = attrs.field(factory=OtfAuthConfig)
 
     def authenticate(self) -> None:
         dd = self.auth_config.dd_cache.get_cached_data()
         dd.pop("device_password", None)  # remove device password, not attribute of CognitoTokens
         tokens = CognitoTokens(
-            access_token=self.access_token, id_token=self.id_token, refresh_token=self.refresh_token, **dd
+            access_token=self._access_token, id_token=self._id_token, refresh_token=self._refresh_token, **dd
         )
         self.setup_cognito(tokens)
+
+        self._access_token = None
+        self._id_token = None
+        self._refresh_token = None
+
+    @property
+    def access_token(self) -> str:
+        if hasattr(self, "cognito") and self.cognito.access_token:
+            return self.cognito.access_token
+        return self._access_token
+
+    @property
+    def id_token(self) -> str:
+        if hasattr(self, "cognito") and self.cognito.id_token:
+            return self.cognito.id_token
+        return self._id_token
+
+    @property
+    def refresh_token(self) -> str:
+        if hasattr(self, "cognito") and self.cognito.refresh_token:
+            return self.cognito.refresh_token
+        return self._refresh_token
 
 
 @attrs.define
