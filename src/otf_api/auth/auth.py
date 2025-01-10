@@ -25,8 +25,8 @@ REGION = "us-east-1"
 BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
 CRED_CACHE = CacheableData("creds", Path("~/.otf-api"))
 
-DEVICE_KEYS = ["device_key", "device_group_key", "device_password"]
 DEVICE_KEYS_NO_PWD = ["device_key", "device_group_key"]
+DEVICE_KEYS = [*DEVICE_KEYS_NO_PWD, "device_password"]
 TOKEN_KEYS = ["access_token", "id_token", "refresh_token"]
 
 
