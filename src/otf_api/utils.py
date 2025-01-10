@@ -14,6 +14,9 @@ class CacheableData:
     name: str
     cache_dir: Path
 
+    def __attrs_post_init__(self):
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+
     @property
     def cache_path(self) -> Path:
         """The path to the cache file."""
