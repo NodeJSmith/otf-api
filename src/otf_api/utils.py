@@ -51,6 +51,13 @@ class CacheableData:
         """Writes the data to the cache file."""
         LOGGER.debug(f"Writing {self.name} to cache ({self.cache_path})")
 
+        # double check everything exists
+        if not self.cache_path.parent.exists():
+            self.cache_path.parent.mkdir(parents=True, exist_ok=True)
+
+        if not self.cache_path.exists():
+            self.cache_path.touch()
+
         existing_data = self.get_cached_data()
         data = {**existing_data, **data}
 
