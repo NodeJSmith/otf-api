@@ -1,6 +1,7 @@
 import atexit
 import contextlib
 from datetime import date, datetime, timedelta
+from getpass import getpass
 from logging import getLogger
 from typing import Any
 
@@ -15,31 +16,44 @@ from otf_api.auth import OtfUser
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
 API_TELEMETRY_BASE_URL = "api.yuzu.orangetheory.com"
+JSON_HEADERS = {"Content-Type": "application/json", "Accept": "application/json"}
 LOGGER = getLogger(__name__)
 
 
 @attrs.define(init=False)
 class Otf:
     member: models.MemberDetail
+    home_studio: models.StudioDetail
     user: OtfUser
     session: httpx.Client
 
     def __init__(self, user: OtfUser):
-        """Initialize the OTF API client. Either an auth object or a user object must be provided.
+        """Initialize the OTF API client.
 
         Args:
-            user (OtfUser): The user object to use.
+            user (OtfUser): The user to authenticate as.
         """
         self.user = user
 
         self.session = httpx.Client(
-            headers={"Content-Type": "application/json", "Accept": "application/json"},
-            auth=self.user.httpx_auth,
-            timeout=httpx.Timeout(10.0, connect=60.0),
+            headers=JSON_HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
         )
         atexit.register(self.session.close)
 
         self.member = self.get_member_detail()
+        self.home_studio = self.get_studio_detail(self.member.home_studio.studio_uuid)
+
+    @classmethod
+    def prompt_for_credentials(cls) -> "Otf":
+        """Create an OTF API client by prompting the user for their credentials.
+
+        Returns:
+            Otf: The OTF API client.
+        """
+
+        email_address = input("Enter your Orangetheory Fitness email: ")
+        password = getpass("Enter your Orangetheory Fitness password: ")
+        return cls(user=OtfUser(email_address, password))
 
     @property
     def member_uuid(self) -> str:
@@ -49,7 +63,7 @@ class Otf:
     @property
     def home_studio_uuid(self) -> str:
         """Get the home studio UUID."""
-        return self.member.home_studio.studio_uuid
+        return self.home_studio.studio_uuid
 
     def _do(
         self,
@@ -100,13 +114,10 @@ class Otf:
         """Perform an API request to the Telemetry API."""
         return self._do(method, API_TELEMETRY_BASE_URL, url, params)
 
-    def _performance_summary_request(
-        self, method: str, url: str, headers: dict[str, str] | None = None, params: dict[str, Any] | None = None
-    ) -> Any:
+    def _performance_summary_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the performance summary API."""
         perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
-        headers = (headers or {}) | perf_api_headers
-        return self._do(method, API_IO_BASE_URL, url, params, headers)
+        return self._do(method, API_IO_BASE_URL, url, params, perf_api_headers)
 
     def get_classes(
         self,
