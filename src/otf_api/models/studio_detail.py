@@ -108,8 +108,11 @@ class Pagination(OtfItemBase):
 class StudioDetailList(OtfItemBase):
     studios: list[StudioDetail]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.studios)
 
     def __iter__(self):
         return iter(self.studios)
+
+    def __getitem__(self, item) -> StudioDetail:
+        return self.studios[item]
