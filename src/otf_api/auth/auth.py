@@ -25,8 +25,7 @@ COGNITO_IDP_URL = f"https://cognito-idp.{REGION}.amazonaws.com/"
 BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
 CRED_CACHE = CacheableData("creds", Path("~/.otf-api"))
 
-DEVICE_KEYS_NO_PWD = ["device_key", "device_group_key"]
-DEVICE_KEYS = [*DEVICE_KEYS_NO_PWD, "device_password"]
+DEVICE_KEYS = ["device_key", "device_group_key", "device_password"]
 TOKEN_KEYS = ["access_token", "id_token", "refresh_token"]
 
 
@@ -42,6 +41,13 @@ class OtfCognito(Cognito):
     client_id: ClassVar[str] = CLIENT_ID
     user_pool_region: ClassVar[str] = REGION
     client_secret: ClassVar[str] = ""
+
+    id_token: str
+    access_token: str
+    device_key: str
+    device_group_key: str
+    device_password: str
+    device_name: str
 
     def __init__(
         self,
@@ -62,11 +68,10 @@ class OtfCognito(Cognito):
         """
 
         self.username = username
-        self.id_token = id_token
-        self.access_token = access_token
+        self.id_token = id_token  # type: ignore
+        self.access_token = access_token  # type: ignore
         self.refresh_token = refresh_token
 
-        self.token_type: str | None = None
         self.id_claims: dict[str, Any] = {}
         self.access_claims: dict[str, Any] = {}
         self.custom_attributes: dict[str, Any] = {}
@@ -75,21 +80,29 @@ class OtfCognito(Cognito):
         self.mfa_tokens: dict[str, Any] = {}
         self.pool_domain_url: str | None = None
 
-        dd = CRED_CACHE.get_cached_data(DEVICE_KEYS)
+        try:
+            dd = CRED_CACHE.get_cached_data(DEVICE_KEYS)
+        except Exception:
+            LOGGER.exception("Failed to read device key cache")
+            dd = {}
 
-        self.device_name: str = platform.node()
-        self.device_key: str | None = dd.get("device_key")
-        self.device_group_key: str | None = dd.get("device_group_key")
-        self.device_password: str | None = dd.get("device_password")
+        self.device_name = platform.node()
+        self.device_key = dd.get("device_key")  # type: ignore
+        self.device_group_key = dd.get("device_group_key")  # type: ignore
+        self.device_password = dd.get("device_password")  # type: ignore
 
         self.client: CognitoIdentityProviderClient = Session().client(
             "cognito-idp", config=BOTO_CONFIG, region_name=REGION
         )
 
-        token_cache = CRED_CACHE.get_cached_data(TOKEN_KEYS)
+        try:
+            token_cache = CRED_CACHE.get_cached_data(TOKEN_KEYS)
+        except Exception:
+            LOGGER.exception("Failed to read token cache")
+            token_cache = {}
 
         if not (username and password) and not (id_token and access_token) and not token_cache:
-            raise NoCredentialsError("Must provide username/password or id/access tokens, or have cached tokens")
+            raise NoCredentialsError("No credentials provided and no tokens cached, cannot authenticate")
 
         if username and password:
             self.login(password)
