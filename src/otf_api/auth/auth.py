@@ -21,6 +21,7 @@ LOGGER = getLogger(__name__)
 CLIENT_ID = "1457d19r0pcjgmp5agooi0rb1b"  # from android app
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
 REGION = "us-east-1"
+COGNITO_IDP_URL = f"https://cognito-idp.{REGION}.amazonaws.com/"
 
 BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
 CRED_CACHE = CacheableData("creds", Path("~/.otf-api"))
@@ -41,6 +42,7 @@ class OtfCognito(Cognito):
     user_pool_id: ClassVar[str] = USER_POOL_ID
     client_id: ClassVar[str] = CLIENT_ID
     user_pool_region: ClassVar[str] = REGION
+    client_secret: ClassVar[str] = ""
 
     def __init__(
         self,
@@ -65,14 +67,13 @@ class OtfCognito(Cognito):
         self.access_token = access_token
         self.refresh_token = refresh_token
 
-        self.client_secret: str | None = None
         self.token_type: str | None = None
-        self.id_claims: dict[str, Any] = None  # type: ignore
-        self.access_claims: dict[str, Any] = None  # type: ignore
-        self.custom_attributes: dict[str, Any] | None = None
-        self.base_attributes: dict[str, Any] | None = None
-        self.pool_jwk: dict[str, Any] | None = None
-        self.mfa_tokens: dict[str, Any] | None = None
+        self.id_claims: dict[str, Any] = {}
+        self.access_claims: dict[str, Any] = {}
+        self.custom_attributes: dict[str, Any] = {}
+        self.base_attributes: dict[str, Any] = {}
+        self.pool_jwk: dict[str, Any] = {}
+        self.mfa_tokens: dict[str, Any] = {}
         self.pool_domain_url: str | None = None
 
         dd = CRED_CACHE.get_cached_data(DEVICE_KEYS)
@@ -99,18 +100,9 @@ class OtfCognito(Cognito):
             self.access_token = token_cache["access_token"]
             self.refresh_token = token_cache["refresh_token"]
 
-        self.validate_cognito_tokens()
-
-    def validate_cognito_tokens(self) -> None:
-        """Validate the Cognito tokens. Will refresh the tokens if necessary."""
         self.check_token()
         self.verify_tokens()
-
         CRED_CACHE.write_to_cache(self.tokens)
-
-    @property
-    def cognito_idp_url(self) -> str:
-        return f"https://cognito-idp.{self.user_pool_region}.amazonaws.com/"
 
     @property
     def tokens(self) -> dict[str, str]:
@@ -221,7 +213,7 @@ class OtfCognito(Cognito):
 
         headers = self._get_headers("ForgetDevice")
         data = {"AccessToken": self.access_token, "DeviceKey": self.device_key}
-        response = requests.post(self.cognito_idp_url, headers=headers, json=data, timeout=30)
+        response = requests.post(COGNITO_IDP_URL, headers=headers, json=data, timeout=30)
         return response.json()
 
     def _send_confirm_device(self) -> Any:
@@ -242,7 +234,7 @@ class OtfCognito(Cognito):
             "DeviceName": self.device_name,
             "DeviceSecretVerifierConfig": device_secret_verifier_config,
         }
-        response = requests.post(self.cognito_idp_url, headers=headers, json=data, timeout=30)
+        response = requests.post(COGNITO_IDP_URL, headers=headers, json=data, timeout=30)
         return response.json()
 
     def _send_update_device_status(self) -> Any:
@@ -253,7 +245,7 @@ class OtfCognito(Cognito):
 
         headers = self._get_headers("UpdateDeviceStatus")
         data = {"AccessToken": self.access_token, "DeviceKey": self.device_key, "DeviceRememberedStatus": "remembered"}
-        response = requests.post(self.cognito_idp_url, headers=headers, json=data, timeout=30)
+        response = requests.post(COGNITO_IDP_URL, headers=headers, json=data, timeout=30)
         return response.json()
 
     def _get_headers(self, target: str) -> dict[str, str]:
