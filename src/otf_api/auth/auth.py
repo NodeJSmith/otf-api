@@ -4,7 +4,6 @@ from logging import getLogger
 from pathlib import Path
 from typing import Any, ClassVar
 
-import requests
 from boto3 import Session
 from botocore import UNSIGNED
 from botocore.config import Config
@@ -113,6 +112,15 @@ class OtfCognito(Cognito):
         }
         return {k: v for k, v in tokens.items() if v}
 
+    @property
+    def device_metadata(self) -> dict[str, str]:
+        dm = {
+            "device_key": self.device_key,
+            "device_group_key": self.device_group_key,
+            "device_password": self.device_password,
+        }
+        return {k: v for k, v in dm.items() if v}
+
     def login(self, password: str) -> None:
         """Called when logging in with a username and password. Will set the tokens and device metadata."""
 
@@ -127,38 +135,34 @@ class OtfCognito(Cognito):
         )
         tokens: InitiateAuthResponseTypeDef = aws.authenticate_user()
         self._set_tokens(tokens)
-        self.handle_device_setup()
+        self._handle_device_setup()
 
-    def handle_device_setup(self) -> None:
-        """Handles device setup, including confirming the device and updating the device status."""
+    def _handle_device_setup(self) -> None:
+        """Confirms the device with Cognito and caches the device metadata.
+
+        Devices are not remembered at this time, as OTF does not have MFA set up currently. Without MFA setup, there
+        is no benefit to remembering the device. Additionally, it does not appear that the OTF app remembers devices,
+        so this matches the behavior of the app.
+        """
+
         if not self.device_key:
-            LOGGER.debug("Skipping device setup")
-            return
+            raise ValueError("Device key not set - device key is required by this Cognito pool")
+
+        self.device_password, device_secret_verifier_config = generate_hash_device(
+            self.device_group_key, self.device_key
+        )
+
+        self.client.confirm_device(
+            AccessToken=self.access_token,
+            DeviceKey=self.device_key,
+            DeviceSecretVerifierConfig=device_secret_verifier_config,
+            DeviceName=self.device_name,
+        )
 
         try:
-            _ = self._send_confirm_device()
-            _ = self._send_update_device_status()
-        except Exception:
-            LOGGER.exception("Failed to confirm device")
-            return
-
-        try:
-            dd = {
-                "device_key": self.device_key,
-                "device_group_key": self.device_group_key,
-                "device_password": self.device_password,
-            }
-            CRED_CACHE.write_to_cache(dd)
+            CRED_CACHE.write_to_cache(self.device_metadata)
         except Exception:
             LOGGER.exception("Failed to write device key cache")
-
-    def forget_device(self) -> None:
-        """Forgets the device by sending a request to the Cognito service and clearing the device metadata cache."""
-        try:
-            self._send_forget_device()
-            CRED_CACHE.clear_cache(DEVICE_KEYS)
-        except Exception:
-            LOGGER.exception("Failed to forget device")
 
     ##### OVERRIDEN METHODS #####
 
@@ -200,58 +204,3 @@ class OtfCognito(Cognito):
         self.device_group_key = device_metadata.get("DeviceGroupKey", self.device_group_key)
         if self.device_key and self.device_group_key:
             CRED_CACHE.write_to_cache({"device_key": self.device_key, "device_group_key": self.device_group_key})
-
-    ##### REPLACED METHODS #####
-
-    def _send_forget_device(self) -> Any:
-        """Sends a request to the Cognito service to forget the device.
-
-        Replaces `forget_device` on the AWSSRP class, which requires a username and password to instantiate, even though
-        this call does not require them.
-
-        """
-
-        headers = self._get_headers("ForgetDevice")
-        data = {"AccessToken": self.access_token, "DeviceKey": self.device_key}
-        response = requests.post(COGNITO_IDP_URL, headers=headers, json=data, timeout=30)
-        return response.json()
-
-    def _send_confirm_device(self) -> Any:
-        """Sends a request to the Cognito service to confirm the device.
-
-        Replaces `confirm_device` on the AWSSRP class.
-
-        """
-
-        self.device_password, device_secret_verifier_config = generate_hash_device(
-            self.device_group_key, self.device_key
-        )
-
-        headers = self._get_headers("ConfirmDevice")
-        data = {
-            "AccessToken": self.access_token,
-            "DeviceKey": self.device_key,
-            "DeviceName": self.device_name,
-            "DeviceSecretVerifierConfig": device_secret_verifier_config,
-        }
-        response = requests.post(COGNITO_IDP_URL, headers=headers, json=data, timeout=30)
-        return response.json()
-
-    def _send_update_device_status(self) -> Any:
-        """Sends a request to the Cognito service to update the device status.
-
-        Replaces `update_device_status` on the AWSSRP class.
-        """
-
-        headers = self._get_headers("UpdateDeviceStatus")
-        data = {"AccessToken": self.access_token, "DeviceKey": self.device_key, "DeviceRememberedStatus": "remembered"}
-        response = requests.post(COGNITO_IDP_URL, headers=headers, json=data, timeout=30)
-        return response.json()
-
-    def _get_headers(self, target: str) -> dict[str, str]:
-        """Get the headers for a Cognito API request."""
-        return {
-            "Authorization": f"Bearer {self.access_token}",
-            "Content-Type": "application/x-amz-json-1.1",
-            "X-Amz-Target": f"AWSCognitoIdentityProviderService.{target}",
-        }
