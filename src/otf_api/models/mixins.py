@@ -1,10 +1,6 @@
-from datetime import datetime
-
-from humanize import precisedelta
 from pydantic import AliasChoices, Field, model_validator
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import ClassType
 
 
 class PhoneLongitudeLatitudeMixin(OtfItemBase):
@@ -38,30 +34,3 @@ class AddressMixin(OtfItemBase):
             values["country_currency"] = values.pop("physicalCountry")
 
         return values
-
-
-class OtfClassTimeMixin:
-    starts_at_local: datetime
-    ends_at_local: datetime
-    name: str
-
-    @property
-    def day_of_week(self) -> str:
-        return self.starts_at_local.strftime("%A")
-
-    @property
-    def duration_str(self) -> str:
-        """Returns the duration of the class in human readable format"""
-        duration = self.ends_at_local - self.starts_at_local
-        human_val: str = precisedelta(duration, minimum_unit="minutes")
-        if human_val == "1 hour and 30 minutes":
-            return "90 minutes"
-        return human_val
-
-    @property
-    def class_type(self) -> ClassType:
-        for class_type in ClassType:
-            if class_type.value in self.name:
-                return class_type
-
-        return ClassType.OTHER

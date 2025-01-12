@@ -51,10 +51,10 @@ class ClassFilter(BaseModel):
             self.end_date = self.end_date.date()
 
         if self.start_date:
-            classes = [c for c in classes if c.starts_at_local.date() >= self.start_date]
+            classes = [c for c in classes if c.starts_at.date() >= self.start_date]
 
         if self.end_date:
-            classes = [c for c in classes if c.starts_at_local.date() <= self.end_date]
+            classes = [c for c in classes if c.starts_at.date() <= self.end_date]
 
         if self.class_type:
             classes = [c for c in classes if c.class_type in self.class_type]
@@ -63,7 +63,7 @@ class ClassFilter(BaseModel):
             classes = [c for c in classes if c.day_of_week in self.day_of_week]
 
         if self.start_time:
-            classes = [c for c in classes if c.starts_at_local.time() in self.start_time]
+            classes = [c for c in classes if c.starts_at.time() in self.start_time]
 
         return classes
 

@@ -25,8 +25,8 @@ def test_class_filter_datetime_object_to_date():
 
 
 def test_class_filter_single_item_to_list():
-    cf = ClassFilter(class_type=ClassType.ORANGE_3G)
-    assert cf.class_type == [ClassType.ORANGE_3G]
+    cf = ClassFilter(class_type=ClassType.ORANGE_90)
+    assert cf.class_type == [ClassType.ORANGE_90]
 
     cf = ClassFilter(start_time=time(12, 30))
     assert cf.start_time == [time(12, 30)]
@@ -38,10 +38,9 @@ def test_class_filter_single_item_to_list():
 @pytest.mark.parametrize(
     ["provided", "expected"],
     [
-        ("ORANGE 3G", [ClassType.ORANGE_3G]),
-        ("orange 3g", [ClassType.ORANGE_3G]),
-        (["ORANGE 3G"], [ClassType.ORANGE_3G]),
-        ([ClassType.ORANGE_3G, "ORANGE Tornado"], [ClassType.ORANGE_3G, ClassType.ORANGE_TORNADO]),
+        ("ORANGE 60", [ClassType.ORANGE_60]),
+        ("orange 60 ", [ClassType.ORANGE_60]),
+        ([ClassType.ORANGE_60, "ORANGE 60"], [ClassType.ORANGE_60, ClassType.ORANGE_60]),
     ],
 )
 def test_class_type_str_to_enum(provided, expected):

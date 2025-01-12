@@ -176,7 +176,7 @@ class Otf:
         if exclude_unbookable:
             # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
             max_date = datetime.today().date() + timedelta(days=29)
-            classes_list.classes = [c for c in classes_list.classes if c.starts_at_local.date() <= max_date]
+            classes_list.classes = [c for c in classes_list.classes if c.starts_at.date() <= max_date]
 
         booking_resp = self.get_bookings(status=models.BookingStatus.Booked)
         booked_classes = {b.otf_class.class_uuid for b in booking_resp.bookings}
@@ -192,13 +192,13 @@ class Otf:
             if not isinstance(start_date, date | datetime):
                 raise ValueError("start_date must be a date or datetime object")
             start_date = start_date.date() if isinstance(start_date, datetime) else start_date
-            classes_list.classes = [c for c in classes_list.classes if c.starts_at_local.date() >= start_date]
+            classes_list.classes = [c for c in classes_list.classes if c.starts_at.date() >= start_date]
 
         if end_date:
             if not isinstance(end_date, date | datetime):
                 raise ValueError("end_date must be a date or datetime object")
             end_date = end_date.date() if isinstance(end_date, datetime) else end_date
-            classes_list.classes = [c for c in classes_list.classes if c.starts_at_local.date() <= end_date]
+            classes_list.classes = [c for c in classes_list.classes if c.starts_at.date() <= end_date]
 
         # apply provided filters
         if filters:
@@ -212,7 +212,7 @@ class Otf:
 
             # remove duplicates
             classes_list.classes = list({c.class_uuid: c for c in filtered_classes}.values())
-            classes_list.classes = sorted(classes_list.classes, key=lambda x: (x.starts_at_local, x.name))
+            classes_list.classes = sorted(classes_list.classes, key=lambda x: (x.starts_at, x.name))
 
         return classes_list
 
@@ -284,19 +284,11 @@ class Otf:
             existing_booking = self.get_booking_from_class(class_uuid)
             if existing_booking.status != models.BookingStatus.Cancelled:
                 raise exc.AlreadyBookedError(
-                    f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.class_booking_uuid
+                    f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.booking_uuid
                 )
 
         if isinstance(otf_class, models.OtfClass):
-            all_bookings = self.get_bookings()
-            booking_starts_at_map = {b.otf_class.starts_at_local: b for b in all_bookings.bookings}
-            if otf_class.starts_at_local in booking_starts_at_map:
-                conflicting_booking = booking_starts_at_map[otf_class.starts_at_local]
-                conflicting_class_uuid = conflicting_booking.otf_class.class_uuid
-                raise exc.ConflictingBookingError(
-                    f"You already have a booking that conflicts with this class ({conflicting_class_uuid}).",
-                    booking_uuid=conflicting_booking.class_booking_uuid,
-                )
+            self._check_for_booking_conflicts(otf_class)
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
@@ -323,6 +315,29 @@ class Otf:
 
         return booking
 
+    def _check_for_booking_conflicts(self, otf_class: models.OtfClass) -> None:
+        """Check for booking conflicts with the provided class.
+
+        Checks the member's bookings to see if the provided class overlaps with any existing bookings. If a conflict is
+        found, a ConflictingBookingError is raised.
+        """
+
+        all_bookings = self.get_bookings(start_date=otf_class.starts_at.date(), end_date=otf_class.starts_at.date())
+        if not all_bookings.bookings:
+            return
+
+        booking_map: dict[tuple[datetime, datetime], models.Booking] = {}
+
+        for booking in all_bookings.bookings:
+            booking_map[(booking.otf_class.starts_at, booking.otf_class.ends_at)] = booking
+
+        for (booking_start, booking_end), booking in booking_map.items():
+            if otf_class.starts_at <= booking_end and otf_class.ends_at >= booking_start:
+                raise exc.ConflictingBookingError(
+                    f"You already have a booking that conflicts with this class ({booking.otf_class.class_uuid}).",
+                    booking_uuid=booking.booking_uuid,
+                )
+
     def cancel_booking(self, booking: str | models.Booking):
         """Cancel a booking by providing either the booking_uuid or the Booking object.
 
@@ -336,7 +351,7 @@ class Otf:
             ValueError: If booking_uuid is None or empty string
             BookingNotFoundError: If the booking does not exist.
         """
-        booking_uuid = booking.class_booking_uuid if isinstance(booking, models.Booking) else booking
+        booking_uuid = booking.booking_uuid if isinstance(booking, models.Booking) else booking
 
         if not booking_uuid:
             raise ValueError("booking_uuid is required")
@@ -423,7 +438,7 @@ class Otf:
         bookings = res["data"][:limit] if limit else res["data"]
 
         data = models.BookingList(bookings=bookings)
-        data.bookings = sorted(data.bookings, key=lambda x: x.otf_class.starts_at_local)
+        data.bookings = sorted(data.bookings, key=lambda x: x.otf_class.starts_at)
 
         for booking in data.bookings:
             if not booking.otf_class:

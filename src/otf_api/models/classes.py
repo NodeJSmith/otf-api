@@ -1,58 +1,76 @@
 from datetime import datetime
 
-from pydantic import Field
+from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import DoW
-from otf_api.models.mixins import AddressMixin, OtfClassTimeMixin, PhoneLongitudeLatitudeMixin
+from otf_api.models.enums import ClassType, DoW
+from otf_api.models.mixins import AddressMixin, PhoneLongitudeLatitudeMixin
 
 
 class Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
-    studio_uuid: str = Field(alias="id")
+    studio_uuid: str = Field(alias="id", description="The OTF studio UUID")
     name: str
-    mbo_studio_id: str = Field(exclude=True)
     time_zone: str
     currency_code: str | None = None
     address: AddressMixin
 
-
-class Coach(OtfItemBase):
-    mbo_staff_id: str
-    first_name: str
-    image_url: str | None = None
+    # unused fields
+    mbo_studio_id: str | None = Field(None, exclude=True, description="MindBody attr")
 
 
-class OtfClass(OtfItemBase, OtfClassTimeMixin):
-    id: str
-    class_uuid: str = Field(
-        alias="ot_base_class_uuid",
-        description="The OTF class UUID, this is what shows in a booking response and how you can book a class.",
+class OtfClass(OtfItemBase):
+    class_uuid: str = Field(alias="ot_base_class_uuid", description="The OTF class UUID")
+    coach: str | None = Field(None, alias=AliasPath("coach", "first_name"))
+    ends_at: datetime = Field(
+        alias="ends_at_local",
+        description="The end time of the class. Reflects local time, but the object does not have a timezone.",
     )
-    starts_at: datetime
-    starts_at_local: datetime
-    ends_at: datetime
-    ends_at_local: datetime
-    name: str
-    type: str
+    name: str | None = Field(None, description="The name of the class")
+    starts_at: datetime = Field(
+        alias="starts_at_local",
+        description="The start time of the class. Reflects local time, but the object does not have a timezone.",
+    )
     studio: Studio
-    coach: Coach
-    max_capacity: int
+    class_type: ClassType = Field(alias="type")
+
+    # capacity/status fields
     booking_capacity: int
-    waitlist_size: int
     full: bool
-    waitlist_available: bool
-    is_cancelled: bool = Field(alias="canceled")
-    mbo_class_id: str
-    mbo_class_schedule_id: str
-    mbo_class_description_id: str
-    created_at: datetime
-    updated_at: datetime
-    is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
     is_booked: bool | None = Field(None, description="Custom helper field to determine if class is already booked")
+    is_cancelled: bool = Field(alias="canceled")
+    is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
+    max_capacity: int
+    waitlist_available: bool
+    waitlist_size: int
+
+    # unused fields
+    id: str | None = Field(None, exclude=True, description="Not used by API")
+
+    created_at: datetime | None = Field(None, exclude=True)
+    ends_at_utc: datetime | None = Field(None, alias="ends_at", exclude=True)
+    mbo_class_description_id: str | None = Field(None, exclude=True, description="MindBody attr")
+    mbo_class_id: str | None = Field(None, exclude=True, description="MindBody attr")
+    mbo_class_schedule_id: str | None = Field(None, exclude=True, description="MindBody attr")
+    starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True)
+    updated_at: datetime | None = Field(None, exclude=True)
+
+    @property
+    def day_of_week(self) -> DoW:
+        dow = self.starts_at.strftime("%A")
+        return DoW(dow)
+
+    @property
+    def starts_at_local(self) -> datetime:
+        """Alias for starts_at, kept to avoid breaking changes"""
+        return self.starts_at
+
+    @property
+    def ends_at_local(self) -> datetime:
+        """Alias for ends_at, kept to avoid breaking changes"""
+        return self.ends_at
 
     def __str__(self) -> str:
-        starts_at_str = self.starts_at_local.strftime("%a %b %d, %I:%M %p")
-        coach_name = self.coach.first_name
+        starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
         booked_str = ""
         if self.is_booked:
             booked_str = "Booked"
@@ -62,7 +80,7 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
             booked_str = "Waitlist Available"
         else:
             booked_str = "Full"
-        return f"Class: {starts_at_str} {self.name} - {coach_name} ({booked_str})"
+        return f"Class: {starts_at_str} {self.name} - {self.coach} ({booked_str})"
 
     @property
     def has_availability(self) -> bool:
@@ -70,7 +88,7 @@ class OtfClass(OtfItemBase, OtfClassTimeMixin):
 
     @property
     def day_of_week_enum(self) -> DoW:
-        dow = self.starts_at_local.strftime("%A").upper()
+        dow = self.starts_at.strftime("%A").upper()
         return DoW(dow)
 
 

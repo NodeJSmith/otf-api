@@ -33,32 +33,71 @@ class DoW(StrEnum):
     SUNDAY = "Sunday"
 
 
-class ClassType(StrEnum):
-    ORANGE_60_MIN_2G = "Orange 60 Min 2G"
-    TREAD_50 = "Tread 50"
-    STRENGTH_50 = "Strength 50"
-    ORANGE_3G = "Orange 3G"
-    ORANGE_60_TORNADO = "Orange 60 - Tornado"
-    ORANGE_TORNADO = "Orange Tornado"
-    ORANGE_90_MIN_3G = "Orange 90 Min 3G"
-    VIP_CLASS = "VIP Class"
-    OTHER = "Other"
+class Orange60ClassType(StrEnum):
+    Enterprise60 = "Enterprise 60"
+    ExplicitOrange60 = "Explicit Orange 60"
+    OpenStudio60_3G = "Open Studio 60 3G"
+    Orange3G = "Orange 3G"
+    Orange3Group = "Orange 3 Group"
+    Orange60 = "Orange 60"
+    Orange60Min2G = "Orange 60 Min 2G"
+    Orange60Min2GMaskOptional = "Orange 60 Min 2G Mask Optional"
+    Orange60Min3G = "Orange 60 Min 3G"
+    Orange60Tornado = "Orange 60 - Tornado"
+    Tornado60Minute = "Tornado 60 Minute"
 
     @classmethod
     def get_case_insensitive(cls, value: str) -> str:
         lcase_to_actual = {item.value.lower(): item.value for item in cls}
         return lcase_to_actual[value.lower()]
 
+
+class Strength50ClassType(StrEnum):
+    Strength50Lower = "Strength 50 (Lower)"
+    Strength50Total = "Strength 50 (Total)"
+    Strength50Upper = "Strength 50 (Upper)"
+
+
+class Tread50ClassType(StrEnum):
+    Tread50 = "Tread 50"
+
+
+class OtherClassType(StrEnum):
+    InterpretingInbody = "Interpreting Inbody"
+    OpenStudio60 = "Open Studio 60"
+    Orangetheory101Workshop = "Orangetheory 101 Workshop"
+    OrangeTornado = "Orange Tornado"
+    OTFPopUp = "OTF Pop-Up"
+    PrivateClass = "Private Class"
+    RowingClinic = "Rowing Clinic"
+    Tornado = "Tornado"
+    VIPClass = "VIP Class"
+
+
+class Orange90ClassType(StrEnum):
+    Orange90Min3G = "Orange 90 Min 3G"
+    Orange90Min2G = "Orange 90 Min 2G"
+    LifeIsWhyWeGive90 = "Life is Why We Give 90"
+
+
+class ClassType(StrEnum):
+    ORANGE_60 = "ORANGE_60"
+    ORANGE_90 = "ORANGE_90"
+    OTHER = "OTHER"
+    STRENGTH_50 = "STRENGTH_50"
+    TREAD_50 = "TREAD_50"
+
+    @classmethod
+    def get_case_insensitive(cls, value: str) -> str:
+        value = (value or "").strip()
+        value = value.replace(" ", "_")
+        lcase_to_actual = {item.value.lower(): item.value for item in cls}
+        return lcase_to_actual[value.lower()]
+
     @staticmethod
     def get_standard_class_types() -> list["ClassType"]:
         """Returns 2G/3G/Tornado - 60/90 minute classes"""
-        return [
-            ClassType.ORANGE_60_MIN_2G,
-            ClassType.ORANGE_3G,
-            ClassType.ORANGE_60_TORNADO,
-            ClassType.ORANGE_TORNADO,
-            ClassType.ORANGE_90_MIN_3G,
-        ]
+        return [ClassType.ORANGE_60, ClassType.ORANGE_90]
 
     @staticmethod
     def get_tread_strength_class_types() -> list["ClassType"]:
