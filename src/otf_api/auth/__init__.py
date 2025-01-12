@@ -1,4 +1,3 @@
-from .auth import OTF_AUTH_TYPE, OtfAuth
 from .user import OtfUser
 from .utils import HttpxCognitoAuth
 

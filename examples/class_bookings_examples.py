@@ -10,8 +10,7 @@ PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
 def main():
-    user = OtfUser.login(USERNAME, PASSWORD)
-    otf = Otf(user=user)
+    otf = Otf(user=OtfUser(USERNAME, PASSWORD))
 
     resp = otf.get_bookings(start_date=datetime.today().date())
     print(resp.model_dump_json(indent=4))

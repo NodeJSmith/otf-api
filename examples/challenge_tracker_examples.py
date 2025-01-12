@@ -9,8 +9,7 @@ PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
 def main():
-    user = OtfUser.login(USERNAME, PASSWORD)
-    otf = Otf(user=user)
+    otf = Otf(user=OtfUser(USERNAME, PASSWORD))
     # challenge tracker content is an overview of the challenges OTF runs
     # and your participation in them
     challenge_tracker_content = otf.get_challenge_tracker_content()

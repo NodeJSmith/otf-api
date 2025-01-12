@@ -8,8 +8,7 @@ PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
 def main():
-    user = OtfUser.login(USERNAME, PASSWORD)
-    otf = Otf(user=user)
+    otf = Otf(user=OtfUser(USERNAME, PASSWORD))
 
     resp = otf.get_member_lifetime_stats()
     print(resp.model_dump_json(indent=4))

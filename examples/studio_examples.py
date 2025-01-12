@@ -8,8 +8,7 @@ PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
 def main():
-    user = OtfUser.login(USERNAME, PASSWORD)
-    otf = Otf(user=user)
+    otf = Otf(user=OtfUser(USERNAME, PASSWORD))
 
     # if you need to figure out what studios are in an area, you can call `search_studios_by_geo`
     # which takes latitude, longitude, distance, page_index, and page_size as arguments
