@@ -183,17 +183,21 @@ class OtfCognito(Cognito):
         """Sets a new access token on the User using the cached refresh token and device metadata.
 
         Overriden to add the device key to the auth_params if it is set. Without this all calls to renew_access_token
-        will fail with NOT_AUTHORIZED.
+        will fail with NOT_AUTHORIZED. Also skips the call to _add_secret_hash since we don't have a client secret.
+
+        # https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_InitiateAuth.html#CognitoUserPools-InitiateAuth-request-AuthFlow
 
         """
-        auth_params = {"REFRESH_TOKEN": self.refresh_token}
-        self._add_secret_hash(auth_params, "SECRET_HASH")
+        if not self.device_key:
+            raise ValueError("Device key not set - device key is required by this Cognito pool")
 
-        if self.device_key:
-            auth_params["DEVICE_KEY"] = self.device_key
+        if not self.refresh_token:
+            raise ValueError("No refresh token set - cannot renew access token")
 
         refresh_response = self.client.initiate_auth(
-            ClientId=self.client_id, AuthFlow="REFRESH_TOKEN_AUTH", AuthParameters=auth_params
+            ClientId=self.client_id,
+            AuthFlow="REFRESH_TOKEN_AUTH",
+            AuthParameters={"REFRESH_TOKEN": self.refresh_token, "DEVICE_KEY": self.device_key},
         )
         self._set_tokens(refresh_response)
 
