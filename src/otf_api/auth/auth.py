@@ -205,15 +205,14 @@ class OtfCognito(Cognito):
         auth_result = tokens["AuthenticationResult"]
         device_metadata = auth_result.get("NewDeviceMetadata", {})
 
-        # tokens
+        # tokens - refresh token defaults to existing value if not present
         self.verify_token(auth_result["AccessToken"], "access_token", "access")
         self.verify_token(auth_result["IdToken"], "id_token", "id")
         self.refresh_token = auth_result.get("RefreshToken", self.refresh_token)
         self.token_type = auth_result["TokenType"]
         CRED_CACHE.write_to_cache(self.tokens)
 
-        # device metadata
+        # device metadata - default to existing values if not present
         self.device_key = device_metadata.get("DeviceKey", self.device_key)
         self.device_group_key = device_metadata.get("DeviceGroupKey", self.device_group_key)
-        if self.device_key and self.device_group_key:
-            CRED_CACHE.write_to_cache({"device_key": self.device_key, "device_group_key": self.device_group_key})
+        CRED_CACHE.write_to_cache(self.device_metadata)
