@@ -1,6 +1,10 @@
-from pydantic import Field
+from typing import Generic, TypeVar
+
+from pydantic import BaseModel, Field
 
 from otf_api.models.base import OtfItemBase
+
+T = TypeVar("T", bound=BaseModel)
 
 
 class OutStudioMixin(OtfItemBase):
@@ -40,34 +44,26 @@ class AllStatsData(OutStudioMixin, InStudioMixin, BaseStatsData):
     pass
 
 
-class OutStudioTimeStats(OtfItemBase):
-    last_year: OutStudioStatsData = Field(..., alias="lastYear")
-    this_year: OutStudioStatsData = Field(..., alias="thisYear")
-    last_month: OutStudioStatsData = Field(..., alias="lastMonth")
-    this_month: OutStudioStatsData = Field(..., alias="thisMonth")
-    last_week: OutStudioStatsData = Field(..., alias="lastWeek")
-    this_week: OutStudioStatsData = Field(..., alias="thisWeek")
-    all_time: OutStudioStatsData = Field(..., alias="allTime")
+class TimeStats(OtfItemBase, Generic[T]):
+    last_year: T = Field(..., alias="lastYear")
+    this_year: T = Field(..., alias="thisYear")
+    last_month: T = Field(..., alias="lastMonth")
+    this_month: T = Field(..., alias="thisMonth")
+    last_week: T = Field(..., alias="lastWeek")
+    this_week: T = Field(..., alias="thisWeek")
+    all_time: T = Field(..., alias="allTime")
 
 
-class InStudioTimeStats(OtfItemBase):
-    last_year: InStudioStatsData = Field(..., alias="lastYear")
-    this_year: InStudioStatsData = Field(..., alias="thisYear")
-    last_month: InStudioStatsData = Field(..., alias="lastMonth")
-    this_month: InStudioStatsData = Field(..., alias="thisMonth")
-    last_week: InStudioStatsData = Field(..., alias="lastWeek")
-    this_week: InStudioStatsData = Field(..., alias="thisWeek")
-    all_time: InStudioStatsData = Field(..., alias="allTime")
+class OutStudioTimeStats(TimeStats[OutStudioStatsData]):
+    pass
 
 
-class AllStatsTimeStats(OtfItemBase):
-    last_year: AllStatsData = Field(..., alias="lastYear")
-    this_year: AllStatsData = Field(..., alias="thisYear")
-    last_month: AllStatsData = Field(..., alias="lastMonth")
-    this_month: AllStatsData = Field(..., alias="thisMonth")
-    last_week: AllStatsData = Field(..., alias="lastWeek")
-    this_week: AllStatsData = Field(..., alias="thisWeek")
-    all_time: AllStatsData = Field(..., alias="allTime")
+class InStudioTimeStats(TimeStats[InStudioStatsData]):
+    pass
+
+
+class AllStatsTimeStats(TimeStats[AllStatsData]):
+    pass
 
 
 class StatsResponse(OtfItemBase):
