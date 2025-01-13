@@ -123,6 +123,11 @@ class Booking(OtfItemBase):
     updated_by: str = Field(alias="updatedBy", exclude=True, repr=False)
 
     @property
+    def studio_uuid(self) -> str:
+        """Shortcut to get the studio UUID"""
+        return self.otf_class.studio.studio_uuid
+
+    @property
     def class_uuid(self) -> str:
         """Shortcut to get the class UUID"""
         return self.otf_class.class_uuid

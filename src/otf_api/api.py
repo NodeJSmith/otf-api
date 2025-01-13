@@ -448,10 +448,8 @@ class Otf:
         for booking in data.bookings:
             if not booking.otf_class:
                 continue
-            if booking.otf_class.studio.studio_uuid == self.home_studio_uuid:
-                booking.is_home_studio = True
-            else:
-                booking.is_home_studio = False
+
+            booking.is_home_studio = booking.studio_uuid == self.home_studio_uuid
 
         if exclude_cancelled:
             data.bookings = [b for b in data.bookings if b.status != models.BookingStatus.Cancelled]
