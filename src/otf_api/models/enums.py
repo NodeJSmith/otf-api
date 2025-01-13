@@ -46,11 +46,6 @@ class Orange60ClassType(StrEnum):
     Orange60Tornado = "Orange 60 - Tornado"
     Tornado60Minute = "Tornado 60 Minute"
 
-    @classmethod
-    def get_case_insensitive(cls, value: str) -> str:
-        lcase_to_actual = {item.value.lower(): item.value for item in cls}
-        return lcase_to_actual[value.lower()]
-
 
 class Strength50ClassType(StrEnum):
     Strength50Lower = "Strength 50 (Lower)"
