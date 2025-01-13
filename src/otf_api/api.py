@@ -23,7 +23,9 @@ LOGGER = getLogger(__name__)
 @attrs.define(init=False)
 class Otf:
     member: models.MemberDetail
+    member_uuid: str
     home_studio: models.StudioDetail
+    home_studio_uuid: str
     user: OtfUser
     session: httpx.Client
 
@@ -34,6 +36,7 @@ class Otf:
             user (OtfUser): The user to authenticate as.
         """
         self.user = user
+        self.member_uuid = self.user.member_id
 
         self.session = httpx.Client(
             headers=JSON_HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
@@ -42,6 +45,7 @@ class Otf:
 
         self.member = self.get_member_detail()
         self.home_studio = self.get_studio_detail(self.member.home_studio.studio_uuid)
+        self.home_studio_uuid = self.home_studio.studio_uuid
 
     @classmethod
     def prompt_for_credentials(cls) -> "Otf":
@@ -54,16 +58,6 @@ class Otf:
         email_address = input("Enter your Orangetheory Fitness email: ")
         password = getpass("Enter your Orangetheory Fitness password: ")
         return cls(user=OtfUser(email_address, password))
-
-    @property
-    def member_uuid(self) -> str:
-        """Get the member UUID."""
-        return self.member.member_uuid
-
-    @property
-    def home_studio_uuid(self) -> str:
-        """Get the home studio UUID."""
-        return self.home_studio.studio_uuid
 
     def _do(
         self,
@@ -542,7 +536,7 @@ class Otf:
 
         params = {"include": ",".join(include)} if include else None
 
-        data = self._default_request("GET", f"/member/members/{self.user.member_id}", params=params)
+        data = self._default_request("GET", f"/member/members/{self.member_uuid}", params=params)
         return models.MemberDetail(**data["data"])
 
     def get_member_membership(self) -> models.MemberMembership:
