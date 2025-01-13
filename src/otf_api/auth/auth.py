@@ -2,11 +2,13 @@ import platform
 import typing
 from logging import getLogger
 from pathlib import Path
+from time import sleep
 from typing import Any, ClassVar
 
 from boto3 import Session
 from botocore import UNSIGNED
 from botocore.config import Config
+from botocore.exceptions import ClientError
 from pycognito import AWSSRP, Cognito
 from pycognito.aws_srp import generate_hash_device
 
@@ -146,7 +148,17 @@ class OtfCognito(Cognito):
             client_id=CLIENT_ID,
             client=self.client,
         )
-        tokens: InitiateAuthResponseTypeDef = aws.authenticate_user()
+        try:
+            tokens: InitiateAuthResponseTypeDef = aws.authenticate_user()
+        except ClientError as e:
+            code = e.response["Error"]["Code"]
+            msg = e.response["Error"]["Message"]
+            if "UserLambdaValidationException" in msg or "UserLambdaValidation" in code:
+                sleep(5)
+                tokens = aws.authenticate_user()
+            else:
+                raise
+
         self._set_tokens(tokens)
         self._handle_device_setup()
 
