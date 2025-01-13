@@ -677,7 +677,12 @@ class Otf:
         """
         studio_uuid = studio_uuid or self.home_studio_uuid
         data = self._default_request("GET", f"/member/studios/{studio_uuid}/services")
-        return models.StudioServiceList(data=data["data"])
+
+        # manually add studio_uuid, the response data does not include it anywhere
+        for d in data["data"]:
+            d["studio_uuid"] = studio_uuid
+
+        return models.StudioServiceList(studio_uuid=studio_uuid, data=data["data"])
 
     def get_studio_detail(self, studio_uuid: str | None = None) -> models.StudioDetail:
         """Get detailed information about a specific studio. If no studio UUID is provided, it will default to the

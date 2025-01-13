@@ -69,6 +69,10 @@ def main():
     studio_detail = otf.get_studio_detail()
     print(studio_detail.model_dump_json(indent=4))
 
+    print("Studio Services")
+    services = otf.get_studio_services(studio_detail.studio_uuid)
+    print(services.model_dump_json(indent=4))
+
 
 if __name__ == "__main__":
     main()

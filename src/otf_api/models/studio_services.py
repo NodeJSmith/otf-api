@@ -30,6 +30,7 @@ class Studio(OtfItemBase):
 
 
 class StudioService(OtfItemBase):
+    studio_uuid: str = Field(..., description="The OTF studio UUID")
     service_id: int = Field(..., alias="serviceId")
     service_uuid: str = Field(..., alias="serviceUUId")
     studio_id: int = Field(..., alias="studioId")
@@ -54,6 +55,7 @@ class StudioService(OtfItemBase):
 
 
 class StudioServiceList(OtfItemBase):
+    studio_uuid: str = Field(..., description="The OTF studio UUID")
     data: list[StudioService]
 
     def __len__(self) -> int:
