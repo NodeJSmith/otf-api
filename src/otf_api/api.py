@@ -1,5 +1,6 @@
 import atexit
 import contextlib
+import functools
 from datetime import date, datetime, timedelta
 from getpass import getpass
 from logging import getLogger
@@ -44,8 +45,18 @@ class Otf:
         atexit.register(self.session.close)
 
         self.member = self.get_member_detail()
+        self.home_studio_uuid = self.member.home_studio.studio_uuid
+
         self.home_studio = self.get_studio_detail(self.member.home_studio.studio_uuid)
-        self.home_studio_uuid = self.home_studio.studio_uuid
+
+    def __eq__(self, other):
+        if not isinstance(other, Otf):
+            return False
+        return self.member_uuid == other.member_uuid and self.home_studio_uuid == other.home_studio_uuid
+
+    def __hash__(self):
+        # Combine immutable attributes into a single hash value
+        return hash((self.member_uuid, self.home_studio_uuid))
 
     @classmethod
     def prompt_for_credentials(cls) -> "Otf":
@@ -604,15 +615,27 @@ class Otf:
 
         return models.OutOfStudioWorkoutHistoryList(workouts=data["data"])
 
-    def get_favorite_studios(self) -> models.FavoriteStudioList:
+    def get_favorite_studios(self) -> models.StudioDetailList:
         """Get the member's favorite studios.
 
         Returns:
-            FavoriteStudioList: The member's favorite studios.
+            StudioDetailList: The member's favorite studios.
         """
         data = self._default_request("GET", f"/member/members/{self.member_uuid}/favorite-studios")
+        studio_uuids = [studio["studioUUId"] for studio in data["data"]]
 
-        return models.FavoriteStudioList(studios=data["data"])
+        # the data returned by this endpoint is a different model from the regular studio detail
+        # so instead of forcing users to deal with a different model for each endpoint, we will just
+        # call the studio detail endpoint for each studio and return a list of studio details
+
+        # it's slower, but it's more consistent
+
+        all_studio_details: list[models.StudioDetail] = []
+
+        for studio_uuid in studio_uuids:
+            all_studio_details.append(self.get_studio_detail(studio_uuid))
+
+        return models.StudioDetailList(studios=all_studio_details)
 
     def add_favorite_studio(self, studio_uuids: list[str] | str) -> None:
         """Add a studio to the member's favorite studios.
@@ -654,9 +677,7 @@ class Otf:
             raise ValueError("studio_uuids is required")
 
         body = {"studioUUIds": studio_uuids}
-        resp = self._default_request("DELETE", "/mobile/v1/members/favorite-studios", json=body)
-
-        return resp
+        self._default_request("DELETE", "/mobile/v1/members/favorite-studios", json=body)
 
     def get_studio_services(self, studio_uuid: str | None = None) -> models.StudioServiceList:
         """Get the services available at a specific studio. If no studio UUID is provided, the member's home studio
@@ -677,6 +698,7 @@ class Otf:
 
         return models.StudioServiceList(studio_uuid=studio_uuid, data=data["data"])
 
+    @functools.cache
     def get_studio_detail(self, studio_uuid: str | None = None) -> models.StudioDetail:
         """Get detailed information about a specific studio. If no studio UUID is provided, it will default to the
         user's home studio.
@@ -695,13 +717,25 @@ class Otf:
         res = self._default_request("GET", path, params=params)
         return models.StudioDetail(**res["data"])
 
+    def get_studios_by_geo(
+        self,
+        latitude: float | None = None,
+        longitude: float | None = None,
+        distance: float = 500,
+        page_index: int = 1,
+        page_size: int = 100,
+    ) -> models.StudioDetailList:
+        """Alias for search_studios_by_geo."""
+
+        return self.search_studios_by_geo(latitude, longitude, distance, page_index, page_size)
+
     def search_studios_by_geo(
         self,
         latitude: float | None = None,
         longitude: float | None = None,
         distance: float = 50,
         page_index: int = 1,
-        page_size: int = 50,
+        page_size: int = 100,
     ) -> models.StudioDetailList:
         """Search for studios by geographic location.
 
@@ -710,30 +744,46 @@ class Otf:
             longitude (float, optional): Longitude of the location to search around, if None uses home studio longitude.
             distance (float, optional): Distance in miles to search around the location. Defaults to 50.
             page_index (int, optional): Page index to start at. Defaults to 1.
-            page_size (int, optional): Number of results per page. Defaults to 50.
+            page_size (int, optional): Number of results per page. Defaults to 100.
 
         Returns:
             StudioDetailList: List of studios that match the search criteria.
-
-        Notes:
-            ---
-            There does not seem to be a limit to the number of results that can be requested total or per page, the
-            library enforces a limit of 50 results per page to avoid potential rate limiting issues.
-
         """
+        latitude = latitude or self.home_studio.location.latitude
+        longitude = longitude or self.home_studio.location.longitude
+
+        return self._get_studios_by_geo(latitude, longitude, distance, page_index, page_size)
+
+    def _get_all_studios(self) -> models.StudioDetailList:
+        """Gets all studios. Marked as private to avoid random users calling it. Useful for testing and validating
+        models.
+
+        Returns:
+            StudioDetailList: List of studios that match the search criteria.
+        """
+
+        return self._get_studios_by_geo(None, None, 500, 1, 100)
+
+    def _get_studios_by_geo(
+        self,
+        latitude: float | None,
+        longitude: float | None,
+        distance: float = 50,
+        page_index: int = 1,
+        page_size: int = 100,
+    ):
+        """Searches for studios by geographic location. Used by search_studios_by_geo and get_all_studios."""
+
         path = "/mobile/v1/studios"
 
-        if not latitude and not longitude:
-            home_studio = self.get_studio_detail()
-
-            latitude = home_studio.location.latitude
-            longitude = home_studio.location.longitude
-
-        if page_size > 50:
-            LOGGER.warning("The API does not support more than 50 results per page, limiting to 50.")
-            page_size = 50
+        if page_size > 100:
+            # the API actually seems to accept any page size, but we don't want to blow up the servers
+            # by requesting 1000 studios at a time
+            LOGGER.warning("The API does not support more than 100 results per page, limiting to 100.")
+            page_size = 100
 
         if page_index < 1:
+            # if page index is set to 0 the API treats it like 1, causing duplicate results
             LOGGER.warning("Page index must be greater than 0, setting to 1.")
             page_index = 1
 
@@ -745,19 +795,22 @@ class Otf:
             "distance": distance,
         }
 
-        all_results: list[models.StudioDetail] = []
+        LOGGER.debug(f"Searching for studios: {params}")
 
-        while True:
-            res = self._default_request("GET", path, params=params)
-            pagination = models.Pagination(**res["data"].pop("pagination"))
-            all_results.extend([models.StudioDetail(**studio) for studio in res["data"]["studios"]])
+        all_results: dict[str, dict[str, Any]] = {}
+        res = self._default_request("GET", path, params=params)
+        all_results.update({studio["studioUUId"]: studio for studio in res["data"]["studios"]})
+        params["pageIndex"] += 1
 
-            if len(all_results) == pagination.total_count:
-                break
+        total_count = res["data"].get("pagination", {}).get("totalCount", 0)
+
+        while len(all_results) < total_count:
+            studios = self._default_request("GET", path, params=params)["data"]["studios"]
+            all_results.update({studio["studioUUId"]: studio for studio in studios})
 
             params["pageIndex"] += 1
 
-        return models.StudioDetailList(studios=all_results)
+        return models.StudioDetailList(studios=list(all_results.values()))
 
     def get_total_classes(self) -> models.TotalClasses:
         """Get the member's total classes. This is a simple object reflecting the total number of classes attended,

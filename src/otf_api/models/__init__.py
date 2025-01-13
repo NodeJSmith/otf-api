@@ -6,7 +6,6 @@ from .challenge_tracker_content import ChallengeTrackerContent
 from .challenge_tracker_detail import ChallengeTrackerDetailList
 from .classes import OtfClass, OtfClassList
 from .enums import BookingStatus, ChallengeType, ClassType, DoW, EquipmentType, StatsTime, StudioStatus
-from .favorite_studios import FavoriteStudioList
 from .latest_agreement import LatestAgreement
 from .lifetime_stats import StatsResponse
 from .member_detail import MemberDetail
@@ -15,7 +14,7 @@ from .member_purchases import MemberPurchaseList
 from .out_of_studio_workout_history import OutOfStudioWorkoutHistoryList
 from .performance_summary_detail import PerformanceSummaryDetail
 from .performance_summary_list import PerformanceSummaryList
-from .studio_detail import Pagination, StudioDetail, StudioDetailList
+from .studio_detail import StudioDetail, StudioDetailList
 from .studio_services import StudioServiceList
 from .telemetry import Telemetry
 from .telemetry_hr_history import TelemetryHrHistory
@@ -35,7 +34,6 @@ __all__ = [
     "ClassType",
     "DoW",
     "EquipmentType",
-    "FavoriteStudioList",
     "LatestAgreement",
     "MemberDetail",
     "MemberMembership",
@@ -43,7 +41,6 @@ __all__ = [
     "OtfClass",
     "OtfClassList",
     "OutOfStudioWorkoutHistoryList",
-    "Pagination",
     "PerformanceSummaryDetail",
     "PerformanceSummaryList",
     "StatsResponse",

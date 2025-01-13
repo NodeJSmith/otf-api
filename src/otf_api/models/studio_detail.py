@@ -1,22 +1,19 @@
 from datetime import datetime
 
-from pydantic import AliasPath, Field
+from pydantic import AliasChoices, AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import StudioStatus
-from otf_api.models.mixins import AddressMixin, PhoneLongitudeLatitudeMixin
+from otf_api.models.mixins import AddressMixin
 
 
-class CountryCurrency(OtfItemBase):
-    country_currency_code: str = Field(..., alias="countryCurrencyCode")
-    currency_id: int | None = Field(None, alias=AliasPath("defaultCurrency", "currencyId"))
-    currency_alphabetic_code: str | None = Field(None, alias=AliasPath("defaultCurrency", "currencyAlphabeticCode"))
+class StudioLocation(AddressMixin):
+    phone_number: str | None = Field(None, alias=AliasChoices("phone", "phoneNumber"))
+    latitude: float = Field(..., alias=AliasChoices("latitude"))
+    longitude: float = Field(..., alias=AliasChoices("longitude"))
 
-
-class StudioLocation(PhoneLongitudeLatitudeMixin, AddressMixin):
     physical_region: str | None = Field(None, alias="physicalRegion", exclude=True, repr=False)
     physical_country_id: int | None = Field(None, alias="physicalCountryId", exclude=True, repr=False)
-    country_currency: CountryCurrency | None = Field(None, alias="country_currency", exclude=True, repr=False)
 
 
 class StudioDetail(OtfItemBase):
@@ -24,9 +21,11 @@ class StudioDetail(OtfItemBase):
 
     contact_email: str | None = Field(None, alias="contactEmail")
     distance: float | None = Field(
-        None, description="Appears to be distance from member or potentially member's home studio"
+        None,
+        description="Distance from latitude and longitude provided to `search_studios_by_geo` method,\
+              NULL if that method was not used",
     )
-    location: StudioLocation | None = Field(None, alias="studioLocation")
+    location: StudioLocation = Field(..., alias="studioLocation")
     name: str | None = Field(None, alias="studioName")
     status: StudioStatus | None = Field(
         None, alias="studioStatus", description="Active, Temporarily Closed, Coming Soon"
@@ -61,13 +60,6 @@ class StudioDetail(OtfItemBase):
     studio_physical_location_id: int | None = Field(None, alias="studioPhysicalLocationId", exclude=True, repr=False)
     studio_token: str | None = Field(None, alias="studioToken", exclude=True, repr=False)
     studio_type_id: int | None = Field(None, alias="studioTypeId", exclude=True, repr=False)
-
-
-class Pagination(OtfItemBase):
-    page_index: int | None = Field(None, alias="pageIndex")
-    page_size: int | None = Field(None, alias="pageSize")
-    total_count: int | None = Field(None, alias="totalCount")
-    total_pages: int | None = Field(None, alias="totalPages")
 
 
 class StudioDetailList(OtfItemBase):

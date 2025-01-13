@@ -10,7 +10,7 @@ class PhoneLongitudeLatitudeMixin(OtfItemBase):
 
 
 class AddressMixin(OtfItemBase):
-    address_line1: str = Field(None, alias=AliasChoices("line1", "address1", "address", "physicalAddress"))
+    address_line1: str | None = Field(None, alias=AliasChoices("line1", "address1", "address", "physicalAddress"))
     address_line2: str | None = Field(None, alias=AliasChoices("line2", "address2", "physicalAddress2"))
     city: str | None = Field(None, alias=AliasChoices("city", "physicalCity"))
     postal_code: str | None = Field(None, alias=AliasChoices("postal_code", "postalCode", "physicalPostalCode"))

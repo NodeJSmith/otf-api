@@ -73,6 +73,14 @@ def main():
     services = otf.get_studio_services(studio_detail.studio_uuid)
     print(services.model_dump_json(indent=4))
 
+    faves = otf.get_favorite_studios()
+
+    if not faves:
+        otf.add_favorite_studio(otf.home_studio_uuid)
+
+    faves = otf.get_favorite_studios()
+    print(faves.model_dump_json(indent=4))
+
 
 if __name__ == "__main__":
     main()
