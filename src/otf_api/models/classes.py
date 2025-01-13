@@ -44,7 +44,7 @@ class OtfClass(OtfItemBase):
     waitlist_size: int
 
     # unused fields
-    id: str | None = Field(None, exclude=True, description="Not used by API")
+    class_id: str | None = Field(None, alias="id", exclude=True, description="Not used by API")
 
     created_at: datetime | None = Field(None, exclude=True, repr=False)
     ends_at_utc: datetime | None = Field(None, alias="ends_at", exclude=True, repr=False)
