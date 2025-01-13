@@ -30,7 +30,7 @@ class Studio(OtfItemBase):
     contact_email: str | None = Field(None, alias="contactEmail")
     description: str | None = None
     status: StudioStatus | None = None
-    location: StudioLocation | None = Field(None, alias="studioLocation", exclude=True)
+    location: StudioLocation | None = Field(None, alias="studioLocation", exclude=True, repr=False)
     name: str = Field(alias="studioName")
     time_zone: str = Field(alias="timeZone")
 
@@ -45,9 +45,9 @@ class Coach(OtfItemBase):
     last_name: str | None = Field(None, alias="lastName")
 
     # unused fields
-    image_url: str | None = Field(None, alias="imageUrl", exclude=True)
-    name: str = Field(exclude=True)
-    profile_picture_url: str | None = Field(None, alias="profilePictureUrl", exclude=True)
+    image_url: str | None = Field(None, alias="imageUrl", exclude=True, repr=False)
+    name: str = Field(exclude=True, repr=False)
+    profile_picture_url: str | None = Field(None, alias="profilePictureUrl", exclude=True, repr=False)
 
     @property
     def full_name(self) -> str:
@@ -66,10 +66,10 @@ class OtfClass(OtfItemBase):
 
     # unused fields
     coach_id: int | None = Field(None, alias="coachId", exclude=True, description="Not used by API")
-    description: str | None = Field(None, exclude=True)
-    location: Location | None = Field(None, exclude=True)
-    program_name: str | None = Field(None, alias="programName", exclude=True)
-    virtual_class: bool | None = Field(None, alias="virtualClass", exclude=True)
+    description: str | None = Field(None, exclude=True, repr=False)
+    location: Location | None = Field(None, exclude=True, repr=False)
+    program_name: str | None = Field(None, alias="programName", exclude=True, repr=False)
+    virtual_class: bool | None = Field(None, alias="virtualClass", exclude=True, repr=False)
 
     @property
     def starts_at_local(self) -> datetime:
@@ -89,7 +89,7 @@ class Member(OtfItemBase):
     email: str | None = None
     phone_number: str | None = Field(None, alias="phoneNumber")
     gender: str | None = None
-    cc_last_4: str | None = Field(None, alias="ccLast4", exclude=True)
+    cc_last_4: str | None = Field(None, alias="ccLast4", exclude=True, repr=False)
 
 
 class Booking(OtfItemBase):
@@ -109,16 +109,16 @@ class Booking(OtfItemBase):
     # unused fields
     class_booking_id: int = Field(alias="classBookingId", exclude=True, description="Not used by API")
     class_id: int = Field(alias="classId", exclude=True, description="Not used by API")
-    created_by: str = Field(alias="createdBy", exclude=True)
+    created_by: str = Field(alias="createdBy", exclude=True, repr=False)
     mbo_class_id: int | None = Field(None, alias="mboClassId", exclude=True, description="MindBody attr")
     mbo_member_id: str | None = Field(None, alias="mboMemberId", exclude=True, description="MindBody attr")
     mbo_sync_message: str | None = Field(None, alias="mboSyncMessage", exclude=True, description="MindBody attr")
     mbo_visit_id: int | None = Field(None, alias="mboVisitId", exclude=True, description="MindBody attr")
-    mbo_waitlist_entry_id: int | None = Field(None, alias="mboWaitlistEntryId", exclude=True)
+    mbo_waitlist_entry_id: int | None = Field(None, alias="mboWaitlistEntryId", exclude=True, repr=False)
     member_id: int = Field(alias="memberId", exclude=True, description="Not used by API")
     member: Member | None = Field(None, exclude=True, description="Slimmed down member object")
     studio_id: int = Field(alias="studioId", exclude=True, description="Not used by API")
-    updated_by: str = Field(alias="updatedBy", exclude=True)
+    updated_by: str = Field(alias="updatedBy", exclude=True, repr=False)
 
     @property
     def class_uuid(self) -> str:

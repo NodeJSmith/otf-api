@@ -42,10 +42,10 @@ class Class(OtfItemBase):
     updated_by: str | None = Field(None, alias="updatedBy")
     updated_date: datetime | None = Field(None, alias="updatedDate")
     is_deleted: bool | None = Field(None, alias="isDeleted")
-    studio: dict[Hashable, Any] | None = Field(None, exclude=True)
-    location: dict[Hashable, Any] | None = Field(None, exclude=True)
-    coach: dict[Hashable, Any] | None = Field(None, exclude=True)
-    attributes: dict[str, Any] | None = Field(None, exclude=True)
+    studio: dict[Hashable, Any] | None = Field(None, exclude=True, repr=False)
+    location: dict[Hashable, Any] | None = Field(None, exclude=True, repr=False)
+    coach: dict[Hashable, Any] | None = Field(None, exclude=True, repr=False)
+    attributes: dict[str, Any] | None = Field(None, exclude=True, repr=False)
 
 
 class SavedBooking(OtfItemBase):
@@ -69,15 +69,15 @@ class SavedBooking(OtfItemBase):
     updated_by: str | None = Field(None, alias="updatedBy")
     updated_date: datetime | None = Field(None, alias="updatedDate")
     is_deleted: bool | None = Field(None, alias="isDeleted")
-    member: dict[Hashable, Any] | None = Field(None, exclude=True)
+    member: dict[Hashable, Any] | None = Field(None, exclude=True, repr=False)
     otf_class: Class = Field(..., alias="class")
-    custom_data: Any | None = Field(None, alias="customData", exclude=True)
-    attributes: dict[str, Any] | None = Field(None, exclude=True)
+    custom_data: Any | None = Field(None, alias="customData", exclude=True, repr=False)
+    attributes: dict[str, Any] | None = Field(None, exclude=True, repr=False)
 
 
 class BookClass(OtfItemBase):
     saved_bookings: list[SavedBooking] = Field(None, alias="savedBookings")
-    mbo_response: list[dict[Hashable, Any]] | Any | None = Field(None, alias="mboResponse", exclude=True)
+    mbo_response: list[dict[Hashable, Any]] | Any | None = Field(None, alias="mboResponse", exclude=True, repr=False)
 
     @property
     def booking(self) -> SavedBooking:

@@ -46,13 +46,13 @@ class OtfClass(OtfItemBase):
     # unused fields
     id: str | None = Field(None, exclude=True, description="Not used by API")
 
-    created_at: datetime | None = Field(None, exclude=True)
-    ends_at_utc: datetime | None = Field(None, alias="ends_at", exclude=True)
+    created_at: datetime | None = Field(None, exclude=True, repr=False)
+    ends_at_utc: datetime | None = Field(None, alias="ends_at", exclude=True, repr=False)
     mbo_class_description_id: str | None = Field(None, exclude=True, description="MindBody attr")
     mbo_class_id: str | None = Field(None, exclude=True, description="MindBody attr")
     mbo_class_schedule_id: str | None = Field(None, exclude=True, description="MindBody attr")
-    starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True)
-    updated_at: datetime | None = Field(None, exclude=True)
+    starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True, repr=False)
+    updated_at: datetime | None = Field(None, exclude=True, repr=False)
 
     @property
     def day_of_week(self) -> DoW:

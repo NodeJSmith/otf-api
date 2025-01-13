@@ -193,27 +193,29 @@ class BodyCompositionData(OtfItemBase):
     in_body_type: str = Field(..., alias="inBodyType")
 
     # excluded because they are only useful for end result of calculations
-    body_fat_mass_dividers: list[float] = Field(..., alias="bfmGraphScale", exclude=True)
-    body_fat_mass_plot_point: float = Field(..., alias="pfatnew", exclude=True)
-    skeletal_muscle_mass_dividers: list[float] = Field(..., alias="smmGraphScale", exclude=True)
-    skeletal_muscle_mass_plot_point: float = Field(..., alias="psmm", exclude=True)
-    weight_dividers: list[float] = Field(..., alias="wtGraphScale", exclude=True)
-    weight_plot_point: float = Field(..., alias="pwt", exclude=True)
+    body_fat_mass_dividers: list[float] = Field(..., alias="bfmGraphScale", exclude=True, repr=False)
+    body_fat_mass_plot_point: float = Field(..., alias="pfatnew", exclude=True, repr=False)
+    skeletal_muscle_mass_dividers: list[float] = Field(..., alias="smmGraphScale", exclude=True, repr=False)
+    skeletal_muscle_mass_plot_point: float = Field(..., alias="psmm", exclude=True, repr=False)
+    weight_dividers: list[float] = Field(..., alias="wtGraphScale", exclude=True, repr=False)
+    weight_plot_point: float = Field(..., alias="pwt", exclude=True, repr=False)
 
     # excluded due to 0 values
-    body_fat_mass_details: BodyFatMass = Field(..., exclude=True)
-    body_fat_mass_percent_details: BodyFatMassPercent = Field(..., exclude=True)
-    total_body_weight_details: TotalBodyWeight = Field(..., exclude=True)
-    intra_cellular_water_details: IntraCellularWater = Field(..., exclude=True)
-    extra_cellular_water_details: ExtraCellularWater = Field(..., exclude=True)
-    extra_cellular_water_over_total_body_water_details: ExtraCellularWaterOverTotalBodyWater = Field(..., exclude=True)
-    visceral_fat_level: float = Field(..., alias="vfl", exclude=True)
-    visceral_fat_area: float = Field(..., alias="vfa", exclude=True)
-    body_comp_measurement: float = Field(..., alias="bcm", exclude=True)
-    total_body_weight_over_lean_body_mass: float = Field(..., alias="tbwOverLBM", exclude=True)
-    intracellular_water: float = Field(..., alias="icw", exclude=True)
-    extracellular_water: float = Field(..., alias="ecw", exclude=True)
-    lean_body_mass_control: float = Field(..., alias="lbmControl", exclude=True)
+    body_fat_mass_details: BodyFatMass = Field(..., exclude=True, repr=False)
+    body_fat_mass_percent_details: BodyFatMassPercent = Field(..., exclude=True, repr=False)
+    total_body_weight_details: TotalBodyWeight = Field(..., exclude=True, repr=False)
+    intra_cellular_water_details: IntraCellularWater = Field(..., exclude=True, repr=False)
+    extra_cellular_water_details: ExtraCellularWater = Field(..., exclude=True, repr=False)
+    extra_cellular_water_over_total_body_water_details: ExtraCellularWaterOverTotalBodyWater = Field(
+        ..., exclude=True, repr=False
+    )
+    visceral_fat_level: float = Field(..., alias="vfl", exclude=True, repr=False)
+    visceral_fat_area: float = Field(..., alias="vfa", exclude=True, repr=False)
+    body_comp_measurement: float = Field(..., alias="bcm", exclude=True, repr=False)
+    total_body_weight_over_lean_body_mass: float = Field(..., alias="tbwOverLBM", exclude=True, repr=False)
+    intracellular_water: float = Field(..., alias="icw", exclude=True, repr=False)
+    extracellular_water: float = Field(..., alias="ecw", exclude=True, repr=False)
+    lean_body_mass_control: float = Field(..., alias="lbmControl", exclude=True, repr=False)
 
     def __init__(self, **data):
         # populate child models

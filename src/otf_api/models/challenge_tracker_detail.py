@@ -28,7 +28,7 @@ class BenchmarkHistory(OtfItemBase):
     weight_lbs: int = Field(..., alias="WeightLBS")
     class_name: str = Field(..., alias="ClassName")
     coach_name: str = Field(..., alias="CoachName")
-    coach_image_url: str | None = Field(None, alias="CoachImageUrl", exclude=True)
+    coach_image_url: str | None = Field(None, alias="CoachImageUrl", exclude=True, repr=False)
     workout_type_id: int | None = Field(None, alias="WorkoutTypeId")
     workout_id: int | None = Field(None, alias="WorkoutId")
     linked_challenges: list[Any] | None = Field(
