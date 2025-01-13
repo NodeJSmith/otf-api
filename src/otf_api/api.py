@@ -581,7 +581,7 @@ class Otf:
             Any: The member's lifetime stats.
         """
 
-        data = self._default_request("GET", f"/performance/v2/{self.member_uuid}/over-time/{select_time.value}")
+        data = self._default_request("GET", f"/performance/v2/{self.member_uuid}/over-time/{select_time}")
 
         stats = models.StatsResponse(**data["data"])
         return stats
@@ -669,8 +669,7 @@ class Otf:
         will be used.
 
         Args:
-            studio_uuid (str): The studio UUID to get services for. Default is None, which will use the member's home\
-            studio.
+            studio_uuid (str, optional): The studio UUID to get services for.
 
         Returns:
             StudioServiceList: The services available at the studio.
@@ -689,8 +688,7 @@ class Otf:
         user's home studio.
 
         Args:
-            studio_uuid (str): Studio UUID to get details for. Defaults to None, which will default to the user's home\
-            studio.
+            studio_uuid (str, optional): The studio UUID to get detailed information about.
 
         Returns:
             StudioDetail: Detailed information about the studio.
