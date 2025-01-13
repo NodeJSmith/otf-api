@@ -15,7 +15,7 @@ class Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
     address: AddressMixin
 
     # unused fields
-    mbo_studio_id: str | None = Field(None, exclude=True, description="MindBody attr")
+    mbo_studio_id: str | None = Field(None, exclude=True, repr=False, description="MindBody attr")
 
 
 class OtfClass(OtfItemBase):
@@ -44,13 +44,13 @@ class OtfClass(OtfItemBase):
     waitlist_size: int
 
     # unused fields
-    class_id: str | None = Field(None, alias="id", exclude=True, description="Not used by API")
+    class_id: str | None = Field(None, alias="id", exclude=True, repr=False, description="Not used by API")
 
     created_at: datetime | None = Field(None, exclude=True, repr=False)
     ends_at_utc: datetime | None = Field(None, alias="ends_at", exclude=True, repr=False)
-    mbo_class_description_id: str | None = Field(None, exclude=True, description="MindBody attr")
-    mbo_class_id: str | None = Field(None, exclude=True, description="MindBody attr")
-    mbo_class_schedule_id: str | None = Field(None, exclude=True, description="MindBody attr")
+    mbo_class_description_id: str | None = Field(None, exclude=True, repr=False, description="MindBody attr")
+    mbo_class_id: str | None = Field(None, exclude=True, repr=False, description="MindBody attr")
+    mbo_class_schedule_id: str | None = Field(None, exclude=True, repr=False, description="MindBody attr")
     starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True, repr=False)
     updated_at: datetime | None = Field(None, exclude=True, repr=False)
 

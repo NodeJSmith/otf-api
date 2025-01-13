@@ -169,7 +169,7 @@ class BodyCompositionData(OtfItemBase):
     member_uuid: str = Field(..., alias="memberUUId")
     member_id: str = Field(..., alias="memberId")
     scan_result_uuid: str = Field(..., alias="scanResultUUId")
-    inbody_id: str = Field(..., alias="id", exclude=True, description="InBody ID, same as email address")
+    inbody_id: str = Field(..., alias="id", exclude=True, repr=False, description="InBody ID, same as email address")
     email: str
     height: str = Field(..., description="Height in cm")
     gender: Gender

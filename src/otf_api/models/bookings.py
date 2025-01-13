@@ -35,8 +35,8 @@ class Studio(OtfItemBase):
     time_zone: str = Field(alias="timeZone")
 
     # unused fields
-    mbo_studio_id: int | None = Field(None, alias="mboStudioId", exclude=True, description="MindBody attr")
-    studio_id: int = Field(alias="studioId", exclude=True, description="Not used by API")
+    mbo_studio_id: int | None = Field(None, alias="mboStudioId", exclude=True, repr=False, description="MindBody attr")
+    studio_id: int = Field(alias="studioId", exclude=True, repr=False, description="Not used by API")
 
 
 class Coach(OtfItemBase):
@@ -65,7 +65,7 @@ class OtfClass(OtfItemBase):
     coach: Coach
 
     # unused fields
-    coach_id: int | None = Field(None, alias="coachId", exclude=True, description="Not used by API")
+    coach_id: int | None = Field(None, alias="coachId", exclude=True, repr=False, description="Not used by API")
     description: str | None = Field(None, exclude=True, repr=False)
     location: Location | None = Field(None, exclude=True, repr=False)
     program_name: str | None = Field(None, alias="programName", exclude=True, repr=False)
@@ -107,17 +107,19 @@ class Booking(OtfItemBase):
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
     # unused fields
-    class_booking_id: int = Field(alias="classBookingId", exclude=True, description="Not used by API")
-    class_id: int = Field(alias="classId", exclude=True, description="Not used by API")
+    class_booking_id: int = Field(alias="classBookingId", exclude=True, repr=False, description="Not used by API")
+    class_id: int = Field(alias="classId", exclude=True, repr=False, description="Not used by API")
     created_by: str = Field(alias="createdBy", exclude=True, repr=False)
-    mbo_class_id: int | None = Field(None, alias="mboClassId", exclude=True, description="MindBody attr")
-    mbo_member_id: str | None = Field(None, alias="mboMemberId", exclude=True, description="MindBody attr")
-    mbo_sync_message: str | None = Field(None, alias="mboSyncMessage", exclude=True, description="MindBody attr")
-    mbo_visit_id: int | None = Field(None, alias="mboVisitId", exclude=True, description="MindBody attr")
+    mbo_class_id: int | None = Field(None, alias="mboClassId", exclude=True, repr=False, description="MindBody attr")
+    mbo_member_id: str | None = Field(None, alias="mboMemberId", exclude=True, repr=False, description="MindBody attr")
+    mbo_sync_message: str | None = Field(
+        None, alias="mboSyncMessage", exclude=True, repr=False, description="MindBody attr"
+    )
+    mbo_visit_id: int | None = Field(None, alias="mboVisitId", exclude=True, repr=False, description="MindBody attr")
     mbo_waitlist_entry_id: int | None = Field(None, alias="mboWaitlistEntryId", exclude=True, repr=False)
-    member_id: int = Field(alias="memberId", exclude=True, description="Not used by API")
-    member: Member | None = Field(None, exclude=True, description="Slimmed down member object")
-    studio_id: int = Field(alias="studioId", exclude=True, description="Not used by API")
+    member_id: int = Field(alias="memberId", exclude=True, repr=False, description="Not used by API")
+    member: Member | None = Field(None, exclude=True, repr=False, description="Slimmed down member object")
+    studio_id: int = Field(alias="studioId", exclude=True, repr=False, description="Not used by API")
     updated_by: str = Field(alias="updatedBy", exclude=True, repr=False)
 
     @property
