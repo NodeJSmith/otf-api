@@ -645,7 +645,7 @@ class Otf:
             studios. If a string is provided, it will be converted to a list.
 
         Returns:
-            None
+            list[StudioDetail]: The new favorite studios.
         """
         if isinstance(studio_uuids, str):
             studio_uuids = [studio_uuids]
