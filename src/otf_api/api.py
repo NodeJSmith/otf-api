@@ -637,7 +637,7 @@ class Otf:
 
         return models.StudioDetailList(studios=all_studio_details)
 
-    def add_favorite_studio(self, studio_uuids: list[str] | str) -> None:
+    def add_favorite_studio(self, studio_uuids: list[str] | str) -> list[models.StudioDetail]:
         """Add a studio to the member's favorite studios.
 
         Args:
