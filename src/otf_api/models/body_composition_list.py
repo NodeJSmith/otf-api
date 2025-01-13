@@ -1,6 +1,6 @@
 import inspect
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 
 import pint
 from pydantic import BaseModel, Field, field_validator
@@ -14,14 +14,14 @@ DEFAULT_SKELETAL_MUSCLE_MASS_DIVIDERS = [70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 
 DEFAULT_BODY_FAT_MASS_DIVIDERS = [40.0, 60.0, 80.0, 100.0, 160.0, 220.0, 280.0, 340.0, 400.0, 460.0, 520.0]
 
 
-class AverageType(str, Enum):
+class AverageType(StrEnum):
     BELOW_AVERAGE = "BELOW_AVERAGE"
     AVERAGE = "AVERAGE"
     ABOVE_AVERAGE = "ABOVE_AVERAGE"
     MINIMUM = "MINIMUM"  # unused
 
 
-class BodyFatPercentIndicator(str, Enum):
+class BodyFatPercentIndicator(StrEnum):
     NO_INDICATOR = "NO_INDICATOR"
     MINIMUM_BODY_FAT = "MINIMUM_BODY_FAT"  # unused
     LOW_BODY_FAT = "LOW_BODY_FAT"  # unused
@@ -31,7 +31,7 @@ class BodyFatPercentIndicator(str, Enum):
     OBESE_BODY_FAT = "OBESE_BODY_FAT"  # unused
 
 
-class Gender(str, Enum):
+class Gender(StrEnum):
     MALE = "M"
     FEMALE = "F"
 
@@ -295,3 +295,12 @@ class BodyCompositionData(OtfItemBase):
 
 class BodyCompositionList(OtfItemBase):
     data: list[BodyCompositionData]
+
+    def __len__(self) -> int:
+        return len(self.data)
+
+    def __iter__(self):
+        return iter(self.data)
+
+    def __getitem__(self, item) -> BodyCompositionData:
+        return self.data[item]
