@@ -177,7 +177,7 @@ class OtfCognito(Cognito):
         except Exception:
             LOGGER.exception("Failed to write device key cache")
 
-    ##### OVERRIDEN METHODS #####
+    ##### OVERRIDDEN METHODS #####
 
     def renew_access_token(self) -> None:
         """Sets a new access token on the User using the cached refresh token and device metadata.
