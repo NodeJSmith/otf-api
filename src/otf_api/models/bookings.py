@@ -26,19 +26,17 @@ class StudioLocation(PhoneLongitudeLatitudeMixin, AddressMixin):
 
 class Studio(OtfItemBase):
     studio_uuid: str = Field(alias="studioUUId")
-    studio_name: str = Field(alias="studioName")
+
+    contact_email: str | None = Field(None, alias="contactEmail")
     description: str | None = None
     status: StudioStatus | None = None
+    location: StudioLocation | None = Field(None, alias="studioLocation", exclude=True)
+    name: str = Field(alias="studioName")
     time_zone: str = Field(alias="timeZone")
 
     # unused fields
-    allows_cr_waitlist: bool | None = Field(None, alias="allowsCRWaitlist")
-    contact_email: str | None = Field(None, alias="contactEmail", exclude=True)
-    cr_waitlist_flag_last_updated: datetime | None = Field(None, alias="crWaitlistFlagLastUpdated", exclude=True)
-    logo_url: str | None = Field(None, alias="logoUrl", exclude=True)
     mbo_studio_id: int | None = Field(None, alias="mboStudioId", exclude=True, description="MindBody attr")
     studio_id: int = Field(alias="studioId", exclude=True, description="Not used by API")
-    studio_location: StudioLocation | None = Field(None, alias="studioLocation", exclude=True)
 
 
 class Coach(OtfItemBase):

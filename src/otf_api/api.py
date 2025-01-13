@@ -729,8 +729,8 @@ class Otf:
         if not latitude and not longitude:
             home_studio = self.get_studio_detail()
 
-            latitude = home_studio.studio_location.latitude
-            longitude = home_studio.studio_location.longitude
+            latitude = home_studio.location.latitude
+            longitude = home_studio.location.longitude
 
         if page_size > 50:
             LOGGER.warning("The API does not support more than 50 results per page, limiting to 50.")
