@@ -45,18 +45,17 @@ class Otf:
         atexit.register(self.session.close)
 
         self.member = self.get_member_detail()
-        self.home_studio_uuid = self.member.home_studio.studio_uuid
-
-        self.home_studio = self.get_studio_detail(self.member.home_studio.studio_uuid)
+        self.home_studio = self.member.home_studio
+        self.home_studio_uuid = self.home_studio.studio_uuid
 
     def __eq__(self, other):
         if not isinstance(other, Otf):
             return False
-        return self.member_uuid == other.member_uuid and self.home_studio_uuid == other.home_studio_uuid
+        return self.member_uuid == other.member_uuid
 
     def __hash__(self):
         # Combine immutable attributes into a single hash value
-        return hash((self.member_uuid, self.home_studio_uuid))
+        return hash(self.member_uuid)
 
     @classmethod
     def prompt_for_credentials(cls) -> "Otf":
@@ -542,8 +541,14 @@ class Otf:
 
         params = {"include": ",".join(include)} if include else None
 
-        data = self._default_request("GET", f"/member/members/{self.member_uuid}", params=params)
-        return models.MemberDetail(**data["data"])
+        resp = self._default_request("GET", f"/member/members/{self.member_uuid}", params=params)
+        data = resp["data"]
+
+        # use standard StudioDetail model instead of the one returned by this endpoint
+        home_studio_uuid = data["homeStudio"]["studioUUId"]
+        data["home_studio"] = self.get_studio_detail(home_studio_uuid)
+
+        return models.MemberDetail(**data)
 
     def get_member_membership(self) -> models.MemberMembership:
         """Get the member's membership details.

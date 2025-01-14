@@ -4,6 +4,7 @@ from typing import Any
 from pydantic import Field, field_validator
 
 from otf_api.models.base import OtfItemBase
+from otf_api.models.studio_detail import StudioDetail
 
 
 class Address(OtfItemBase):
@@ -26,28 +27,6 @@ class MemberCreditCard(OtfItemBase):
 class PhysicalCountryDetails(OtfItemBase):
     country_code: str = Field(..., alias="countryCode")
     description: str
-
-
-class StudioLocation(OtfItemBase):
-    physical_country_id: int = Field(..., alias="physicalCountryId")
-    physical_country_details: PhysicalCountryDetails = Field(..., alias="physicalCountryDetails")
-
-
-class StudioPartner(OtfItemBase):
-    studio_acs_id: str = Field(..., alias="studioAcsId")
-
-
-class HomeStudio(OtfItemBase):
-    studio_id: int = Field(..., alias="studioId")
-    studio_uuid: str = Field(..., alias="studioUUId")
-    studio_name: str = Field(..., alias="studioName")
-    studio_number: str = Field(..., alias="studioNumber")
-    mbo_studio_id: int = Field(..., alias="mboStudioId")
-    time_zone: str = Field(..., alias="timeZone")
-    is_integrated: bool = Field(..., alias="isIntegrated")
-    studio_status: str = Field(..., alias="studioStatus")
-    studio_location: StudioLocation = Field(..., alias="studioLocation")
-    studio_partner: StudioPartner = Field(..., alias="studioPartner")
 
 
 class MemberProfile(OtfItemBase):
@@ -81,6 +60,8 @@ class MemberReferrer(OtfItemBase):
 class MemberDetail(OtfItemBase):
     member_id: int = Field(..., alias="memberId")
     member_uuid: str = Field(..., alias="memberUUId")
+    home_studio: StudioDetail
+
     cognito_id: str = Field(..., alias="cognitoId")
     home_studio_id: int = Field(..., alias="homeStudioId")
     mbo_studio_id: int = Field(..., alias="mboStudioId")
@@ -125,7 +106,6 @@ class MemberDetail(OtfItemBase):
     is_deleted: bool = Field(..., alias="isDeleted")
     addresses: list[Address] | None = None
     member_credit_card: MemberCreditCard | None = Field(None, alias="memberCreditCard")
-    home_studio: HomeStudio = Field(..., alias="homeStudio")
     member_profile: MemberProfile = Field(..., alias="memberProfile")
     member_referrer: None | MemberReferrer = Field(None, alias="memberReferrer")
     otf_acs_id: str = Field(..., alias="otfAcsId")
