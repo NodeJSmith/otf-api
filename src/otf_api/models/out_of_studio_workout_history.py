@@ -35,16 +35,3 @@ class OutOfStudioWorkoutHistory(OtfItemBase):
     workout_uuid: str = Field(..., alias="workoutUUId")
     avg_heartrate: int = Field(..., alias="avgHeartrate")
     max_heartrate: int = Field(..., alias="maxHeartrate")
-
-
-# class OutOfStudioWorkoutHistoryList(OtfItemBase):
-#     workouts: list[OutOfStudioWorkoutHistory]
-
-#     def __iter__(self):
-#         return iter(self.workouts)
-
-#     def __len__(self):
-#         return len(self.workouts)
-
-#     def __getitem__(self, item) -> OutOfStudioWorkoutHistory:
-#         return self.workouts[item]

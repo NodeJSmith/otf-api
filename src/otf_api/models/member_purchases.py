@@ -28,15 +28,3 @@ class MemberPurchase(OtfItemBase):
     pos_sale_id: int | None = Field(..., alias="posSaleId", exclude=True, repr=False)
     studio_id: int | None = Field(..., alias="studioId", exclude=True, repr=False)
 
-
-# class MemberPurchaseList(OtfItemBase):
-#     data: list[MemberPurchase]
-
-#     def __iter__(self):
-#         return iter(self.data)
-
-#     def __len__(self):
-#         return len(self.data)
-
-#     def __getitem__(self, item) -> MemberPurchase:
-#         return self.data[item]
