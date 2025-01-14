@@ -504,42 +504,14 @@ class Otf:
 
         return [models.Booking(**b) for b in res["data"]]
 
-    def get_member_detail(
-        self, include_addresses: bool = True, include_class_summary: bool = True, include_credit_card: bool = False
-    ):
+    def get_member_detail(self) -> models.MemberDetail:
         """Get the member details.
-
-        Args:
-            include_addresses (bool): Whether to include the member's addresses in the response.
-            include_class_summary (bool): Whether to include the member's class summary in the response.
-            include_credit_card (bool): Whether to include the member's credit card information in the response.
 
         Returns:
             MemberDetail: The member details.
-
-
-        Notes:
-            ---
-            The include_addresses, include_class_summary, and include_credit_card parameters are optional and determine
-            what additional information is included in the response. By default, all additional information is included,
-            with the exception of the credit card information.
-
-            The base member details include the last four of a credit card regardless of the include_credit_card,
-            although this is not always the same details as what is in the member_credit_card field. There doesn't seem
-            to be a way to exclude this information, and I do not know which is which or why they differ.
         """
 
-        include: list[str] = []
-        if include_addresses:
-            include.append("memberAddresses")
-
-        if include_class_summary:
-            include.append("memberClassSummary")
-
-        if include_credit_card:
-            include.append("memberCreditCard")
-
-        params = {"include": ",".join(include)} if include else None
+        params = {"include": "memberAddresses,memberClassSummary"}
 
         resp = self._default_request("GET", f"/member/members/{self.member_uuid}", params=params)
         data = resp["data"]
