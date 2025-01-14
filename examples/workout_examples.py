@@ -14,12 +14,12 @@ def main():
     print(resp.model_dump_json(indent=4))
 
     resp = otf.get_body_composition_list()
-    print(resp.data[0].model_dump_json(indent=4))
+    print(resp[0].model_dump_json(indent=4))
 
     # performance summaries are historical records of your performance in workouts
     # `get_performance_summaries` takes a limit (default of 30) and returns a list of summaries
     data_list = otf.get_performance_summaries()
-    print(data_list.summaries[0].model_dump_json(indent=4))
+    print(data_list[0].model_dump_json(indent=4))
     """
     {
         "performance_summary_id": "29dd97f4-3418-4247-b35c-37eabc5e17f3",
@@ -50,7 +50,7 @@ def main():
 
     # you can get detailed information about a specific performance summary by calling `get_performance_summary`
     # which takes a performance_summary_id as an argument
-    data = otf.get_performance_summary(data_list.summaries[0].id)
+    data = otf.get_performance_summary(data_list[0].id)
     print(data.model_dump_json(indent=4))
 
     """
@@ -110,7 +110,7 @@ def main():
     # this endpoint takes a class_history_uuid, as well as a number of max data points - if you do not pass
     # this value it will attempt to return enough data points for 30 second intervals
 
-    telemetry = otf.get_telemetry(performance_summary_id=data_list.summaries[0].id)
+    telemetry = otf.get_telemetry(performance_summary_id=data_list[0].id)
     telemetry.telemetry = telemetry.telemetry[:2]
     print(telemetry.model_dump_json(indent=4))
 

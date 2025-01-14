@@ -90,16 +90,3 @@ class OtfClass(OtfItemBase):
     def day_of_week_enum(self) -> DoW:
         dow = self.starts_at.strftime("%A").upper()
         return DoW(dow)
-
-
-class OtfClassList(OtfItemBase):
-    classes: list[OtfClass]
-
-    def __len__(self) -> int:
-        return len(self.classes)
-
-    def __iter__(self):
-        return iter(self.classes)
-
-    def __getitem__(self, item) -> OtfClass:
-        return self.classes[item]

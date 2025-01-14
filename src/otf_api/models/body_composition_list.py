@@ -293,14 +293,14 @@ class BodyCompositionData(OtfItemBase):
         )
 
 
-class BodyCompositionList(OtfItemBase):
-    data: list[BodyCompositionData]
+# class BodyCompositionList(OtfItemBase):
+#     data: list[BodyCompositionData]
 
-    def __len__(self) -> int:
-        return len(self.data)
+#     def __len__(self) -> int:
+#         return len(self.data)
 
-    def __iter__(self):
-        return iter(self.data)
+#     def __iter__(self):
+#         return iter(self.data)
 
-    def __getitem__(self, item) -> BodyCompositionData:
-        return self.data[item]
+#     def __getitem__(self, item) -> BodyCompositionData:
+#         return self.data[item]

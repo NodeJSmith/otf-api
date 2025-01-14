@@ -60,16 +60,3 @@ class StudioDetail(OtfItemBase):
     studio_physical_location_id: int | None = Field(None, alias="studioPhysicalLocationId", exclude=True, repr=False)
     studio_token: str | None = Field(None, alias="studioToken", exclude=True, repr=False)
     studio_type_id: int | None = Field(None, alias="studioTypeId", exclude=True, repr=False)
-
-
-class StudioDetailList(OtfItemBase):
-    studios: list[StudioDetail]
-
-    def __len__(self) -> int:
-        return len(self.studios)
-
-    def __iter__(self):
-        return iter(self.studios)
-
-    def __getitem__(self, item) -> StudioDetail:
-        return self.studios[item]

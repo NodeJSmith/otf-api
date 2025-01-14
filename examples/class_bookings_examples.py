@@ -12,12 +12,13 @@ PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 def main():
     otf = Otf(user=OtfUser(USERNAME, PASSWORD))
 
-    resp = otf.get_bookings(start_date=datetime.today().date())
-    print(resp.model_dump_json(indent=4))
+    bookings = otf.get_bookings(start_date=datetime.today().date())
+    for b in bookings:
+        print(b.model_dump_json(indent=4))
 
     studios = otf.search_studios_by_geo(40.7831, 73.9712, distance=100)
 
-    studio_uuids = [studio.studio_uuid for studio in studios.studios]
+    studio_uuids = [studio.studio_uuid for studio in studios]
 
     cf = ClassFilter(
         day_of_week=[DoW.TUESDAY, DoW.THURSDAY],
@@ -28,7 +29,7 @@ def main():
 
     classes = otf.get_classes(studio_uuids=studio_uuids, filters=[cf, cf2])
 
-    print(classes.classes[0].model_dump_json(indent=4))
+    print(classes[0].model_dump_json(indent=4))
 
     """
     {
@@ -62,7 +63,7 @@ def main():
     bookings = otf.get_bookings()
 
     print("Latest Upcoming Class:")
-    print(bookings.bookings[-1].model_dump_json(indent=4))
+    print(bookings[-1].model_dump_json(indent=4))
 
     """
     {

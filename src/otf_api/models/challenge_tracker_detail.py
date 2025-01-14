@@ -73,14 +73,14 @@ class ChallengeTrackerDetail(OtfItemBase):
     challenge_histories: list[ChallengeHistory] = Field(..., alias="ChallengeHistories")
 
 
-class ChallengeTrackerDetailList(OtfItemBase):
-    details: list[ChallengeTrackerDetail]
+# class ChallengeTrackerDetailList(OtfItemBase):
+#     details: list[ChallengeTrackerDetail]
 
-    def __iter__(self):
-        return iter(self.details)
+#     def __iter__(self):
+#         return iter(self.details)
 
-    def __len__(self):
-        return len(self.details)
+#     def __len__(self):
+#         return len(self.details)
 
-    def __getitem__(self, item) -> ChallengeTrackerDetail:
-        return self.details[item]
+#     def __getitem__(self, item) -> ChallengeTrackerDetail:
+#         return self.details[item]

@@ -37,14 +37,14 @@ class OutOfStudioWorkoutHistory(OtfItemBase):
     max_heartrate: int = Field(..., alias="maxHeartrate")
 
 
-class OutOfStudioWorkoutHistoryList(OtfItemBase):
-    workouts: list[OutOfStudioWorkoutHistory]
+# class OutOfStudioWorkoutHistoryList(OtfItemBase):
+#     workouts: list[OutOfStudioWorkoutHistory]
 
-    def __iter__(self):
-        return iter(self.workouts)
+#     def __iter__(self):
+#         return iter(self.workouts)
 
-    def __len__(self):
-        return len(self.workouts)
+#     def __len__(self):
+#         return len(self.workouts)
 
-    def __getitem__(self, item) -> OutOfStudioWorkoutHistory:
-        return self.workouts[item]
+#     def __getitem__(self, item) -> OutOfStudioWorkoutHistory:
+#         return self.workouts[item]

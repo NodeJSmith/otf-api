@@ -52,17 +52,3 @@ class StudioService(OtfItemBase):
     updated_date: datetime = Field(..., alias="updatedDate")
     is_deleted: bool = Field(..., alias="isDeleted")
     studio: Studio
-
-
-class StudioServiceList(OtfItemBase):
-    studio_uuid: str = Field(..., description="The OTF studio UUID")
-    data: list[StudioService]
-
-    def __len__(self) -> int:
-        return len(self.data)
-
-    def __iter__(self):
-        return iter(self.data)
-
-    def __getitem__(self, item) -> StudioService:
-        return self.data[item]

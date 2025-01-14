@@ -52,7 +52,7 @@ def main():
     # challenge tracker details are detailed information about specific challenges
     # this endpoint takes an equipment type and a challenge type as arguments
     tread_challenge_details = otf.get_challenge_tracker_detail(EquipmentType.Treadmill, ChallengeType.Other)
-    print(tread_challenge_details.details[0].model_dump_json(indent=4))
+    print(tread_challenge_details[0].model_dump_json(indent=4))
 
     """
     {

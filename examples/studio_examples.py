@@ -15,7 +15,7 @@ def main():
     # but you'll generally just need the first 3
     # same as with classes, you can leave it blank and get the studios within 50 miles of your home studio
     studios_by_geo = otf.search_studios_by_geo()
-    print(studios_by_geo.studios[0].model_dump_json(indent=4))
+    print(studios_by_geo[0].model_dump_json(indent=4))
 
     """
     {
@@ -71,7 +71,8 @@ def main():
 
     print("Studio Services")
     services = otf.get_studio_services(studio_detail.studio_uuid)
-    print(services.model_dump_json(indent=4))
+    for svc in services:
+        print(svc.model_dump_json(indent=4))
 
     faves = otf.get_favorite_studios()
 
@@ -79,7 +80,7 @@ def main():
         otf.add_favorite_studio(otf.home_studio_uuid)
 
     faves = otf.get_favorite_studios()
-    print(faves.model_dump_json(indent=4))
+    print(faves[0].model_dump())
 
 
 if __name__ == "__main__":

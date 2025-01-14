@@ -1,56 +1,53 @@
-from .body_composition_list import BodyCompositionList
+from .body_composition_list import BodyCompositionData
 from .book_class import BookClass
-from .bookings import Booking, BookingList
+from .bookings import Booking
 from .cancel_booking import CancelBooking
 from .challenge_tracker_content import ChallengeTrackerContent
-from .challenge_tracker_detail import ChallengeTrackerDetailList
-from .classes import OtfClass, OtfClassList
+from .challenge_tracker_detail import ChallengeTrackerDetail
+from .classes import OtfClass
 from .enums import BookingStatus, ChallengeType, ClassType, DoW, EquipmentType, StatsTime, StudioStatus
 from .latest_agreement import LatestAgreement
 from .lifetime_stats import StatsResponse
 from .member_detail import MemberDetail
 from .member_membership import MemberMembership
-from .member_purchases import MemberPurchaseList
-from .out_of_studio_workout_history import OutOfStudioWorkoutHistoryList
+from .member_purchases import MemberPurchase
+from .out_of_studio_workout_history import OutOfStudioWorkoutHistory
 from .performance_summary_detail import PerformanceSummaryDetail
-from .performance_summary_list import PerformanceSummaryList
-from .studio_detail import StudioDetail, StudioDetailList
-from .studio_services import StudioServiceList
+from .performance_summary_list import PerformanceSummaryEntry
+from .studio_detail import StudioDetail
+from .studio_services import StudioService
 from .telemetry import Telemetry
-from .telemetry_hr_history import TelemetryHrHistory
+from .telemetry_hr_history import HistoryItem
 from .telemetry_max_hr import TelemetryMaxHr
 from .total_classes import TotalClasses
 
 __all__ = [
-    "BodyCompositionList",
+    "BodyCompositionData",
     "BookClass",
     "Booking",
-    "BookingList",
     "BookingStatus",
     "CancelBooking",
     "ChallengeTrackerContent",
-    "ChallengeTrackerDetailList",
+    "ChallengeTrackerDetail",
     "ChallengeType",
     "ClassType",
     "DoW",
     "EquipmentType",
+    "HistoryItem",
     "LatestAgreement",
     "MemberDetail",
     "MemberMembership",
-    "MemberPurchaseList",
+    "MemberPurchase",
     "OtfClass",
-    "OtfClassList",
-    "OutOfStudioWorkoutHistoryList",
+    "OutOfStudioWorkoutHistory",
     "PerformanceSummaryDetail",
-    "PerformanceSummaryList",
+    "PerformanceSummaryEntry",
     "StatsResponse",
     "StatsTime",
     "StudioDetail",
-    "StudioDetailList",
-    "StudioServiceList",
+    "StudioService",
     "StudioStatus",
     "Telemetry",
-    "TelemetryHrHistory",
     "TelemetryMaxHr",
-    "TotalClasses",
+    "TotalClasses"
 ]

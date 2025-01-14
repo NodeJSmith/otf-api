@@ -1,42 +1,10 @@
 from datetime import datetime
 
-from pydantic import AliasPath, Field
+from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import BookingStatus, StudioStatus
-from otf_api.models.mixins import AddressMixin, PhoneLongitudeLatitudeMixin
-
-
-class CountryCurrency(OtfItemBase):
-    country_currency_code: str = Field(..., alias="countryCurrencyCode")
-    currency_id: int | None = Field(None, alias=AliasPath("defaultCurrency", "currencyId"))
-    currency_alphabetic_code: str | None = Field(None, alias=AliasPath("defaultCurrency", "currencyAlphabeticCode"))
-
-
-class Location(PhoneLongitudeLatitudeMixin, AddressMixin):
-    distance: float | None = Field(None, alias="distance", exclude=True, repr=False)
-    location_name: str | None = Field(None, alias="locationName", exclude=True, repr=False)
-
-
-class StudioLocation(PhoneLongitudeLatitudeMixin, AddressMixin):
-    physical_region: str | None = Field(None, alias="physicalRegion", exclude=True, repr=False)
-    physical_country_id: int | None = Field(None, alias="physicalCountryId", exclude=True, repr=False)
-    country_currency: CountryCurrency | None = Field(None, alias="country_currency", exclude=True, repr=False)
-
-
-class Studio(OtfItemBase):
-    studio_uuid: str = Field(alias="studioUUId")
-
-    contact_email: str | None = Field(None, alias="contactEmail")
-    description: str | None = None
-    status: StudioStatus | None = None
-    location: StudioLocation | None = Field(None, alias="studioLocation", exclude=True, repr=False)
-    name: str = Field(alias="studioName")
-    time_zone: str = Field(alias="timeZone")
-
-    # unused fields
-    mbo_studio_id: int | None = Field(None, alias="mboStudioId", exclude=True, repr=False, description="MindBody attr")
-    studio_id: int = Field(alias="studioId", exclude=True, repr=False, description="Not used by API")
+from otf_api.models.enums import BookingStatus
+from otf_api.models.studio_detail import StudioDetail
 
 
 class Coach(OtfItemBase):
@@ -61,13 +29,12 @@ class OtfClass(OtfItemBase):
     ends_at: datetime = Field(alias="endDateTime", description="End time in local timezone")
     is_available: bool = Field(alias="isAvailable")
     is_cancelled: bool = Field(alias="isCancelled")
-    studio: Studio
+    studio: StudioDetail
     coach: Coach
 
     # unused fields
     coach_id: int | None = Field(None, alias="coachId", exclude=True, repr=False, description="Not used by API")
     description: str | None = Field(None, exclude=True, repr=False)
-    location: Location | None = Field(None, exclude=True, repr=False)
     program_name: str | None = Field(None, alias="programName", exclude=True, repr=False)
     virtual_class: bool | None = Field(None, alias="virtualClass", exclude=True, repr=False)
 
@@ -80,16 +47,6 @@ class OtfClass(OtfItemBase):
     def ends_at_local(self) -> datetime:
         """Alias for ends_at, kept to avoid breaking changes"""
         return self.ends_at
-
-
-class Member(OtfItemBase):
-    member_uuid: str = Field(alias="memberUUId")
-    first_name: str = Field(alias="firstName")
-    last_name: str = Field(alias="lastName")
-    email: str | None = None
-    phone_number: str | None = Field(None, alias="phoneNumber")
-    gender: str | None = None
-    cc_last_4: str | None = Field(None, alias="ccLast4", exclude=True, repr=False)
 
 
 class Booking(OtfItemBase):
@@ -118,7 +75,6 @@ class Booking(OtfItemBase):
     mbo_visit_id: int | None = Field(None, alias="mboVisitId", exclude=True, repr=False, description="MindBody attr")
     mbo_waitlist_entry_id: int | None = Field(None, alias="mboWaitlistEntryId", exclude=True, repr=False)
     member_id: int = Field(alias="memberId", exclude=True, repr=False, description="Not used by API")
-    member: Member | None = Field(None, exclude=True, repr=False, description="Slimmed down member object")
     studio_id: int = Field(alias="studioId", exclude=True, repr=False, description="Not used by API")
     updated_by: str = Field(alias="updatedBy", exclude=True, repr=False)
 
@@ -149,22 +105,3 @@ class Booking(OtfItemBase):
         booked_str = self.status.value
 
         return f"Booking: {starts_at_str} {class_name} - {coach_name} ({booked_str})"
-
-
-class BookingList(OtfItemBase):
-    bookings: list[Booking]
-
-    def __len__(self) -> int:
-        return len(self.bookings)
-
-    def __iter__(self):
-        return iter(self.bookings)
-
-    def get_booking_from_class_uuid(self, class_uuid: str) -> Booking | None:
-        for booking in self.bookings:
-            if booking.otf_class.class_uuid == class_uuid:
-                return booking
-        return None
-
-    def __getitem__(self, item) -> Booking:
-        return self.bookings[item]

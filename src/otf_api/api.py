@@ -134,7 +134,7 @@ class Otf:
         filters: list[filters.ClassFilter] | filters.ClassFilter | None = None,
         exclude_cancelled: bool = True,
         exclude_unbookable: bool = True,
-    ) -> models.OtfClassList:
+    ) -> list[models.OtfClass]:
         """Get the classes for the user.
 
         Returns a list of classes that are available for the user, based on the studio UUIDs provided. If no studio
@@ -154,7 +154,7 @@ class Otf:
             True.
 
         Returns:
-            OtfClassList: The classes for the user.
+            list[OtfClass]: The classes for the user.
         """
 
         if not studio_uuids:
@@ -170,40 +170,40 @@ class Otf:
                 studio_uuids.append(self.home_studio_uuid)
 
         classes_resp = self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
-        classes_list = models.OtfClassList(classes=classes_resp["items"])
+        classes = [models.OtfClass(**c) for c in classes_resp["items"]]
 
         if exclude_cancelled:
-            classes_list.classes = [c for c in classes_list.classes if not c.is_cancelled]
+            classes = [c for c in classes if not c.is_cancelled]
 
-        for otf_class in classes_list.classes:
+        for otf_class in classes:
             otf_class.is_home_studio = otf_class.studio.studio_uuid == self.home_studio_uuid
 
         if exclude_unbookable:
             # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
             max_date = datetime.today().date() + timedelta(days=29)
-            classes_list.classes = [c for c in classes_list.classes if c.starts_at.date() <= max_date]
+            classes = [c for c in classes if c.starts_at.date() <= max_date]
 
-        booking_resp = self.get_bookings(status=models.BookingStatus.Booked)
-        booked_classes = {b.otf_class.class_uuid for b in booking_resp.bookings}
+        bookings = self.get_bookings(status=models.BookingStatus.Booked)
+        booked_classes = {b.otf_class.class_uuid for b in bookings}
 
-        for otf_class in classes_list.classes:
+        for otf_class in classes:
             otf_class.is_booked = otf_class.class_uuid in booked_classes
 
         if limit:
-            classes_list.classes = classes_list.classes[:limit]
+            classes = classes[:limit]
 
         # apply date filters
         if start_date:
             if not isinstance(start_date, date | datetime):
                 raise ValueError("start_date must be a date or datetime object")
             start_date = start_date.date() if isinstance(start_date, datetime) else start_date
-            classes_list.classes = [c for c in classes_list.classes if c.starts_at.date() >= start_date]
+            classes = [c for c in classes if c.starts_at.date() >= start_date]
 
         if end_date:
             if not isinstance(end_date, date | datetime):
                 raise ValueError("end_date must be a date or datetime object")
             end_date = end_date.date() if isinstance(end_date, datetime) else end_date
-            classes_list.classes = [c for c in classes_list.classes if c.starts_at.date() <= end_date]
+            classes = [c for c in classes if c.starts_at.date() <= end_date]
 
         # apply provided filters
         if filters:
@@ -213,13 +213,13 @@ class Otf:
                 filters = [filters]
 
             for f in filters:
-                filtered_classes.extend(f.filter_classes(classes_list.classes))
+                filtered_classes.extend(f.filter_classes(classes))
 
             # remove duplicates
-            classes_list.classes = list({c.class_uuid: c for c in filtered_classes}.values())
-            classes_list.classes = sorted(classes_list.classes, key=lambda x: (x.starts_at, x.name))
+            classes = list({c.class_uuid: c for c in filtered_classes}.values())
+            classes = sorted(classes, key=lambda x: (x.starts_at, x.name))
 
-        return classes_list
+        return classes
 
     def get_booking(self, booking_uuid: str) -> models.Booking:
         """Get a specific booking by booking_uuid.
@@ -260,7 +260,7 @@ class Otf:
 
         all_bookings = self.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
 
-        if booking := all_bookings.get_booking_from_class_uuid(class_uuid):
+        if booking := next((b for b in all_bookings if b.otf_class.class_uuid == class_uuid), None):
             return booking
 
         raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
@@ -327,13 +327,13 @@ class Otf:
         found, a ConflictingBookingError is raised.
         """
 
-        all_bookings = self.get_bookings(start_date=otf_class.starts_at.date(), end_date=otf_class.starts_at.date())
-        if not all_bookings.bookings:
+        bookings = self.get_bookings(start_date=otf_class.starts_at.date(), end_date=otf_class.starts_at.date())
+        if not bookings:
             return
 
         booking_map: dict[tuple[datetime, datetime], models.Booking] = {}
 
-        for booking in all_bookings.bookings:
+        for booking in bookings:
             booking_map[(booking.otf_class.starts_at, booking.otf_class.ends_at)] = booking
 
         for (booking_start, booking_end), booking in booking_map.items():
@@ -382,10 +382,9 @@ class Otf:
         start_date: date | str | None = None,
         end_date: date | str | None = None,
         status: models.BookingStatus | None = None,
-        limit: int | None = None,
         exclude_cancelled: bool = True,
         exclude_checkedin: bool = True,
-    ) -> models.BookingList:
+    ) -> list[models.Booking]:
         """Get the member's bookings.
 
         Args:
@@ -393,13 +392,11 @@ class Otf:
             end_date (date | str | None): The end date for the bookings. Default is None.
             status (BookingStatus | None): The status of the bookings to get. Default is None, which includes\
             all statuses. Only a single status can be provided.
-            limit (int | None): The maximum number of bookings to return. Default is None, which returns all\
-            bookings.
             exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
             exclude_checkedin (bool): Whether to exclude checked-in bookings. Default is True.
 
         Returns:
-            BookingList: The member's bookings.
+            list[Booking]: The member's bookings.
 
         Warning:
             ---
@@ -438,28 +435,28 @@ class Otf:
 
         params = {"startDate": start_date, "endDate": end_date, "statuses": status_value}
 
-        res = self._default_request("GET", f"/member/members/{self.member_uuid}/bookings", params=params)
+        bookings = self._default_request("GET", f"/member/members/{self.member_uuid}/bookings", params=params)["data"]
 
-        bookings = res["data"][:limit] if limit else res["data"]
+        # add studio details for each booking, instead of using the different studio model returned by this endpoint
+        studio_uuids = {b["class"]["studio"]["studioUUId"] for b in bookings}
+        studios = {studio_uuid: self.get_studio_detail(studio_uuid) for studio_uuid in studio_uuids}
 
-        data = models.BookingList(bookings=bookings)
-        data.bookings = sorted(data.bookings, key=lambda x: x.otf_class.starts_at)
+        for b in bookings:
+            b["class"]["studio"] = studios[b["class"]["studio"]["studioUUId"]]
+            b["is_home_studio"] = b["class"]["studio"].studio_uuid == self.home_studio_uuid
 
-        for booking in data.bookings:
-            if not booking.otf_class:
-                continue
-
-            booking.is_home_studio = booking.studio_uuid == self.home_studio_uuid
+        bookings = [models.Booking(**b) for b in bookings]
+        bookings = sorted(bookings, key=lambda x: x.otf_class.starts_at)
 
         if exclude_cancelled:
-            data.bookings = [b for b in data.bookings if b.status != models.BookingStatus.Cancelled]
+            bookings = [b for b in bookings if b.status != models.BookingStatus.Cancelled]
 
         if exclude_checkedin:
-            data.bookings = [b for b in data.bookings if b.status != models.BookingStatus.CheckedIn]
+            bookings = [b for b in bookings if b.status != models.BookingStatus.CheckedIn]
 
-        return data
+        return bookings
 
-    def _get_bookings_old(self, status: models.BookingStatus | None = None) -> models.BookingList:
+    def _get_bookings_old(self, status: models.BookingStatus | None = None) -> list[models.Booking]:
         """Get the member's bookings.
 
         Args:
@@ -467,7 +464,7 @@ class Otf:
             all statuses. Only a single status can be provided.
 
         Returns:
-            BookingList: The member's bookings.
+            list[Booking]: The member's bookings.
 
         Raises:
             ValueError: If an unaccepted status is provided.
@@ -506,7 +503,7 @@ class Otf:
             "GET", f"/member/members/{self.member_uuid}/bookings", params={"status": status_value}
         )
 
-        return models.BookingList(bookings=res["data"])
+        return [models.Booking(**b) for b in res["data"]]
 
     def get_member_detail(
         self, include_addresses: bool = True, include_class_summary: bool = True, include_credit_card: bool = False
@@ -558,14 +555,14 @@ class Otf:
         data = self._default_request("GET", f"/member/members/{self.member_uuid}/memberships")
         return models.MemberMembership(**data["data"])
 
-    def get_member_purchases(self) -> models.MemberPurchaseList:
+    def get_member_purchases(self) -> list[models.MemberPurchase]:
         """Get the member's purchases, including monthly subscriptions and class packs.
 
         Returns:
-            MemberPurchaseList: The member's purchases.
+            list[MemberPurchase]: The member's purchases.
         """
         data = self._default_request("GET", f"/member/members/{self.member_uuid}/purchases")
-        return models.MemberPurchaseList(data=data["data"])
+        return [models.MemberPurchase(**purchase) for purchase in data["data"]]
 
     def get_member_lifetime_stats(
         self, select_time: models.StatsTime = models.StatsTime.AllTime
@@ -603,21 +600,21 @@ class Otf:
         data = self._default_request("GET", "/member/agreements/9d98fb27-0f00-4598-ad08-5b1655a59af6")
         return models.LatestAgreement(**data["data"])
 
-    def get_out_of_studio_workout_history(self) -> models.OutOfStudioWorkoutHistoryList:
+    def get_out_of_studio_workout_history(self) -> list[models.OutOfStudioWorkoutHistory]:
         """Get the member's out of studio workout history.
 
         Returns:
-            OutOfStudioWorkoutHistoryList: The member's out of studio workout history.
+            list[OutOfStudioWorkoutHistory]: The member's out of studio workout history.
         """
         data = self._default_request("GET", f"/member/members/{self.member_uuid}/out-of-studio-workout")
 
-        return models.OutOfStudioWorkoutHistoryList(workouts=data["data"])
+        return [models.OutOfStudioWorkoutHistory(**workout) for workout in data["data"]]
 
-    def get_favorite_studios(self) -> models.StudioDetailList:
+    def get_favorite_studios(self) -> list[models.StudioDetail]:
         """Get the member's favorite studios.
 
         Returns:
-            StudioDetailList: The member's favorite studios.
+            list[StudioDetail]: The member's favorite studios.
         """
         data = self._default_request("GET", f"/member/members/{self.member_uuid}/favorite-studios")
         studio_uuids = [studio["studioUUId"] for studio in data["data"]]
@@ -628,12 +625,7 @@ class Otf:
 
         # it's slower, but it's more consistent
 
-        all_studio_details: list[models.StudioDetail] = []
-
-        for studio_uuid in studio_uuids:
-            all_studio_details.append(self.get_studio_detail(studio_uuid))
-
-        return models.StudioDetailList(studios=all_studio_details)
+        return [self.get_studio_detail(studio_uuid) for studio_uuid in studio_uuids]
 
     def add_favorite_studio(self, studio_uuids: list[str] | str) -> list[models.StudioDetail]:
         """Add a studio to the member's favorite studios.
@@ -677,7 +669,7 @@ class Otf:
         body = {"studioUUIds": studio_uuids}
         self._default_request("DELETE", "/mobile/v1/members/favorite-studios", json=body)
 
-    def get_studio_services(self, studio_uuid: str | None = None) -> models.StudioServiceList:
+    def get_studio_services(self, studio_uuid: str | None = None) -> list[models.StudioService]:
         """Get the services available at a specific studio. If no studio UUID is provided, the member's home studio
         will be used.
 
@@ -685,7 +677,7 @@ class Otf:
             studio_uuid (str, optional): The studio UUID to get services for.
 
         Returns:
-            StudioServiceList: The services available at the studio.
+            list[StudioService]: The services available at the studio.
         """
         studio_uuid = studio_uuid or self.home_studio_uuid
         data = self._default_request("GET", f"/member/studios/{studio_uuid}/services")
@@ -694,7 +686,7 @@ class Otf:
         for d in data["data"]:
             d["studio_uuid"] = studio_uuid
 
-        return models.StudioServiceList(studio_uuid=studio_uuid, data=data["data"])
+        return [models.StudioService(**d) for d in data["data"]]
 
     @functools.cache
     def get_studio_detail(self, studio_uuid: str | None = None) -> models.StudioDetail:
@@ -722,7 +714,7 @@ class Otf:
         distance: float = 500,
         page_index: int = 1,
         page_size: int = 100,
-    ) -> models.StudioDetailList:
+    ) -> list[models.StudioDetail]:
         """Alias for search_studios_by_geo."""
 
         return self.search_studios_by_geo(latitude, longitude, distance, page_index, page_size)
@@ -734,7 +726,7 @@ class Otf:
         distance: float = 50,
         page_index: int = 1,
         page_size: int = 100,
-    ) -> models.StudioDetailList:
+    ) -> list[models.StudioDetail]:
         """Search for studios by geographic location.
 
         Args:
@@ -745,19 +737,19 @@ class Otf:
             page_size (int, optional): Number of results per page. Defaults to 100.
 
         Returns:
-            StudioDetailList: List of studios that match the search criteria.
+            list[StudioDetail]: List of studios that match the search criteria.
         """
         latitude = latitude or self.home_studio.location.latitude
         longitude = longitude or self.home_studio.location.longitude
 
         return self._get_studios_by_geo(latitude, longitude, distance, page_index, page_size)
 
-    def _get_all_studios(self) -> models.StudioDetailList:
+    def _get_all_studios(self) -> list[models.StudioDetail]:
         """Gets all studios. Marked as private to avoid random users calling it. Useful for testing and validating
         models.
 
         Returns:
-            StudioDetailList: List of studios that match the search criteria.
+            list[StudioDetail]: List of studios that match the search criteria.
         """
 
         return self._get_studios_by_geo(None, None, 500, 1, 100)
@@ -769,7 +761,7 @@ class Otf:
         distance: float = 50,
         page_index: int = 1,
         page_size: int = 100,
-    ):
+    ) -> list[models.StudioDetail]:
         """Searches for studios by geographic location. Used by search_studios_by_geo and get_all_studios."""
 
         path = "/mobile/v1/studios"
@@ -808,7 +800,7 @@ class Otf:
 
             params["pageIndex"] += 1
 
-        return models.StudioDetailList(studios=list(all_results.values()))
+        return [models.StudioDetail(**studio) for studio in all_results.values()]
 
     def get_total_classes(self) -> models.TotalClasses:
         """Get the member's total classes. This is a simple object reflecting the total number of classes attended,
@@ -820,15 +812,14 @@ class Otf:
         data = self._default_request("GET", "/mobile/v1/members/classes/summary")
         return models.TotalClasses(**data["data"])
 
-    def get_body_composition_list(self) -> models.BodyCompositionList:
+    def get_body_composition_list(self) -> list[models.BodyCompositionData]:
         """Get the member's body composition list.
 
         Returns:
-            Any: The member's body composition list.
+            list[BodyCompositionData]: The member's body composition list.
         """
         data = self._default_request("GET", f"/member/members/{self.member.cognito_id}/body-composition")
-
-        return models.BodyCompositionList(data=data["data"])
+        return [models.BodyCompositionData(**item) for item in data["data"]]
 
     def get_challenge_tracker_content(self) -> models.ChallengeTrackerContent:
         """Get the member's challenge tracker content.
@@ -844,7 +835,7 @@ class Otf:
         equipment_id: models.EquipmentType,
         challenge_type_id: models.ChallengeType,
         challenge_sub_type_id: int = 0,
-    ):
+    ) -> list[models.ChallengeTrackerDetail]:
         """Get the member's challenge tracker details.
 
         Args:
@@ -853,7 +844,7 @@ class Otf:
             challenge_sub_type_id (int): The challenge sub type ID. Default is 0.
 
         Returns:
-            ChallengeTrackerDetailList: The member's challenge tracker details.
+            list[ChallengeTrackerDetail]: The member's challenge tracker details.
 
         Notes:
             ---
@@ -867,8 +858,7 @@ class Otf:
         }
 
         data = self._default_request("GET", f"/challenges/v3/member/{self.member_uuid}/benchmarks", params=params)
-
-        return models.ChallengeTrackerDetailList(details=data["Dto"])
+        return [models.ChallengeTrackerDetail(**item) for item in data["Dto"]]
 
     def get_challenge_tracker_participation(self, challenge_type_id: models.ChallengeType) -> Any:
         """Get the member's participation in a challenge.
@@ -893,14 +883,14 @@ class Otf:
         )
         return data
 
-    def get_performance_summaries(self, limit: int = 30) -> models.PerformanceSummaryList:
+    def get_performance_summaries(self, limit: int = 30) -> list[models.PerformanceSummaryEntry]:
         """Get a list of performance summaries for the authenticated user.
 
         Args:
             limit (int): The maximum number of performance summaries to return. Defaults to 30.
 
         Returns:
-            PerformanceSummaryList: A list of performance summaries.
+            list[PerformanceSummaryEntry]: A list of performance summaries.
 
         Developer Notes:
             ---
@@ -909,7 +899,7 @@ class Otf:
         """
 
         res = self._performance_summary_request("GET", "/v1/performance-summaries", params={"limit": limit})
-        return models.PerformanceSummaryList(summaries=res["items"])
+        return [models.PerformanceSummaryEntry(**item) for item in res["items"]]
 
     def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummaryDetail:
         """Get a detailed performance summary for a given workout.
@@ -925,21 +915,21 @@ class Otf:
         res = self._performance_summary_request("GET", path)
         return models.PerformanceSummaryDetail(**res)
 
-    def get_hr_history(self) -> models.TelemetryHrHistory:
+    def get_hr_history(self) -> list[models.HistoryItem]:
         """Get the heartrate history for the user.
 
         Returns a list of history items that contain the max heartrate, start/end bpm for each zone,
         the change from the previous, the change bucket, and the assigned at time.
 
         Returns:
-            TelemetryHrHistory: The heartrate history for the user.
+            list[HistoryItem]: The heartrate history for the user.
 
         """
         path = "/v1/physVars/maxHr/history"
 
         params = {"memberUuid": self.member_uuid}
         res = self._telemetry_request("GET", path, params=params)
-        return models.TelemetryHrHistory(**res)
+        return [models.HistoryItem(**item) for item in res["items"]]
 
     def get_max_hr(self) -> models.TelemetryMaxHr:
         """Get the max heartrate for the user.
