@@ -1,115 +1,115 @@
 from datetime import date, datetime
-from typing import Any
 
 from pydantic import Field, field_validator
 
 from otf_api.models.base import OtfItemBase
+from otf_api.models.mixins import AddressMixin
 from otf_api.models.studio_detail import StudioDetail
 
 
-class Address(OtfItemBase):
-    member_address_uuid: str | None = Field(None, alias="memberAddressUUId")
-    type: str
-    address1: str
-    address2: str | None = None
-    suburb: str | None = None
-    territory: str
-    postal_code: str = Field(..., alias="postalCode")
-    country: str
-
-
-class MemberCreditCard(OtfItemBase):
-    name_on_card: str = Field(..., alias="nameOnCard")
-    cc_type: str = Field(..., alias="ccType")
-    cc_last4: str = Field(..., alias="ccLast4")
-
-
-class PhysicalCountryDetails(OtfItemBase):
-    country_code: str = Field(..., alias="countryCode")
-    description: str
+class Address(AddressMixin):
+    member_address_uuid: str | None = Field(None, alias="memberAddressUUId", exclude=True, repr=False)
+    type: str | None = None
 
 
 class MemberProfile(OtfItemBase):
-    member_profile_uuid: str = Field(..., alias="memberProfileUUId")
-    unit_of_measure: str = Field(..., alias="unitOfMeasure")
-    max_hr_type: str = Field(..., alias="maxHrType")
-    manual_max_hr: int = Field(..., alias="manualMaxHr")
-    formula_max_hr: int = Field(..., alias="formulaMaxHr")
-    automated_hr: int = Field(..., alias="automatedHr")
-    member_optin_flow_type_id: int = Field(..., alias="memberOptinFlowTypeId")
+    unit_of_measure: str | None = Field(None, alias="unitOfMeasure")
+    max_hr_type: str | None = Field(None, alias="maxHrType")
+    manual_max_hr: int | None = Field(None, alias="manualMaxHr")
+    formula_max_hr: int | None = Field(None, alias="formulaMaxHr")
+    automated_hr: int | None = Field(None, alias="automatedHr")
+
+    member_profile_uuid: str = Field(..., alias="memberProfileUUId", exclude=True, repr=False)
+    member_optin_flow_type_id: int = Field(..., alias="memberOptinFlowTypeId", exclude=True, repr=False)
 
 
 class MemberClassSummary(OtfItemBase):
-    total_classes_booked: int = Field(..., alias="totalClassesBooked")
-    total_classes_attended: int = Field(..., alias="totalClassesAttended")
-    total_intro: int = Field(..., alias="totalIntro")
-    total_ot_live_classes_booked: int = Field(..., alias="totalOTLiveClassesBooked")
-    total_ot_live_classes_attended: int = Field(..., alias="totalOTLiveClassesAttended")
-    total_classes_used_hrm: int = Field(..., alias="totalClassesUsedHRM")
-    total_studios_visited: int = Field(..., alias="totalStudiosVisited")
-    first_visit_date: datetime = Field(..., alias="firstVisitDate")
-    last_class_visited_date: datetime = Field(..., alias="lastClassVisitedDate")
-    last_class_booked_date: datetime = Field(..., alias="lastClassBookedDate")
-    last_class_studio_visited: int = Field(..., alias="lastClassStudioVisited")
+    total_classes_booked: int | None = Field(None, alias="totalClassesBooked")
+    total_classes_attended: int | None = Field(None, alias="totalClassesAttended")
+    total_intro_classes: int | None = Field(None, alias="totalIntro")
+    total_ot_live_classes_booked: int | None = Field(None, alias="totalOTLiveClassesBooked")
+    total_ot_live_classes_attended: int | None = Field(None, alias="totalOTLiveClassesAttended")
+    total_classes_used_hrm: int | None = Field(None, alias="totalClassesUsedHRM")
+    total_studios_visited: int | None = Field(None, alias="totalStudiosVisited")
+    first_visit_date: date | None = Field(None, alias="firstVisitDate")
+    last_class_visited_date: date | None = Field(None, alias="lastClassVisitedDate")
+    last_class_booked_date: date | None = Field(None, alias="lastClassBookedDate")
 
-
-class MemberReferrer(OtfItemBase):
-    member_referrer_uuid: str = Field(..., alias="memberReferrerUUId")
+    last_class_studio_visited: int | None = Field(None, alias="lastClassStudioVisited", exclude=True, repr=False)
 
 
 class MemberDetail(OtfItemBase):
-    member_id: int = Field(..., alias="memberId")
     member_uuid: str = Field(..., alias="memberUUId")
-    home_studio: StudioDetail
+    cognito_id: str = Field(
+        ...,
+        alias="cognitoId",
+        exclude=True,
+        repr=False,
+        description="Cognito user ID, not necessary for end users. Also on OtfUser object.",
+    )
 
-    cognito_id: str = Field(..., alias="cognitoId")
-    home_studio_id: int = Field(..., alias="homeStudioId")
-    mbo_studio_id: int = Field(..., alias="mboStudioId")
-    mbo_id: str = Field(..., alias="mboId")
-    mbo_unique_id: int = Field(..., alias="mboUniqueId")
-    mbo_status: str = Field(..., alias="mboStatus")
-    user_name: str = Field(..., alias="userName")
+    home_studio: StudioDetail
+    profile: MemberProfile = Field(..., alias="memberProfile")
+    class_summary: MemberClassSummary | None = Field(None, alias="memberClassSummary")
+    addresses: list[Address] | None = None
+
+    studio_display_name: str = Field(
+        ..., alias="userName", description="The value that is displayed on tread/rower tablets and OTBeat screens"
+    )
     first_name: str = Field(..., alias="firstName")
     last_name: str = Field(..., alias="lastName")
-    email: str
-    profile_picture_url: str | None = Field(None, alias="profilePictureUrl")
-    alternate_emails: None = Field(..., alias="alternateEmails")
-    address_line1: str | None = Field(None, alias="addressLine1")
-    address_line2: str | None = Field(None, alias="addressLine2")
-    city: str | None
-    state: str | None
-    postal_code: str | None = Field(None, alias="postalCode")
+    email: str = Field(..., alias="email")
     phone_number: str = Field(..., alias="phoneNumber")
-    home_phone: str | None = Field(None, alias="homePhone")
-    work_phone: str | None = Field(None, alias="workPhone")
-    phone_type: None = Field(..., alias="phoneType")
     birth_day: date = Field(..., alias="birthDay")
-    cc_last4: str = Field(..., alias="ccLast4")
-    cc_type: str = Field(..., alias="ccType")
-    gender: str
-    liability: Any
-    locale: str
-    weight: int
-    weight_measure: str = Field(..., alias="weightMeasure")
-    height: int
-    height_measure: str = Field(..., alias="heightMeasure")
-    max_hr: int = Field(..., alias="maxHr")
-    intro_neccessary: bool = Field(..., alias="introNeccessary")
-    online_signup: None = Field(..., alias="onlineSignup")
-    year_imported: int = Field(..., alias="yearImported")
-    is_member_verified: bool = Field(..., alias="isMemberVerified")
-    lead_prospect: bool = Field(..., alias="leadProspect")
-    created_by: str | None = Field(None, alias="createdBy")
+    gender: str = Field(..., alias="gender")
+    locale: str = Field(..., alias="locale")
+    weight: int = Field(..., alias="weight")
+    weight_units: str = Field(..., alias="weightMeasure")
+    height: int = Field(..., alias="height")
+    height_units: str = Field(..., alias="heightMeasure")
+
     created_date: datetime = Field(..., alias="createdDate")
-    updated_by: str = Field(..., alias="updatedBy")
     updated_date: datetime = Field(..., alias="updatedDate")
-    is_deleted: bool = Field(..., alias="isDeleted")
-    addresses: list[Address] | None = None
-    member_credit_card: MemberCreditCard | None = Field(None, alias="memberCreditCard")
-    member_profile: MemberProfile = Field(..., alias="memberProfile")
-    member_referrer: None | MemberReferrer = Field(None, alias="memberReferrer")
-    otf_acs_id: str = Field(..., alias="otfAcsId")
-    member_class_summary: MemberClassSummary | None = Field(None, alias="memberClassSummary")
+
+    # unused fields
+
+    # mbo fields
+    mbo_id: str | None = Field(None, alias="mboId", exclude=True, repr=False, description="MindBody attr")
+    mbo_status: str | None = Field(None, alias="mboStatus", exclude=True, repr=False, description="MindBody attr")
+    mbo_studio_id: int | None = Field(None, alias="mboStudioId", exclude=True, repr=False, description="MindBody attr")
+    mbo_unique_id: int | None = Field(None, alias="mboUniqueId", exclude=True, repr=False, description="MindBody attr")
+
+    # ids
+    created_by: str | None = Field(None, alias="createdBy", exclude=True, repr=False)
+    home_studio_id: int | None = Field(
+        None, alias="homeStudioId", exclude=True, repr=False, description="Not used by API"
+    )
+    member_id: int | None = Field(None, alias="memberId", exclude=True, repr=False, description="Not used by API")
+    otf_acs_id: str | None = Field(None, alias="otfAcsId", exclude=True, repr=False)
+    updated_by: str | None = Field(None, alias="updatedBy", exclude=True, repr=False)
+
+    # unused address/member detail fields
+    address_line1: str | None = Field(None, alias="addressLine1", exclude=True, repr=False)
+    address_line2: str | None = Field(None, alias="addressLine2", exclude=True, repr=False)
+    alternate_emails: None = Field(None, alias="alternateEmails", exclude=True, repr=False)
+    cc_last4: str | None = Field(None, alias="ccLast4", exclude=True, repr=False)
+    cc_type: str | None = Field(None, alias="ccType", exclude=True, repr=False)
+    city: str | None = Field(None, exclude=True, repr=False)
+    home_phone: str | None = Field(None, alias="homePhone", exclude=True, repr=False)
+    intro_neccessary: bool | None = Field(None, alias="introNeccessary", exclude=True, repr=False)
+    is_deleted: bool | None = Field(None, alias="isDeleted", exclude=True, repr=False)
+    is_member_verified: bool | None = Field(None, alias="isMemberVerified", exclude=True, repr=False)
+    lead_prospect: bool | None = Field(None, alias="leadProspect", exclude=True, repr=False)
+    max_hr: int | None = Field(
+        None, alias="maxHr", exclude=True, repr=False, description="Also found in member_profile"
+    )
+    online_signup: None = Field(None, alias="onlineSignup", exclude=True, repr=False)
+    phone_type: None = Field(None, alias="phoneType", exclude=True, repr=False)
+    postal_code: str | None = Field(None, alias="postalCode", exclude=True, repr=False)
+    profile_picture_url: str | None = Field(None, alias="profilePictureUrl", exclude=True, repr=False)
+    state: str | None = Field(None, exclude=True, repr=False)
+    work_phone: str | None = Field(None, alias="workPhone", exclude=True, repr=False)
+    year_imported: int | None = Field(None, alias="yearImported", exclude=True, repr=False)
 
     @field_validator("birth_day")
     @classmethod
