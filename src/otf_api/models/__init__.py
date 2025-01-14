@@ -19,7 +19,6 @@ from .studio_services import StudioService
 from .telemetry import Telemetry
 from .telemetry_hr_history import HistoryItem
 from .telemetry_max_hr import TelemetryMaxHr
-from .total_classes import TotalClasses
 
 __all__ = [
     "BodyCompositionData",
@@ -49,5 +48,4 @@ __all__ = [
     "StudioStatus",
     "Telemetry",
     "TelemetryMaxHr",
-    "TotalClasses"
 ]

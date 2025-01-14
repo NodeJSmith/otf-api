@@ -807,16 +807,6 @@ class Otf:
 
         return [models.StudioDetail(**studio) for studio in all_results.values()]
 
-    def get_total_classes(self) -> models.TotalClasses:
-        """Get the member's total classes. This is a simple object reflecting the total number of classes attended,
-        both in-studio and OT Live.
-
-        Returns:
-            TotalClasses: The member's total classes.
-        """
-        data = self._default_request("GET", "/mobile/v1/members/classes/summary")
-        return models.TotalClasses(**data["data"])
-
     def get_body_composition_list(self) -> list[models.BodyCompositionData]:
         """Get the member's body composition list.
 
