@@ -539,7 +539,13 @@ class Otf:
             list[MemberPurchase]: The member's purchases.
         """
         data = self._default_request("GET", f"/member/members/{self.member_uuid}/purchases")
-        return [models.MemberPurchase(**purchase) for purchase in data["data"]]
+
+        purchases = data["data"]
+
+        for p in purchases:
+            p["studio"] = self.get_studio_detail(p["studio"]["studioUUId"])
+
+        return [models.MemberPurchase(**purchase) for purchase in purchases]
 
     def get_member_lifetime_stats(
         self, select_time: models.StatsTime = models.StatsTime.AllTime

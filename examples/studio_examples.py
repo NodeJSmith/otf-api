@@ -82,6 +82,10 @@ def main():
     faves = otf.get_favorite_studios()
     print(faves[0].model_dump())
 
+    member_purchases = otf.get_member_purchases()
+    for p in member_purchases:
+        print(p.model_dump_json(indent=4))
+
 
 if __name__ == "__main__":
     main()
