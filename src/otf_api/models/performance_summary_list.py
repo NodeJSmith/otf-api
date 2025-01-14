@@ -1,4 +1,6 @@
-from pydantic import Field
+from datetime import datetime
+
+from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
 
@@ -11,32 +13,11 @@ class ZoneTimeMinutes(OtfItemBase):
     red: int
 
 
-class Details(OtfItemBase):
-    calories_burned: int
-    splat_points: int
-    step_count: int
-    active_time_seconds: int
-    zone_time_minutes: ZoneTimeMinutes
-
-
-class Coach(OtfItemBase):
-    image_url: str | None = None
-    first_name: str
-
-
-class Studio(OtfItemBase):
-    id: str
-    license_number: str
-    name: str
-
-
 class Class(OtfItemBase):
-    ot_base_class_uuid: str | None = None
-    starts_at_local: str
+    class_uuid: str | None = Field(None, description="Only populated if class is ratable", alias="ot_base_class_uuid")
+    starts_at: datetime | None = Field(None, alias="starts_at_local")
     name: str | None = None
     type: str | None = None
-    coach: Coach
-    studio: Studio
 
 
 class CoachRating(OtfItemBase):
@@ -51,14 +32,19 @@ class ClassRating(OtfItemBase):
     value: int
 
 
-class Ratings(OtfItemBase):
-    coach: CoachRating
-    otf_class: ClassRating = Field(..., alias="class")
-
-
 class PerformanceSummaryEntry(OtfItemBase):
     id: str = Field(..., alias="id")
-    details: Details
+    calories_burned: int | None = Field(None, alias=AliasPath("details", "calories_burned"))
+    splat_points: int | None = Field(None, alias=AliasPath("details", "splat_points"))
+    step_count: int | None = Field(None, alias=AliasPath("details", "step_count"))
+    active_time_seconds: int | None = Field(None, alias=AliasPath("details", "active_time_seconds"))
+    zone_time_minutes: ZoneTimeMinutes | None = Field(None, alias=AliasPath("details", "zone_time_minutes"))
     ratable: bool
-    otf_class: Class = Field(..., alias="class")
-    ratings: Ratings | None = None
+    otf_class: Class | None = Field(None, alias="class")
+    coach: str | None = Field(None, alias=AliasPath("class", "coach", "first_name"))
+    coach_rating: CoachRating | None = Field(None, alias=AliasPath("ratings", "coach"))
+    class_rating: ClassRating | None = Field(None, alias=AliasPath("ratings", "class"))
+
+    @property
+    def is_rated(self) -> bool:
+        return self.coach_rating is not None or self.class_rating is not None

@@ -3,6 +3,7 @@ import contextlib
 import functools
 from datetime import date, datetime, timedelta
 from getpass import getpass
+from json import JSONDecodeError
 from logging import getLogger
 from typing import Any
 
@@ -104,7 +105,15 @@ class Otf:
             LOGGER.exception(f"Error making request: {e}")
             raise
 
-        return response.json()
+        if not response.text:
+            return None
+
+        try:
+            return response.json()
+        except JSONDecodeError as e:
+            LOGGER.error(f"Error decoding JSON: {e}")
+            LOGGER.error(f"Response: {response.text}")
+            raise
 
     def _classes_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the classes API."""
@@ -856,11 +865,12 @@ class Otf:
         )
         return data
 
-    def get_performance_summaries(self, limit: int = 30) -> list[models.PerformanceSummaryEntry]:
+    def get_performance_summaries(self, limit: int = 5) -> list[models.PerformanceSummaryEntry]:
         """Get a list of performance summaries for the authenticated user.
 
         Args:
-            limit (int): The maximum number of performance summaries to return. Defaults to 30.
+            limit (int): The maximum number of performance summaries to return. Defaults to 5.
+            only_include_rateable (bool): Whether to only include rateable performance summaries. Defaults to True.
 
         Returns:
             list[PerformanceSummaryEntry]: A list of performance summaries.
@@ -872,7 +882,9 @@ class Otf:
         """
 
         res = self._performance_summary_request("GET", "/v1/performance-summaries", params={"limit": limit})
-        return [models.PerformanceSummaryEntry(**item) for item in res["items"]]
+        entries = [models.PerformanceSummaryEntry(**item) for item in res["items"]]
+
+        return entries
 
     def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummaryDetail:
         """Get a detailed performance summary for a given workout.
@@ -886,6 +898,9 @@ class Otf:
 
         path = f"/v1/performance-summaries/{performance_summary_id}"
         res = self._performance_summary_request("GET", path)
+        if res is None:
+            raise exc.ResourceNotFoundError(f"Performance summary {performance_summary_id} not found")
+
         return models.PerformanceSummaryDetail(**res)
 
     def get_hr_history(self) -> list[models.HistoryItem]:
