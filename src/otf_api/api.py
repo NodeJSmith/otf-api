@@ -661,7 +661,7 @@ class Otf:
 
         # manually add studio_uuid, the response data does not include it anywhere
         for d in data["data"]:
-            d["studio_uuid"] = studio_uuid
+            d["studio"] = self.get_studio_detail(studio_uuid)
 
         return [models.StudioService(**d) for d in data["data"]]
 
