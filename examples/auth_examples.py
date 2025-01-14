@@ -10,16 +10,16 @@ def main():
 
     # You can use `login` to log in with a username and password
     user = OtfUser(username, password)
-    print(user.member_id)
+    print(user.cognito_id)
 
     # If you have tokens available you can provide them using `from_tokens` instead of `login`
     user = OtfUser(**user.cognito.tokens)
-    print(user.member_id)
+    print(user.cognito_id)
 
     # if you have cached tokens you can attempt to log in with no arguments
     # if no cached credentials are found a NoCredentialsError will be raised
     user = OtfUser()
-    print(user.member_id)
+    print(user.cognito_id)
 
     # however you login, you'll pass the user object to the Otf object
 

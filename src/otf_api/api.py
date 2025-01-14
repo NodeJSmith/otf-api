@@ -37,7 +37,7 @@ class Otf:
             user (OtfUser): The user to authenticate as.
         """
         self.user = user
-        self.member_uuid = self.user.member_id
+        self.member_uuid = self.user.member_uuid
 
         self.session = httpx.Client(
             headers=JSON_HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
@@ -813,7 +813,7 @@ class Otf:
         Returns:
             list[BodyCompositionData]: The member's body composition list.
         """
-        data = self._default_request("GET", f"/member/members/{self.member.cognito_id}/body-composition")
+        data = self._default_request("GET", f"/member/members/{self.user.cognito_id}/body-composition")
         return [models.BodyCompositionData(**item) for item in data["data"]]
 
     def get_challenge_tracker_content(self) -> models.ChallengeTrackerContent:

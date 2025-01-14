@@ -12,7 +12,7 @@ LOGGER = getLogger(__name__)
 class OtfUser:
     """OtfUser is a thin wrapper around OtfCognito, meant to hide all of the gory details from end users."""
 
-    member_id: str
+    cognito_id: str
     member_uuid: str
     email_address: str
     cognito: OtfCognito
@@ -46,8 +46,8 @@ class OtfUser:
             refresh_token=refresh_token,
         )
 
-        self.member_id = self.cognito.id_claims["cognito:username"]
-        self.member_uuid = self.cognito.access_claims["sub"]
+        self.cognito_id = self.cognito.access_claims["sub"]
+        self.member_uuid = self.cognito.id_claims["cognito:username"]
         self.email_address = self.cognito.id_claims["email"]
 
         self.httpx_auth = HttpxCognitoAuth(cognito=self.cognito)
