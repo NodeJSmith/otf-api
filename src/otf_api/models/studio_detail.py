@@ -49,7 +49,7 @@ class StudioDetail(OtfItemBase):
     sms_package_enabled: bool | None = Field(None, alias="smsPackageEnabled", exclude=True, repr=False)
 
     # misc
-    studio_id: int | None = Field(None, alias="studioId", description="Not used by API")
+    studio_id: int | None = Field(None, alias="studioId", description="Not used by API", exclude=True, repr=False)
     mbo_studio_id: int | None = Field(None, alias="mboStudioId", exclude=True, repr=False, description="MindBody attr")
     open_date: datetime | None = Field(None, alias="openDate", exclude=True, repr=False)
     pricing_level: str | None = Field(
