@@ -1,10 +1,8 @@
 from datetime import datetime
 
-from inflection import camelize
-from pydantic import AliasPath, Field, model_validator
+from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.mixins import AddressMixin, PhoneLongitudeLatitudeMixin
 from otf_api.models.studio_detail import StudioDetail
 
 
