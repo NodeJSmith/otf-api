@@ -27,4 +27,3 @@ class MemberPurchase(OtfItemBase):
     pos_product_id: int | None = Field(..., alias="posProductId", exclude=True, repr=False)
     pos_sale_id: int | None = Field(..., alias="posSaleId", exclude=True, repr=False)
     studio_id: int | None = Field(..., alias="studioId", exclude=True, repr=False)
-
