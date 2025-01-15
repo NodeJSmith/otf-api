@@ -743,13 +743,14 @@ class Otf:
         return self.search_studios_by_geo(latitude, longitude)
 
     def search_studios_by_geo(
-        self, latitude: float | None = None, longitude: float | None = None
+        self, latitude: float | None = None, longitude: float | None = None, distance: int = 50
     ) -> list[models.StudioDetail]:
         """Search for studios by geographic location.
 
         Args:
             latitude (float, optional): Latitude of the location to search around, if None uses home studio latitude.
             longitude (float, optional): Longitude of the location to search around, if None uses home studio longitude.
+            distance (int, optional): The distance in miles to search around the location. Default is 50.
 
         Returns:
             list[StudioDetail]: List of studios that match the search criteria.
@@ -757,7 +758,7 @@ class Otf:
         latitude = latitude or self.home_studio.location.latitude
         longitude = longitude or self.home_studio.location.longitude
 
-        return self._get_studios_by_geo(latitude, longitude)
+        return self._get_studios_by_geo(latitude, longitude, distance)
 
     def _get_all_studios(self) -> list[models.StudioDetail]:
         """Gets all studios. Marked as private to avoid random users calling it. Useful for testing and validating
@@ -769,7 +770,9 @@ class Otf:
         # long/lat being None will cause the endpoint to return all studios
         return self._get_studios_by_geo(None, None)
 
-    def _get_studios_by_geo(self, latitude: float | None, longitude: float | None) -> list[models.StudioDetail]:
+    def _get_studios_by_geo(
+        self, latitude: float | None, longitude: float | None, distance: int = 50
+    ) -> list[models.StudioDetail]:
         """
         Searches for studios by geographic location.
 
@@ -782,7 +785,9 @@ class Otf:
         """
         path = "/mobile/v1/studios"
 
-        params = {"latitude": latitude, "longitude": longitude, "distance": 50, "pageIndex": 1, "pageSize": 100}
+        distance = min(distance, 250)  # max distance is 250 miles
+
+        params = {"latitude": latitude, "longitude": longitude, "distance": distance, "pageIndex": 1, "pageSize": 100}
 
         LOGGER.debug("Starting studio search", extra={"params": params})
 
