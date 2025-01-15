@@ -307,11 +307,11 @@ class Otf:
         except Exception as e:
             raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
 
-        # get the booking details - we will only use this to get the booking_uuid so that we can return a Booking object
-        # using `get_booking`; this is an attempt to improve on OTF's terrible data model
-        book_class = models.BookClass(**resp["data"])
+        # get the booking uuid - we will only use this to return a Booking object using `get_booking`
+        # this is an attempt to improve on OTF's terrible data model
+        booking_uuid = resp["data"]["savedBookings"][0]["classBookingUUId"]
 
-        booking = self.get_booking(book_class.booking_uuid)
+        booking = self.get_booking(booking_uuid)
 
         return booking
 
@@ -344,17 +344,11 @@ class Otf:
         Args:
             booking (str | Booking): The booking UUID or the Booking object to cancel.
 
-        Returns:
-            CancelBooking: The cancelled booking.
-
         Raises:
             ValueError: If booking_uuid is None or empty string
             BookingNotFoundError: If the booking does not exist.
         """
-        booking_uuid = booking.booking_uuid if isinstance(booking, models.Booking) else booking
-
-        if not booking_uuid:
-            raise ValueError("booking_uuid is required")
+        booking_uuid = get_booking_uuid(booking)
 
         try:
             self.get_booking(booking_uuid)
@@ -370,7 +364,7 @@ class Otf:
                 f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
             )
 
-        return models.CancelBooking(**resp["data"])
+        return
 
     def get_bookings(
         self,

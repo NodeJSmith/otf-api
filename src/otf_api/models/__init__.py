@@ -1,7 +1,5 @@
 from .body_composition_list import BodyCompositionData
-from .book_class import BookClass
 from .bookings import Booking
-from .cancel_booking import CancelBooking
 from .challenge_tracker_content import ChallengeTrackerContent
 from .challenge_tracker_detail import ChallengeTrackerDetail
 from .classes import OtfClass
@@ -22,10 +20,8 @@ from .telemetry_max_hr import TelemetryMaxHr
 
 __all__ = [
     "BodyCompositionData",
-    "BookClass",
     "Booking",
     "BookingStatus",
-    "CancelBooking",
     "ChallengeTrackerContent",
     "ChallengeTrackerDetail",
     "ChallengeType",
