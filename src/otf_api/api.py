@@ -13,6 +13,7 @@ from yarl import URL
 from otf_api import exceptions as exc
 from otf_api import filters, models
 from otf_api.auth import OtfUser
+from otf_api.utils import ensure_date, ensure_list, get_booking_uuid, get_class_uuid
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
@@ -125,10 +126,7 @@ class Otf:
         end_date: date | None = None,
         studio_uuids: list[str] | None = None,
         include_home_studio: bool | None = None,
-        limit: int | None = None,
         filters: list[filters.ClassFilter] | filters.ClassFilter | None = None,
-        exclude_cancelled: bool = True,
-        exclude_unbookable: bool = True,
     ) -> list[models.OtfClass]:
         """Get the classes for the user.
 
@@ -141,22 +139,55 @@ class Otf:
             studio_uuids (list[str] | None): The studio UUIDs to get the classes for. Default is None, which will\
             default to the user's home studio only.
             include_home_studio (bool): Whether to include the home studio in the classes. Default is True.
-            limit (int | None): Limit the number of classes returned. Default is None.
             filters (list[ClassFilter] | ClassFilter | None): A list of filters to apply to the classes, or a single\
             filter. Filters are applied as an OR operation. Default is None.
-            exclude_cancelled (bool): Whether to exclude classes that were cancelled by the studio. Default is True.
-            exclude_unbookable (bool): Whether to exclude classes that are outside the scheduling window. Default is\
-            True.
 
         Returns:
             list[OtfClass]: The classes for the user.
         """
 
-        if not studio_uuids:
-            studio_uuids = [self.home_studio_uuid]
+        classes = self._get_classes(studio_uuids, include_home_studio)
+
+        # remove those that are cancelled *by the studio*
+        classes = [c for c in classes if not c.is_cancelled]
+
+        bookings = self.get_bookings(status=models.BookingStatus.Booked)
+        booked_classes = {b.class_uuid for b in bookings}
+
+        for otf_class in classes:
+            otf_class.is_booked = otf_class.class_uuid in booked_classes
+
+        # filter by provided start_date/end_date, if provided
+        classes = self._filter_classes_by_date(classes, start_date, end_date)
+
+        # filter by provided filters, if provided
+        classes = self._filter_classes_by_filters(classes, filters)
+
+        # sort by start time, then by name
+        classes = sorted(classes, key=lambda x: (x.starts_at, x.name))
+
+        return classes
+
+    def _get_classes(
+        self, studio_uuids: list[str] | None = None, include_home_studio: bool | None = None
+    ) -> list[models.OtfClass]:
+        """Handles the actual request to get classes.
+
+        Args:
+            studio_uuids (list[str] | None): The studio UUIDs to get the classes for. Default is None, which will\
+            default to the user's home studio only.
+            include_home_studio (bool): Whether to include the home studio in the classes. Default is True.
+
+        Returns:
+            list[OtfClass]: The classes for the user.
+        """
+
+        studio_uuids = ensure_list(studio_uuids) or [self.home_studio_uuid]
+        studio_uuids = list(set(studio_uuids))  # remove duplicates
 
         if len(studio_uuids) > 50:
-            raise ValueError("Cannot request classes for more than 50 studios at a time.")
+            LOGGER.warning("Cannot request classes for more than 50 studios at a time.")
+            studio_uuids = studio_uuids[:50]
 
         if include_home_studio and self.home_studio_uuid not in studio_uuids:
             if len(studio_uuids) == 50:
@@ -165,54 +196,72 @@ class Otf:
                 studio_uuids.append(self.home_studio_uuid)
 
         classes_resp = self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
-        classes = [models.OtfClass(**c) for c in classes_resp["items"]]
 
-        if exclude_cancelled:
-            classes = [c for c in classes if not c.is_cancelled]
+        studio_dict = {s: self.get_studio_detail(s) for s in studio_uuids}
+        classes: list[models.OtfClass] = []
 
-        for otf_class in classes:
-            otf_class.is_home_studio = otf_class.studio.studio_uuid == self.home_studio_uuid
+        for c in classes_resp["items"]:
+            c["studio"] = studio_dict[c["studio"]["id"]]  # the one (?) place where ID actually means UUID
+            c["is_home_studio"] = c["studio"].studio_uuid == self.home_studio_uuid
+            classes.append(models.OtfClass(**c))
 
-        if exclude_unbookable:
-            # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
-            max_date = datetime.today().date() + timedelta(days=29)
-            classes = [c for c in classes if c.starts_at.date() <= max_date]
+        return classes
 
-        bookings = self.get_bookings(status=models.BookingStatus.Booked)
-        booked_classes = {b.otf_class.class_uuid for b in bookings}
+    def _filter_classes_by_date(
+        self, classes: list[models.OtfClass], start_date: date | None, end_date: date | None
+    ) -> list[models.OtfClass]:
+        """Filter classes by start and end dates, as well as the max date the booking endpoint will accept.
 
-        for otf_class in classes:
-            otf_class.is_booked = otf_class.class_uuid in booked_classes
+        Args:
+            classes (list[OtfClass]): The classes to filter.
+            start_date (date | None): The start date to filter by.
+            end_date (date | None): The end date to filter by.
 
-        if limit:
-            classes = classes[:limit]
+        Returns:
+            list[OtfClass]: The filtered classes.
+        """
 
-        # apply date filters
-        if start_date:
-            if not isinstance(start_date, date | datetime):
-                raise ValueError("start_date must be a date or datetime object")
-            start_date = start_date.date() if isinstance(start_date, datetime) else start_date
+        # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
+        max_date = datetime.today().date() + timedelta(days=29)
+
+        classes = [c for c in classes if c.starts_at.date() <= max_date]
+
+        # if not start date or end date, we're done
+        if not start_date and not end_date:
+            return classes
+
+        if start_date := ensure_date(start_date):
             classes = [c for c in classes if c.starts_at.date() >= start_date]
 
-        if end_date:
-            if not isinstance(end_date, date | datetime):
-                raise ValueError("end_date must be a date or datetime object")
-            end_date = end_date.date() if isinstance(end_date, datetime) else end_date
+        if end_date := ensure_date(end_date):
             classes = [c for c in classes if c.starts_at.date() <= end_date]
 
-        # apply provided filters
-        if filters:
-            filtered_classes: list[models.OtfClass] = []
+        return classes
 
-            if not isinstance(filters, list):
-                filters = [filters]
+    def _filter_classes_by_filters(
+        self, classes: list[models.OtfClass], filters: list[filters.ClassFilter] | filters.ClassFilter | None
+    ) -> list[models.OtfClass]:
+        """Filter classes by the provided filters.
 
-            for f in filters:
-                filtered_classes.extend(f.filter_classes(classes))
+        Args:
+            classes (list[OtfClass]): The classes to filter.
+            filters (list[ClassFilter] | ClassFilter | None): The filters to apply.
 
-            # remove duplicates
-            classes = list({c.class_uuid: c for c in filtered_classes}.values())
-            classes = sorted(classes, key=lambda x: (x.starts_at, x.name))
+        Returns:
+            list[OtfClass]: The filtered classes.
+        """
+        if not filters:
+            return classes
+
+        filters = ensure_list(filters)
+        filtered_classes: list[models.OtfClass] = []
+
+        # apply each filter as an OR operation
+        for f in filters:
+            filtered_classes.extend(f.filter_classes(classes))
+
+        # remove duplicates
+        classes = list({c.class_uuid: c for c in filtered_classes}.values())
 
         return classes
 
@@ -248,14 +297,11 @@ class Otf:
             ValueError: If class_uuid is None or empty string.
         """
 
-        class_uuid = otf_class.class_uuid if isinstance(otf_class, models.OtfClass) else otf_class
-
-        if not class_uuid:
-            raise ValueError("class_uuid is required")
+        class_uuid = get_class_uuid(otf_class)
 
         all_bookings = self.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
 
-        if booking := next((b for b in all_bookings if b.otf_class.class_uuid == class_uuid), None):
+        if booking := next((b for b in all_bookings if b.class_uuid == class_uuid), None):
             return booking
 
         raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
@@ -276,16 +322,9 @@ class Otf:
             OtfException: If there is an error booking the class.
         """
 
-        class_uuid = otf_class.class_uuid if isinstance(otf_class, models.OtfClass) else otf_class
-        if not class_uuid:
-            raise ValueError("class_uuid is required")
+        class_uuid = get_class_uuid(otf_class)
 
-        with contextlib.suppress(exc.BookingNotFoundError):
-            existing_booking = self.get_booking_from_class(class_uuid)
-            if existing_booking.status != models.BookingStatus.Cancelled:
-                raise exc.AlreadyBookedError(
-                    f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.booking_uuid
-                )
+        self._check_class_already_booked(class_uuid)
 
         if isinstance(otf_class, models.OtfClass):
             self._check_for_booking_conflicts(otf_class)
@@ -298,9 +337,10 @@ class Otf:
             resp_obj = e.response.json()
 
             if resp_obj["code"] == "ERROR":
-                if resp_obj["data"]["errorCode"] == "603":
+                err_code = resp_obj["data"]["errorCode"]
+                if err_code == "603":
                     raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
-                if resp_obj["data"]["errorCode"] == "602":
+                if err_code == "602":
                     raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
 
             raise
@@ -315,6 +355,28 @@ class Otf:
 
         return booking
 
+    def _check_class_already_booked(self, class_uuid: str) -> None:
+        """Check if the class is already booked.
+
+        Args:
+            class_uuid (str): The class UUID to check.
+
+        Raises:
+            AlreadyBookedError: If the class is already booked.
+        """
+        existing_booking = None
+
+        with contextlib.suppress(exc.BookingNotFoundError):
+            existing_booking = self.get_booking_from_class(class_uuid)
+
+        if not existing_booking:
+            return
+
+        if existing_booking.status != models.BookingStatus.Cancelled:
+            raise exc.AlreadyBookedError(
+                f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.booking_uuid
+            )
+
     def _check_for_booking_conflicts(self, otf_class: models.OtfClass) -> None:
         """Check for booking conflicts with the provided class.
 
@@ -326,13 +388,11 @@ class Otf:
         if not bookings:
             return
 
-        booking_map: dict[tuple[datetime, datetime], models.Booking] = {}
-
         for booking in bookings:
-            booking_map[(booking.otf_class.starts_at, booking.otf_class.ends_at)] = booking
-
-        for (booking_start, booking_end), booking in booking_map.items():
-            if otf_class.starts_at <= booking_end and otf_class.ends_at >= booking_start:
+            booking_start = booking.otf_class.starts_at
+            booking_end = booking.otf_class.ends_at
+            # Check for overlap
+            if not (otf_class.ends_at < booking_start or otf_class.starts_at > booking_end):
                 raise exc.ConflictingBookingError(
                     f"You already have a booking that conflicts with this class ({booking.otf_class.class_uuid}).",
                     booking_uuid=booking.booking_uuid,
@@ -591,13 +651,6 @@ class Otf:
         """
         data = self._default_request("GET", f"/member/members/{self.member_uuid}/favorite-studios")
         studio_uuids = [studio["studioUUId"] for studio in data["data"]]
-
-        # the data returned by this endpoint is a different model from the regular studio detail
-        # so instead of forcing users to deal with a different model for each endpoint, we will just
-        # call the studio detail endpoint for each studio and return a list of studio details
-
-        # it's slower, but it's more consistent
-
         return [self.get_studio_detail(studio_uuid) for studio_uuid in studio_uuids]
 
     def add_favorite_studio(self, studio_uuids: list[str] | str) -> list[models.StudioDetail]:
@@ -610,8 +663,7 @@ class Otf:
         Returns:
             list[StudioDetail]: The new favorite studios.
         """
-        if isinstance(studio_uuids, str):
-            studio_uuids = [studio_uuids]
+        studio_uuids = ensure_list(studio_uuids)
 
         if not studio_uuids:
             raise ValueError("studio_uuids is required")
@@ -633,8 +685,7 @@ class Otf:
         Returns:
             None
         """
-        if isinstance(studio_uuids, str):
-            studio_uuids = [studio_uuids]
+        studio_uuids = ensure_list(studio_uuids)
 
         if not studio_uuids:
             raise ValueError("studio_uuids is required")
@@ -655,7 +706,6 @@ class Otf:
         studio_uuid = studio_uuid or self.home_studio_uuid
         data = self._default_request("GET", f"/member/studios/{studio_uuid}/services")
 
-        # manually add studio_uuid, the response data does not include it anywhere
         for d in data["data"]:
             d["studio"] = self.get_studio_detail(studio_uuid)
 
@@ -675,39 +725,31 @@ class Otf:
         studio_uuid = studio_uuid or self.home_studio_uuid
 
         path = f"/mobile/v1/studios/{studio_uuid}"
-        params = {"include": "locations"}
+        # params = {"include": "locations"}
+        params = {}
 
-        res = self._default_request("GET", path, params=params)
-        return models.StudioDetail(**res["data"])
+        no_location_res = self._default_request("GET", path, params=params)
+        location_res = self._default_request("GET", path, params={"include": "locations"})
+
+        assert no_location_res["data"] == location_res["data"]
+
+        return models.StudioDetail(**location_res["data"])
 
     def get_studios_by_geo(
-        self,
-        latitude: float | None = None,
-        longitude: float | None = None,
-        distance: float = 500,
-        page_index: int = 1,
-        page_size: int = 100,
+        self, latitude: float | None = None, longitude: float | None = None
     ) -> list[models.StudioDetail]:
         """Alias for search_studios_by_geo."""
 
-        return self.search_studios_by_geo(latitude, longitude, distance, page_index, page_size)
+        return self.search_studios_by_geo(latitude, longitude)
 
     def search_studios_by_geo(
-        self,
-        latitude: float | None = None,
-        longitude: float | None = None,
-        distance: float = 50,
-        page_index: int = 1,
-        page_size: int = 100,
+        self, latitude: float | None = None, longitude: float | None = None
     ) -> list[models.StudioDetail]:
         """Search for studios by geographic location.
 
         Args:
             latitude (float, optional): Latitude of the location to search around, if None uses home studio latitude.
             longitude (float, optional): Longitude of the location to search around, if None uses home studio longitude.
-            distance (float, optional): Distance in miles to search around the location. Defaults to 50.
-            page_index (int, optional): Page index to start at. Defaults to 1.
-            page_size (int, optional): Number of results per page. Defaults to 100.
 
         Returns:
             list[StudioDetail]: List of studios that match the search criteria.
@@ -715,7 +757,7 @@ class Otf:
         latitude = latitude or self.home_studio.location.latitude
         longitude = longitude or self.home_studio.location.longitude
 
-        return self._get_studios_by_geo(latitude, longitude, distance, page_index, page_size)
+        return self._get_studios_by_geo(latitude, longitude)
 
     def _get_all_studios(self) -> list[models.StudioDetail]:
         """Gets all studios. Marked as private to avoid random users calling it. Useful for testing and validating
@@ -724,54 +766,40 @@ class Otf:
         Returns:
             list[StudioDetail]: List of studios that match the search criteria.
         """
+        # long/lat being None will cause the endpoint to return all studios
+        return self._get_studios_by_geo(None, None)
 
-        return self._get_studios_by_geo(None, None, 500, 1, 100)
+    def _get_studios_by_geo(self, latitude: float | None, longitude: float | None) -> list[models.StudioDetail]:
+        """
+        Searches for studios by geographic location.
 
-    def _get_studios_by_geo(
-        self,
-        latitude: float | None,
-        longitude: float | None,
-        distance: float = 50,
-        page_index: int = 1,
-        page_size: int = 100,
-    ) -> list[models.StudioDetail]:
-        """Searches for studios by geographic location. Used by search_studios_by_geo and get_all_studios."""
+        Args:
+            latitude (float | None): Latitude of the location.
+            longitude (float | None): Longitude of the location.
 
+        Returns:
+            list[models.StudioDetail]: List of studios matching the search criteria.
+        """
         path = "/mobile/v1/studios"
 
-        if page_size > 100:
-            # the API actually seems to accept any page size, but we don't want to blow up the servers
-            # by requesting 1000 studios at a time
-            LOGGER.warning("The API does not support more than 100 results per page, limiting to 100.")
-            page_size = 100
+        params = {"latitude": latitude, "longitude": longitude, "distance": 50, "pageIndex": 1, "pageSize": 100}
 
-        if page_index < 1:
-            # if page index is set to 0 the API treats it like 1, causing duplicate results
-            LOGGER.warning("Page index must be greater than 0, setting to 1.")
-            page_index = 1
-
-        params = {
-            "pageIndex": page_index,
-            "pageSize": page_size,
-            "latitude": latitude,
-            "longitude": longitude,
-            "distance": distance,
-        }
-
-        LOGGER.debug(f"Searching for studios: {params}")
+        LOGGER.debug("Starting studio search", extra={"params": params})
 
         all_results: dict[str, dict[str, Any]] = {}
-        res = self._default_request("GET", path, params=params)
-        all_results.update({studio["studioUUId"]: studio for studio in res["data"]["studios"]})
-        params["pageIndex"] += 1
 
-        total_count = res["data"].get("pagination", {}).get("totalCount", 0)
+        while True:
+            res = self._default_request("GET", path, params=params)
+            studios = res["data"].get("studios", [])
+            total_count = res["data"].get("pagination", {}).get("totalCount", 0)
 
-        while len(all_results) < total_count:
-            studios = self._default_request("GET", path, params=params)["data"]["studios"]
             all_results.update({studio["studioUUId"]: studio for studio in studios})
+            if len(all_results) >= total_count or not studios:
+                break
 
             params["pageIndex"] += 1
+
+        LOGGER.info("Studio search completed, fetched %d of %d studios", len(all_results), total_count, stacklevel=2)
 
         return [models.StudioDetail(**studio) for studio in all_results.values()]
 

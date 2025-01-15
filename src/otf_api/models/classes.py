@@ -4,18 +4,7 @@ from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import ClassType, DoW
-from otf_api.models.mixins import AddressMixin, PhoneLongitudeLatitudeMixin
-
-
-class Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
-    studio_uuid: str = Field(alias="id", description="The OTF studio UUID")
-    name: str
-    time_zone: str
-    currency_code: str | None = None
-    address: AddressMixin
-
-    # unused fields
-    mbo_studio_id: str | None = Field(None, exclude=True, repr=False, description="MindBody attr")
+from otf_api.models.studio_detail import StudioDetail
 
 
 class OtfClass(OtfItemBase):
@@ -30,7 +19,7 @@ class OtfClass(OtfItemBase):
         alias="starts_at_local",
         description="The start time of the class. Reflects local time, but the object does not have a timezone.",
     )
-    studio: Studio
+    studio: StudioDetail
     class_type: ClassType = Field(alias="type")
 
     # capacity/status fields
