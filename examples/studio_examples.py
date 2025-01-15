@@ -1,14 +1,8 @@
-import os
-from getpass import getpass
-
-from otf_api import Otf, OtfUser
-
-USERNAME = os.getenv("OTF_EMAIL") or input("Enter your OTF email: ")
-PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
+from otf_api import Otf
 
 
 def main():
-    otf = Otf(user=OtfUser(USERNAME, PASSWORD))
+    otf = Otf()
 
     # if you need to figure out what studios are in an area, you can call `search_studios_by_geo`
     # which takes latitude, longitude, distance, page_index, and page_size as arguments

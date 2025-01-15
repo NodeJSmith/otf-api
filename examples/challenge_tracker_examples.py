@@ -1,15 +1,10 @@
-import os
-from getpass import getpass
-
-from otf_api import Otf, OtfUser
+from otf_api import Otf
 from otf_api.models import ChallengeType, EquipmentType
-
-USERNAME = os.getenv("OTF_EMAIL") or input("Enter your OTF email: ")
-PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
 def main():
-    otf = Otf(user=OtfUser(USERNAME, PASSWORD))
+    otf = Otf()
+
     # challenge tracker content is an overview of the challenges OTF runs
     # and your participation in them
     challenge_tracker_content = otf.get_challenge_tracker_content()

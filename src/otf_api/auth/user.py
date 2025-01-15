@@ -2,8 +2,8 @@ from logging import getLogger
 
 import attrs
 
-from otf_api.auth.auth import OtfCognito
-from otf_api.auth.utils import HttpxCognitoAuth
+from otf_api.auth.auth import CRED_CACHE, NoCredentialsError, OtfCognito
+from otf_api.auth.utils import HttpxCognitoAuth, can_provide_input, prompt_for_username_and_password
 
 LOGGER = getLogger(__name__)
 
@@ -38,16 +38,29 @@ class OtfUser:
         Raises:
             NoCredentialsError: If neither username/password nor id/access tokens are provided.
         """
-        self.cognito = OtfCognito(
-            username=username,
-            password=password,
-            id_token=id_token,
-            access_token=access_token,
-            refresh_token=refresh_token,
-        )
+        try:
+            self.cognito = OtfCognito(
+                username=username,
+                password=password,
+                id_token=id_token,
+                access_token=access_token,
+                refresh_token=refresh_token,
+            )
+        except NoCredentialsError:
+            if not can_provide_input():
+                LOGGER.error("Unable to prompt for credentials in a non-interactive shell")
+                raise
+
+            username, password = prompt_for_username_and_password()
+            self.cognito = OtfCognito(username=username, password=password)
 
         self.cognito_id = self.cognito.access_claims["sub"]
         self.member_uuid = self.cognito.id_claims["cognito:username"]
         self.email_address = self.cognito.id_claims["email"]
 
         self.httpx_auth = HttpxCognitoAuth(cognito=self.cognito)
+
+    @staticmethod
+    def clear_cache():
+        """Clear the cached credentials."""
+        CRED_CACHE.clear_cache()

@@ -1,14 +1,8 @@
-import os
-from getpass import getpass
-
-from otf_api import Otf, OtfUser
-
-USERNAME = os.getenv("OTF_EMAIL") or input("Enter your OTF email: ")
-PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
+from otf_api import Otf
 
 
 def main():
-    otf = Otf(user=OtfUser(USERNAME, PASSWORD))
+    otf = Otf()
 
     resp = otf.get_member_lifetime_stats()
     print(resp.model_dump_json(indent=4))

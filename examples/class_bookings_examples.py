@@ -1,16 +1,11 @@
-import os
 from datetime import datetime, time
-from getpass import getpass
 
-from otf_api import Otf, OtfUser
+from otf_api import Otf
 from otf_api.filters import ClassFilter, ClassType, DoW
-
-USERNAME = os.getenv("OTF_EMAIL") or input("Enter your OTF email: ")
-PASSWORD = os.getenv("OTF_PASSWORD") or getpass("Enter your OTF password: ")
 
 
 def main():
-    otf = Otf(user=OtfUser(USERNAME, PASSWORD))
+    otf = Otf()
 
     bookings = otf.get_bookings(start_date=datetime.today().date())
     for b in bookings:

@@ -2,7 +2,6 @@ import atexit
 import contextlib
 import functools
 from datetime import date, datetime, timedelta
-from getpass import getpass
 from json import JSONDecodeError
 from logging import getLogger
 from typing import Any
@@ -31,13 +30,13 @@ class Otf:
     user: OtfUser
     session: httpx.Client
 
-    def __init__(self, user: OtfUser):
+    def __init__(self, user: OtfUser | None = None):
         """Initialize the OTF API client.
 
         Args:
             user (OtfUser): The user to authenticate as.
         """
-        self.user = user
+        self.user = user or OtfUser()
         self.member_uuid = self.user.member_uuid
 
         self.session = httpx.Client(
@@ -57,18 +56,6 @@ class Otf:
     def __hash__(self):
         # Combine immutable attributes into a single hash value
         return hash(self.member_uuid)
-
-    @classmethod
-    def prompt_for_credentials(cls) -> "Otf":
-        """Create an OTF API client by prompting the user for their credentials.
-
-        Returns:
-            Otf: The OTF API client.
-        """
-
-        email_address = input("Enter your Orangetheory Fitness email: ")
-        password = getpass("Enter your Orangetheory Fitness password: ")
-        return cls(user=OtfUser(email_address, password))
 
     def _do(
         self,

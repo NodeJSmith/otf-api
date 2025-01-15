@@ -71,6 +71,7 @@ class CacheableData:
         if not keys:
             self.cache_path.unlink()
             LOGGER.debug(f"{self.name} cache deleted")
+            return
 
         assert isinstance(keys, list), "Keys must be a list"
 

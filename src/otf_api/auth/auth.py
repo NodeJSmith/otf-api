@@ -194,7 +194,7 @@ class OtfCognito(Cognito):
     def renew_access_token(self) -> None:
         """Sets a new access token on the User using the cached refresh token and device metadata.
 
-        Overriden to add the device key to the auth_params if it is set. Without this all calls to renew_access_token
+        Overridden to add the device key to the auth_params if it is set. Without this all calls to renew_access_token
         will fail with NOT_AUTHORIZED. Also skips the call to _add_secret_hash since we don't have a client secret.
 
         # https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_InitiateAuth.html#CognitoUserPools-InitiateAuth-request-AuthFlow
@@ -216,7 +216,7 @@ class OtfCognito(Cognito):
     def _set_tokens(self, tokens: "InitiateAuthResponseTypeDef") -> None:
         """Helper function to verify and set token attributes based on a Cognito AuthenticationResult.
 
-        Overriden to cache the tokens and set/cache the device metadata.
+        Overridden to cache the tokens and set/cache the device metadata.
         """
         auth_result = tokens["AuthenticationResult"]
         device_metadata = auth_result.get("NewDeviceMetadata", {})
