@@ -97,11 +97,21 @@ class Otf:
             return None
 
         try:
-            return response.json()
+            resp = response.json()
         except JSONDecodeError as e:
             LOGGER.error(f"Error decoding JSON: {e}")
             LOGGER.error(f"Response: {response.text}")
             raise
+
+        if (
+            "Status" in resp
+            and isinstance(resp["Status"], int)
+            and not (resp["Status"] >= 200 and resp["Status"] <= 299)
+        ):
+            LOGGER.error(f"Error making request: {resp}")
+            raise exc.OtfRequestError("Error making request", response=response, request=request)
+
+        return resp
 
     def _classes_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
         """Perform an API request to the classes API."""
