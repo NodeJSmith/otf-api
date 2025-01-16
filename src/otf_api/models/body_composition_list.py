@@ -3,9 +3,10 @@ from datetime import datetime
 from enum import StrEnum
 
 import pint
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, ValidationInfo, field_validator
 
 from otf_api.models.base import OtfItemBase
+from otf_api.models.member_detail import MemberDetail
 
 ureg = pint.UnitRegistry()
 
@@ -166,8 +167,10 @@ class ExtraCellularWaterOverTotalBodyWater(OtfItemBase):
 
 
 class BodyCompositionData(OtfItemBase):
+    # NOTE: weight is hardcoded to be pounds here, regardless of the unit shown in the member details
+
     member_uuid: str = Field(..., alias="memberUUId")
-    member_id: str = Field(..., alias="memberId")
+    member_id: str | int = Field(..., alias="memberId")
     scan_result_uuid: str = Field(..., alias="scanResultUUId")
     inbody_id: str = Field(..., alias="id", exclude=True, repr=False, description="InBody ID, same as email address")
     email: str
@@ -218,21 +221,22 @@ class BodyCompositionData(OtfItemBase):
     lean_body_mass_control: float = Field(..., alias="lbmControl", exclude=True, repr=False)
 
     def __init__(self, **data):
-        # populate child models
-        child_model_dict = {
-            k: v.annotation
-            for k, v in self.model_fields.items()
-            if inspect.isclass(v.annotation) and issubclass(v.annotation, BaseModel)
+        # Convert the nested dictionaries to the appropriate classes
+        attr_to_class_map = {
+            "lean_body_mass_details": LeanBodyMass,
+            "lean_body_mass_percent_details": LeanBodyMassPercent,
+            "body_fat_mass_details": BodyFatMass,
+            "body_fat_mass_percent_details": BodyFatMassPercent,
+            "total_body_weight_details": TotalBodyWeight,
+            "intra_cellular_water_details": IntraCellularWater,
+            "extra_cellular_water_details": ExtraCellularWater,
+            "extra_cellular_water_over_total_body_water_details": ExtraCellularWaterOverTotalBodyWater,
         }
-        for k, v in child_model_dict.items():
-            data[k] = v(**data)
+
+        for attr, cls in attr_to_class_map.items():
+            data[attr] = cls(**data)
 
         super().__init__(**data)
-
-    @field_validator("member_id", mode="before")
-    @classmethod
-    def int_to_str(cls, v: int):
-        return str(v)
 
     @field_validator("skeletal_muscle_mass_dividers", "weight_dividers", "body_fat_mass_dividers", mode="before")
     @classmethod

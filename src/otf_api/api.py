@@ -887,7 +887,7 @@ class Otf:
             f"/challenges/v1/member/{self.member_uuid}/participation",
             params={"challengeTypeId": challenge_type_id.value},
         )
-        return data
+        return data["Dto"]
 
     def get_performance_summaries(self, limit: int = 5) -> list[models.PerformanceSummaryEntry]:
         """Get a list of performance summaries for the authenticated user.

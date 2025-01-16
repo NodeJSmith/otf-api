@@ -1,4 +1,4 @@
-from enum import Enum, StrEnum
+from enum import IntEnum, StrEnum
 
 
 class StudioStatus(StrEnum):
@@ -110,7 +110,7 @@ class StatsTime(StrEnum):
     AllTime = "allTime"
 
 
-class EquipmentType(int, Enum):
+class EquipmentType(IntEnum):
     Treadmill = 2
     Strider = 3
     Rower = 4
@@ -119,7 +119,7 @@ class EquipmentType(int, Enum):
     PowerWalker = 7
 
 
-class ChallengeType(int, Enum):
+class ChallengeType(IntEnum):
     Other = 0
     DriTri = 2
     MarathonMonth = 5
