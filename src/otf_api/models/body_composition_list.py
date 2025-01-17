@@ -1,12 +1,11 @@
-import inspect
 from datetime import datetime
 from enum import StrEnum
+from typing import Literal
 
 import pint
-from pydantic import BaseModel, Field, ValidationInfo, field_validator
+from pydantic import Field, field_validator
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.member_detail import MemberDetail
 
 ureg = pint.UnitRegistry()
 
@@ -30,11 +29,6 @@ class BodyFatPercentIndicator(StrEnum):
     GOAL_SETTING_FAT = "GOAL_SETTING_FAT"
     HIGH_BODY_FAT = "HIGH_BODY_FAT"
     OBESE_BODY_FAT = "OBESE_BODY_FAT"  # unused
-
-
-class Gender(StrEnum):
-    MALE = "M"
-    FEMALE = "F"
 
 
 def get_percent_body_fat_descriptor(
@@ -62,8 +56,8 @@ def get_relative_descriptor(in_body_value: float, in_body_dividers: list[float])
     return AverageType.ABOVE_AVERAGE
 
 
-def get_body_fat_percent_dividers(age: int, gender: Gender) -> list[float]:
-    if gender == Gender.MALE:
+def get_body_fat_percent_dividers(age: int, gender: Literal["M", "F"]) -> list[float]:
+    if gender == "M":
         return get_body_fat_percent_dividers_male(age)
 
     return get_body_fat_percent_dividers_female(age)
@@ -175,7 +169,7 @@ class BodyCompositionData(OtfItemBase):
     inbody_id: str = Field(..., alias="id", exclude=True, repr=False, description="InBody ID, same as email address")
     email: str
     height: str = Field(..., description="Height in cm")
-    gender: Gender
+    gender: Literal["M", "F"]
     age: int
     scan_datetime: datetime = Field(..., alias="testDatetime")
     provided_weight: float = Field(
