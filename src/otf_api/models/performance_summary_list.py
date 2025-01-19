@@ -39,7 +39,7 @@ class PerformanceSummaryEntry(OtfItemBase):
     step_count: int | None = Field(None, alias=AliasPath("details", "step_count"))
     active_time_seconds: int | None = Field(None, alias=AliasPath("details", "active_time_seconds"))
     zone_time_minutes: ZoneTimeMinutes | None = Field(None, alias=AliasPath("details", "zone_time_minutes"))
-    ratable: bool
+    ratable: bool | None = None
     otf_class: Class | None = Field(None, alias="class")
     coach: str | None = Field(None, alias=AliasPath("class", "coach", "first_name"))
     coach_rating: CoachRating | None = Field(None, alias=AliasPath("ratings", "coach"))

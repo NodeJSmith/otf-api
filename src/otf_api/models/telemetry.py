@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any
 
-from pydantic import Field
+from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
 
@@ -50,13 +50,22 @@ class TelemetryItem(OtfItemBase):
 class Telemetry(OtfItemBase):
     member_uuid: str = Field(..., alias="memberUuid")
     class_history_uuid: str = Field(..., alias="classHistoryUuid")
-    class_start_time: datetime = Field(..., alias="classStartTime")
-    max_hr: int = Field(..., alias="maxHr")
+    class_start_time: datetime | None = Field(None, alias="classStartTime")
+    max_hr: int | None = Field(None, alias="maxHr")
     zones: Zones
-    window_size: int = Field(..., alias="windowSize")
-    telemetry: list[TelemetryItem]
+    window_size: int | None = Field(None, alias="windowSize")
+    telemetry: list[TelemetryItem] = Field(default_factory=list)
 
     def __init__(self, **data: dict[str, Any]):
         super().__init__(**data)
         for telem in self.telemetry:
             telem.timestamp = self.class_start_time + timedelta(seconds=telem.relative_timestamp)
+
+
+class TelemetryHistoryItem(OtfItemBase):
+    max_hr_type: str | None = Field(None, alias=AliasPath("maxHr", "type"))
+    max_hr_value: int | None = Field(None, alias=AliasPath("maxHr", "value"))
+    zones: Zones | None = None
+    change_from_previous: int | None = Field(None, alias="changeFromPrevious")
+    change_bucket: str | None = Field(None, alias="changeBucket")
+    assigned_at: datetime | None = Field(None, alias="assignedAt")

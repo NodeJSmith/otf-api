@@ -8,12 +8,12 @@ from otf_api.models.studio_detail import StudioDetail
 
 class MemberPurchase(OtfItemBase):
     purchase_uuid: str = Field(..., alias="memberPurchaseUUId")
-    name: str
-    price: str
-    purchase_date_time: datetime = Field(..., alias="memberPurchaseDateTime")
-    purchase_type: str = Field(..., alias="memberPurchaseType")
-    status: str
-    quantity: int
+    name: str | None = None
+    price: str | None = None
+    purchase_date_time: datetime | None = Field(None, alias="memberPurchaseDateTime")
+    purchase_type: str | None = Field(None, alias="memberPurchaseType")
+    status: str | None = None
+    quantity: int | None = None
     studio: StudioDetail = Field(..., exclude=True, repr=False)
 
     member_fee_id: int | None = Field(None, alias="memberFeeId", exclude=True, repr=False)

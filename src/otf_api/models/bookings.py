@@ -13,9 +13,7 @@ class Coach(OtfItemBase):
     last_name: str | None = Field(None, alias="lastName")
 
     # unused fields
-    image_url: str | None = Field(None, alias="imageUrl", exclude=True, repr=False)
     name: str = Field(exclude=True, repr=False)
-    profile_picture_url: str | None = Field(None, alias="profilePictureUrl", exclude=True, repr=False)
 
     @property
     def full_name(self) -> str:

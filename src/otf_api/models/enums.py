@@ -125,8 +125,30 @@ class ChallengeType(IntEnum):
     MarathonMonth = 5
     HellWeek = 52
     Mayhem = 58
+    _BackAtIt = 60  # nothing in the app reflects this, but the API returns it
     TwelveDaysOfFitness = 63
-    Transformation = 64
+    TransformationChallenge = 64
     RemixInSix = 65
     Push = 66
     BackAtIt = 84
+
+
+class DriTriChallengeSubCategory(IntEnum):
+    FullRun = 1
+    SprintRun = 3
+    Relay = 4
+    StrengthRun = 1500
+
+
+class MarathonMonthChallengeSubCategory(IntEnum):
+    Original = 1
+    Full = 14
+    Half = 15
+    Ultra = 16
+
+
+# only Other, DriTri, and MarathonMonth have subcategories
+
+# BackAtIt and Transformation are multi-week challenges
+
+# RemixInSix, Mayhem, HellWeek, Push, and TwelveDaysOfFitness are multi-day challenges

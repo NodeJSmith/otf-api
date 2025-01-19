@@ -8,28 +8,28 @@ T = TypeVar("T", bound=BaseModel)
 
 
 class OutStudioMixin(OtfItemBase):
-    walking_distance: float = Field(..., alias="walkingDistance")
-    running_distance: float = Field(..., alias="runningDistance")
-    cycling_distance: float = Field(..., alias="cyclingDistance")
+    walking_distance: float | None = Field(None, alias="walkingDistance")
+    running_distance: float | None = Field(None, alias="runningDistance")
+    cycling_distance: float | None = Field(None, alias="cyclingDistance")
 
 
 class InStudioMixin(OtfItemBase):
-    treadmill_distance: float = Field(..., alias="treadmillDistance")
-    treadmill_elevation_gained: float = Field(..., alias="treadmillElevationGained")
-    rower_distance: float = Field(..., alias="rowerDistance")
-    rower_watt: float = Field(..., alias="rowerWatt")
+    treadmill_distance: float | None = Field(None, alias="treadmillDistance")
+    treadmill_elevation_gained: float | None = Field(None, alias="treadmillElevationGained")
+    rower_distance: float | None = Field(None, alias="rowerDistance")
+    rower_watt: float | None = Field(None, alias="rowerWatt")
 
 
 class BaseStatsData(OtfItemBase):
-    calories: float
-    splat_point: float = Field(..., alias="splatPoint")
-    total_black_zone: float = Field(..., alias="totalBlackZone")
-    total_blue_zone: float = Field(..., alias="totalBlueZone")
-    total_green_zone: float = Field(..., alias="totalGreenZone")
-    total_orange_zone: float = Field(..., alias="totalOrangeZone")
-    total_red_zone: float = Field(..., alias="totalRedZone")
-    workout_duration: float = Field(..., alias="workoutDuration")
-    step_count: float = Field(..., alias="stepCount")
+    calories: float | None = None
+    splat_point: float | None = Field(None, alias="splatPoint")
+    total_black_zone: float | None = Field(None, alias="totalBlackZone")
+    total_blue_zone: float | None = Field(None, alias="totalBlueZone")
+    total_green_zone: float | None = Field(None, alias="totalGreenZone")
+    total_orange_zone: float | None = Field(None, alias="totalOrangeZone")
+    total_red_zone: float | None = Field(None, alias="totalRedZone")
+    workout_duration: float | None = Field(None, alias="workoutDuration")
+    step_count: float | None = Field(None, alias="stepCount")
 
 
 class InStudioStatsData(InStudioMixin, BaseStatsData):

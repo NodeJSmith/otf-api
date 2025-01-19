@@ -19,8 +19,8 @@ class MemberProfile(OtfItemBase):
     formula_max_hr: int | None = Field(None, alias="formulaMaxHr")
     automated_hr: int | None = Field(None, alias="automatedHr")
 
-    member_profile_uuid: str = Field(..., alias="memberProfileUUId", exclude=True, repr=False)
-    member_optin_flow_type_id: int = Field(..., alias="memberOptinFlowTypeId", exclude=True, repr=False)
+    member_profile_uuid: str | None = Field(None, alias="memberProfileUUId", exclude=True, repr=False)
+    member_optin_flow_type_id: int | None = Field(None, alias="memberOptinFlowTypeId", exclude=True, repr=False)
 
 
 class MemberClassSummary(OtfItemBase):
@@ -51,27 +51,25 @@ class MemberDetail(OtfItemBase):
     home_studio: StudioDetail
     profile: MemberProfile = Field(..., alias="memberProfile")
     class_summary: MemberClassSummary | None = Field(None, alias="memberClassSummary")
-    addresses: list[Address] | None = None
+    addresses: list[Address] | None = Field(default_factory=list)
 
-    studio_display_name: str = Field(
-        ..., alias="userName", description="The value that is displayed on tread/rower tablets and OTBeat screens"
+    studio_display_name: str | None = Field(
+        None, alias="userName", description="The value that is displayed on tread/rower tablets and OTBeat screens"
     )
-    first_name: str = Field(..., alias="firstName")
-    last_name: str = Field(..., alias="lastName")
-    email: str = Field(..., alias="email")
-    phone_number: str = Field(..., alias="phoneNumber")
-    birth_day: date = Field(..., alias="birthDay")
-    gender: str = Field(..., alias="gender")
-    locale: str = Field(..., alias="locale")
-    weight: int = Field(..., alias="weight")
-    weight_units: str = Field(..., alias="weightMeasure")
-    height: int = Field(..., alias="height")
-    height_units: str = Field(..., alias="heightMeasure")
+    first_name: str | None = Field(None, alias="firstName")
+    last_name: str | None = Field(None, alias="lastName")
+    email: str | None = Field(None, alias="email")
+    phone_number: str | None = Field(None, alias="phoneNumber")
+    birth_day: date | None = Field(None, alias="birthDay")
+    gender: str | None = Field(None, alias="gender")
+    locale: str | None = Field(None, alias="locale")
+    weight: int | None = Field(None, alias="weight")
+    weight_units: str | None = Field(None, alias="weightMeasure")
+    height: int | None = Field(None, alias="height")
+    height_units: str | None = Field(None, alias="heightMeasure")
 
-    created_date: datetime = Field(..., alias="createdDate")
-    updated_date: datetime = Field(..., alias="updatedDate")
-
-    # unused fields
+    # unused fields - leaving these in for now in case someone finds a purpose for them
+    # but they will potentially (likely?) be removed in the future
 
     # mbo fields
     mbo_id: str | None = Field(None, alias="mboId", exclude=True, repr=False, description="MindBody attr")
@@ -89,6 +87,9 @@ class MemberDetail(OtfItemBase):
     updated_by: str | None = Field(None, alias="updatedBy", exclude=True, repr=False)
 
     # unused address/member detail fields
+    created_date: datetime | None = Field(None, alias="createdDate", exclude=True, repr=False)
+    updated_date: datetime | None = Field(None, alias="updatedDate", exclude=True, repr=False)
+
     address_line1: str | None = Field(None, alias="addressLine1", exclude=True, repr=False)
     address_line2: str | None = Field(None, alias="addressLine2", exclude=True, repr=False)
     alternate_emails: None = Field(None, alias="alternateEmails", exclude=True, repr=False)
@@ -106,7 +107,6 @@ class MemberDetail(OtfItemBase):
     online_signup: None = Field(None, alias="onlineSignup", exclude=True, repr=False)
     phone_type: None = Field(None, alias="phoneType", exclude=True, repr=False)
     postal_code: str | None = Field(None, alias="postalCode", exclude=True, repr=False)
-    profile_picture_url: str | None = Field(None, alias="profilePictureUrl", exclude=True, repr=False)
     state: str | None = Field(None, exclude=True, repr=False)
     work_phone: str | None = Field(None, alias="workPhone", exclude=True, repr=False)
     year_imported: int | None = Field(None, alias="yearImported", exclude=True, repr=False)

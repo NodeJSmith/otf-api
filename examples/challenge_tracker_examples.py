@@ -7,7 +7,7 @@ def main():
 
     # challenge tracker content is an overview of the challenges OTF runs
     # and your participation in them
-    challenge_tracker_content = otf.get_challenge_tracker_content()
+    challenge_tracker_content = otf.get_challenge_tracker()
     print(challenge_tracker_content.benchmarks[0].model_dump_json(indent=4))
 
     """
@@ -46,7 +46,7 @@ def main():
 
     # challenge tracker details are detailed information about specific challenges
     # this endpoint takes an equipment type and a challenge type as arguments
-    tread_challenge_details = otf.get_challenge_tracker_detail(EquipmentType.Treadmill, ChallengeType.Other)
+    tread_challenge_details = otf.get_benchmarks(EquipmentType.Treadmill, ChallengeType.Other)
     print(tread_challenge_details[0].model_dump_json(indent=4))
 
     """

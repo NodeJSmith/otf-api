@@ -67,27 +67,18 @@ class Rower(BaseEquipment):
     max_cadence: PerformanceMetric
 
 
-class EquipmentData(OtfItemBase):
-    treadmill: Treadmill
-    rower: Rower
-
-
-class Class(OtfItemBase):
-    starts_at: datetime = Field(..., alias="starts_at_local")
-    name: str
-
-
 class PerformanceSummaryDetail(OtfItemBase):
     id: str
-    otf_class: Class = Field(..., alias="class")
+    class_name: str | None = Field(None, alias=AliasPath("class", "name"))
+    class_starts_at: datetime | None = Field(None, alias=AliasPath("class", "starts_at_local"))
 
-    ratable: bool
-    calories_burned: int = Field(..., alias=AliasPath("details", "calories_burned"))
-    splat_points: int = Field(..., alias=AliasPath("details", "splat_points"))
-    step_count: int = Field(..., alias=AliasPath("details", "step_count"))
-    active_time_seconds: int = Field(..., alias=AliasPath("details", "active_time_seconds"))
-    zone_time_minutes: ZoneTimeMinutes = Field(..., alias=AliasPath("details", "zone_time_minutes"))
-    heart_rate: HeartRate = Field(..., alias=AliasPath("details", "heart_rate"))
+    ratable: bool | None = None
+    calories_burned: int | None = Field(None, alias=AliasPath("details", "calories_burned"))
+    splat_points: int | None = Field(None, alias=AliasPath("details", "splat_points"))
+    step_count: int | None = Field(None, alias=AliasPath("details", "step_count"))
+    active_time_seconds: int | None = Field(None, alias=AliasPath("details", "active_time_seconds"))
+    zone_time_minutes: ZoneTimeMinutes | None = Field(None, alias=AliasPath("details", "zone_time_minutes"))
+    heart_rate: HeartRate | None = Field(None, alias=AliasPath("details", "heart_rate"))
 
-    rower_data: Rower = Field(..., alias=AliasPath("details", "equipment_data", "rower"))
-    treadmill_data: Treadmill = Field(..., alias=AliasPath("details", "equipment_data", "treadmill"))
+    rower_data: Rower | None = Field(None, alias=AliasPath("details", "equipment_data", "rower"))
+    treadmill_data: Treadmill | None = Field(None, alias=AliasPath("details", "equipment_data", "treadmill"))

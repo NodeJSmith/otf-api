@@ -9,28 +9,28 @@ from otf_api.models.studio_detail import StudioDetail
 
 class OtfClass(OtfItemBase):
     class_uuid: str = Field(alias="ot_base_class_uuid", description="The OTF class UUID")
+    name: str | None = Field(None, description="The name of the class")
+    class_type: ClassType = Field(alias="type")
     coach: str | None = Field(None, alias=AliasPath("coach", "first_name"))
     ends_at: datetime = Field(
         alias="ends_at_local",
         description="The end time of the class. Reflects local time, but the object does not have a timezone.",
     )
-    name: str | None = Field(None, description="The name of the class")
     starts_at: datetime = Field(
         alias="starts_at_local",
         description="The start time of the class. Reflects local time, but the object does not have a timezone.",
     )
     studio: StudioDetail
-    class_type: ClassType = Field(alias="type")
 
     # capacity/status fields
-    booking_capacity: int
-    full: bool
+    booking_capacity: int | None = None
+    full: bool | None = None
+    max_capacity: int | None = None
+    waitlist_available: bool | None = None
+    waitlist_size: int | None = None
     is_booked: bool | None = Field(None, description="Custom helper field to determine if class is already booked")
-    is_cancelled: bool = Field(alias="canceled")
+    is_cancelled: bool | None = Field(None, alias="canceled")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
-    max_capacity: int
-    waitlist_available: bool
-    waitlist_size: int
 
     # unused fields
     class_id: str | None = Field(None, alias="id", exclude=True, repr=False, description="Not used by API")

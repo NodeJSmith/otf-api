@@ -629,20 +629,6 @@ class Otf:
         stats = models.StatsResponse(**data["data"])
         return stats
 
-    def get_latest_agreement(self) -> models.LatestAgreement:
-        """Get the latest agreement for the member.
-
-        Returns:
-            LatestAgreement: The agreement.
-
-        Notes:
-        ---
-            In this context, "latest" means the most recent agreement with a specific ID, not the most recent agreement
-            in general. The agreement ID is hardcoded in the endpoint, so it will always return the same agreement.
-        """
-        data = self._default_request("GET", "/member/agreements/9d98fb27-0f00-4598-ad08-5b1655a59af6")
-        return models.LatestAgreement(**data["data"])
-
     def get_out_of_studio_workout_history(self) -> list[models.OutOfStudioWorkoutHistory]:
         """Get the member's out of studio workout history.
 
@@ -827,21 +813,21 @@ class Otf:
         data = self._default_request("GET", f"/member/members/{self.user.cognito_id}/body-composition")
         return [models.BodyCompositionData(**item) for item in data["data"]]
 
-    def get_challenge_tracker_content(self) -> models.ChallengeTrackerContent:
+    def get_challenge_tracker(self) -> models.ChallengeTracker:
         """Get the member's challenge tracker content.
 
         Returns:
-            ChallengeTrackerContent: The member's challenge tracker content.
+            ChallengeTracker: The member's challenge tracker content.
         """
         data = self._default_request("GET", f"/challenges/v3.1/member/{self.member_uuid}")
-        return models.ChallengeTrackerContent(**data["Dto"])
+        return models.ChallengeTracker(**data["Dto"])
 
-    def get_challenge_tracker_detail(
+    def get_benchmarks(
         self,
         equipment_id: models.EquipmentType,
         challenge_type_id: models.ChallengeType,
         challenge_sub_type_id: int = 0,
-    ) -> list[models.ChallengeTrackerDetail]:
+    ) -> list[models.FitnessBenchmark]:
         """Get the member's challenge tracker details.
 
         Args:
@@ -850,7 +836,7 @@ class Otf:
             challenge_sub_type_id (int): The challenge sub type ID. Default is 0.
 
         Returns:
-            list[ChallengeTrackerDetail]: The member's challenge tracker details.
+            list[FitnessBenchmark]: The member's challenge tracker details.
 
         Notes:
             ---
@@ -864,22 +850,16 @@ class Otf:
         }
 
         data = self._default_request("GET", f"/challenges/v3/member/{self.member_uuid}/benchmarks", params=params)
-        return [models.ChallengeTrackerDetail(**item) for item in data["Dto"]]
+        return [models.FitnessBenchmark(**item) for item in data["Dto"]]
 
-    def get_challenge_tracker_participation(self, challenge_type_id: models.ChallengeType) -> Any:
+    def get_challenge_tracker_detail(self, challenge_type_id: models.ChallengeType) -> models.FitnessBenchmark:
         """Get the member's participation in a challenge.
 
         Args:
             challenge_type_id (ChallengeType): The challenge type ID.
 
         Returns:
-            Any: The member's participation in the challenge.
-
-        Notes:
-            ---
-            I've never gotten this to return anything other than invalid response. I'm not sure if it's a bug
-            in my code or the API.
-
+            FitnessBenchmark: The member's participation in the challenge.
         """
 
         data = self._default_request(
@@ -887,7 +867,11 @@ class Otf:
             f"/challenges/v1/member/{self.member_uuid}/participation",
             params={"challengeTypeId": challenge_type_id.value},
         )
-        return data["Dto"]
+
+        if len(data["Dto"]) > 1:
+            LOGGER.warning("Multiple challenge participations found, returning the first one.")
+
+        return models.FitnessBenchmark(**data["Dto"][0])
 
     def get_performance_summaries(self, limit: int = 5) -> list[models.PerformanceSummaryEntry]:
         """Get a list of performance summaries for the authenticated user.
@@ -927,7 +911,7 @@ class Otf:
 
         return models.PerformanceSummaryDetail(**res)
 
-    def get_hr_history(self) -> list[models.HistoryItem]:
+    def get_hr_history(self) -> list[models.TelemetryHistoryItem]:
         """Get the heartrate history for the user.
 
         Returns a list of history items that contain the max heartrate, start/end bpm for each zone,
@@ -940,23 +924,8 @@ class Otf:
         path = "/v1/physVars/maxHr/history"
 
         params = {"memberUuid": self.member_uuid}
-        res = self._telemetry_request("GET", path, params=params)
-        return [models.HistoryItem(**item) for item in res["items"]]
-
-    def get_max_hr(self) -> models.TelemetryMaxHr:
-        """Get the max heartrate for the user.
-
-        Returns a simple object that has the member_uuid and the max_hr.
-
-        Returns:
-            TelemetryMaxHr: The max heartrate for the user.
-        """
-        path = "/v1/physVars/maxHr"
-
-        params = {"memberUuid": self.member_uuid}
-
-        res = self._telemetry_request("GET", path, params=params)
-        return models.TelemetryMaxHr(**res)
+        resp = self._telemetry_request("GET", path, params=params)
+        return [models.TelemetryHistoryItem(**item) for item in resp["history"]]
 
     def get_telemetry(self, performance_summary_id: str, max_data_points: int = 120) -> models.Telemetry:
         """Get the telemetry for a performance summary.

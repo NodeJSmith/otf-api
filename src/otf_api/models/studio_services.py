@@ -8,17 +8,16 @@ from otf_api.models.studio_detail import StudioDetail
 
 class StudioService(OtfItemBase):
     studio: StudioDetail = Field(..., exclude=True, repr=False)
-
     service_uuid: str = Field(..., alias="serviceUUId")
-    name: str
-    price: str
-    qty: int
-    online_price: str = Field(..., alias="onlinePrice")
-    tax_rate: str = Field(..., alias="taxRate")
-    current: bool
-    is_deleted: bool = Field(..., alias="isDeleted")
-    created_date: datetime = Field(..., alias="createdDate")
-    updated_date: datetime = Field(..., alias="updatedDate")
+    name: str | None = None
+    price: str | None = None
+    qty: int | None = None
+    online_price: str | None = Field(None, alias="onlinePrice")
+    tax_rate: str | None = Field(None, alias="taxRate")
+    current: bool | None = None
+    is_deleted: bool | None = Field(None, alias="isDeleted")
+    created_date: datetime | None = Field(None, alias="createdDate")
+    updated_date: datetime | None = Field(None, alias="updatedDate")
 
     # unused fields
 
