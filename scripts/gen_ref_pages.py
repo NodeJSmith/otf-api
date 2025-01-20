@@ -26,16 +26,20 @@ for path in sorted(src.rglob("*.py")):
     elif parts[-1] in ["__main__", "__version__"]:
         continue
 
-    title_parts = []
-    for part in parts:
-        sub_parts = part.split("_")
-        for i, sub_part in enumerate(sub_parts):
-            if sub_part in ["api", "hr"]:
-                sub_parts[i] = sub_part.upper()
-            else:
-                sub_parts[i] = sub_part.capitalize()
-        part = " ".join(sub_parts)
-        title_parts.append(part)
+    if path.name == "api.py":
+        title_parts = ["Otf API", "Otf"]
+    else:
+        title_parts = []
+        for part in parts:
+            sub_parts = part.split("_")
+            for i, sub_part in enumerate(sub_parts):
+                if sub_part in ["api", "hr"]:
+                    sub_parts[i] = sub_part.upper()
+                else:
+                    sub_parts[i] = sub_part.capitalize()
+            part = " ".join(sub_parts)
+            title_parts.append(part)
+    print(title_parts)
 
     nav[title_parts] = doc_path.as_posix()
 

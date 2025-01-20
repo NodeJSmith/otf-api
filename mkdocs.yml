@@ -3,10 +3,6 @@ repo_url: https://github.com/nodejsmith/otf-api
 repo_name: otf-api
 nav:
   - Home: index.md
-  - Usage: usage.md
-  - Contributing: contributing.md
-  - Authors: authors.md
-  - Changelog: changelog.md
   - Code Reference: reference/
 theme:
   name: material
@@ -88,7 +84,7 @@ extra:
       link: https://github.com/nodejsmith/otf-api
       name: Github
     - icon: material/email
-      link: "mailto:12jessicasmith34@gmail.com"
+      link: "mailto:j.smith.git1@gmail.com"
 
 watch:
   - src/otf_api

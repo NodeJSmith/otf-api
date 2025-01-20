@@ -1,59 +1,45 @@
-from .body_composition_list import BodyCompositionList
-from .book_class import BookClass
-from .bookings import Booking, BookingList
-from .cancel_booking import CancelBooking
-from .challenge_tracker_content import ChallengeTrackerContent
-from .challenge_tracker_detail import ChallengeTrackerDetailList
-from .classes import OtfClass, OtfClassList
-from .enums import BookingStatus, ChallengeType, ClassType, DoW, EquipmentType, StatsTime, StudioStatus
-from .favorite_studios import FavoriteStudioList
-from .latest_agreement import LatestAgreement
-from .lifetime_stats import StatsResponse
+from .body_composition_list import BodyCompositionData
+from .bookings import Booking
+from .challenge_tracker_content import ChallengeTracker
+from .challenge_tracker_detail import FitnessBenchmark
+from .classes import OtfClass
+from .enums import BookingStatus, ChallengeCategory, ClassType, DoW, EquipmentType, StatsTime, StudioStatus
+from .lifetime_stats import StatsResponse, TimeStats
 from .member_detail import MemberDetail
 from .member_membership import MemberMembership
-from .member_purchases import MemberPurchaseList
-from .out_of_studio_workout_history import OutOfStudioWorkoutHistoryList
+from .member_purchases import MemberPurchase
+from .out_of_studio_workout_history import OutOfStudioWorkoutHistory
 from .performance_summary_detail import PerformanceSummaryDetail
-from .performance_summary_list import PerformanceSummaryList
-from .studio_detail import Pagination, StudioDetail, StudioDetailList
-from .studio_services import StudioServiceList
-from .telemetry import Telemetry
-from .telemetry_hr_history import TelemetryHrHistory
-from .telemetry_max_hr import TelemetryMaxHr
-from .total_classes import TotalClasses
+from .performance_summary_list import PerformanceSummaryEntry
+from .studio_detail import StudioDetail
+from .studio_services import StudioService
+from .telemetry import Telemetry, TelemetryHistoryItem
 
 __all__ = [
-    "BodyCompositionList",
-    "BookClass",
+    "BodyCompositionData",
     "Booking",
-    "BookingList",
     "BookingStatus",
-    "CancelBooking",
-    "ChallengeTrackerContent",
-    "ChallengeTrackerDetailList",
-    "ChallengeType",
+    "ChallengeCategory",
+    "ChallengeParticipation",
+    "ChallengeTracker",
     "ClassType",
     "DoW",
     "EquipmentType",
-    "FavoriteStudioList",
+    "FitnessBenchmark",
     "LatestAgreement",
     "MemberDetail",
     "MemberMembership",
-    "MemberPurchaseList",
+    "MemberPurchase",
     "OtfClass",
-    "OtfClassList",
-    "OutOfStudioWorkoutHistoryList",
-    "Pagination",
+    "OutOfStudioWorkoutHistory",
     "PerformanceSummaryDetail",
-    "PerformanceSummaryList",
+    "PerformanceSummaryEntry",
     "StatsResponse",
     "StatsTime",
     "StudioDetail",
-    "StudioDetailList",
-    "StudioServiceList",
+    "StudioService",
     "StudioStatus",
     "Telemetry",
-    "TelemetryHrHistory",
-    "TelemetryMaxHr",
-    "TotalClasses",
+    "TelemetryHistoryItem",
+    "TimeStats",
 ]

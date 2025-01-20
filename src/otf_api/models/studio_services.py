@@ -3,55 +3,34 @@ from datetime import datetime
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
-
-
-class Currency(OtfItemBase):
-    currency_alphabetic_code: str = Field(..., alias="currencyAlphabeticCode")
-
-
-class DefaultCurrency(OtfItemBase):
-    currency_id: int = Field(..., alias="currencyId")
-    currency: Currency
-
-
-class Country(OtfItemBase):
-    country_currency_code: str = Field(..., alias="countryCurrencyCode")
-    default_currency: DefaultCurrency = Field(..., alias="defaultCurrency")
-
-
-class StudioLocation(OtfItemBase):
-    studio_location_id: int = Field(..., alias="studioLocationId")
-    country: Country
-
-
-class Studio(OtfItemBase):
-    studio_id: int = Field(..., alias="studioId")
-    studio_location: StudioLocation = Field(..., alias="studioLocation")
+from otf_api.models.studio_detail import StudioDetail
 
 
 class StudioService(OtfItemBase):
-    service_id: int = Field(..., alias="serviceId")
+    studio: StudioDetail = Field(..., exclude=True, repr=False)
     service_uuid: str = Field(..., alias="serviceUUId")
-    studio_id: int = Field(..., alias="studioId")
-    name: str
-    price: str
-    qty: int
-    mbo_program_id: int = Field(..., alias="mboProgramId")
-    mbo_description_id: str = Field(..., alias="mboDescriptionId")
-    mbo_product_id: int = Field(..., alias="mboProductId")
-    online_price: str = Field(..., alias="onlinePrice")
-    tax_rate: str = Field(..., alias="taxRate")
-    current: bool
-    is_web: bool = Field(..., alias="isWeb")
-    is_crm: bool = Field(..., alias="isCrm")
-    is_mobile: bool = Field(..., alias="isMobile")
-    created_by: str = Field(..., alias="createdBy")
-    created_date: datetime = Field(..., alias="createdDate")
-    updated_by: str = Field(..., alias="updatedBy")
-    updated_date: datetime = Field(..., alias="updatedDate")
-    is_deleted: bool = Field(..., alias="isDeleted")
-    studio: Studio
+    name: str | None = None
+    price: str | None = None
+    qty: int | None = None
+    online_price: str | None = Field(None, alias="onlinePrice")
+    tax_rate: str | None = Field(None, alias="taxRate")
+    current: bool | None = None
+    is_deleted: bool | None = Field(None, alias="isDeleted")
+    created_date: datetime | None = Field(None, alias="createdDate")
+    updated_date: datetime | None = Field(None, alias="updatedDate")
 
+    # unused fields
 
-class StudioServiceList(OtfItemBase):
-    data: list[StudioService]
+    # ids
+    mbo_program_id: int | None = Field(None, alias="mboProgramId", exclude=True, repr=False)
+    mbo_description_id: str | None = Field(None, alias="mboDescriptionId", exclude=True, repr=False)
+    mbo_product_id: int | None = Field(None, alias="mboProductId", exclude=True, repr=False)
+    service_id: int | None = Field(None, alias="serviceId", exclude=True, repr=False)
+    studio_id: int | None = Field(None, alias="studioId", exclude=True, repr=False)
+    created_by: str | None = Field(None, alias="createdBy", exclude=True, repr=False)
+    updated_by: str | None = Field(None, alias="updatedBy", exclude=True, repr=False)
+
+    # flags
+    is_web: bool | None = Field(None, alias="isWeb", exclude=True, repr=False)
+    is_crm: bool | None = Field(None, alias="isCrm", exclude=True, repr=False)
+    is_mobile: bool | None = Field(None, alias="isMobile", exclude=True, repr=False)

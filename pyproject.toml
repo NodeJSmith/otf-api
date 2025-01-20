@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "otf-api"
-version = "0.8.2"
+version = "0.9.0"
 description = "Python OrangeTheory Fitness API Client"
 authors = ["Jessica Smith <j.smith.git1@gmail.com>"]
 license = "MIT"
@@ -10,7 +10,7 @@ documentation = "https://otf-api.readthedocs.io/en/stable/"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
@@ -21,31 +21,30 @@ classifiers = [
 
 
 [tool.poetry.dependencies]
-python = "^3.10"
-aiohttp = "3.10.*"
+python = "^3.11"
+attrs = "^24.3.0"
+httpx = ">=0.27.2"
 humanize = "^4.9.0"
 inflection = "0.5.*"
 pint = "0.24.*"
 pycognito = "2024.5.1"
-pydantic = "2.7.3"
+pydantic = ">=2.7.3"
+yarl = "^1.18.3"
+mypy-boto3-cognito-idp = "^1.35.93"
 
 [tool.poetry.group.dev.dependencies]
-aioresponses = "0.7.6"
-black = "^24.4.2"
 build = "1.2.1"
 bump-my-version = "^0.23.0"
-httpx = "^0.27.0"
 mypy = "1.10.0"
 pre-commit = "3.7.1"
 pytest = "8.2.2"
-pytest-asyncio = "0.23.7"
 pytest-cov = "5.0.0"
-pytest-loguru = "0.4.0"
 tox = "4.15.1"
 twine = "5.1.1"
 
 
 [tool.poetry.group.docs.dependencies]
+griffe = "<1.0.0"
 griffe-fieldz = "0.1.2"
 mike = "2.1.1"
 mkdocs = "1.6.0"
@@ -62,7 +61,6 @@ mkdocstrings-python = "1.10.3"
 pkginfo = "<1.11"
 setuptools = "^70.0.0"
 virtualenv = "^20.26.2"
-griffe = "<1.0.0"
 
 
 [build-system]

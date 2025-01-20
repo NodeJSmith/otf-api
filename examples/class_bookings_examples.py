@@ -1,120 +1,123 @@
-import asyncio
-import os
-from datetime import datetime
+from datetime import time
 
 from otf_api import Otf
-from otf_api.models.classes import DoW
-
-USERNAME = os.getenv("OTF_EMAIL")
-PASSWORD = os.getenv("OTF_PASSWORD")
+from otf_api.filters import ClassFilter, ClassType, DoW
 
 
-async def main():
-    otf = otf = Otf(USERNAME, PASSWORD)
+def main():
+    otf = Otf()
 
-    resp = await otf.get_bookings(start_date=datetime.today().date())
-    print(resp.model_dump_json(indent=4))
+    # you can use the ClassFilter model to setup filters to only return the classes
+    # you care about. All attributes set on a filter have to be true - but all attributes
+    # that accept a list can have multiple values that will be OR'd together.
 
-    studios = await otf.search_studios_by_geo(40.7831, 73.9712, distance=100)
+    # For example, the following filter will return all classes that are on a Tuesday or Thursday
+    # that start at 9:45 and are either a 60 or 90 minute 2G/3G class
 
-    studio_uuids = [studio.studio_uuid for studio in studios.studios]
+    cf = ClassFilter(
+        day_of_week=[DoW.TUESDAY, DoW.THURSDAY],
+        start_time=time(9, 45),
+        class_type=ClassType.get_standard_class_types(),
+    )
 
-    # To get upcoming classes you can call the `get_classes` method
-    # You can pass a list of studio_uuids or, if you want to get classes from your home studio, leave it empty
-    # this also takes a start date, end date, and limit - these are not sent to the API, they are used in the
-    # client to filter the results
-    classes = await otf.get_classes(studio_uuids, day_of_week=[DoW.TUESDAY, DoW.THURSDAY, DoW.SATURDAY])
+    # this filter will return all classes that are on a Saturday that start at 10:30 and are a 50 minute Tread class
+    cf2 = ClassFilter(day_of_week=DoW.SATURDAY, start_time=time(10, 30), class_type=ClassType.TREAD_50)
 
-    print(classes.classes[0].model_dump_json(indent=4))
+    # the call to `get_classes` will return classes that match either of these filters
+
+    classes = otf.get_classes(filters=[cf, cf2])
+    print(classes[0].model_dump_json(indent=4))
 
     """
     {
-        "id": "0e39ef70-7403-49c1-8605-4a72643bd201",
-        "ot_base_class_uuid": "08cebfdb-e127-48d4-8a7f-e6ea4dd85c18",
-        "starts_at": "2024-06-13 10:00:00+00:00",
-        "starts_at_local": "2024-06-13 05:00:00",
-        "ends_at": "2024-06-13 11:00:00+00:00",
-        "ends_at_local": "2024-06-13 06:00:00",
-        "name": "Orange 3G",
-        "type": "ORANGE_60",
-        "studio": ...,
-        "coach": ...,
-        "max_capacity": 36,
-        "booking_capacity": 36,
-        "waitlist_size": 0,
+        "class_uuid": "c465a372-5cda-4e4b-addd-e695db2c4efa",
+        "name": "Orange 60 Min 2G",
+        "class_type": "ORANGE_60",
+        "coach": "Coach",
+        "ends_at": "2025-01-23T10:45:00",
+        "starts_at": "2025-01-23T09:45:00",
+        "studio": {
+            "studio_uuid": "c9e81931-6845-4ab5-ba06-6479d63553ae",
+            "contact_email": "studioemailaddressexample@orangetheoryfitness.com",
+            "distance": 0.0,
+            "location": {
+                "address_line1": "2835 N Sandbank Rd.",
+                "address_line2": null,
+                "city": "AnyTown",
+                "postal_code": "11111",
+                "state": "OH",
+                "country": "United States",
+                "phone_number": "1234567890",
+                "latitude": 92.73407745,
+                "longitude": 3.46269226
+            },
+            "name": "AnyTown OH - East",
+            "status": "Active",
+            "time_zone": "America/NewYork"
+        },
+        "booking_capacity": 24,
         "full": false,
+        "max_capacity": 24,
         "waitlist_available": false,
-        "canceled": false,
-        "mbo_class_id": "30809",
-        "mbo_class_schedule_id": "2655",
-        "mbo_class_description_id": "102",
-        "created_at": "2024-05-14 10:33:32.406000+00:00",
-        "updated_at": "2024-06-13 01:58:55.233000+00:00"
+        "waitlist_size": 0,
+        "is_booked": true,
+        "is_cancelled": false,
+        "is_home_studio": true
     }
+
     """
 
     # You can also get the classes that you have booked
     # You can pass a start_date, end_date, status, and limit as arguments
 
-    bookings = await otf.get_bookings()
+    bookings = otf.get_bookings()
 
     print("Latest Upcoming Class:")
-    print(bookings.bookings[-1].model_dump_json(indent=4))
+    print(bookings[-1].model_dump_json(indent=4))
 
     """
     {
-        "class_booking_id": 870700285,
-        "class_booking_uuid": "a36d76b1-0a55-4143-b96b-646e7520ca39",
-        "studio_id": 1234,
-        "class_id": 376344282,
+        "booking_uuid": "946e45c0-89a6-4061-a730-2ead6d5ec1b6",
         "is_intro": false,
-        "member_id": 234488148,
         "status": "Booked",
-        "booked_date": "2024-09-10T04:26:11Z",
+        "booked_date": "2025-01-20T06:02:51Z",
         "checked_in_date": null,
         "cancelled_date": null,
-        "created_date": "2024-09-10T04:26:11Z",
-        "updated_date": "2024-09-10T04:26:13Z",
+        "created_date": "2025-01-20T06:02:51Z",
+        "updated_date": "2025-01-20T06:02:53Z",
         "is_deleted": false,
         "waitlist_position": null,
         "otf_class": {
-            "starts_at_local": "2024-09-28T10:30:00",
-            "ends_at_local": "2024-09-28T11:20:00",
+            "class_uuid": "3b7158c2-e80c-4053-9e5f-f156e5660059",
             "name": "Tread 50",
-            "class_uuid": "82ec9b55-950a-484f-818f-cd2344ce83fd",
+            "starts_at": "2025-02-18T10:00:00",
+            "ends_at": "2025-02-18T10:50:00",
             "is_available": true,
             "is_cancelled": false,
-            "program_name": "Group Fitness",
-            "coach_id": 1204786,
             "studio": {
-                "studio_uuid": "49e360d1-f8ef-4091-a23f-61b321cb283c",
-                "studio_name": "AnyTown OH - East",
-                "description": "",
-                "status": "Active",
-                "time_zone": "America/Chicago",
-                "studio_id": 1267,
-                "allows_cr_waitlist": true
+            "studio_uuid": "c9e81931-6845-4ab5-ba06-6479d63553ae",
+            "contact_email": "studioemailaddressexample@orangetheoryfitness.com",
+            "distance": 0.0,
+            "location": {
+                "address_line1": "2835 N Sandbank Rd.",
+                "address_line2": null,
+                "city": "AnyTown",
+                "postal_code": "11111",
+                "state": "OH",
+                "country": "United States",
+                "phone_number": "1234567890",
+                "latitude": 92.73407745,
+                "longitude": 3.46269226
+            },
+            "name": "AnyTown OH - East",
+            "status": "Active",
+            "time_zone": "America/NewYork"
             },
             "coach": {
-                "coach_uuid": "973516a8-0c6b-41ec-916c-1da9913b9a16",
-                "name": "Friendly",
-                "first_name": "Friendly",
+                "coach_uuid": "74cac280-f7d3-4fea-a7b6-e59dc2fd3bca",
+                "first_name": "Coach",
                 "last_name": "Coach"
-            },
-            "location": {
-                "address_one": "123 S Main St",
-                "address_two": null,
-                "city": "AnyTown",
-                "country": null,
-                "distance": null,
-                "latitude": 91.73407745,
-                "location_name": null,
-                "longitude": -80.92264626,
-                "phone_number": "2042348963",
-                "postal_code": "11111",
-                "state": "Ohio"
-            },
-            "virtual_class": null
+            }
         },
         "is_home_studio": true
     }
@@ -122,4 +125,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

@@ -1,44 +1,48 @@
-from datetime import datetime
+from pydantic import AliasChoices, Field, field_validator, model_validator
 
-from humanize import precisedelta
-
-from otf_api.models.enums import ClassType
+from otf_api.models.base import OtfItemBase
 
 
-class OtfClassTimeMixin:
-    starts_at_local: datetime
-    ends_at_local: datetime
-    name: str
+class PhoneLongitudeLatitudeMixin(OtfItemBase):
+    phone_number: str | None = Field(None, alias=AliasChoices("phone", "phoneNumber"))
+    latitude: float | None = Field(None, alias=AliasChoices("latitude"))
+    longitude: float | None = Field(None, alias=AliasChoices("longitude"))
 
-    @property
-    def day_of_week(self) -> str:
-        return self.starts_at_local.strftime("%A")
 
-    @property
-    def date(self) -> str:
-        return self.starts_at_local.strftime("%Y-%m-%d")
+class AddressMixin(OtfItemBase):
+    address_line1: str | None = Field(None, alias=AliasChoices("line1", "address1", "address", "physicalAddress"))
+    address_line2: str | None = Field(None, alias=AliasChoices("line2", "address2", "physicalAddress2"))
+    city: str | None = Field(None, alias=AliasChoices("city", "physicalCity", "suburb"))
+    postal_code: str | None = Field(None, alias=AliasChoices("postal_code", "postalCode", "physicalPostalCode"))
+    state: str | None = Field(None, alias=AliasChoices("state", "physicalState", "territory"))
+    country: str | None = Field(None, alias=AliasChoices("country", "physicalCountry"))
+    region: str | None = Field(None, exclude=True, repr=False, alias=AliasChoices("physicalRegion", "region"))
+    country_id: int | None = Field(None, exclude=True, repr=False, alias=AliasChoices("physicalCountryId", "countryId"))
 
-    @property
-    def time(self) -> str:
-        """Returns time in 12 hour clock format, with no leading 0"""
-        val = self.starts_at_local.strftime("%I:%M %p")
-        if val[0] == "0":
-            val = " " + val[1:]
+    @model_validator(mode="before")
+    @classmethod
+    def check_country(cls, values):
+        if set(values.keys()) == set(
+            ["phone", "latitude", "longitude", "address1", "address2", "city", "state", "postalCode"]
+        ):
+            values = {k: v for k, v in values.items() if v and str(v) != "0.00000000"}
 
-        return val
+        if "country" in values and isinstance(values["country"], dict):
+            values["country_currency"] = values.pop("country")
 
-    @property
-    def duration(self) -> str:
-        duration = self.ends_at_local - self.starts_at_local
-        human_val: str = precisedelta(duration, minimum_unit="minutes")
-        if human_val == "1 hour and 30 minutes":
-            return "90 minutes"
-        return human_val
+        if "physicalCountry" in values and isinstance(values["physicalCountry"], dict):
+            values["country_currency"] = values.pop("physicalCountry")
 
-    @property
-    def class_type(self) -> ClassType:
-        for class_type in ClassType:
-            if class_type.value in self.name:
-                return class_type
+        return values
 
-        return ClassType.OTHER
+    @field_validator("address_line1", "address_line2", "city", "postal_code", "state", "country")
+    @classmethod
+    def clean_strings(cls, value: str | None, **_kwargs) -> str | None:
+        if value is None:
+            return value
+        value = value.strip()
+
+        if not value:
+            return None
+
+        return value

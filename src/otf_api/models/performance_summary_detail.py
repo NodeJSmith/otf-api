@@ -1,4 +1,6 @@
-from pydantic import Field
+from datetime import datetime, time
+
+from pydantic import AliasPath, Field, field_validator
 
 from otf_api.models.base import OtfItemBase
 
@@ -19,61 +21,64 @@ class HeartRate(OtfItemBase):
     avg_hr_percent: int
 
 
-class PerformanceMetricFloat(OtfItemBase):
-    display_value: float
+class PerformanceMetric(OtfItemBase):
+    display_value: time | float
     display_unit: str
     metric_value: float
 
+    @field_validator("display_value", mode="before")
+    @classmethod
+    def convert_to_time_format(cls, value) -> time | float:
+        if not value:
+            return value
 
-class PerformanceMetricString(OtfItemBase):
-    display_value: str
-    display_unit: str
-    metric_value: str
+        if isinstance(value, float | int):
+            return value
+
+        if isinstance(value, str) and ":" in value:
+            if value.count(":") == 1:
+                minutes, seconds = value.split(":")
+                return time(minute=int(minutes), second=int(seconds))
+            if value.count(":") == 2:
+                hours, minutes, seconds = value.split(":")
+                return time(hour=int(hours), minute=int(minutes), second=int(seconds))
+
+        return value
 
 
 class BaseEquipment(OtfItemBase):
-    avg_pace: PerformanceMetricString
-    avg_speed: PerformanceMetricFloat
-    max_pace: PerformanceMetricString
-    max_speed: PerformanceMetricFloat
-    moving_time: PerformanceMetricString
-    total_distance: PerformanceMetricFloat
+    avg_pace: PerformanceMetric
+    avg_speed: PerformanceMetric
+    max_pace: PerformanceMetric
+    max_speed: PerformanceMetric
+    moving_time: PerformanceMetric
+    total_distance: PerformanceMetric
 
 
 class Treadmill(BaseEquipment):
-    avg_incline: PerformanceMetricFloat
-    elevation_gained: PerformanceMetricFloat
-    max_incline: PerformanceMetricFloat
+    avg_incline: PerformanceMetric
+    elevation_gained: PerformanceMetric
+    max_incline: PerformanceMetric
 
 
 class Rower(BaseEquipment):
-    avg_cadence: PerformanceMetricFloat
-    avg_power: PerformanceMetricFloat
-    max_cadence: PerformanceMetricFloat
-
-
-class EquipmentData(OtfItemBase):
-    treadmill: Treadmill
-    rower: Rower
-
-
-class Details(OtfItemBase):
-    calories_burned: int
-    splat_points: int
-    step_count: int
-    active_time_seconds: int
-    zone_time_minutes: ZoneTimeMinutes
-    heart_rate: HeartRate
-    equipment_data: EquipmentData
-
-
-class Class(OtfItemBase):
-    starts_at_local: str
-    name: str
+    avg_cadence: PerformanceMetric
+    avg_power: PerformanceMetric
+    max_cadence: PerformanceMetric
 
 
 class PerformanceSummaryDetail(OtfItemBase):
     id: str
-    details: Details
-    ratable: bool
-    otf_class: Class = Field(..., alias="class")
+    class_name: str | None = Field(None, alias=AliasPath("class", "name"))
+    class_starts_at: datetime | None = Field(None, alias=AliasPath("class", "starts_at_local"))
+
+    ratable: bool | None = None
+    calories_burned: int | None = Field(None, alias=AliasPath("details", "calories_burned"))
+    splat_points: int | None = Field(None, alias=AliasPath("details", "splat_points"))
+    step_count: int | None = Field(None, alias=AliasPath("details", "step_count"))
+    active_time_seconds: int | None = Field(None, alias=AliasPath("details", "active_time_seconds"))
+    zone_time_minutes: ZoneTimeMinutes | None = Field(None, alias=AliasPath("details", "zone_time_minutes"))
+    heart_rate: HeartRate | None = Field(None, alias=AliasPath("details", "heart_rate"))
+
+    rower_data: Rower | None = Field(None, alias=AliasPath("details", "equipment_data", "rower"))
+    treadmill_data: Treadmill | None = Field(None, alias=AliasPath("details", "equipment_data", "treadmill"))

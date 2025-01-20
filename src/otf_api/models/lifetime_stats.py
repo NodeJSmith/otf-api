@@ -1,31 +1,36 @@
-from pydantic import Field
+from typing import Generic, TypeVar
+
+from pydantic import BaseModel, Field
 
 from otf_api.models.base import OtfItemBase
+from otf_api.models.enums import StatsTime
+
+T = TypeVar("T", bound=BaseModel)
 
 
 class OutStudioMixin(OtfItemBase):
-    walking_distance: float = Field(..., alias="walkingDistance")
-    running_distance: float = Field(..., alias="runningDistance")
-    cycling_distance: float = Field(..., alias="cyclingDistance")
+    walking_distance: float | None = Field(None, alias="walkingDistance")
+    running_distance: float | None = Field(None, alias="runningDistance")
+    cycling_distance: float | None = Field(None, alias="cyclingDistance")
 
 
 class InStudioMixin(OtfItemBase):
-    treadmill_distance: float = Field(..., alias="treadmillDistance")
-    treadmill_elevation_gained: float = Field(..., alias="treadmillElevationGained")
-    rower_distance: float = Field(..., alias="rowerDistance")
-    rower_watt: float = Field(..., alias="rowerWatt")
+    treadmill_distance: float | None = Field(None, alias="treadmillDistance")
+    treadmill_elevation_gained: float | None = Field(None, alias="treadmillElevationGained")
+    rower_distance: float | None = Field(None, alias="rowerDistance")
+    rower_watt: float | None = Field(None, alias="rowerWatt")
 
 
 class BaseStatsData(OtfItemBase):
-    calories: float
-    splat_point: float = Field(..., alias="splatPoint")
-    total_black_zone: float = Field(..., alias="totalBlackZone")
-    total_blue_zone: float = Field(..., alias="totalBlueZone")
-    total_green_zone: float = Field(..., alias="totalGreenZone")
-    total_orange_zone: float = Field(..., alias="totalOrangeZone")
-    total_red_zone: float = Field(..., alias="totalRedZone")
-    workout_duration: float = Field(..., alias="workoutDuration")
-    step_count: float = Field(..., alias="stepCount")
+    calories: float | None = None
+    splat_point: float | None = Field(None, alias="splatPoint")
+    total_black_zone: float | None = Field(None, alias="totalBlackZone")
+    total_blue_zone: float | None = Field(None, alias="totalBlueZone")
+    total_green_zone: float | None = Field(None, alias="totalGreenZone")
+    total_orange_zone: float | None = Field(None, alias="totalOrangeZone")
+    total_red_zone: float | None = Field(None, alias="totalRedZone")
+    workout_duration: float | None = Field(None, alias="workoutDuration")
+    step_count: float | None = Field(None, alias="stepCount")
 
 
 class InStudioStatsData(InStudioMixin, BaseStatsData):
@@ -40,34 +45,43 @@ class AllStatsData(OutStudioMixin, InStudioMixin, BaseStatsData):
     pass
 
 
-class OutStudioTimeStats(OtfItemBase):
-    last_year: OutStudioStatsData = Field(..., alias="lastYear")
-    this_year: OutStudioStatsData = Field(..., alias="thisYear")
-    last_month: OutStudioStatsData = Field(..., alias="lastMonth")
-    this_month: OutStudioStatsData = Field(..., alias="thisMonth")
-    last_week: OutStudioStatsData = Field(..., alias="lastWeek")
-    this_week: OutStudioStatsData = Field(..., alias="thisWeek")
-    all_time: OutStudioStatsData = Field(..., alias="allTime")
+class TimeStats(OtfItemBase, Generic[T]):
+    last_year: T = Field(..., alias="lastYear")
+    this_year: T = Field(..., alias="thisYear")
+    last_month: T = Field(..., alias="lastMonth")
+    this_month: T = Field(..., alias="thisMonth")
+    last_week: T = Field(..., alias="lastWeek")
+    this_week: T = Field(..., alias="thisWeek")
+    all_time: T = Field(..., alias="allTime")
+
+    def get_by_time(self, stats_time: StatsTime) -> T:
+        match stats_time:
+            case StatsTime.LastYear:
+                return self.last_year
+            case StatsTime.ThisYear:
+                return self.this_year
+            case StatsTime.LastMonth:
+                return self.last_month
+            case StatsTime.ThisMonth:
+                return self.this_month
+            case StatsTime.LastWeek:
+                return self.last_week
+            case StatsTime.ThisWeek:
+                return self.this_week
+            case StatsTime.AllTime:
+                return self.all_time
 
 
-class InStudioTimeStats(OtfItemBase):
-    last_year: InStudioStatsData = Field(..., alias="lastYear")
-    this_year: InStudioStatsData = Field(..., alias="thisYear")
-    last_month: InStudioStatsData = Field(..., alias="lastMonth")
-    this_month: InStudioStatsData = Field(..., alias="thisMonth")
-    last_week: InStudioStatsData = Field(..., alias="lastWeek")
-    this_week: InStudioStatsData = Field(..., alias="thisWeek")
-    all_time: InStudioStatsData = Field(..., alias="allTime")
+class OutStudioTimeStats(TimeStats[OutStudioStatsData]):
+    pass
 
 
-class AllStatsTimeStats(OtfItemBase):
-    last_year: AllStatsData = Field(..., alias="lastYear")
-    this_year: AllStatsData = Field(..., alias="thisYear")
-    last_month: AllStatsData = Field(..., alias="lastMonth")
-    this_month: AllStatsData = Field(..., alias="thisMonth")
-    last_week: AllStatsData = Field(..., alias="lastWeek")
-    this_week: AllStatsData = Field(..., alias="thisWeek")
-    all_time: AllStatsData = Field(..., alias="allTime")
+class InStudioTimeStats(TimeStats[InStudioStatsData]):
+    pass
+
+
+class AllStatsTimeStats(TimeStats[AllStatsData]):
+    pass
 
 
 class StatsResponse(OtfItemBase):
