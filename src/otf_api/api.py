@@ -408,7 +408,7 @@ class Otf:
                     booking_uuid=booking.booking_uuid,
                 )
 
-    def cancel_booking(self, booking: str | models.Booking):
+    def cancel_booking(self, booking: str | models.Booking) -> None:
         """Cancel a booking by providing either the booking_uuid or the Booking object.
 
         Args:
@@ -433,8 +433,6 @@ class Otf:
             raise exc.BookingAlreadyCancelledError(
                 f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
             )
-
-        return
 
     def get_bookings(
         self,
@@ -494,17 +492,17 @@ class Otf:
 
         params = {"startDate": start_date, "endDate": end_date, "statuses": status_value}
 
-        bookings = self._default_request("GET", f"/member/members/{self.member_uuid}/bookings", params=params)["data"]
+        resp = self._default_request("GET", f"/member/members/{self.member_uuid}/bookings", params=params)["data"]
 
         # add studio details for each booking, instead of using the different studio model returned by this endpoint
-        studio_uuids = {b["class"]["studio"]["studioUUId"] for b in bookings}
+        studio_uuids = {b["class"]["studio"]["studioUUId"] for b in resp}
         studios = {studio_uuid: self.get_studio_detail(studio_uuid) for studio_uuid in studio_uuids}
 
-        for b in bookings:
+        for b in resp:
             b["class"]["studio"] = studios[b["class"]["studio"]["studioUUId"]]
             b["is_home_studio"] = b["class"]["studio"].studio_uuid == self.home_studio_uuid
 
-        bookings = [models.Booking(**b) for b in bookings]
+        bookings = [models.Booking(**b) for b in resp]
         bookings = sorted(bookings, key=lambda x: x.otf_class.starts_at)
 
         if exclude_cancelled:
@@ -721,15 +719,10 @@ class Otf:
         studio_uuid = studio_uuid or self.home_studio_uuid
 
         path = f"/mobile/v1/studios/{studio_uuid}"
-        # params = {"include": "locations"}
-        params = {}
 
-        no_location_res = self._default_request("GET", path, params=params)
-        location_res = self._default_request("GET", path, params={"include": "locations"})
+        res = self._default_request("GET", path)
 
-        assert no_location_res["data"] == location_res["data"]
-
-        return models.StudioDetail(**location_res["data"])
+        return models.StudioDetail(**res["data"])
 
     def get_studios_by_geo(
         self, latitude: float | None = None, longitude: float | None = None
