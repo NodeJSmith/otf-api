@@ -16,32 +16,99 @@ def main():
         "equipment_name": "Treadmill",
         "years": [
             {
-                "year": "2024",
+                "year": 2025,
                 "is_participated": false,
                 "in_progress": false
             },
-            ...
-        ],
-        "logo_url": "https://otf-icons.s3.amazonaws.com/benchmarks/Treadmill.png"
+            {
+                "year": 2024,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2023,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2022,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2021,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2020,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2019,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2018,
+                "is_participated": false,
+                "in_progress": false
+            }
+        ]
     }
+
     """
 
     print(challenge_tracker_content.challenges[0].model_dump_json(indent=4))
+
     """
     {
-    "challenge_category_id": 10,
-    "challenge_sub_category_id": 8,
-    "challenge_name": "Catch Me If You Can 3G",
-    "years": [
-        {
-            "year": "2024",
-            "is_participated": false,
-            "in_progress": false
-        },
-        ...
-    ],
-    "logo_url": "https://otf-icons.s3.amazonaws.com/challenges/CatchMeIfYouCan.png"
+        "challenge_name": "Catch Me If You Can 3G",
+        "years": [
+            {
+                "year": 2025,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2024,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2023,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2022,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2021,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2020,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2019,
+                "is_participated": false,
+                "in_progress": false
+            },
+            {
+                "year": 2018,
+                "is_participated": false,
+                "in_progress": false
+            }
+        ]
     }
+
     """
 
     # challenge tracker details are detailed information about specific challenges
@@ -64,37 +131,51 @@ def main():
             "max_value": "8.04672"
         },
         "challenge_name": "Catch me If You Can",
-        "logo_url": "https://otf-icons.s3.amazonaws.com/challenges/CatchMeIfYouCan.png",
         "best_record": 1.40012928,
-        "last_record": 1.40012928,
+        "last_record": 1.3679424,
         "previous_record": 1.40012928,
         "unit": "km",
         "goals": null,
         "challenge_histories": [
             {
-                "challenge_objective": "None",
-                "challenge_id": 449906,
-                "studio_id": 1267,
                 "studio_name": "AnyTown OH - East",
-                "start_date": "2024-02-06 00:00:00",
-                "end_date": "2024-02-06 23:59:00",
+                "start_date": "2024-08-22T00:00:00",
+                "end_date": "2024-08-22T23:59:00",
+                "total_result": 1.3679424,
+                "is_finished": true,
+                "benchmark_histories": [
+                    {
+                        "studio_name": "AnyTown OH - East",
+                        "equipment_id": 2,
+                        "class_time": "2024-08-22T09:45:00",
+                        "challenge_sub_category_id": null,
+                        "weight_lbs": 0,
+                        "class_name": "Orange 60 Min 2G",
+                        "coach_name": "Coach Coach",
+                        "result": 1.3679424,
+                        "workout_type_id": null,
+                        "workout_id": null
+                    }
+                ]
+            },
+            {
+                "studio_name": "AnyTown OH - East",
+                "start_date": "2024-02-06T00:00:00",
+                "end_date": "2024-02-06T23:59:00",
                 "total_result": 1.40012928,
                 "is_finished": true,
                 "benchmark_histories": [
                     {
                         "studio_name": "AnyTown OH - East",
                         "equipment_id": 2,
-                        "result": 1.40012928,
-                        "date_created": "2024-02-06 16:01:26",
-                        "date_updated": "2024-02-06 16:01:26",
-                        "class_time": "2024-02-06 09:45:00",
+                        "class_time": "2024-02-06T09:45:00",
                         "challenge_sub_category_id": null,
-                        "class_id": 86842386,
-                        "substitute_id": 1,
                         "weight_lbs": 0,
+                        "class_name": "Orange 60 Min 2G",
+                        "coach_name": "Coach Coach",
+                        "result": 1.40012928,
                         "workout_type_id": null,
-                        "workout_id": null,
-                        "linked_challenges": []
+                        "workout_id": null
                     }
                 ]
             }
