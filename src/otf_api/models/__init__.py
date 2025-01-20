@@ -4,7 +4,7 @@ from .challenge_tracker_content import ChallengeTracker
 from .challenge_tracker_detail import FitnessBenchmark
 from .classes import OtfClass
 from .enums import BookingStatus, ChallengeCategory, ClassType, DoW, EquipmentType, StatsTime, StudioStatus
-from .lifetime_stats import StatsResponse
+from .lifetime_stats import StatsResponse, TimeStats
 from .member_detail import MemberDetail
 from .member_membership import MemberMembership
 from .member_purchases import MemberPurchase
@@ -41,4 +41,5 @@ __all__ = [
     "StudioStatus",
     "Telemetry",
     "TelemetryHistoryItem",
+    "TimeStats",
 ]

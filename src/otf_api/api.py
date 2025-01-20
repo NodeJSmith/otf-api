@@ -606,7 +606,7 @@ class Otf:
 
         return [models.MemberPurchase(**purchase) for purchase in purchases]
 
-    def get_member_lifetime_stats(
+    def _get_member_lifetime_stats(
         self, select_time: models.StatsTime = models.StatsTime.AllTime
     ) -> models.StatsResponse:
         """Get the member's lifetime stats.
@@ -626,7 +626,40 @@ class Otf:
         data = self._default_request("GET", f"/performance/v2/{self.member_uuid}/over-time/{select_time}")
 
         stats = models.StatsResponse(**data["data"])
+
         return stats
+
+    def get_member_lifetime_stats_in_studio(
+        self, select_time: models.StatsTime = models.StatsTime.AllTime
+    ) -> models.TimeStats:
+        """Get the member's lifetime stats in studio.
+
+        Args:
+            select_time (StatsTime): The time period to get stats for. Default is StatsTime.AllTime.
+
+        Returns:
+            Any: The member's lifetime stats in studio.
+        """
+
+        data = self._get_member_lifetime_stats(select_time)
+
+        return data.in_studio.get_by_time(select_time)
+
+    def get_member_lifetime_stats_out_of_studio(
+        self, select_time: models.StatsTime = models.StatsTime.AllTime
+    ) -> models.TimeStats:
+        """Get the member's lifetime stats out of studio.
+
+        Args:
+            select_time (StatsTime): The time period to get stats for. Default is StatsTime.AllTime.
+
+        Returns:
+            Any: The member's lifetime stats out of studio.
+        """
+
+        data = self._get_member_lifetime_stats(select_time)
+
+        return data.out_studio.get_by_time(select_time)
 
     def get_out_of_studio_workout_history(self) -> list[models.OutOfStudioWorkoutHistory]:
         """Get the member's out of studio workout history.

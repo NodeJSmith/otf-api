@@ -3,6 +3,7 @@ from typing import Generic, TypeVar
 from pydantic import BaseModel, Field
 
 from otf_api.models.base import OtfItemBase
+from otf_api.models.enums import StatsTime
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -52,6 +53,23 @@ class TimeStats(OtfItemBase, Generic[T]):
     last_week: T = Field(..., alias="lastWeek")
     this_week: T = Field(..., alias="thisWeek")
     all_time: T = Field(..., alias="allTime")
+
+    def get_by_time(self, stats_time: StatsTime) -> T:
+        match stats_time:
+            case StatsTime.LastYear:
+                return self.last_year
+            case StatsTime.ThisYear:
+                return self.this_year
+            case StatsTime.LastMonth:
+                return self.last_month
+            case StatsTime.ThisMonth:
+                return self.this_month
+            case StatsTime.LastWeek:
+                return self.last_week
+            case StatsTime.ThisWeek:
+                return self.this_week
+            case StatsTime.AllTime:
+                return self.all_time
 
 
 class OutStudioTimeStats(TimeStats[OutStudioStatsData]):
