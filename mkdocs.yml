@@ -4,7 +4,6 @@ repo_name: otf-api
 nav:
   - Home: index.md
   - Code Reference: reference/
-  - Usage: usage.md
 theme:
   name: material
   language: en
