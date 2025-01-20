@@ -12,10 +12,19 @@ pip install otf-api
 
 ## Overview
 
-To use the API, you need to create an instance of the `Otf` class, providing your email address and password. This will authenticate you with the API and allow you to make requests. When the `Otf` object is created it automatically grabs your member details and home studio, to simplify the process of making requests.
+To use the API, you need to create an instance of the `Otf` class. This will authenticate you with the API and allow you to make requests. When the `Otf` object is created it automatically grabs your member details and home studio, to simplify the process of making requests.
 
+You can either pass an `OtfUser` object to the `OtfClass` or you can pass nothing and allow it to prompt you for your username and password.
 
-See the [examples](./examples) for more information on how to use the API.
+You can also export environment variables `OTF_EMAIL` and `OTF_PASSWORD` to get these from the environment.
 
-Disclaimer:
-This project is in no way affiliated with OrangeTheory Fitness.
+```python
+from otf_api import Otf, OtfUser
+
+otf = Otf()
+
+# OR
+
+otf = Otf(user=OtfUser(<email_address>,<password>))
+
+```
