@@ -14,8 +14,8 @@ class Program(OtfItemBase):
     # NOTE: These ones do seem to match the ChallengeType enums in the OTF app.
     # Leaving them as int for now though in case older data or other user's
     # data doesn't match up.
-    challenge_category_id: int | None = Field(None, alias="ChallengeCategoryId")
-    challenge_sub_category_id: int | None = Field(None, alias="ChallengeSubCategoryId")
+    challenge_category_id: int | None = Field(None, alias="ChallengeCategoryId", exclude=True, repr=False)
+    challenge_sub_category_id: int | None = Field(None, alias="ChallengeSubCategoryId", exclude=True, repr=False)
     challenge_name: str | None = Field(None, alias="ChallengeName")
     years: list[Year] = Field(default_factory=list, alias="Years")
 
@@ -32,7 +32,7 @@ class Challenge(OtfItemBase):
 
 
 class Benchmark(OtfItemBase):
-    equipment_id: EquipmentType | None = Field(None, alias="EquipmentId")
+    equipment_id: EquipmentType | None = Field(None, alias="EquipmentId", exclude=True, repr=False)
     equipment_name: str | None = Field(None, alias="EquipmentName")
     years: list[Year] = Field(default_factory=list, alias="Years")
 
