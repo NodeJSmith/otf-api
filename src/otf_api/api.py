@@ -4,7 +4,7 @@ import functools
 from datetime import date, datetime, timedelta
 from json import JSONDecodeError
 from logging import getLogger
-from typing import Any
+from typing import Any, Literal
 
 import attrs
 import httpx
@@ -88,6 +88,7 @@ class Otf:
             raise
         except httpx.HTTPStatusError as e:
             LOGGER.exception(f"Error making request: {e}")
+            LOGGER.exception(f"Response: {response.text}")
             raise exc.OtfRequestError("Error making request", response=response, request=request)
         except Exception as e:
             LOGGER.exception(f"Error making request: {e}")
@@ -817,52 +818,85 @@ class Otf:
 
     def get_benchmarks(
         self,
-        equipment_id: models.EquipmentType,
-        challenge_type_id: models.ChallengeType,
-        challenge_sub_type_id: int = 0,
+        challenge_category_id: models.ChallengeCategory | Literal[0] = 0,
+        equipment_id: models.EquipmentType | Literal[0] = 0,
+        challenge_subcategory_id: int = 0,
     ) -> list[models.FitnessBenchmark]:
-        """Get the member's challenge tracker details.
+        """Get the member's challenge tracker participation details.
 
         Args:
-            equipment_id (EquipmentType): The equipment ID.
-            challenge_type_id (ChallengeType): The challenge type ID.
-            challenge_sub_type_id (int): The challenge sub type ID. Default is 0.
+            challenge_category_id (ChallengeType): The challenge type ID.
+            equipment_id (EquipmentType | Literal[0]): The equipment ID, default is 0 - this doesn't seem\
+                to be have any impact on the results.
+            challenge_subcategory_id (int): The challenge sub type ID. Default is 0 - this doesn't seem\
+                to be have any impact on the results.
 
         Returns:
             list[FitnessBenchmark]: The member's challenge tracker details.
-
-        Notes:
-            ---
-            I'm not sure what the challenge_sub_type_id is supposed to be, so it defaults to 0.
-
         """
         params = {
-            "equipmentId": equipment_id.value,
-            "challengeTypeId": challenge_type_id.value,
-            "challengeSubTypeId": challenge_sub_type_id,
+            "equipmentId": int(equipment_id),
+            "challengeTypeId": int(challenge_category_id),
+            "challengeSubTypeId": challenge_subcategory_id,
         }
 
         data = self._default_request("GET", f"/challenges/v3/member/{self.member_uuid}/benchmarks", params=params)
         return [models.FitnessBenchmark(**item) for item in data["Dto"]]
 
-    def get_challenge_tracker_detail(self, challenge_type_id: models.ChallengeType) -> models.FitnessBenchmark:
-        """Get the member's participation in a challenge.
+    def get_benchmarks_by_equipment(self, equipment_id: models.EquipmentType) -> list[models.FitnessBenchmark]:
+        """Get the member's challenge tracker participation details by equipment.
 
         Args:
-            challenge_type_id (ChallengeType): The challenge type ID.
+            equipment_id (EquipmentType): The equipment type ID.
 
         Returns:
-            FitnessBenchmark: The member's participation in the challenge.
+            list[FitnessBenchmark]: The member's challenge tracker details.
+        """
+        benchmarks = self.get_benchmarks(equipment_id=equipment_id)
+
+        benchmarks = [b for b in benchmarks if b.equipment_id == equipment_id]
+
+        return benchmarks
+
+    def get_benchmarks_by_challenge_category(
+        self, challenge_category_id: models.ChallengeCategory
+    ) -> list[models.FitnessBenchmark]:
+        """Get the member's challenge tracker participation details by challenge.
+
+        Args:
+            challenge_category_id (ChallengeType): The challenge type ID.
+
+        Returns:
+            list[FitnessBenchmark]: The member's challenge tracker details.
+        """
+        benchmarks = self.get_benchmarks(challenge_category_id=challenge_category_id)
+
+        benchmarks = [b for b in benchmarks if b.challenge_category_id == challenge_category_id]
+
+        return benchmarks
+
+    def get_challenge_tracker_detail(self, challenge_category_id: models.ChallengeCategory) -> models.FitnessBenchmark:
+        """Get details about a challenge. This endpoint does not (usually) return member participation, but rather
+        details about the challenge itself.
+
+        Args:
+            challenge_category_id (ChallengeType): The challenge type ID.
+
+        Returns:
+            FitnessBenchmark: Details about the challenge.
         """
 
         data = self._default_request(
             "GET",
             f"/challenges/v1/member/{self.member_uuid}/participation",
-            params={"challengeTypeId": challenge_type_id.value},
+            params={"challengeTypeId": int(challenge_category_id)},
         )
 
         if len(data["Dto"]) > 1:
             LOGGER.warning("Multiple challenge participations found, returning the first one.")
+
+        if len(data["Dto"]) == 0:
+            raise exc.ResourceNotFoundError(f"Challenge {challenge_category_id} not found")
 
         return models.FitnessBenchmark(**data["Dto"][0])
 

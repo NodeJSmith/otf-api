@@ -4,7 +4,7 @@ from typing import Any
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import EquipmentType
+from otf_api.models.enums import ChallengeCategory, EquipmentType
 
 
 class MetricEntry(OtfItemBase):
@@ -25,11 +25,9 @@ class BenchmarkHistory(OtfItemBase):
     class_name: str | None = Field(None, alias="ClassName")
     coach_name: str | None = Field(None, alias="CoachName")
     result: float | str | None = Field(None, alias="Result")
-    workout_type_id: int | None = Field(None, alias="WorkoutTypeId")
-    workout_id: int | None = Field(None, alias="WorkoutId")
-    linked_challenges: list[Any] | None = Field(
-        None, alias="LinkedChallenges", exclude=True
-    )  # not sure what this will be, never seen it before
+    workout_type_id: int | None = Field(None, alias="WorkoutTypeId", exclude=True, repr=False)
+    workout_id: int | None = Field(None, alias="WorkoutId", exclude=True, repr=False)
+    linked_challenges: list[Any] | None = Field(None, alias="LinkedChallenges", exclude=True, repr=False)
 
     date_created: datetime | None = Field(
         None,
@@ -76,7 +74,7 @@ class Goal(OtfItemBase):
 
 
 class FitnessBenchmark(OtfItemBase):
-    challenge_category_id: int | None = Field(None, alias="ChallengeCategoryId")
+    challenge_category_id: ChallengeCategory | None = Field(None, alias="ChallengeCategoryId")
     challenge_sub_category_id: int | None = Field(None, alias="ChallengeSubCategoryId")
     equipment_id: EquipmentType = Field(None, alias="EquipmentId")
     equipment_name: str | None = Field(None, alias="EquipmentName")

@@ -3,7 +3,7 @@ from .bookings import Booking
 from .challenge_tracker_content import ChallengeTracker
 from .challenge_tracker_detail import FitnessBenchmark
 from .classes import OtfClass
-from .enums import BookingStatus, ChallengeType, ClassType, DoW, EquipmentType, StatsTime, StudioStatus
+from .enums import BookingStatus, ChallengeCategory, ClassType, DoW, EquipmentType, StatsTime, StudioStatus
 from .lifetime_stats import StatsResponse
 from .member_detail import MemberDetail
 from .member_membership import MemberMembership
@@ -19,9 +19,9 @@ __all__ = [
     "BodyCompositionData",
     "Booking",
     "BookingStatus",
+    "ChallengeCategory",
     "ChallengeParticipation",
     "ChallengeTracker",
-    "ChallengeType",
     "ClassType",
     "DoW",
     "EquipmentType",
