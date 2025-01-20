@@ -48,16 +48,6 @@ class OtfClass(OtfItemBase):
         dow = self.starts_at.strftime("%A")
         return DoW(dow)
 
-    @property
-    def starts_at_local(self) -> datetime:
-        """Alias for starts_at, kept to avoid breaking changes"""
-        return self.starts_at
-
-    @property
-    def ends_at_local(self) -> datetime:
-        """Alias for ends_at, kept to avoid breaking changes"""
-        return self.ends_at
-
     def __str__(self) -> str:
         starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
         booked_str = ""

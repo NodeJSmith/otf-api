@@ -36,16 +36,6 @@ class OtfClass(OtfItemBase):
     program_name: str | None = Field(None, alias="programName", exclude=True, repr=False)
     virtual_class: bool | None = Field(None, alias="virtualClass", exclude=True, repr=False)
 
-    @property
-    def starts_at_local(self) -> datetime:
-        """Alias for starts_at, kept to avoid breaking changes"""
-        return self.starts_at
-
-    @property
-    def ends_at_local(self) -> datetime:
-        """Alias for ends_at, kept to avoid breaking changes"""
-        return self.ends_at
-
 
 class Booking(OtfItemBase):
     booking_uuid: str = Field(alias="classBookingUUId", description="ID used to cancel the booking")
