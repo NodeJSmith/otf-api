@@ -119,18 +119,29 @@ class EquipmentType(IntEnum):
     PowerWalker = 7
 
 
-class ChallengeType(IntEnum):
+class ChallengeCategory(IntEnum):
     Other = 0
     DriTri = 2
+    Infinity = 3
     MarathonMonth = 5
+    OrangeEverest = 9
+    CatchMeIfYouCan = 10
+    TwoHundredMeterRow = 15
+    FiveHundredMeterRow = 16
+    TwoThousandMeterRow = 17
+    TwelveMinuteTreadmill = 18
+    OneMileTreadmill = 19
+    TenMinuteRow = 20
     HellWeek = 52
+    Inferno = 55
     Mayhem = 58
-    _BackAtIt = 60  # nothing in the app reflects this, but the API returns it
+    BackAtIt = 60
+    FourteenMinuteRow = 61
     TwelveDaysOfFitness = 63
     TransformationChallenge = 64
     RemixInSix = 65
     Push = 66
-    BackAtIt = 84
+    QuarterMileTreadmill = 69
 
 
 class DriTriChallengeSubCategory(IntEnum):
