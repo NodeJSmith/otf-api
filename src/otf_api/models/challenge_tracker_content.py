@@ -11,7 +11,7 @@ class Year(OtfItemBase):
 
 
 class Program(OtfItemBase):
-    # NOTE: These ones do seem to match the ProgramType enums in the OTF app.
+    # NOTE: These ones do seem to match the ChallengeType enums in the OTF app.
     # Leaving them as int for now though in case older data or other user's
     # data doesn't match up.
     challenge_category_id: int | None = Field(None, alias="ChallengeCategoryId")
