@@ -39,6 +39,8 @@ def get_class_uuid(class_or_uuid: "str | OtfClass") -> str:
 
 
 def ensure_list(obj: list | Any | None) -> list:
+    if obj is None:
+        return []
     if not isinstance(obj, list):
         return [obj]
     return obj
