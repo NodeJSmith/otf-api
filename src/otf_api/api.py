@@ -1007,13 +1007,57 @@ class Otf:
         res = self._telemetry_request("GET", path, params=params)
         return models.Telemetry(**res)
 
-    def get_sms_notification_settings(self):
+    def get_sms_notification_settings(self) -> models.SmsNotificationSettings:
+        """Get the member's SMS notification settings.
+
+        Returns:
+            SmsNotificationSettings: The member's SMS notification settings.
+        """
         res = self._default_request("GET", url="/sms/v1/preferences", params={"phoneNumber": self.member.phone_number})
 
-        return res["data"]
+        return models.SmsNotificationSettings(**res["data"])
 
-    def update_sms_notification_settings(self, promotional_enabled: bool, transactional_enabled: bool):
+    def update_sms_notification_settings(
+        self, promotional_enabled: bool | None = None, transactional_enabled: bool | None = None
+    ) -> models.SmsNotificationSettings:
+        """Update the member's SMS notification settings. Arguments not provided will be left unchanged.
+
+        Args:
+            promotional_enabled (bool | None): Whether to enable promotional SMS notifications.
+            transactional_enabled (bool | None): Whether to enable transactional SMS notifications.
+
+        Returns:
+            SmsNotificationSettings: The updated SMS notification settings.
+
+        Warning:
+            ---
+            This endpoint seems to accept almost anything, converting values to truthy/falsey and
+            updating the settings accordingly. The one error I've gotten is with -1
+
+            ```
+            ERROR - Response:
+            {
+            "code": "ER_WARN_DATA_OUT_OF_RANGE",
+            "message": "An unexpected server error occurred, please try again.",
+            "details": [
+                    {
+                "message": "ER_WARN_DATA_OUT_OF_RANGE: Out of range value for column 'IsPromotionalSMSOptIn' at row 1",
+                "additionalInfo": ""
+                    }
+                ]
+            }
+            ```
+        """
         url = "/sms/v1/preferences"
+
+        current_settings = self.get_sms_notification_settings()
+
+        promotional_enabled = (
+            promotional_enabled if promotional_enabled is not None else current_settings.is_promotional_sms_opt_in
+        )
+        transactional_enabled = (
+            transactional_enabled if transactional_enabled is not None else current_settings.is_transactional_sms_opt_in
+        )
 
         body = {
             "promosms": promotional_enabled,
@@ -1022,11 +1066,45 @@ class Otf:
             "phoneNumber": self.member.phone_number,
         }
 
-        res = self._default_request("POST", url, json=body)
+        self._default_request("POST", url, json=body)
 
-        return res["data"]
+        # the response returns nothing useful, so we just query the settings again
+        new_settings = self.get_sms_notification_settings()
+        return new_settings
 
-    def update_email_notification_settings(self, promotional_enabled: bool, transactional_enabled: bool):
+    def get_email_notification_settings(self) -> models.EmailNotificationSettings:
+        """Get the member's email notification settings.
+
+        Returns:
+            EmailNotificationSettings: The member's email notification settings.
+        """
+        res = self._default_request("GET", url="/otfmailing/v2/preferences", params={"email": self.member.email})
+
+        return models.EmailNotificationSettings(**res["data"])
+
+    def update_email_notification_settings(
+        self, promotional_enabled: bool | None = None, transactional_enabled: bool | None = None
+    ) -> models.EmailNotificationSettings:
+        """Update the member's email notification settings. Arguments not provided will be left unchanged.
+
+        Args:
+            promotional_enabled (bool | None): Whether to enable promotional email notifications.
+            transactional_enabled (bool | None): Whether to enable transactional email notifications.
+
+        Returns:
+            EmailNotificationSettings: The updated email notification settings.
+        """
+        current_settings = self.get_email_notification_settings()
+
+        promotional_enabled = (
+            promotional_enabled if promotional_enabled is not None else current_settings.is_promotional_email_opt_in
+        )
+        transactional_enabled = (
+            transactional_enabled
+            if transactional_enabled is not None
+            else current_settings.is_transactional_email_opt_in
+        )
+
         body = {
             "promotionalEmail": promotional_enabled,
             "source": "OTF",
@@ -1034,9 +1112,11 @@ class Otf:
             "email": self.member.email,
         }
 
-        res = self._default_request("POST", "/otfmailing/v2/preferences", json=body)
+        self._default_request("POST", "/otfmailing/v2/preferences", json=body)
 
-        return res["data"]
+        # the response returns nothing useful, so we just query the settings again
+        new_settings = self.get_email_notification_settings()
+        return new_settings
 
     def update_member_name(self, first_name: str | None = None, last_name: str | None = None) -> models.MemberDetail:
         """Update the member's name. Will return the original member details if no names are provided.
