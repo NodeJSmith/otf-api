@@ -8,6 +8,7 @@ from .lifetime_stats import StatsResponse, TimeStats
 from .member_detail import MemberDetail
 from .member_membership import MemberMembership
 from .member_purchases import MemberPurchase
+from .notifications import EmailNotificationSettings, SmsNotificationSettings
 from .out_of_studio_workout_history import OutOfStudioWorkoutHistory
 from .performance_summary_detail import PerformanceSummaryDetail
 from .performance_summary_list import PerformanceSummaryEntry
@@ -24,6 +25,7 @@ __all__ = [
     "ChallengeTracker",
     "ClassType",
     "DoW",
+    "EmailNotificationSettings",
     "EquipmentType",
     "FitnessBenchmark",
     "LatestAgreement",
@@ -34,6 +36,7 @@ __all__ = [
     "OutOfStudioWorkoutHistory",
     "PerformanceSummaryDetail",
     "PerformanceSummaryEntry",
+    "SmsNotificationSettings",
     "StatsResponse",
     "StatsTime",
     "StudioDetail",
