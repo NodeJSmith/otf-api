@@ -8,11 +8,13 @@ class OtfException(Exception):
 class OtfRequestError(OtfException):
     """Raised when an error occurs while making a request to the OTF API."""
 
+    original_exception: Exception
     response: Response
     request: Request
 
-    def __init__(self, message: str, response: Response, request: Request):
+    def __init__(self, message: str, original_exception: Exception | None, response: Response, request: Request):
         super().__init__(message)
+        self.original_exception = original_exception
         self.response = response
         self.request = request
 
@@ -49,3 +51,11 @@ class BookingNotFoundError(OtfException):
 
 class ResourceNotFoundError(OtfException):
     """Raised when a resource is not found."""
+
+
+class AlreadyRatedError(OtfException):
+    """Raised when attempting to rate a class that is already rated."""
+
+
+class ClassNotRatableError(OtfException):
+    """Raised when attempting to rate a class that is not ratable."""

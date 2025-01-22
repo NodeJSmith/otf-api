@@ -33,7 +33,7 @@ class ClassRating(OtfItemBase):
 
 
 class PerformanceSummaryEntry(OtfItemBase):
-    id: str = Field(..., alias="id")
+    class_history_uuid: str = Field(..., alias="id")
     calories_burned: int | None = Field(None, alias=AliasPath("details", "calories_burned"))
     splat_points: int | None = Field(None, alias=AliasPath("details", "splat_points"))
     step_count: int | None = Field(None, alias=AliasPath("details", "step_count"))
