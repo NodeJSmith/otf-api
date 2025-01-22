@@ -51,3 +51,11 @@ class BookingNotFoundError(OtfException):
 
 class ResourceNotFoundError(OtfException):
     """Raised when a resource is not found."""
+
+
+class AlreadyRatedError(OtfException):
+    """Raised when attempting to rate a class that is already rated."""
+
+
+class ClassNotRatableError(OtfException):
+    """Raised when attempting to rate a class that is not ratable."""

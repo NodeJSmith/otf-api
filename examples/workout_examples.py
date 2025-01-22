@@ -78,6 +78,52 @@ def main():
     }
     """
 
+    # if you want to rate a class you can do that with the `rate_class_from_performance_summary` method
+    # this method takes a performance_summary object, as well as a coach_rating and class_rating
+    # the ratings are integers from 1 - 3
+    # the method returns an updated PerformanceSummaryEntry object
+
+    # if you already rated the class it will return an exception
+    # likewise if the class is not ratable (seems to be an age cutoff) or if the class is not found
+
+    res = otf.rate_class_from_performance_summary(data_list[0], 3, 3)
+    print(res.model_dump_json(indent=4))
+
+    """
+    {
+        "id": "c39e7cde-5e02-4e1a-89e2-d41e8a4653b3",
+        "calories_burned": 250,
+        "splat_points": 0,
+        "step_count": 0,
+        "active_time_seconds": 2687,
+        "zone_time_minutes": {
+            "gray": 17,
+            "blue": 24,
+            "green": 4,
+            "orange": 0,
+            "red": 0
+        },
+        "ratable": true,
+        "otf_class": {
+            "class_uuid": "23c8ad3e-4257-431c-b5f0-8313d8d82434",
+            "starts_at": "2025-01-18T10:30:00",
+            "name": "Tread 50 / Strength 50",
+            "type": "STRENGTH_50"
+        },
+        "coach": "Bobby",
+        "coach_rating": {
+            "id": "18",
+            "description": "Double Thumbs Up",
+            "value": 3
+        },
+        "class_rating": {
+            "id": "21",
+            "description": "Double Thumbs Up",
+            "value": 3
+        }
+    }
+    """
+
     # you can get detailed information about a specific performance summary by calling `get_performance_summary`
     # which takes a performance_summary_id as an argument
     data = otf.get_performance_summary(data_list[0].class_history_uuid)

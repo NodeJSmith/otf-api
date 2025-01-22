@@ -1146,6 +1146,137 @@ class Otf:
 
         return models.MemberDetail(**res["data"])
 
+    def _rate_class(
+        self,
+        class_uuid: str,
+        class_history_uuid: str,
+        class_rating: Literal[0, 1, 2, 3],
+        coach_rating: Literal[0, 1, 2, 3],
+    ) -> models.PerformanceSummaryEntry:
+        """Rate a class and coach. A simpler method is provided in `rate_class_from_performance_summary`.
+
+
+        The class rating must be between 0 and 4.
+        0 is the same as dismissing the prompt to rate the class/coach in the app.
+        1 through 3 is a range from bad to good.
+
+        Args:
+            class_uuid (str): The class UUID.
+            class_history_uuid (str): The performance summary ID.
+            class_rating (int): The class rating. Must be 0, 1, 2, or 3.
+            coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
+
+        Returns:
+            PerformanceSummaryEntry: The updated performance summary entry.
+        """
+
+        # com/orangetheoryfitness/fragment/rating/RateStatus.java
+
+        # we convert these to the new values that the app uses
+        # mainly because we don't want to cause any issues with the API and/or with OTF corporate
+        # wondering where the old values are coming from
+
+        COACH_RATING_MAP = {0: 0, 1: 16, 2: 17, 3: 18}
+        CLASS_RATING_MAP = {0: 0, 1: 19, 2: 20, 3: 21}
+
+        if class_rating not in CLASS_RATING_MAP:
+            raise ValueError(f"Invalid class rating {class_rating}")
+
+        if coach_rating not in COACH_RATING_MAP:
+            raise ValueError(f"Invalid coach rating {coach_rating}")
+
+        body_class_rating = CLASS_RATING_MAP[class_rating]
+        body_coach_rating = COACH_RATING_MAP[coach_rating]
+
+        body = {
+            "classUUId": class_uuid,
+            "otBeatClassHistoryUUId": class_history_uuid,
+            "classRating": body_class_rating,
+            "coachRating": body_coach_rating,
+        }
+
+        try:
+            self._default_request("POST", "/mobile/v1/members/classes/ratings", json=body)
+        except exc.OtfRequestError as e:
+            if e.response.status_code == 403:
+                raise exc.AlreadyRatedError(f"Performance summary {class_history_uuid} is already rated.") from None
+            raise
+
+        return self._get_performance_summary_entry_from_id(class_history_uuid)
+
+    def _get_performance_summary_entry_from_id(self, class_history_uuid: str) -> models.PerformanceSummaryEntry:
+        """Get a performance summary entry from the ID.
+
+        This is a helper function to compensate for the fact that a PerformanceSummaryDetail object does not contain
+        the class UUID, which is required to rate the class. It will also be used to return an updated performance
+        summary entry after rating a class.
+
+        Args:
+            class_history_uuid (str): The performance summary ID.
+
+        Returns:
+            PerformanceSummaryEntry: The performance summary entry.
+
+        Raises:
+            ResourceNotFoundError: If the performance summary is not found.
+        """
+
+        # try going in as small of increments as possible, assuming that the rating request
+        # will be for a recent class
+        for limit in [5, 20, 60, 100]:
+            summaries = self.get_performance_summaries(limit)
+            summary = next((s for s in summaries if s.class_history_uuid == class_history_uuid), None)
+
+            if summary:
+                return summary
+
+        raise exc.ResourceNotFoundError(f"Performance summary {class_history_uuid} not found.")
+
+    def rate_class_from_performance_summary(
+        self,
+        perf_summary: models.PerformanceSummaryEntry | models.PerformanceSummaryDetail,
+        class_rating: Literal[0, 1, 2, 3],
+        coach_rating: Literal[0, 1, 2, 3],
+    ) -> models.PerformanceSummaryEntry:
+        """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
+            rate the class/coach. 1 - 3 is a range from bad to good.
+
+        Args:
+            perf_summary (PerformanceSummaryEntry): The performance summary entry to rate.
+            class_rating (int): The class rating. Must be 0, 1, 2, or 3.
+            coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
+
+        Returns:
+            PerformanceSummaryEntry: The updated performance summary entry.
+
+        Raises:
+            ValueError: If `perf_summary` is not a PerformanceSummaryEntry.
+            AlreadyRatedError: If the performance summary is already rated.
+            ClassNotRatableError: If the performance summary is not rateable.
+            ValueError: If the performance summary does not have an associated class.
+        """
+
+        if isinstance(perf_summary, models.PerformanceSummaryDetail):
+            perf_summary = self._get_performance_summary_entry_from_id(perf_summary.class_history_uuid)
+
+        if not isinstance(perf_summary, models.PerformanceSummaryEntry):
+            raise ValueError(f"`perf_summary` must be a PerformanceSummaryEntry, got {type(perf_summary)}")
+
+        if perf_summary.is_rated:
+            raise exc.AlreadyRatedError(f"Performance summary {perf_summary.class_history_uuid} is already rated.")
+
+        if not perf_summary.ratable:
+            raise exc.ClassNotRatableError(f"Performance summary {perf_summary.class_history_uuid} is not rateable.")
+
+        if not perf_summary.otf_class or not perf_summary.otf_class.class_uuid:
+            raise ValueError(
+                f"Performance summary {perf_summary.class_history_uuid} does not have an associated class."
+            )
+
+        return self._rate_class(
+            perf_summary.otf_class.class_uuid, perf_summary.class_history_uuid, class_rating, coach_rating
+        )
+
     # the below do not return any data for me, so I can't test them
 
     def _get_member_services(self, active_only: bool = True) -> Any:
