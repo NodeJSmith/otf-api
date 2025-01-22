@@ -87,9 +87,7 @@ class Otf:
             LOGGER.exception(f"Response: {response.text}")
             raise
         except httpx.HTTPStatusError as e:
-            LOGGER.exception(f"Error making request: {e}")
-            LOGGER.exception(f"Response: {response.text}")
-            raise exc.OtfRequestError("Error making request", response=response, request=request)
+            raise exc.OtfRequestError("Error making request", e, response=response, request=request)
         except Exception as e:
             LOGGER.exception(f"Error making request: {e}")
             raise
@@ -110,7 +108,7 @@ class Otf:
             and not (resp["Status"] >= 200 and resp["Status"] <= 299)
         ):
             LOGGER.error(f"Error making request: {resp}")
-            raise exc.OtfRequestError("Error making request", response=response, request=request)
+            raise exc.OtfRequestError("Error making request", None, response=response, request=request)
 
         return resp
 
@@ -966,6 +964,7 @@ class Otf:
 
         path = f"/v1/performance-summaries/{performance_summary_id}"
         res = self._performance_summary_request("GET", path)
+
         if res is None:
             raise exc.ResourceNotFoundError(f"Performance summary {performance_summary_id} not found")
 
