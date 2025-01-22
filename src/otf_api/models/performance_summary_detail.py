@@ -68,11 +68,16 @@ class Rower(BaseEquipment):
 
 
 class PerformanceSummaryDetail(OtfItemBase):
-    id: str
+    class_history_uuid: str = Field(..., alias="id")
     class_name: str | None = Field(None, alias=AliasPath("class", "name"))
     class_starts_at: datetime | None = Field(None, alias=AliasPath("class", "starts_at_local"))
 
-    ratable: bool | None = None
+    ratable: bool | None = Field(
+        None,
+        exclude=True,
+        repr=False,
+        description="Seems to be inaccurate, not reflecting ratable from `PerformanceSummaryEntry`",
+    )
     calories_burned: int | None = Field(None, alias=AliasPath("details", "calories_burned"))
     splat_points: int | None = Field(None, alias=AliasPath("details", "splat_points"))
     step_count: int | None = Field(None, alias=AliasPath("details", "step_count"))
