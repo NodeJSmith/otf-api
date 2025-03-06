@@ -1061,12 +1061,12 @@ class Otf:
 
         return models.FitnessBenchmark(**data["Dto"][0])
 
-    def get_performance_summaries(self, limit: int = 5) -> list[models.PerformanceSummaryEntry]:
+    @functools.cache
+    def get_performance_summaries(self, limit: int = 200) -> list[models.PerformanceSummaryEntry]:
         """Get a list of performance summaries for the authenticated user.
 
         Args:
-            limit (int): The maximum number of performance summaries to return. Defaults to 5.
-            only_include_rateable (bool): Whether to only include rateable performance summaries. Defaults to True.
+            limit (int): The maximum number of performance summaries to return. Defaults to 200.
 
         Returns:
             list[PerformanceSummaryEntry]: A list of performance summaries.
@@ -1078,7 +1078,15 @@ class Otf:
         """
 
         res = self._get_performance_summaries_raw(limit)
-        entries = [models.PerformanceSummaryEntry(**item) for item in res["items"]]
+        items = res["items"]
+
+        distinct_studio_ids = set([rec["class"]["studio"]["id"] for rec in items])
+        studio_dict = {s: self.get_studio_detail(s) for s in distinct_studio_ids}
+
+        for item in items:
+            item["class"]["studio"] = studio_dict[item["class"]["studio"]["id"]]
+
+        entries = [models.PerformanceSummaryEntry(**item) for item in items]
 
         return entries
 
@@ -1124,7 +1132,6 @@ class Otf:
 
         Returns:
             TelemetryItem: The telemetry for the class history.
-
         """
 
         res = self._get_telemetry_raw(performance_summary_id, max_data_points)
@@ -1320,14 +1327,11 @@ class Otf:
             ResourceNotFoundError: If the performance summary is not found.
         """
 
-        # try going in as small of increments as possible, assuming that the rating request
-        # will be for a recent class
-        for limit in [5, 20, 60, 100]:
-            summaries = self.get_performance_summaries(limit)
-            summary = next((s for s in summaries if s.class_history_uuid == class_history_uuid), None)
+        summaries = self.get_performance_summaries()
+        summary = next((s for s in summaries if s.class_history_uuid == class_history_uuid), None)
 
-            if summary:
-                return summary
+        if summary:
+            return summary
 
         raise exc.ResourceNotFoundError(f"Performance summary {class_history_uuid} not found.")
 

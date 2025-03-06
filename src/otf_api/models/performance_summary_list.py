@@ -3,6 +3,7 @@ from datetime import datetime
 from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
+from otf_api.models.studio_detail import StudioDetail
 
 
 class ZoneTimeMinutes(OtfItemBase):
@@ -13,18 +14,12 @@ class ZoneTimeMinutes(OtfItemBase):
     red: int
 
 
-class Studio(OtfItemBase):
-    studio_uuid: str | None = Field(None, alias="id")
-    studio_number: str | None = Field(None, alias="license_number")
-    name: str | None = None
-
-
 class Class(OtfItemBase):
     class_uuid: str | None = Field(None, description="Only populated if class is ratable", alias="ot_base_class_uuid")
     starts_at: datetime | None = Field(None, alias="starts_at_local")
     name: str | None = None
     type: str | None = None
-    studio: Studio | None = None
+    studio: StudioDetail | None = None
 
 
 class CoachRating(OtfItemBase):
@@ -55,3 +50,7 @@ class PerformanceSummaryEntry(OtfItemBase):
     @property
     def is_rated(self) -> bool:
         return self.coach_rating is not None or self.class_rating is not None
+
+    @property
+    def studio(self) -> StudioDetail | None:
+        return self.otf_class.studio if self.otf_class else None
