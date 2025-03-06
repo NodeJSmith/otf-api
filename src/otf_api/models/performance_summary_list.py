@@ -13,11 +13,18 @@ class ZoneTimeMinutes(OtfItemBase):
     red: int
 
 
+class Studio(OtfItemBase):
+    studio_uuid: str | None = Field(None, alias="id")
+    studio_number: str | None = Field(None, alias="license_number")
+    name: str | None = None
+
+
 class Class(OtfItemBase):
     class_uuid: str | None = Field(None, description="Only populated if class is ratable", alias="ot_base_class_uuid")
     starts_at: datetime | None = Field(None, alias="starts_at_local")
     name: str | None = None
     type: str | None = None
+    studio: Studio | None = None
 
 
 class CoachRating(OtfItemBase):
