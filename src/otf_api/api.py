@@ -129,6 +129,197 @@ class Otf:
         perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
         return self._do(method, API_IO_BASE_URL, url, params, perf_api_headers)
 
+    def _get_classes_raw(self, studio_uuids: list[str] | None) -> dict:
+        """Retrieve raw class data."""
+        return self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
+
+    def _get_booking_raw(self, booking_uuid: str) -> dict:
+        """Retrieve raw booking data."""
+        return self._default_request("GET", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}")
+
+    def _get_bookings_raw(self, start_date: str | None, end_date: str | None, status: str | None) -> dict:
+        """Retrieve raw bookings data."""
+        return self._default_request(
+            "GET",
+            f"/member/members/{self.member_uuid}/bookings",
+            params={"startDate": start_date, "endDate": end_date, "statuses": status},
+        )
+
+    def _get_member_detail_raw(self) -> dict:
+        """Retrieve raw member details."""
+        return self._default_request(
+            "GET", f"/member/members/{self.member_uuid}", params={"include": "memberAddresses,memberClassSummary"}
+        )
+
+    def _get_member_membership_raw(self) -> dict:
+        """Retrieve raw member membership details."""
+        return self._default_request("GET", f"/member/members/{self.member_uuid}/memberships")
+
+    def _get_performance_summaries_raw(self, limit: int) -> dict:
+        """Retrieve raw performance summaries data."""
+        return self._performance_summary_request("GET", "/v1/performance-summaries", params={"limit": limit})
+
+    def _get_performance_summary_raw(self, performance_summary_id: str) -> dict:
+        """Retrieve raw performance summary data."""
+        return self._performance_summary_request("GET", f"/v1/performance-summaries/{performance_summary_id}")
+
+    def _get_hr_history_raw(self) -> dict:
+        """Retrieve raw heart rate history."""
+        return self._telemetry_request("GET", "/v1/physVars/maxHr/history", params={"memberUuid": self.member_uuid})
+
+    def _get_telemetry_raw(self, performance_summary_id: str, max_data_points: int) -> dict:
+        """Retrieve raw telemetry data."""
+        return self._telemetry_request(
+            "GET",
+            "/v1/performance/summary",
+            params={"classHistoryUuid": performance_summary_id, "maxDataPoints": max_data_points},
+        )
+
+    def _get_studio_detail_raw(self, studio_uuid: str) -> dict:
+        """Retrieve raw studio details."""
+        return self._default_request("GET", f"/mobile/v1/studios/{studio_uuid}")
+
+    def _get_studios_by_geo_raw(
+        self, latitude: float | None, longitude: float | None, distance: int, page_index: int, page_size: int
+    ) -> dict:
+        """Retrieve raw studios by geo data."""
+        return self._default_request(
+            "GET",
+            "/mobile/v1/studios",
+            params={
+                "latitude": latitude,
+                "longitude": longitude,
+                "distance": distance,
+                "pageIndex": page_index,
+                "pageSize": page_size,
+            },
+        )
+
+    def _get_body_composition_list_raw(self) -> dict:
+        """Retrieve raw body composition list."""
+        return self._default_request("GET", f"/member/members/{self.user.cognito_id}/body-composition")
+
+    def _get_challenge_tracker_raw(self) -> dict:
+        """Retrieve raw challenge tracker data."""
+        return self._default_request("GET", f"/challenges/v3.1/member/{self.member_uuid}")
+
+    def _get_benchmarks_raw(self, challenge_category_id: int, equipment_id: int, challenge_subcategory_id: int) -> dict:
+        """Retrieve raw fitness benchmark data."""
+        return self._default_request(
+            "GET",
+            f"/challenges/v3/member/{self.member_uuid}/benchmarks",
+            params={
+                "equipmentId": equipment_id,
+                "challengeTypeId": challenge_category_id,
+                "challengeSubTypeId": challenge_subcategory_id,
+            },
+        )
+
+    def _get_sms_notification_settings_raw(self) -> dict:
+        """Retrieve raw SMS notification settings."""
+        return self._default_request("GET", url="/sms/v1/preferences", params={"phoneNumber": self.member.phone_number})
+
+    def _get_email_notification_settings_raw(self) -> dict:
+        """Retrieve raw email notification settings."""
+        return self._default_request("GET", url="/otfmailing/v2/preferences", params={"email": self.member.email})
+
+    def _get_member_lifetime_stats_raw(self, select_time: str) -> dict:
+        """Retrieve raw lifetime stats data."""
+        return self._default_request("GET", f"/performance/v2/{self.member_uuid}/over-time/{select_time}")
+
+    def _get_member_services_raw(self, active_only: bool) -> dict:
+        """Retrieve raw member services data."""
+        return self._default_request(
+            "GET", f"/member/members/{self.member_uuid}/services", params={"activeOnly": str(active_only).lower()}
+        )
+
+    def _get_aspire_data_raw(self, datetime: str | None, unit: str | None) -> dict:
+        """Retrieve raw aspire wearable data."""
+        return self._default_request(
+            "GET", f"/member/wearables/{self.member_uuid}/wearable-daily", params={"datetime": datetime, "unit": unit}
+        )
+
+    def _get_member_purchases_raw(self) -> dict:
+        """Retrieve raw member purchases data."""
+        return self._default_request("GET", f"/member/members/{self.member_uuid}/purchases")
+
+    def _get_favorite_studios_raw(self) -> dict:
+        """Retrieve raw favorite studios data."""
+        return self._default_request("GET", f"/member/members/{self.member_uuid}/favorite-studios")
+
+    def _get_studio_services_raw(self, studio_uuid: str) -> dict:
+        """Retrieve raw studio services data."""
+        return self._default_request("GET", f"/member/studios/{studio_uuid}/services")
+
+    def _get_out_of_studio_workout_history_raw(self) -> dict:
+        """Retrieve raw out-of-studio workout history data."""
+        return self._default_request("GET", f"/member/members/{self.member_uuid}/out-of-studio-workout")
+
+    def _add_favorite_studio_raw(self, studio_uuids: list[str]) -> dict:
+        """Retrieve raw response from adding a studio to favorite studios."""
+        return self._default_request("POST", "/mobile/v1/members/favorite-studios", json={"studioUUIds": studio_uuids})
+
+    def _remove_favorite_studio_raw(self, studio_uuids: list[str]) -> dict:
+        """Retrieve raw response from removing a studio from favorite studios."""
+        return self._default_request(
+            "DELETE", "/mobile/v1/members/favorite-studios", json={"studioUUIds": studio_uuids}
+        )
+
+    def _get_challenge_tracker_detail_raw(self, challenge_category_id: int) -> dict:
+        """Retrieve raw challenge tracker detail data."""
+        return self._default_request(
+            "GET",
+            f"/challenges/v1/member/{self.member_uuid}/participation",
+            params={"challengeTypeId": challenge_category_id},
+        )
+
+    def _update_sms_notification_settings_raw(self, promotional_enabled: bool, transactional_enabled: bool) -> dict:
+        """Retrieve raw response from updating SMS notification settings."""
+        return self._default_request(
+            "POST",
+            "/sms/v1/preferences",
+            json={
+                "promosms": promotional_enabled,
+                "source": "OTF",
+                "transactionalsms": transactional_enabled,
+                "phoneNumber": self.member.phone_number,
+            },
+        )
+
+    def _update_email_notification_settings_raw(self, promotional_enabled: bool, transactional_enabled: bool) -> dict:
+        """Retrieve raw response from updating email notification settings."""
+        return self._default_request(
+            "POST",
+            "/otfmailing/v2/preferences",
+            json={
+                "promotionalEmail": promotional_enabled,
+                "source": "OTF",
+                "transactionalEmail": transactional_enabled,
+                "email": self.member.email,
+            },
+        )
+
+    def _rate_class_raw(self, class_uuid: str, class_history_uuid: str, class_rating: int, coach_rating: int) -> dict:
+        """Retrieve raw response from rating a class and coach."""
+        return self._default_request(
+            "POST",
+            "/mobile/v1/members/classes/ratings",
+            json={
+                "classUUId": class_uuid,
+                "otBeatClassHistoryUUId": class_history_uuid,
+                "classRating": class_rating,
+                "coachRating": coach_rating,
+            },
+        )
+
+    def _update_member_name_raw(self, first_name: str, last_name: str) -> dict:
+        """Retrieve raw response from updating member name."""
+        return self._default_request(
+            "PUT",
+            f"/member/members/{self.member_uuid}",
+            json={"firstName": first_name, "lastName": last_name},
+        )
+
     def get_classes(
         self,
         start_date: date | None = None,
@@ -204,7 +395,7 @@ class Otf:
             else:
                 studio_uuids.append(self.home_studio_uuid)
 
-        classes_resp = self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
+        classes_resp = self._get_classes_raw(studio_uuids)
 
         studio_dict = {s: self.get_studio_detail(s) for s in studio_uuids}
         classes: list[models.OtfClass] = []
@@ -289,7 +480,7 @@ class Otf:
         if not booking_uuid:
             raise ValueError("booking_uuid is required")
 
-        data = self._default_request("GET", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}")
+        data = self._get_booking_raw(booking_uuid)
         return models.Booking(**data["data"])
 
     def get_booking_from_class(self, otf_class: str | models.OtfClass) -> models.Booking:
@@ -489,9 +680,7 @@ class Otf:
 
         status_value = status.value if status else None
 
-        params = {"startDate": start_date, "endDate": end_date, "statuses": status_value}
-
-        resp = self._default_request("GET", f"/member/members/{self.member_uuid}/bookings", params=params)["data"]
+        resp = self._get_bookings_raw(start_date, end_date, status_value)["data"]
 
         # add studio details for each booking, instead of using the different studio model returned by this endpoint
         studio_uuids = {b["class"]["studio"]["studioUUId"] for b in resp}
@@ -512,55 +701,6 @@ class Otf:
 
         return bookings
 
-    def _get_bookings_old(self, status: models.BookingStatus | None = None) -> list[models.Booking]:
-        """Get the member's bookings.
-
-        Args:
-            status (BookingStatus | None): The status of the bookings to get. Default is None, which includes
-            all statuses. Only a single status can be provided.
-
-        Returns:
-            list[Booking]: The member's bookings.
-
-        Raises:
-            ValueError: If an unaccepted status is provided.
-
-        Notes:
-        ---
-            This one is called with the param named 'status'. Dates cannot be provided, because if the endpoint
-            receives a date, it will return as if the param name was 'statuses'.
-
-            Note: This seems to only work for Cancelled, Booked, CheckedIn, and Waitlisted statuses. If you provide
-            a different status, it will return all bookings, not filtered by status. The results in this scenario do
-            not line up with the `get_bookings` with no status provided, as that returns fewer records. Likely the
-            filtered dates are different on the backend.
-
-            My guess: the endpoint called with dates and 'statuses' is a "v2" kind of thing, where they upgraded without
-            changing the version of the api. Calling it with no dates and a singular (limited) status is probably v1.
-
-            I'm leaving this in here for reference, but marking it private. I just don't want to have to puzzle over
-            this again if I remove it and forget about it.
-
-        """
-
-        if status and status not in [
-            models.BookingStatus.Cancelled,
-            models.BookingStatus.Booked,
-            models.BookingStatus.CheckedIn,
-            models.BookingStatus.Waitlisted,
-        ]:
-            raise ValueError(
-                "Invalid status provided. Only Cancelled, Booked, CheckedIn, Waitlisted, and None are supported."
-            )
-
-        status_value = status.value if status else None
-
-        res = self._default_request(
-            "GET", f"/member/members/{self.member_uuid}/bookings", params={"status": status_value}
-        )
-
-        return [models.Booking(**b) for b in res["data"]]
-
     def get_member_detail(self) -> models.MemberDetail:
         """Get the member details.
 
@@ -568,9 +708,7 @@ class Otf:
             MemberDetail: The member details.
         """
 
-        params = {"include": "memberAddresses,memberClassSummary"}
-
-        resp = self._default_request("GET", f"/member/members/{self.member_uuid}", params=params)
+        resp = self._get_member_detail_raw()
         data = resp["data"]
 
         # use standard StudioDetail model instead of the one returned by this endpoint
@@ -586,7 +724,7 @@ class Otf:
             MemberMembership: The member's membership details.
         """
 
-        data = self._default_request("GET", f"/member/members/{self.member_uuid}/memberships")
+        data = self._get_member_membership_raw()
         return models.MemberMembership(**data["data"])
 
     def get_member_purchases(self) -> list[models.MemberPurchase]:
@@ -595,9 +733,7 @@ class Otf:
         Returns:
             list[MemberPurchase]: The member's purchases.
         """
-        data = self._default_request("GET", f"/member/members/{self.member_uuid}/purchases")
-
-        purchases = data["data"]
+        purchases = self._get_member_purchases_raw()["data"]
 
         for p in purchases:
             p["studio"] = self.get_studio_detail(p["studio"]["studioUUId"])
@@ -621,7 +757,7 @@ class Otf:
             Any: The member's lifetime stats.
         """
 
-        data = self._default_request("GET", f"/performance/v2/{self.member_uuid}/over-time/{select_time}")
+        data = self._get_member_lifetime_stats_raw(select_time.value)
 
         stats = models.StatsResponse(**data["data"])
 
@@ -665,7 +801,7 @@ class Otf:
         Returns:
             list[OutOfStudioWorkoutHistory]: The member's out of studio workout history.
         """
-        data = self._default_request("GET", f"/member/members/{self.member_uuid}/out-of-studio-workout")
+        data = self._get_out_of_studio_workout_history_raw()
 
         return [models.OutOfStudioWorkoutHistory(**workout) for workout in data["data"]]
 
@@ -675,7 +811,7 @@ class Otf:
         Returns:
             list[StudioDetail]: The member's favorite studios.
         """
-        data = self._default_request("GET", f"/member/members/{self.member_uuid}/favorite-studios")
+        data = self._get_favorite_studios_raw()
         studio_uuids = [studio["studioUUId"] for studio in data["data"]]
         return [self.get_studio_detail(studio_uuid) for studio_uuid in studio_uuids]
 
@@ -694,8 +830,7 @@ class Otf:
         if not studio_uuids:
             raise ValueError("studio_uuids is required")
 
-        body = {"studioUUIds": studio_uuids}
-        resp = self._default_request("POST", "/mobile/v1/members/favorite-studios", json=body)
+        resp = self._add_favorite_studio_raw(studio_uuids)
 
         new_faves = resp.get("data", {}).get("studios", [])
 
@@ -716,8 +851,9 @@ class Otf:
         if not studio_uuids:
             raise ValueError("studio_uuids is required")
 
-        body = {"studioUUIds": studio_uuids}
-        self._default_request("DELETE", "/mobile/v1/members/favorite-studios", json=body)
+        # keeping the convention of regular/raw methods even though this method doesn't return anything
+        # in case that changes in the future
+        self._remove_favorite_studio_raw(studio_uuids)
 
     def get_studio_services(self, studio_uuid: str | None = None) -> list[models.StudioService]:
         """Get the services available at a specific studio. If no studio UUID is provided, the member's home studio
@@ -730,7 +866,7 @@ class Otf:
             list[StudioService]: The services available at the studio.
         """
         studio_uuid = studio_uuid or self.home_studio_uuid
-        data = self._default_request("GET", f"/member/studios/{studio_uuid}/services")
+        data = self._get_studio_services_raw(studio_uuid)
 
         for d in data["data"]:
             d["studio"] = self.get_studio_detail(studio_uuid)
@@ -749,10 +885,7 @@ class Otf:
             StudioDetail: Detailed information about the studio.
         """
         studio_uuid = studio_uuid or self.home_studio_uuid
-
-        path = f"/mobile/v1/studios/{studio_uuid}"
-
-        res = self._default_request("GET", path)
+        res = self._get_studio_detail_raw(studio_uuid)
 
         return models.StudioDetail(**res["data"])
 
@@ -804,18 +937,25 @@ class Otf:
         Returns:
             list[models.StudioDetail]: List of studios matching the search criteria.
         """
-        path = "/mobile/v1/studios"
-
         distance = min(distance, 250)  # max distance is 250 miles
-
-        params = {"latitude": latitude, "longitude": longitude, "distance": distance, "pageIndex": 1, "pageSize": 100}
-
-        LOGGER.debug("Starting studio search", extra={"params": params})
+        page_size = 100
+        page_index = 1
+        LOGGER.debug(
+            "Starting studio search",
+            extra={
+                "latitude": latitude,
+                "longitude": longitude,
+                "distance": distance,
+                "page_index": page_index,
+                "page_size": page_size,
+            },
+        )
 
         all_results: dict[str, dict[str, Any]] = {}
 
         while True:
-            res = self._default_request("GET", path, params=params)
+            res = self._get_studios_by_geo_raw(latitude, longitude, distance, page_index, page_size)
+
             studios = res["data"].get("studios", [])
             total_count = res["data"].get("pagination", {}).get("totalCount", 0)
 
@@ -823,7 +963,7 @@ class Otf:
             if len(all_results) >= total_count or not studios:
                 break
 
-            params["pageIndex"] += 1
+            page_index += 1
 
         LOGGER.info("Studio search completed, fetched %d of %d studios", len(all_results), total_count, stacklevel=2)
 
@@ -835,7 +975,7 @@ class Otf:
         Returns:
             list[BodyCompositionData]: The member's body composition list.
         """
-        data = self._default_request("GET", f"/member/members/{self.user.cognito_id}/body-composition")
+        data = self._get_body_composition_list_raw()
         return [models.BodyCompositionData(**item) for item in data["data"]]
 
     def get_challenge_tracker(self) -> models.ChallengeTracker:
@@ -844,7 +984,7 @@ class Otf:
         Returns:
             ChallengeTracker: The member's challenge tracker content.
         """
-        data = self._default_request("GET", f"/challenges/v3.1/member/{self.member_uuid}")
+        data = self._get_challenge_tracker_raw()
         return models.ChallengeTracker(**data["Dto"])
 
     def get_benchmarks(
@@ -865,13 +1005,7 @@ class Otf:
         Returns:
             list[FitnessBenchmark]: The member's challenge tracker details.
         """
-        params = {
-            "equipmentId": int(equipment_id),
-            "challengeTypeId": int(challenge_category_id),
-            "challengeSubTypeId": challenge_subcategory_id,
-        }
-
-        data = self._default_request("GET", f"/challenges/v3/member/{self.member_uuid}/benchmarks", params=params)
+        data = self._get_benchmarks_raw(int(challenge_category_id), int(equipment_id), challenge_subcategory_id)
         return [models.FitnessBenchmark(**item) for item in data["Dto"]]
 
     def get_benchmarks_by_equipment(self, equipment_id: models.EquipmentType) -> list[models.FitnessBenchmark]:
@@ -917,11 +1051,7 @@ class Otf:
             FitnessBenchmark: Details about the challenge.
         """
 
-        data = self._default_request(
-            "GET",
-            f"/challenges/v1/member/{self.member_uuid}/participation",
-            params={"challengeTypeId": int(challenge_category_id)},
-        )
+        data = self._get_challenge_tracker_detail_raw(int(challenge_category_id))
 
         if len(data["Dto"]) > 1:
             LOGGER.warning("Multiple challenge participations found, returning the first one.")
@@ -947,7 +1077,7 @@ class Otf:
 
         """
 
-        res = self._performance_summary_request("GET", "/v1/performance-summaries", params={"limit": limit})
+        res = self._get_performance_summaries_raw(limit)
         entries = [models.PerformanceSummaryEntry(**item) for item in res["items"]]
 
         return entries
@@ -962,8 +1092,7 @@ class Otf:
             PerformanceSummaryDetail: A detailed performance summary.
         """
 
-        path = f"/v1/performance-summaries/{performance_summary_id}"
-        res = self._performance_summary_request("GET", path)
+        res = self._get_performance_summary_raw(performance_summary_id)
 
         if res is None:
             raise exc.ResourceNotFoundError(f"Performance summary {performance_summary_id} not found")
@@ -980,10 +1109,7 @@ class Otf:
             list[HistoryItem]: The heartrate history for the user.
 
         """
-        path = "/v1/physVars/maxHr/history"
-
-        params = {"memberUuid": self.member_uuid}
-        resp = self._telemetry_request("GET", path, params=params)
+        resp = self._get_hr_history_raw()
         return [models.TelemetryHistoryItem(**item) for item in resp["history"]]
 
     def get_telemetry(self, performance_summary_id: str, max_data_points: int = 120) -> models.Telemetry:
@@ -1000,10 +1126,8 @@ class Otf:
             TelemetryItem: The telemetry for the class history.
 
         """
-        path = "/v1/performance/summary"
 
-        params = {"classHistoryUuid": performance_summary_id, "maxDataPoints": max_data_points}
-        res = self._telemetry_request("GET", path, params=params)
+        res = self._get_telemetry_raw(performance_summary_id, max_data_points)
         return models.Telemetry(**res)
 
     def get_sms_notification_settings(self) -> models.SmsNotificationSettings:
@@ -1012,7 +1136,7 @@ class Otf:
         Returns:
             SmsNotificationSettings: The member's SMS notification settings.
         """
-        res = self._default_request("GET", url="/sms/v1/preferences", params={"phoneNumber": self.member.phone_number})
+        res = self._get_sms_notification_settings_raw()
 
         return models.SmsNotificationSettings(**res["data"])
 
@@ -1047,7 +1171,6 @@ class Otf:
             }
             ```
         """
-        url = "/sms/v1/preferences"
 
         current_settings = self.get_sms_notification_settings()
 
@@ -1058,14 +1181,7 @@ class Otf:
             transactional_enabled if transactional_enabled is not None else current_settings.is_transactional_sms_opt_in
         )
 
-        body = {
-            "promosms": promotional_enabled,
-            "source": "OTF",
-            "transactionalsms": transactional_enabled,
-            "phoneNumber": self.member.phone_number,
-        }
-
-        self._default_request("POST", url, json=body)
+        self._update_sms_notification_settings_raw(promotional_enabled, transactional_enabled)
 
         # the response returns nothing useful, so we just query the settings again
         new_settings = self.get_sms_notification_settings()
@@ -1077,7 +1193,7 @@ class Otf:
         Returns:
             EmailNotificationSettings: The member's email notification settings.
         """
-        res = self._default_request("GET", url="/otfmailing/v2/preferences", params={"email": self.member.email})
+        res = self._get_email_notification_settings_raw()
 
         return models.EmailNotificationSettings(**res["data"])
 
@@ -1104,14 +1220,7 @@ class Otf:
             else current_settings.is_transactional_email_opt_in
         )
 
-        body = {
-            "promotionalEmail": promotional_enabled,
-            "source": "OTF",
-            "transactionalEmail": transactional_enabled,
-            "email": self.member.email,
-        }
-
-        self._default_request("POST", "/otfmailing/v2/preferences", json=body)
+        self._update_email_notification_settings_raw(promotional_enabled, transactional_enabled)
 
         # the response returns nothing useful, so we just query the settings again
         new_settings = self.get_email_notification_settings()
@@ -1139,10 +1248,7 @@ class Otf:
             LOGGER.warning("No changes to names, nothing to update.")
             return self.member
 
-        path = f"/member/members/{self.member_uuid}"
-        body = {"firstName": first_name, "lastName": last_name}
-
-        res = self._default_request("PUT", path, json=body)
+        res = self._update_member_name_raw(first_name, last_name)
 
         return models.MemberDetail(**res["data"])
 
@@ -1188,15 +1294,8 @@ class Otf:
         body_class_rating = CLASS_RATING_MAP[class_rating]
         body_coach_rating = COACH_RATING_MAP[coach_rating]
 
-        body = {
-            "classUUId": class_uuid,
-            "otBeatClassHistoryUUId": class_history_uuid,
-            "classRating": body_class_rating,
-            "coachRating": body_coach_rating,
-        }
-
         try:
-            self._default_request("POST", "/mobile/v1/members/classes/ratings", json=body)
+            self._rate_class_raw(class_uuid, class_history_uuid, body_class_rating, body_coach_rating)
         except exc.OtfRequestError as e:
             if e.response.status_code == 403:
                 raise exc.AlreadyRatedError(f"Performance summary {class_history_uuid} is already rated.") from None
@@ -1288,10 +1387,7 @@ class Otf:
         Returns:
             Any: The member's services.
         """
-        active_only_str = "true" if active_only else "false"
-        data = self._default_request(
-            "GET", f"/member/members/{self.member_uuid}/services", params={"activeOnly": active_only_str}
-        )
+        data = self._get_member_services_raw(active_only)
         return data
 
     def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> Any:
@@ -1306,7 +1402,5 @@ class Otf:
         Returns:
             Any: The member's aspire data.
         """
-        params = {"datetime": datetime, "unit": unit}
-
-        data = self._default_request("GET", f"/member/wearables/{self.member_uuid}/wearable-daily", params=params)
+        data = self._get_aspire_data_raw(datetime, unit)
         return data
