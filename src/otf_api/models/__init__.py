@@ -10,8 +10,7 @@ from .member_membership import MemberMembership
 from .member_purchases import MemberPurchase
 from .notifications import EmailNotificationSettings, SmsNotificationSettings
 from .out_of_studio_workout_history import OutOfStudioWorkoutHistory
-from .performance_summary_detail import PerformanceSummaryDetail
-from .performance_summary_list import PerformanceSummaryEntry
+from .performance_summary import PerformanceSummary
 from .studio_detail import StudioDetail
 from .studio_services import StudioService
 from .telemetry import Telemetry, TelemetryHistoryItem
@@ -34,8 +33,8 @@ __all__ = [
     "MemberPurchase",
     "OtfClass",
     "OutOfStudioWorkoutHistory",
+    "PerformanceSummary",
     "PerformanceSummaryDetail",
-    "PerformanceSummaryEntry",
     "SmsNotificationSettings",
     "StatsResponse",
     "StatsTime",
