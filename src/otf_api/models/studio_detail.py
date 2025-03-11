@@ -24,6 +24,8 @@ class StudioDetail(OtfItemBase):
         None,
         description="Distance from latitude and longitude provided to `search_studios_by_geo` method,\
               NULL if that method was not used",
+        exclude=True,
+        repr=False,
     )
     location: StudioLocation = Field(..., alias="studioLocation")
     name: str | None = Field(None, alias="studioName")
