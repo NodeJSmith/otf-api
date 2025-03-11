@@ -1,6 +1,9 @@
 import atexit
 import contextlib
 import functools
+import warnings
+from concurrent.futures import ThreadPoolExecutor
+from copy import deepcopy
 from datetime import date, datetime, timedelta
 from json import JSONDecodeError
 from logging import getLogger
@@ -1069,11 +1072,45 @@ class Otf:
         return models.FitnessBenchmark(**data["Dto"][0])
 
     @functools.cache
-    def get_performance_summaries(self, limit: int = 200) -> list[models.PerformanceSummaryEntry]:
-        """Get a list of performance summaries for the authenticated user.
+    def get_performance_summaries_dict(self) -> dict[str, models.PerformanceSummary]:
+        """Get a dictionary of performance summaries for the authenticated user.
+
+        Returns:
+            dict[str, PerformanceSummaryEntry]: A dictionary of performance summaries, keyed by class history UUID.
+
+        Developer Notes:
+            ---
+            In the app, this is referred to as 'getInStudioWorkoutHistory'.
+
+        """
+
+        items = self._get_performance_summaries_raw()["items"]
+
+        distinct_studio_ids = set([rec["class"]["studio"]["id"] for rec in items])
+        perf_summary_ids = set([rec["id"] for rec in items])
+
+        with ThreadPoolExecutor() as pool:
+            studio_dict = {s: pool.submit(self.get_studio_detail, s) for s in distinct_studio_ids}
+            studio_dict = {k: v.result() for k, v in studio_dict.items()}
+
+            perf_summary_dict = {s: pool.submit(self._get_performance_summary_raw, s) for s in perf_summary_ids}
+            # deepcopy these so that mutating them in PerformanceSummary doesn't affect the cache
+            perf_summary_dict = {k: deepcopy(v.result()) for k, v in perf_summary_dict.items()}
+
+        for item in items:
+            item["class"]["studio"] = studio_dict[item["class"]["studio"]["id"]]
+            item["detail"] = perf_summary_dict[item["id"]]
+
+        entries = [models.PerformanceSummary(**item) for item in items]
+        entries_dict = {entry.class_history_uuid: entry for entry in entries}
+
+        return entries_dict
+
+    def get_performance_summaries(self, limit: int | None = None) -> list[models.PerformanceSummary]:
+        """Get a list of all performance summaries for the authenticated user.
 
         Args:
-            limit (int): The maximum number of performance summaries to return. Defaults to 200.
+            limit (int | None): The maximum number of entries to return. Default is None. Deprecated.
 
         Returns:
             list[PerformanceSummaryEntry]: A list of performance summaries.
@@ -1084,35 +1121,31 @@ class Otf:
 
         """
 
-        res = self._get_performance_summaries_raw(limit)
-        items = res["items"]
+        if limit:
+            warnings.warn("Limit is deprecated and will be removed in a future version.", DeprecationWarning)
 
-        distinct_studio_ids = set([rec["class"]["studio"]["id"] for rec in items])
-        studio_dict = {s: self.get_studio_detail(s) for s in distinct_studio_ids}
+        records = list(self.get_performance_summaries_dict().values())
 
-        for item in items:
-            item["class"]["studio"] = studio_dict[item["class"]["studio"]["id"]]
+        sorted_records = sorted(records, key=lambda x: x.otf_class.starts_at, reverse=True)
 
-        entries = [models.PerformanceSummaryEntry(**item) for item in items]
+        return sorted_records
 
-        return entries
-
-    def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummaryDetail:
-        """Get a detailed performance summary for a given workout.
+    def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummary:
+        """Get performance summary entry for a given workout.
 
         Args:
             performance_summary_id (str): The ID of the performance summary to retrieve.
 
         Returns:
-            PerformanceSummaryDetail: A detailed performance summary.
+            PerformanceSummaryEntry: The performance summary entry.
         """
 
-        res = self._get_performance_summary_raw(performance_summary_id)
+        perf_summary = self.get_performance_summaries_dict().get(performance_summary_id)
 
-        if res is None:
+        if perf_summary is None:
             raise exc.ResourceNotFoundError(f"Performance summary {performance_summary_id} not found")
 
-        return models.PerformanceSummaryDetail(**res)
+        return perf_summary
 
     def get_hr_history(self) -> list[models.TelemetryHistoryItem]:
         """Get the heartrate history for the user.
@@ -1272,7 +1305,7 @@ class Otf:
         class_history_uuid: str,
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
-    ) -> models.PerformanceSummaryEntry:
+    ) -> models.PerformanceSummary:
         """Rate a class and coach. A simpler method is provided in `rate_class_from_performance_summary`.
 
 
@@ -1315,39 +1348,21 @@ class Otf:
                 raise exc.AlreadyRatedError(f"Performance summary {class_history_uuid} is already rated.") from None
             raise
 
-        return self._get_performance_summary_entry_from_id(class_history_uuid)
+        # we have to clear the cache after rating a class, otherwise we will get back the same data
+        # showing it not rated. that would be incorrect, confusing, and would cause errors if the user
+        # then attempted to rate the class again.
+        # we could attempt to only refresh the one record but with these endpoints that's not simple
+        # NOTE: the individual perf summary endpoint does not have rating data, so it's cache is not cleared
+        self.get_performance_summaries_dict.cache_clear()
 
-    def _get_performance_summary_entry_from_id(self, class_history_uuid: str) -> models.PerformanceSummaryEntry:
-        """Get a performance summary entry from the ID.
-
-        This is a helper function to compensate for the fact that a PerformanceSummaryDetail object does not contain
-        the class UUID, which is required to rate the class. It will also be used to return an updated performance
-        summary entry after rating a class.
-
-        Args:
-            class_history_uuid (str): The performance summary ID.
-
-        Returns:
-            PerformanceSummaryEntry: The performance summary entry.
-
-        Raises:
-            ResourceNotFoundError: If the performance summary is not found.
-        """
-
-        summaries = self.get_performance_summaries()
-        summary = next((s for s in summaries if s.class_history_uuid == class_history_uuid), None)
-
-        if summary:
-            return summary
-
-        raise exc.ResourceNotFoundError(f"Performance summary {class_history_uuid} not found.")
+        return self.get_performance_summary(class_history_uuid)
 
     def rate_class_from_performance_summary(
         self,
-        perf_summary: models.PerformanceSummaryEntry | models.PerformanceSummaryDetail,
+        perf_summary: models.PerformanceSummary,
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
-    ) -> models.PerformanceSummaryEntry:
+    ) -> models.PerformanceSummary:
         """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
             rate the class/coach. 1 - 3 is a range from bad to good.
 
@@ -1365,12 +1380,6 @@ class Otf:
             ClassNotRatableError: If the performance summary is not rateable.
             ValueError: If the performance summary does not have an associated class.
         """
-
-        if isinstance(perf_summary, models.PerformanceSummaryDetail):
-            perf_summary = self._get_performance_summary_entry_from_id(perf_summary.class_history_uuid)
-
-        if not isinstance(perf_summary, models.PerformanceSummaryEntry):
-            raise ValueError(f"`perf_summary` must be a PerformanceSummaryEntry, got {type(perf_summary)}")
 
         if perf_summary.is_rated:
             raise exc.AlreadyRatedError(f"Performance summary {perf_summary.class_history_uuid} is already rated.")
