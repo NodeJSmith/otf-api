@@ -155,13 +155,20 @@ class Otf:
         """Retrieve raw member membership details."""
         return self._default_request("GET", f"/member/members/{self.member_uuid}/memberships")
 
-    def _get_performance_summaries_raw(self, limit: int) -> dict:
+    def _get_performance_summaries_raw(self) -> dict:
         """Retrieve raw performance summaries data."""
-        return self._performance_summary_request("GET", "/v1/performance-summaries", params={"limit": limit})
+        return self._performance_summary_request("GET", "/v1/performance-summaries")
 
+    @functools.cache
     def _get_performance_summary_raw(self, performance_summary_id: str) -> dict:
         """Retrieve raw performance summary data."""
-        return self._performance_summary_request("GET", f"/v1/performance-summaries/{performance_summary_id}")
+        # this endpoint seems to sometimes return None without error, so we're willing to retry a few times
+        for i in range(0, 3):
+            if data := self._performance_summary_request("GET", f"/v1/performance-summaries/{performance_summary_id}"):
+                if i != 0:
+                    LOGGER.warning(f"Retried performance summary {performance_summary_id} request {i} times.")
+                return data
+        raise exc.ResourceNotFoundError(f"Performance summary {performance_summary_id} not found.")
 
     def _get_hr_history_raw(self) -> dict:
         """Retrieve raw heart rate history."""
