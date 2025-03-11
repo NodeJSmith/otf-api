@@ -52,7 +52,7 @@ def main():
 
     # performance summaries are historical records of your performance in workouts
     # `get_performance_summaries` takes a limit (default of 5) and returns a list of summaries
-    data_list = otf.get_performance_summaries(200)
+    data_list = otf.get_performance_summaries()
     print(data_list[0].model_dump_json(indent=4))
     """
     {
