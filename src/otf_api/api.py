@@ -18,6 +18,7 @@ from yarl import URL
 from otf_api import exceptions as exc
 from otf_api import filters, models
 from otf_api.auth import OtfUser
+from otf_api.models.enums import HISTORICAL_BOOKING_STATUSES
 from otf_api.utils import ensure_date, ensure_list, get_booking_uuid, get_class_uuid
 
 API_BASE_URL = "api.orangetheory.co"
@@ -721,6 +722,25 @@ class Otf:
             bookings = [b for b in bookings if b.status != models.BookingStatus.CheckedIn]
 
         return bookings
+
+    def get_historical_bookings(self) -> list[models.Booking]:
+        """Get the member's historical bookings. This will go back 45 days and return all bookings
+        for that time period.
+
+        Returns:
+            list[Booking]: The member's historical bookings.
+        """
+        # api goes back 45 days but we'll go back 47 to be safe
+        start_date = datetime.today().date() - timedelta(days=47)
+        end_date = datetime.today().date()
+
+        return self.get_bookings(
+            start_date=start_date,
+            end_date=end_date,
+            status=HISTORICAL_BOOKING_STATUSES,
+            exclude_cancelled=False,
+            exclude_checkedin=False,
+        )
 
     def get_member_detail(self) -> models.MemberDetail:
         """Get the member details.
