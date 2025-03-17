@@ -31,6 +31,8 @@ pycognito = "2024.5.1"
 pydantic = ">=2.7.3"
 yarl = "^1.18.3"
 mypy-boto3-cognito-idp = "^1.35.93"
+tenacity = "^9.0.0"
+cachetools = ">=5.5.0"
 
 [tool.poetry.group.dev.dependencies]
 build = "1.2.1"
