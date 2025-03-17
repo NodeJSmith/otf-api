@@ -1121,12 +1121,12 @@ class Otf:
         perf_summary_ids = set([rec["id"] for rec in items])
 
         with ThreadPoolExecutor() as pool:
-            studio_dict = {s: pool.submit(self.get_studio_detail, s) for s in distinct_studio_ids}
-            studio_dict = {k: v.result() for k, v in studio_dict.items()}
+            studio_futures = {s: pool.submit(self.get_studio_detail, s) for s in distinct_studio_ids}
+            perf_summary_futures = {s: pool.submit(self._get_performancy_summary_detail, s) for s in perf_summary_ids}
 
-            perf_summary_dict = {s: pool.submit(self._get_performance_summary_raw, s) for s in perf_summary_ids}
+            studio_dict = {k: v.result() for k, v in studio_futures.items()}
             # deepcopy these so that mutating them in PerformanceSummary doesn't affect the cache
-            perf_summary_dict = {k: deepcopy(v.result()) for k, v in perf_summary_dict.items()}
+            perf_summary_dict = {k: deepcopy(v.result()) for k, v in perf_summary_futures.items()}
 
         for item in items:
             item["class"]["studio"] = studio_dict[item["class"]["studio"]["id"]]
