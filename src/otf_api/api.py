@@ -11,6 +11,7 @@ from typing import Any, Literal
 
 import attrs
 import httpx
+from cachetools import TTLCache, cached
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 from yarl import URL
 
@@ -179,7 +180,6 @@ class Otf:
         """Retrieve raw performance summaries data."""
         return self._performance_summary_request("GET", "/v1/performance-summaries")
 
-    @functools.cache
     def _get_performance_summary_raw(self, performance_summary_id: str) -> dict:
         """Retrieve raw performance summary data."""
         return self._performance_summary_request("GET", f"/v1/performance-summaries/{performance_summary_id}")
@@ -894,7 +894,7 @@ class Otf:
 
         return [models.StudioService(**d) for d in data["data"]]
 
-    @functools.cache
+    @cached(cache=TTLCache(maxsize=1024, ttl=600))
     def get_studio_detail(self, studio_uuid: str | None = None) -> models.StudioDetail:
         """Get detailed information about a specific studio. If no studio UUID is provided, it will default to the
         user's home studio.
@@ -1082,7 +1082,7 @@ class Otf:
 
         return models.FitnessBenchmark(**data["Dto"][0])
 
-    @functools.cache
+    @cached(cache=TTLCache(maxsize=1024, ttl=600))
     def get_performance_summaries_dict(self) -> dict[str, models.PerformanceSummary]:
         """Get a dictionary of performance summaries for the authenticated user.
 
@@ -1157,6 +1157,23 @@ class Otf:
             raise exc.ResourceNotFoundError(f"Performance summary {performance_summary_id} not found")
 
         return perf_summary
+
+    @functools.lru_cache(maxsize=1024)
+    def _get_performancy_summary_detail(self, performance_summary_id: str) -> dict[str, Any]:
+        """Get the details for a performance summary.
+
+        Args:
+            performance_summary_id (str): The performance summary ID.
+
+        Returns:
+            dict[str, Any]: The performance summary details.
+
+        Developer Notes:
+            ---
+            This is mostly here to cache the results of the raw method.
+        """
+
+        return self._get_performance_summary_raw(performance_summary_id)
 
     def get_hr_history(self) -> list[models.TelemetryHistoryItem]:
         """Get the heartrate history for the user.
