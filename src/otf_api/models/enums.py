@@ -11,16 +11,30 @@ class StudioStatus(StrEnum):
 
 
 class BookingStatus(StrEnum):
-    CheckedIn = "Checked In"
-    CancelCheckinPending = "Cancel Checkin Pending"
-    CancelCheckinRequested = "Cancel Checkin Requested"
+    Pending = "Pending"
+    Requested = "Requested"
+    Booked = "Booked"
     Cancelled = "Cancelled"
     LateCancelled = "Late Cancelled"
-    Booked = "Booked"
     Waitlisted = "Waitlisted"
+    CheckedIn = "Checked In"
     CheckinPending = "Checkin Pending"
     CheckinRequested = "Checkin Requested"
+    Confirmed = "Confirmed"
     CheckinCancelled = "Checkin Cancelled"
+    CancelCheckinPending = "Cancel Checkin Pending"
+    CancelCheckinRequested = "Cancel Checkin Requested"
+
+
+HISTORICAL_BOOKING_STATUSES = [
+    BookingStatus.CheckedIn,
+    BookingStatus.CancelCheckinPending,
+    BookingStatus.CancelCheckinRequested,
+    BookingStatus.LateCancelled,
+    BookingStatus.CheckinPending,
+    BookingStatus.CheckinRequested,
+    BookingStatus.CheckinCancelled,
+]
 
 
 class DoW(StrEnum):

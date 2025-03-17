@@ -3,7 +3,16 @@ from .bookings import Booking
 from .challenge_tracker_content import ChallengeTracker
 from .challenge_tracker_detail import FitnessBenchmark
 from .classes import OtfClass
-from .enums import BookingStatus, ChallengeCategory, ClassType, DoW, EquipmentType, StatsTime, StudioStatus
+from .enums import (
+    HISTORICAL_BOOKING_STATUSES,
+    BookingStatus,
+    ChallengeCategory,
+    ClassType,
+    DoW,
+    EquipmentType,
+    StatsTime,
+    StudioStatus,
+)
 from .lifetime_stats import StatsResponse, TimeStats
 from .member_detail import MemberDetail
 from .member_membership import MemberMembership
@@ -16,6 +25,7 @@ from .studio_services import StudioService
 from .telemetry import Telemetry, TelemetryHistoryItem
 
 __all__ = [
+    "HISTORICAL_BOOKING_STATUSES",
     "BodyCompositionData",
     "Booking",
     "BookingStatus",
