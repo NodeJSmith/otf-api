@@ -84,7 +84,7 @@ def main():
     # if you want to rate a class you can do that with the `rate_class_from_performance_summary` method
     # this method takes a performance_summary object, as well as a coach_rating and class_rating
     # the ratings are integers from 1 - 3
-    # the method returns an updated PerformanceSummaryEntry object
+    # the method returns an updated PerformanceSummary object
 
     # if you already rated the class it will return an exception
     # likewise if the class is not ratable (seems to be an age cutoff) or if the class is not found

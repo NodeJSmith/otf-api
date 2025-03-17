@@ -1107,7 +1107,7 @@ class Otf:
         """Get a dictionary of performance summaries for the authenticated user.
 
         Returns:
-            dict[str, PerformanceSummaryEntry]: A dictionary of performance summaries, keyed by class history UUID.
+            dict[str, PerformanceSummary]: A dictionary of performance summaries, keyed by class history UUID.
 
         Developer Notes:
             ---
@@ -1144,7 +1144,7 @@ class Otf:
             limit (int | None): The maximum number of entries to return. Default is None. Deprecated.
 
         Returns:
-            list[PerformanceSummaryEntry]: A list of performance summaries.
+            list[PerformanceSummary]: A list of performance summaries.
 
         Developer Notes:
             ---
@@ -1162,13 +1162,13 @@ class Otf:
         return sorted_records
 
     def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummary:
-        """Get performance summary entry for a given workout.
+        """Get performance summary for a given workout.
 
         Args:
             performance_summary_id (str): The ID of the performance summary to retrieve.
 
         Returns:
-            PerformanceSummaryEntry: The performance summary entry.
+            PerformanceSummary: The performance summary.
         """
 
         perf_summary = self.get_performance_summaries_dict().get(performance_summary_id)
@@ -1368,7 +1368,7 @@ class Otf:
             coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
 
         Returns:
-            PerformanceSummaryEntry: The updated performance summary entry.
+            PerformanceSummary: The updated performance summary.
         """
 
         # com/orangetheoryfitness/fragment/rating/RateStatus.java
@@ -1415,15 +1415,14 @@ class Otf:
             rate the class/coach. 1 - 3 is a range from bad to good.
 
         Args:
-            perf_summary (PerformanceSummaryEntry): The performance summary entry to rate.
+            perf_summary (PerformanceSummary): The performance summary to rate.
             class_rating (int): The class rating. Must be 0, 1, 2, or 3.
             coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
 
         Returns:
-            PerformanceSummaryEntry: The updated performance summary entry.
+            PerformanceSummary: The updated performance summary.
 
         Raises:
-            ValueError: If `perf_summary` is not a PerformanceSummaryEntry.
             AlreadyRatedError: If the performance summary is already rated.
             ClassNotRatableError: If the performance summary is not rateable.
             ValueError: If the performance summary does not have an associated class.
