@@ -11,6 +11,7 @@ from typing import Any, Literal
 
 import attrs
 import httpx
+from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 from yarl import URL
 
 from otf_api import exceptions as exc
@@ -61,6 +62,11 @@ class Otf:
         # Combine immutable attributes into a single hash value
         return hash(self.member_uuid)
 
+    @retry(
+        retry=retry_if_exception_type(exc.OtfRequestError),
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=4, max=10),
+    )
     def _do(
         self,
         method: str,
@@ -90,13 +96,20 @@ class Otf:
             LOGGER.exception(f"Response: {response.text}")
             raise
         except httpx.HTTPStatusError as e:
+            if e.response.status_code == 404:
+                raise exc.ResourceNotFoundError("Resource not found")
+
+            if e.response.status_code == 403:
+                raise
+
             raise exc.OtfRequestError("Error making request", e, response=response, request=request)
         except Exception as e:
             LOGGER.exception(f"Error making request: {e}")
             raise
 
         if not response.text:
-            return None
+            # insanely enough, at least one endpoint (get perf summary) returns None without error instead of 404
+            raise exc.OtfRequestError("Empty response", None, response=response, request=request)
 
         try:
             resp = response.json()
