@@ -153,8 +153,12 @@ class Otf:
         """Retrieve raw booking data."""
         return self._default_request("GET", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}")
 
-    def _get_bookings_raw(self, start_date: str | None, end_date: str | None, status: str | None) -> dict:
+    def _get_bookings_raw(self, start_date: str | None, end_date: str | None, status: str | list[str] | None) -> dict:
         """Retrieve raw bookings data."""
+
+        if isinstance(status, list):
+            status = ",".join(status)
+
         return self._default_request(
             "GET",
             f"/member/members/{self.member_uuid}/bookings",
@@ -651,7 +655,7 @@ class Otf:
         self,
         start_date: date | str | None = None,
         end_date: date | str | None = None,
-        status: models.BookingStatus | None = None,
+        status: models.BookingStatus | list[models.BookingStatus] | None = None,
         exclude_cancelled: bool = True,
         exclude_checkedin: bool = True,
     ) -> list[models.Booking]:
@@ -660,8 +664,7 @@ class Otf:
         Args:
             start_date (date | str | None): The start date for the bookings. Default is None.
             end_date (date | str | None): The end date for the bookings. Default is None.
-            status (BookingStatus | None): The status of the bookings to get. Default is None, which includes\
-            all statuses. Only a single status can be provided.
+            status (BookingStatus | list[BookingStatus] | None): The status(es) to filter by. Default is None.
             exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
             exclude_checkedin (bool): Whether to exclude checked-in bookings. Default is True.
 
@@ -681,12 +684,6 @@ class Otf:
             ---
             If dates are provided, the endpoint will return bookings where the class date is within the provided
             date range. If no dates are provided, it will go back 45 days and forward about 30 days.
-
-        Developer Notes:
-            ---
-            Looking at the code in the app, it appears that this endpoint accepts multiple statuses. Indeed,
-            it does not throw an error if you include a list of statuses. However, only the last status in the list is
-            used. I'm not sure if this is a bug or if the API is supposed to work this way.
         """
 
         if exclude_cancelled and status == models.BookingStatus.Cancelled:
@@ -701,7 +698,14 @@ class Otf:
         if isinstance(end_date, date):
             end_date = end_date.isoformat()
 
-        status_value = status.value if status else None
+        if isinstance(status, list):
+            status_value = ",".join(status)
+        elif isinstance(status, models.BookingStatus):
+            status_value = status.value
+        elif isinstance(status, str):
+            status_value = status
+        else:
+            status_value = None
 
         resp = self._get_bookings_raw(start_date, end_date, status_value)["data"]
 
