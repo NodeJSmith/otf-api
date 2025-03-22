@@ -919,6 +919,8 @@ class Otf:
         """Get detailed information about a specific studio. If no studio UUID is provided, it will default to the
         user's home studio.
 
+        If the studio is not found, it will return a StudioDetail object with default values.
+
         Args:
             studio_uuid (str, optional): The studio UUID to get detailed information about.
 
@@ -926,7 +928,11 @@ class Otf:
             StudioDetail: Detailed information about the studio.
         """
         studio_uuid = studio_uuid or self.home_studio_uuid
-        res = self._get_studio_detail_raw(studio_uuid)
+
+        try:
+            res = self._get_studio_detail_raw(studio_uuid)
+        except exc.ResourceNotFoundError:
+            return models.StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")
 
         return models.StudioDetail(**res["data"])
 

@@ -95,6 +95,35 @@ def main():
     # you can remove a studio from your favorites by calling `remove_favorite_studio` with a studio_uuid
     otf.remove_favorite_studio(otf.home_studio_uuid)
 
+    # if you attempt to get a studio that doesn't exist, you'll a mostly empty studio detail object
+    # with the studio uuid set to the provided value
+    # this allows you to avoid dealing with None values + you can still group or sort by studio_uuid
+
+    invalid_studio = otf.get_studio_detail("2d07e9fc-cd14-4d5b-840e-09eb2b614c6c")
+    assert invalid_studio.studio_uuid == "2d07e9fc-cd14-4d5b-840e-09eb2b614c6c"
+    print(invalid_studio.model_dump_json(indent=4))
+
+    """
+    {
+        "studio_uuid": "2d07e9fc-cd14-4d5b-840e-09eb2b614c6c",
+        "contact_email": null,
+        "location": {
+            "address_line1": null,
+            "address_line2": null,
+            "city": null,
+            "postal_code": null,
+            "state": null,
+            "country": null,
+            "phone_number": null,
+            "latitude": null,
+            "longitude": null
+        },
+        "name": "Studio Not Found",
+        "status": "Unknown",
+        "time_zone": null
+    }
+    """
+
 
 if __name__ == "__main__":
     main()

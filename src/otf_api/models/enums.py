@@ -8,6 +8,7 @@ class StudioStatus(StrEnum):
     COMING_SOON = "Coming Soon"
     TEMP_CLOSED = "Temporarily Closed"
     PERM_CLOSED = "Permanently Closed"
+    UNKNOWN = "Unknown"
 
 
 class BookingStatus(StrEnum):
