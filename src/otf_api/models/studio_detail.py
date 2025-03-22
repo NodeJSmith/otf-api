@@ -9,8 +9,8 @@ from otf_api.models.mixins import AddressMixin
 
 class StudioLocation(AddressMixin):
     phone_number: str | None = Field(None, alias=AliasChoices("phone", "phoneNumber"))
-    latitude: float = Field(..., alias=AliasChoices("latitude"))
-    longitude: float = Field(..., alias=AliasChoices("longitude"))
+    latitude: float | None = Field(None, alias=AliasChoices("latitude"))
+    longitude: float | None = Field(None, alias=AliasChoices("longitude"))
 
     physical_region: str | None = Field(None, alias="physicalRegion", exclude=True, repr=False)
     physical_country_id: int | None = Field(None, alias="physicalCountryId", exclude=True, repr=False)
@@ -27,7 +27,7 @@ class StudioDetail(OtfItemBase):
         exclude=True,
         repr=False,
     )
-    location: StudioLocation = Field(..., alias="studioLocation")
+    location: StudioLocation = Field(..., alias="studioLocation", default_factory=StudioLocation)
     name: str | None = Field(None, alias="studioName")
     status: StudioStatus | None = Field(
         None, alias="studioStatus", description="Active, Temporarily Closed, Coming Soon"
