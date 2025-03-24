@@ -321,14 +321,16 @@ class Otf:
             },
         )
 
-    def _rate_class_raw(self, class_uuid: str, class_history_uuid: str, class_rating: int, coach_rating: int) -> dict:
+    def _rate_class_raw(
+        self, class_uuid: str, performance_summary_id: str, class_rating: int, coach_rating: int
+    ) -> dict:
         """Retrieve raw response from rating a class and coach."""
         return self._default_request(
             "POST",
             "/mobile/v1/members/classes/ratings",
             json={
                 "classUUId": class_uuid,
-                "otBeatClassHistoryUUId": class_history_uuid,
+                "otBeatClassHistoryUUId": performance_summary_id,
                 "classRating": class_rating,
                 "coachRating": coach_rating,
             },
@@ -1139,7 +1141,7 @@ class Otf:
             item["detail"] = perf_summary_dict[item["id"]]
 
         entries = [models.PerformanceSummary(**item) for item in items]
-        entries_dict = {entry.class_history_uuid: entry for entry in entries}
+        entries_dict = {entry.performance_summary_id: entry for entry in entries}
 
         return entries_dict
 
@@ -1356,7 +1358,7 @@ class Otf:
     def _rate_class(
         self,
         class_uuid: str,
-        class_history_uuid: str,
+        performance_summary_id: str,
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
     ) -> models.PerformanceSummary:
@@ -1369,7 +1371,7 @@ class Otf:
 
         Args:
             class_uuid (str): The class UUID.
-            class_history_uuid (str): The performance summary ID.
+            performance_summary_id (str): The performance summary ID.
             class_rating (int): The class rating. Must be 0, 1, 2, or 3.
             coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
 
@@ -1396,10 +1398,10 @@ class Otf:
         body_coach_rating = COACH_RATING_MAP[coach_rating]
 
         try:
-            self._rate_class_raw(class_uuid, class_history_uuid, body_class_rating, body_coach_rating)
+            self._rate_class_raw(class_uuid, performance_summary_id, body_class_rating, body_coach_rating)
         except exc.OtfRequestError as e:
             if e.response.status_code == 403:
-                raise exc.AlreadyRatedError(f"Performance summary {class_history_uuid} is already rated.") from None
+                raise exc.AlreadyRatedError(f"Performance summary {performance_summary_id} is already rated.") from None
             raise
 
         # we have to clear the cache after rating a class, otherwise we will get back the same data
@@ -1409,7 +1411,7 @@ class Otf:
         # NOTE: the individual perf summary endpoint does not have rating data, so it's cache is not cleared
         self.get_performance_summaries_dict.cache_clear()
 
-        return self.get_performance_summary(class_history_uuid)
+        return self.get_performance_summary(performance_summary_id)
 
     def rate_class_from_performance_summary(
         self,
@@ -1435,18 +1437,20 @@ class Otf:
         """
 
         if perf_summary.is_rated:
-            raise exc.AlreadyRatedError(f"Performance summary {perf_summary.class_history_uuid} is already rated.")
+            raise exc.AlreadyRatedError(f"Performance summary {perf_summary.performance_summary_id} is already rated.")
 
         if not perf_summary.ratable:
-            raise exc.ClassNotRatableError(f"Performance summary {perf_summary.class_history_uuid} is not rateable.")
+            raise exc.ClassNotRatableError(
+                f"Performance summary {perf_summary.performance_summary_id} is not rateable."
+            )
 
         if not perf_summary.otf_class or not perf_summary.otf_class.class_uuid:
             raise ValueError(
-                f"Performance summary {perf_summary.class_history_uuid} does not have an associated class."
+                f"Performance summary {perf_summary.performance_summary_id} does not have an associated class."
             )
 
         return self._rate_class(
-            perf_summary.otf_class.class_uuid, perf_summary.class_history_uuid, class_rating, coach_rating
+            perf_summary.otf_class.class_uuid, perf_summary.performance_summary_id, class_rating, coach_rating
         )
 
     # the below do not return any data for me, so I can't test them

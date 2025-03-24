@@ -105,7 +105,8 @@ class PerformanceSummary(OtfItemBase):
 
     """
 
-    class_history_uuid: str = Field(..., alias="id")
+    performance_summary_id: str = Field(..., alias="id", description="Unique identifier for this performance summary")
+    class_history_uuid: str = Field(..., alias="id", description="Same as performance_summary_id")
     ratable: bool | None = None
     otf_class: Class | None = Field(None, alias="class")
     coach: str | None = Field(None, alias=AliasPath("class", "coach", "first_name"))

@@ -129,7 +129,7 @@ def main():
 
     # you can get detailed information about a specific performance summary by calling `get_performance_summary`
     # which takes a performance_summary_id as an argument
-    data = otf.get_performance_summary(data_list[0].class_history_uuid)
+    data = otf.get_performance_summary(data_list[0].performance_summary_id)
     print(data.model_dump_json(indent=4))
 
     """
@@ -254,16 +254,16 @@ def main():
     """
 
     # telemetry is a detailed record of a specific workout - minute by minute, or more granular if desired
-    # this endpoint takes a class_history_uuid, as well as a number of max data points (default 120)
+    # this endpoint takes a performance_summary_id, as well as a number of max data points (default 120)
 
-    telemetry = otf.get_telemetry(performance_summary_id=data_list[1].class_history_uuid)
+    telemetry = otf.get_telemetry(performance_summary_id=data_list[1].performance_summary_id)
     telemetry.telemetry = telemetry.telemetry[:2]
     print(telemetry.model_dump_json(indent=4))
 
     """
     {
         "member_uuid": "7d2f2b96-7e03-426e-b1dd-39491b79222f",
-        "class_history_uuid": "fcff805a-4e0c-4606-9976-5e85a54dc972",
+        "performance_summary_id": "fcff805a-4e0c-4606-9976-5e85a54dc972",
         "class_start_time": "2025-01-16T15:47:25Z",
         "max_hr": 191,
         "zones": {

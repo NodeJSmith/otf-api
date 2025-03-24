@@ -49,7 +49,10 @@ class TelemetryItem(OtfItemBase):
 
 class Telemetry(OtfItemBase):
     member_uuid: str = Field(..., alias="memberUuid")
-    class_history_uuid: str = Field(..., alias="classHistoryUuid")
+    performance_summary_id: str = Field(
+        ..., alias="classHistoryUuid", description="The ID of the performance summary this telemetry item belongs to."
+    )
+    class_history_uuid: str = Field(..., alias="classHistoryUuid", description="The same as performance_summary_id.")
     class_start_time: datetime | None = Field(None, alias="classStartTime")
     max_hr: int | None = Field(None, alias="maxHr")
     zones: Zones
