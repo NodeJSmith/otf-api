@@ -1,7 +1,6 @@
 import atexit
 import contextlib
 import functools
-import warnings
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 from datetime import date, datetime, timedelta
@@ -177,9 +176,10 @@ class Otf:
         """Retrieve raw member membership details."""
         return self._default_request("GET", f"/member/members/{self.member_uuid}/memberships")
 
-    def _get_performance_summaries_raw(self) -> dict:
+    def _get_performance_summaries_raw(self, limit: int | None = None) -> dict:
         """Retrieve raw performance summaries data."""
-        return self._performance_summary_request("GET", "/v1/performance-summaries")
+        params = {"limit": limit} if limit else {}
+        return self._performance_summary_request("GET", "/v1/performance-summaries", params=params)
 
     def _get_performance_summary_raw(self, performance_summary_id: str) -> dict:
         """Retrieve raw performance summary data."""
@@ -1111,8 +1111,11 @@ class Otf:
         return models.FitnessBenchmark(**data["Dto"][0])
 
     @cached(cache=TTLCache(maxsize=1024, ttl=600))
-    def get_performance_summaries_dict(self) -> dict[str, models.PerformanceSummary]:
+    def get_performance_summaries_dict(self, limit: int | None = None) -> dict[str, models.PerformanceSummary]:
         """Get a dictionary of performance summaries for the authenticated user.
+
+        Args:
+            limit (int | None): The maximum number of entries to return. Default is None.
 
         Returns:
             dict[str, PerformanceSummary]: A dictionary of performance summaries, keyed by class history UUID.
@@ -1123,7 +1126,7 @@ class Otf:
 
         """
 
-        items = self._get_performance_summaries_raw()["items"]
+        items = self._get_performance_summaries_raw(limit=limit)["items"]
 
         distinct_studio_ids = set([rec["class"]["studio"]["id"] for rec in items])
         perf_summary_ids = set([rec["id"] for rec in items])
@@ -1149,7 +1152,7 @@ class Otf:
         """Get a list of all performance summaries for the authenticated user.
 
         Args:
-            limit (int | None): The maximum number of entries to return. Default is None. Deprecated.
+            limit (int | None): The maximum number of entries to return. Default is None.
 
         Returns:
             list[PerformanceSummary]: A list of performance summaries.
@@ -1160,26 +1163,33 @@ class Otf:
 
         """
 
-        if limit:
-            warnings.warn("Limit is deprecated and will be removed in a future version.", DeprecationWarning)
-
-        records = list(self.get_performance_summaries_dict().values())
+        records = list(self.get_performance_summaries_dict(limit=limit).values())
 
         sorted_records = sorted(records, key=lambda x: x.otf_class.starts_at, reverse=True)
 
         return sorted_records
 
-    def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummary:
+    def get_performance_summary(
+        self, performance_summary_id: str, limit: int | None = None
+    ) -> models.PerformanceSummary:
         """Get performance summary for a given workout.
+
+        Note: Due to the way the OTF API is set up, we have to call both the list and the get endpoints. By
+        default this will call the list endpoint with no limit, in order to ensure that the performance summary
+        is returned if it exists. This could result in a lot of requests, so you also have the option to provide
+        a limit to only fetch a certain number of performance summaries.
 
         Args:
             performance_summary_id (str): The ID of the performance summary to retrieve.
 
         Returns:
             PerformanceSummary: The performance summary.
+
+        Raises:
+            ResourceNotFoundError: If the performance_summary_id is not in the list of performance summaries.
         """
 
-        perf_summary = self.get_performance_summaries_dict().get(performance_summary_id)
+        perf_summary = self.get_performance_summaries_dict(limit=limit).get(performance_summary_id)
 
         if perf_summary is None:
             raise exc.ResourceNotFoundError(f"Performance summary {performance_summary_id} not found")
@@ -1188,7 +1198,7 @@ class Otf:
 
     @functools.lru_cache(maxsize=1024)
     def _get_performancy_summary_detail(self, performance_summary_id: str) -> dict[str, Any]:
-        """Get the details for a performance summary.
+        """Get the details for a performance summary. Generally should not be called directly. This
 
         Args:
             performance_summary_id (str): The performance summary ID.
