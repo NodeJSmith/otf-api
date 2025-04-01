@@ -344,6 +344,26 @@ class Otf:
             json={"firstName": first_name, "lastName": last_name},
         )
 
+    def _get_bookings_new(
+        self,
+        ends_before: datetime | None = None,
+        starts_after: datetime | None = None,
+        include_canceled: bool | None = None,
+        expand: bool | None = None,
+    ) -> dict:
+        """Retrieve raw bookings data."""
+        params = {}
+        if ends_before:
+            params["ends_before"] = ends_before.isoformat()
+        if starts_after:
+            params["starts_after"] = starts_after.isoformat()
+        if include_canceled:
+            params["include_canceled"] = include_canceled
+        if expand:
+            params["expand"] = expand
+
+        return self._classes_request("GET", "/v1/bookings/me", params=params)
+
     def get_classes(
         self,
         start_date: date | None = None,
