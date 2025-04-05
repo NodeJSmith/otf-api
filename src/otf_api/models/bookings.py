@@ -36,6 +36,9 @@ class OtfClass(OtfItemBase):
     program_name: str | None = Field(None, alias="programName", exclude=True, repr=False)
     virtual_class: bool | None = Field(None, alias="virtualClass", exclude=True, repr=False)
 
+    def __str__(self) -> str:
+        starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
+        return f"Class: {starts_at_str} {self.name} - {self.coach.first_name}"
 
 class Booking(OtfItemBase):
     booking_uuid: str = Field(alias="classBookingUUId", description="ID used to cancel the booking")
