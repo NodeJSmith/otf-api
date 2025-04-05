@@ -40,6 +40,7 @@ class OtfClass(OtfItemBase):
         starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
         return f"Class: {starts_at_str} {self.name} - {self.coach.first_name}"
 
+
 class Booking(OtfItemBase):
     booking_uuid: str = Field(alias="classBookingUUId", description="ID used to cancel the booking")
     is_intro: bool = Field(alias="isIntro")
