@@ -33,7 +33,9 @@ class OtfClass(OtfItemBase):
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
     # unused fields
-    class_id: str | None = Field(None, alias="id", exclude=True, repr=False, description="Not used by API")
+    class_id: str | None = Field(
+        None, alias="id", exclude=True, repr=False, description="Matches new booking endpoint class id"
+    )
 
     created_at: datetime | None = Field(None, exclude=True, repr=False)
     ends_at_utc: datetime | None = Field(None, alias="ends_at", exclude=True, repr=False)
