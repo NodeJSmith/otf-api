@@ -66,8 +66,8 @@ class Telemetry(OtfItemBase):
 
 
 class TelemetryHistoryItem(OtfItemBase):
-    max_hr_type: str | None = Field(None, alias=AliasPath("maxHr", "type"))
-    max_hr_value: int | None = Field(None, alias=AliasPath("maxHr", "value"))
+    max_hr_type: str | None = Field(None, validation_alias=AliasPath("maxHr", "type"))
+    max_hr_value: int | None = Field(None, validation_alias=AliasPath("maxHr", "value"))
     zones: Zones | None = None
     change_from_previous: int | None = Field(None, alias="changeFromPrevious")
     change_bucket: str | None = Field(None, alias="changeBucket")

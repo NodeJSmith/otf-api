@@ -11,7 +11,7 @@ class OtfClass(OtfItemBase):
     class_uuid: str = Field(alias="ot_base_class_uuid", description="The OTF class UUID")
     name: str | None = Field(None, description="The name of the class")
     class_type: ClassType = Field(alias="type")
-    coach: str | None = Field(None, alias=AliasPath("coach", "first_name"))
+    coach: str | None = Field(None, validation_alias=AliasPath("coach", "first_name"))
     ends_at: datetime = Field(
         alias="ends_at_local",
         description="The end time of the class. Reflects local time, but the object does not have a timezone.",

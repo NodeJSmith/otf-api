@@ -4,20 +4,28 @@ from otf_api.models.base import OtfItemBase
 
 
 class PhoneLongitudeLatitudeMixin(OtfItemBase):
-    phone_number: str | None = Field(None, alias=AliasChoices("phone", "phoneNumber"))
-    latitude: float | None = Field(None, alias=AliasChoices("latitude"))
-    longitude: float | None = Field(None, alias=AliasChoices("longitude"))
+    phone_number: str | None = Field(None, validation_alias=AliasChoices("phone", "phoneNumber"))
+    latitude: float | None = Field(None, validation_alias=AliasChoices("latitude"))
+    longitude: float | None = Field(None, validation_alias=AliasChoices("longitude"))
 
 
 class AddressMixin(OtfItemBase):
-    address_line1: str | None = Field(None, alias=AliasChoices("line1", "address1", "address", "physicalAddress"))
-    address_line2: str | None = Field(None, alias=AliasChoices("line2", "address2", "physicalAddress2"))
-    city: str | None = Field(None, alias=AliasChoices("city", "physicalCity", "suburb"))
-    postal_code: str | None = Field(None, alias=AliasChoices("postal_code", "postalCode", "physicalPostalCode"))
-    state: str | None = Field(None, alias=AliasChoices("state", "physicalState", "territory"))
-    country: str | None = Field(None, alias=AliasChoices("country", "physicalCountry"))
-    region: str | None = Field(None, exclude=True, repr=False, alias=AliasChoices("physicalRegion", "region"))
-    country_id: int | None = Field(None, exclude=True, repr=False, alias=AliasChoices("physicalCountryId", "countryId"))
+    address_line1: str | None = Field(
+        None, validation_alias=AliasChoices("line1", "address1", "address", "physicalAddress")
+    )
+    address_line2: str | None = Field(None, validation_alias=AliasChoices("line2", "address2", "physicalAddress2"))
+    city: str | None = Field(None, validation_alias=AliasChoices("city", "physicalCity", "suburb"))
+    postal_code: str | None = Field(
+        None, validation_alias=AliasChoices("postal_code", "postalCode", "physicalPostalCode")
+    )
+    state: str | None = Field(None, validation_alias=AliasChoices("state", "physicalState", "territory"))
+    country: str | None = Field(None, validation_alias=AliasChoices("country", "physicalCountry"))
+    region: str | None = Field(
+        None, exclude=True, repr=False, validation_alias=AliasChoices("physicalRegion", "region")
+    )
+    country_id: int | None = Field(
+        None, exclude=True, repr=False, validation_alias=AliasChoices("physicalCountryId", "countryId")
+    )
 
     @model_validator(mode="before")
     @classmethod

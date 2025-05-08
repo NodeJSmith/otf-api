@@ -24,7 +24,7 @@ class OutOfStudioWorkoutHistory(OtfItemBase):
     has_detailed_data: bool | None = Field(None, alias="hasDetailedData")
     avg_heartrate: int | None = Field(None, alias="avgHeartrate")
     max_heartrate: int | None = Field(None, alias="maxHeartrate")
-    workout_type: str | None = Field(None, alias=AliasPath("workoutType", "displayName"))
+    workout_type: str | None = Field(None, validation_alias=AliasPath("workoutType", "displayName"))
     red_zone_seconds: int | None = Field(None, alias="redZoneSeconds")
     orange_zone_seconds: int | None = Field(None, alias="orangeZoneSeconds")
     green_zone_seconds: int | None = Field(None, alias="greenZoneSeconds")

@@ -109,19 +109,19 @@ class PerformanceSummary(OtfItemBase):
     class_history_uuid: str = Field(..., alias="id", description="Same as performance_summary_id")
     ratable: bool | None = None
     otf_class: Class | None = Field(None, alias="class")
-    coach: str | None = Field(None, alias=AliasPath("class", "coach", "first_name"))
-    coach_rating: CoachRating | None = Field(None, alias=AliasPath("ratings", "coach"))
-    class_rating: ClassRating | None = Field(None, alias=AliasPath("ratings", "class"))
+    coach: str | None = Field(None, validation_alias=AliasPath("class", "coach", "first_name"))
+    coach_rating: CoachRating | None = Field(None, validation_alias=AliasPath("ratings", "coach"))
+    class_rating: ClassRating | None = Field(None, validation_alias=AliasPath("ratings", "class"))
 
-    active_time_seconds: int | None = Field(None, alias=AliasPath("details", "active_time_seconds"))
-    calories_burned: int | None = Field(None, alias=AliasPath("details", "calories_burned"))
-    splat_points: int | None = Field(None, alias=AliasPath("details", "splat_points"))
-    step_count: int | None = Field(None, alias=AliasPath("details", "step_count"))
-    zone_time_minutes: ZoneTimeMinutes | None = Field(None, alias=AliasPath("details", "zone_time_minutes"))
-    heart_rate: HeartRate | None = Field(None, alias=AliasPath("details", "heart_rate"))
+    active_time_seconds: int | None = Field(None, validation_alias=AliasPath("details", "active_time_seconds"))
+    calories_burned: int | None = Field(None, validation_alias=AliasPath("details", "calories_burned"))
+    splat_points: int | None = Field(None, validation_alias=AliasPath("details", "splat_points"))
+    step_count: int | None = Field(None, validation_alias=AliasPath("details", "step_count"))
+    zone_time_minutes: ZoneTimeMinutes | None = Field(None, validation_alias=AliasPath("details", "zone_time_minutes"))
+    heart_rate: HeartRate | None = Field(None, validation_alias=AliasPath("details", "heart_rate"))
 
-    rower_data: Rower | None = Field(None, alias=AliasPath("details", "equipment_data", "rower"))
-    treadmill_data: Treadmill | None = Field(None, alias=AliasPath("details", "equipment_data", "treadmill"))
+    rower_data: Rower | None = Field(None, validation_alias=AliasPath("details", "equipment_data", "rower"))
+    treadmill_data: Treadmill | None = Field(None, validation_alias=AliasPath("details", "equipment_data", "treadmill"))
 
     @property
     def is_rated(self) -> bool:
