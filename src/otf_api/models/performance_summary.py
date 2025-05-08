@@ -66,7 +66,7 @@ class PerformanceMetric(OtfItemBase):
                 hours, minutes, seconds = value.split(":")
                 return time(hour=int(hours), minute=int(minutes), second=int(seconds))
 
-        return value
+        return value  # type: ignore
 
 
 class BaseEquipment(OtfItemBase):

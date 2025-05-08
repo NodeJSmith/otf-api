@@ -935,7 +935,7 @@ class Otf:
         try:
             res = self._get_studio_detail_raw(studio_uuid)
         except exc.ResourceNotFoundError:
-            return models.StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")
+            return models.StudioDetail.create_empty_model(studio_uuid)
 
         return models.StudioDetail(**res["data"])
 
@@ -1166,7 +1166,7 @@ class Otf:
 
         records = list(self.get_performance_summaries_dict(limit=limit).values())
 
-        sorted_records = sorted(records, key=lambda x: x.otf_class.starts_at, reverse=True)
+        sorted_records = sorted(records, key=lambda x: x.otf_class.starts_at, reverse=True)  # type: ignore
 
         return sorted_records
 
@@ -1361,6 +1361,9 @@ class Otf:
         if first_name == self.member.first_name and last_name == self.member.last_name:
             LOGGER.warning("No changes to names, nothing to update.")
             return self.member
+
+        assert first_name is not None, "First name is required"
+        assert last_name is not None, "Last name is required"
 
         res = self._update_member_name_raw(first_name, last_name)
 

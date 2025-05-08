@@ -27,7 +27,7 @@ class StudioDetail(OtfItemBase):
         exclude=True,
         repr=False,
     )
-    location: StudioLocation = Field(..., alias="studioLocation", default_factory=StudioLocation)
+    location: StudioLocation = Field(..., alias="studioLocation", default_factory=StudioLocation)  # type: ignore
     name: str | None = Field(None, alias="studioName")
     status: StudioStatus | None = Field(
         None, alias="studioStatus", description="Active, Temporarily Closed, Coming Soon"
@@ -62,3 +62,10 @@ class StudioDetail(OtfItemBase):
     studio_physical_location_id: int | None = Field(None, alias="studioPhysicalLocationId", exclude=True, repr=False)
     studio_token: str | None = Field(None, alias="studioToken", exclude=True, repr=False)
     studio_type_id: int | None = Field(None, alias="studioTypeId", exclude=True, repr=False)
+
+    @classmethod
+    def create_empty_model(cls, studio_uuid: str) -> "StudioDetail":
+        """Create an empty model with the given studio_uuid."""
+
+        # pylance doesn't know that the rest of the fields default to None, so we use type: ignore
+        return StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")  # type: ignore

@@ -62,6 +62,9 @@ class Telemetry(OtfItemBase):
     def __init__(self, **data: dict[str, Any]):
         super().__init__(**data)
         for telem in self.telemetry:
+            if self.class_start_time is None:
+                continue
+
             telem.timestamp = self.class_start_time + timedelta(seconds=telem.relative_timestamp)
 
 
