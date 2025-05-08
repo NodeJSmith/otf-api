@@ -17,9 +17,9 @@ PASSWORD_PROMPT = "Enter your Orangetheory Fitness password: "
 
 def _show_error_message(message: str) -> None:
     try:
-        from rich import print  # type: ignore
+        from rich import get_console  # type: ignore
 
-        print(message, style="bold red")
+        get_console().print(message, style="bold red")
     except ImportError:
         print(message)
 
@@ -84,6 +84,23 @@ def _prompt_for_password() -> str:
     return password
 
 
+def get_credentials_from_env() -> tuple[str, str]:
+    """Get credentials from environment variables.
+
+    Returns:
+        tuple[str, str]: A tuple containing the username and password.
+    """
+
+    username = os.getenv("OTF_EMAIL")
+    password = os.getenv("OTF_PASSWORD")
+
+    if not username or not password:
+        _show_error_message("Environment variables OTF_EMAIL and OTF_PASSWORD are required")
+        return "", ""
+
+    return username, password
+
+
 def prompt_for_username_and_password() -> tuple[str, str]:
     """Prompt for a username and password.
 
@@ -91,8 +108,8 @@ def prompt_for_username_and_password() -> tuple[str, str]:
         tuple[str, str]: A tuple containing the username and password.
     """
 
-    username = os.getenv("OTF_EMAIL") or _prompt_for_username()
-    password = os.getenv("OTF_PASSWORD") or _prompt_for_password()
+    username = _prompt_for_username()
+    password = _prompt_for_password()
 
     return username, password
 
@@ -123,6 +140,8 @@ class HttpxCognitoAuth(httpx.Auth):
         self.cognito.check_token(renew=True)
 
         token = self.cognito.id_token
+
+        assert isinstance(token, str), "Token is not a string"
 
         request.headers[self.http_header] = self.http_header_prefix + token
 

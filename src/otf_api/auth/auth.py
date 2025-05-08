@@ -82,6 +82,11 @@ class OtfCognito(Cognito):
         self.mfa_tokens: dict[str, Any] = {}
         self.pool_domain_url: str | None = None
 
+        self.handle_login(username, password, id_token, access_token)
+
+    def handle_login(
+        self, username: str | None, password: str | None, id_token: str | None = None, access_token: str | None = None
+    ) -> None:
         try:
             dd = CRED_CACHE.get_cached_data(DEVICE_KEYS)
         except Exception:
@@ -95,7 +100,7 @@ class OtfCognito(Cognito):
 
         self.client: CognitoIdentityProviderClient = Session().client(
             "cognito-idp", config=BOTO_CONFIG, region_name=REGION
-        )
+        )  # type: ignore
 
         try:
             token_cache = CRED_CACHE.get_cached_data(TOKEN_KEYS)
@@ -114,7 +119,16 @@ class OtfCognito(Cognito):
             self.access_token = token_cache["access_token"]
             self.refresh_token = token_cache["refresh_token"]
 
-        self.check_token()
+        try:
+            self.check_token()
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NotAuthorizedException":
+                LOGGER.warning("Tokens expired, attempting to login with username and password")
+                CRED_CACHE.clear_cache()
+                if not username or not password:
+                    raise NoCredentialsError("No credentials provided and no tokens cached, cannot authenticate")
+                self.handle_login(username, password)
+
         self.verify_tokens()
         CRED_CACHE.write_to_cache(self.tokens)
 
@@ -180,7 +194,7 @@ class OtfCognito(Cognito):
         self.client.confirm_device(
             AccessToken=self.access_token,
             DeviceKey=self.device_key,
-            DeviceSecretVerifierConfig=device_secret_verifier_config,
+            DeviceSecretVerifierConfig=device_secret_verifier_config,  # type: ignore (pycognito is untyped)
             DeviceName=self.device_name,
         )
 
@@ -220,6 +234,9 @@ class OtfCognito(Cognito):
         """
         auth_result = tokens["AuthenticationResult"]
         device_metadata = auth_result.get("NewDeviceMetadata", {})
+
+        assert "AccessToken" in auth_result, "AccessToken not found in AuthenticationResult"
+        assert "IdToken" in auth_result, "IdToken not found in AuthenticationResult"
 
         # tokens - refresh token defaults to existing value if not present
         # note: verify_token also sets the token attribute
