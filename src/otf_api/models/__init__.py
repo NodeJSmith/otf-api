@@ -13,7 +13,7 @@ from .enums import (
     StatsTime,
     StudioStatus,
 )
-from .lifetime_stats import StatsResponse, TimeStats
+from .lifetime_stats import InStudioStatsData, OutStudioStatsData, StatsResponse, TimeStats
 from .member_detail import MemberDetail
 from .member_membership import MemberMembership
 from .member_purchases import MemberPurchase
@@ -36,11 +36,13 @@ __all__ = [
     "EmailNotificationSettings",
     "EquipmentType",
     "FitnessBenchmark",
+    "InStudioStatsData",
     "MemberDetail",
     "MemberMembership",
     "MemberPurchase",
     "OtfClass",
     "OutOfStudioWorkoutHistory",
+    "OutStudioStatsData",
     "PerformanceSummary",
     "SmsNotificationSettings",
     "StatsResponse",

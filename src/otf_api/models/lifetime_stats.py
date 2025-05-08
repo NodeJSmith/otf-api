@@ -1,20 +1,20 @@
 from typing import Generic, TypeVar
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import StatsTime
 
-T = TypeVar("T", bound=BaseModel)
+T = TypeVar("T", bound=OtfItemBase)
 
 
-class OutStudioMixin(OtfItemBase):
+class OutStudioMixin:
     walking_distance: float | None = Field(None, alias="walkingDistance")
     running_distance: float | None = Field(None, alias="runningDistance")
     cycling_distance: float | None = Field(None, alias="cyclingDistance")
 
 
-class InStudioMixin(OtfItemBase):
+class InStudioMixin:
     treadmill_distance: float | None = Field(None, alias="treadmillDistance")
     treadmill_elevation_gained: float | None = Field(None, alias="treadmillElevationGained")
     rower_distance: float | None = Field(None, alias="rowerDistance")
@@ -72,19 +72,7 @@ class TimeStats(OtfItemBase, Generic[T]):
                 return self.all_time
 
 
-class OutStudioTimeStats(TimeStats[OutStudioStatsData]):
-    pass
-
-
-class InStudioTimeStats(TimeStats[InStudioStatsData]):
-    pass
-
-
-class AllStatsTimeStats(TimeStats[AllStatsData]):
-    pass
-
-
 class StatsResponse(OtfItemBase):
-    all_stats: AllStatsTimeStats = Field(..., alias="allStats")
-    in_studio: InStudioTimeStats = Field(..., alias="inStudio")
-    out_studio: OutStudioTimeStats = Field(..., alias="outStudio")
+    all_stats: TimeStats[AllStatsData] = Field(..., alias="allStats")
+    in_studio: TimeStats[InStudioStatsData] = Field(..., alias="inStudio")
+    out_studio: TimeStats[OutStudioStatsData] = Field(..., alias="outStudio")

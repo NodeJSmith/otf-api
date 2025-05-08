@@ -798,7 +798,7 @@ class Otf:
             It is being provided anyway, in case this changes in the future.
 
         Returns:
-            Any: The member's lifetime stats.
+            StatsResponse: The member's lifetime stats.
         """
 
         data = self._get_member_lifetime_stats_raw(select_time.value)
@@ -809,14 +809,14 @@ class Otf:
 
     def get_member_lifetime_stats_in_studio(
         self, select_time: models.StatsTime = models.StatsTime.AllTime
-    ) -> models.TimeStats:
+    ) -> models.InStudioStatsData:
         """Get the member's lifetime stats in studio.
 
         Args:
             select_time (StatsTime): The time period to get stats for. Default is StatsTime.AllTime.
 
         Returns:
-            Any: The member's lifetime stats in studio.
+            InStudioStatsData: The member's lifetime stats in studio.
         """
 
         data = self._get_member_lifetime_stats(select_time)
@@ -825,14 +825,14 @@ class Otf:
 
     def get_member_lifetime_stats_out_of_studio(
         self, select_time: models.StatsTime = models.StatsTime.AllTime
-    ) -> models.TimeStats:
+    ) -> models.OutStudioStatsData:
         """Get the member's lifetime stats out of studio.
 
         Args:
             select_time (StatsTime): The time period to get stats for. Default is StatsTime.AllTime.
 
         Returns:
-            Any: The member's lifetime stats out of studio.
+            OutStudioStatsData: The member's lifetime stats out of studio.
         """
 
         data = self._get_member_lifetime_stats(select_time)
