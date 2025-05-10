@@ -7,7 +7,7 @@ from otf_api.models.enums import StudioStatus
 from otf_api.models.mixins import AddressMixin
 
 
-class StudioLocation(AddressMixin):
+class StudioLocation(AddressMixin, OtfItemBase):
     phone_number: str | None = Field(None, validation_alias=AliasChoices("phone", "phoneNumber"))
     latitude: float | None = Field(None, validation_alias=AliasChoices("latitude"))
     longitude: float | None = Field(None, validation_alias=AliasChoices("longitude"))

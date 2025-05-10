@@ -7,7 +7,7 @@ from otf_api.models.mixins import AddressMixin
 from otf_api.models.studio_detail import StudioDetail
 
 
-class Address(AddressMixin):
+class Address(AddressMixin, OtfItemBase):
     member_address_uuid: str | None = Field(None, alias="memberAddressUUId", exclude=True, repr=False)
     type: str | None = None
 

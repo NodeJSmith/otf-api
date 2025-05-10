@@ -1,15 +1,13 @@
 from pydantic import AliasChoices, Field, field_validator, model_validator
 
-from otf_api.models.base import OtfItemBase
 
-
-class PhoneLongitudeLatitudeMixin(OtfItemBase):
+class PhoneLongitudeLatitudeMixin:
     phone_number: str | None = Field(None, validation_alias=AliasChoices("phone", "phoneNumber"))
     latitude: float | None = Field(None, validation_alias=AliasChoices("latitude"))
     longitude: float | None = Field(None, validation_alias=AliasChoices("longitude"))
 
 
-class AddressMixin(OtfItemBase):
+class AddressMixin:
     address_line1: str | None = Field(
         None, validation_alias=AliasChoices("line1", "address1", "address", "physicalAddress")
     )
