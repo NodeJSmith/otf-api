@@ -1295,7 +1295,7 @@ class Otf:
             transactional_enabled if transactional_enabled is not None else current_settings.is_transactional_sms_opt_in
         )
 
-        self._update_sms_notification_settings_raw(promotional_enabled, transactional_enabled)
+        self._update_sms_notification_settings_raw(promotional_enabled, transactional_enabled)  # type: ignore
 
         # the response returns nothing useful, so we just query the settings again
         new_settings = self.get_sms_notification_settings()
@@ -1334,7 +1334,7 @@ class Otf:
             else current_settings.is_transactional_email_opt_in
         )
 
-        self._update_email_notification_settings_raw(promotional_enabled, transactional_enabled)
+        self._update_email_notification_settings_raw(promotional_enabled, transactional_enabled)  # type: ignore
 
         # the response returns nothing useful, so we just query the settings again
         new_settings = self.get_email_notification_settings()
