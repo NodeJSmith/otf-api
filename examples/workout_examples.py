@@ -1,7 +1,7 @@
 from contextlib import suppress
 
 from otf_api import Otf
-from otf_api.exceptions import AlreadyRatedError
+from otf_api.exceptions import AlreadyRatedError, ClassNotRatableError
 from otf_api.models.enums import StatsTime
 
 
@@ -50,10 +50,12 @@ def main():
     }
     """
 
-    # performance summaries are historical records of your performance in workouts
-    # `get_performance_summaries` takes a limit (default of 5) and returns a list of summaries
-    data_list = otf.get_performance_summaries()
+    # you can get a list of workouts by calling `get_workouts`, which optionally takes a start and end date
+    # the workout includes all of the details, including the performance summary, class, coach, studio, and rating data
+    # from the new endpoint
+    data_list = otf.get_workouts()
     print(data_list[0].model_dump_json(indent=4))
+    # TODO: update the example data to match the new model
     """
     {
         "id": "c39e7cde-5e02-4e1a-89e2-d41e8a4653b3",
@@ -88,8 +90,8 @@ def main():
 
     # if you already rated the class it will return an exception
     # likewise if the class is not ratable (seems to be an age cutoff) or if the class is not found
-    with suppress(AlreadyRatedError):
-        res = otf.rate_class_from_performance_summary(data_list[0], 3, 3)
+    with suppress(AlreadyRatedError, ClassNotRatableError):
+        res = otf.rate_class_from_workout(data_list[0], 3, 3)
         print(res.model_dump_json(indent=4))
 
     """
@@ -125,200 +127,6 @@ def main():
             "value": 3
         }
     }
-    """
-
-    # you can get detailed information about a specific performance summary by calling `get_performance_summary`
-    # which takes a performance_summary_id as an argument
-    data = otf.get_performance_summary(data_list[0].performance_summary_id)
-    print(data.model_dump_json(indent=4))
-
-    """
-    {
-        "id": "8cd3a800-3ac1-4142-8b75-0c00bc19866c",
-        "class_name": "Orange 60 Min 2G",
-        "class_starts_at": "2025-01-16T09:45:00",
-        "ratable": false,
-        "calories_burned": 448,
-        "splat_points": 11,
-        "step_count": 3008,
-        "active_time_seconds": 0,
-        "zone_time_minutes": {
-            "gray": 7,
-            "blue": 9,
-            "green": 28,
-            "orange": 11,
-            "red": 0
-        },
-        "heart_rate": {
-            "max_hr": 0,
-            "peak_hr": 176,
-            "peak_hr_percent": 92,
-            "avg_hr": 142,
-            "avg_hr_percent": 74
-        },
-        "rower_data": {
-            "avg_pace": {
-                "display_value": "00:02:31",
-                "display_unit": "min/500m",
-                "metric_value": 151.0
-            },
-            "avg_speed": {
-                "display_value": 13.3,
-                "display_unit": "km/h",
-                "metric_value": 13.3
-            },
-            "max_pace": {
-                "display_value": "00:01:43",
-                "display_unit": "min/500m",
-                "metric_value": 103.0
-            },
-            "max_speed": {
-                "display_value": 17.4,
-                "display_unit": "km/h",
-                "metric_value": 17.4
-            },
-            "moving_time": {
-                "display_value": "00:10:49",
-                "display_unit": "Duration",
-                "metric_value": 649.0
-            },
-            "total_distance": {
-                "display_value": 2000.0,
-                "display_unit": "m",
-                "metric_value": 2000.0
-            },
-            "avg_cadence": {
-                "display_value": 19.5,
-                "display_unit": "",
-                "metric_value": 19.5
-            },
-            "avg_power": {
-                "display_value": 125.0,
-                "display_unit": "watt",
-                "metric_value": 125.0
-            },
-            "max_cadence": {
-                "display_value": 39.0,
-                "display_unit": "",
-                "metric_value": 39.0
-            }
-        },
-        "treadmill_data": {
-            "avg_pace": {
-                "display_value": "00:16:13",
-                "display_unit": "min/mile",
-                "metric_value": 973.0
-            },
-            "avg_speed": {
-                "display_value": 3.7,
-                "display_unit": "mph",
-                "metric_value": 3.7
-            },
-            "max_pace": {
-                "display_value": "00:08:34",
-                "display_unit": "min/mile",
-                "metric_value": 514.0
-            },
-            "max_speed": {
-                "display_value": 7.0,
-                "display_unit": "mph",
-                "metric_value": 7.0
-            },
-            "moving_time": {
-                "display_value": "00:18:41",
-                "display_unit": "Duration",
-                "metric_value": 1121.0
-            },
-            "total_distance": {
-                "display_value": 1.34,
-                "display_unit": "miles",
-                "metric_value": 1.34
-            },
-            "avg_incline": {
-                "display_value": 1.6,
-                "display_unit": "%",
-                "metric_value": 1.6
-            },
-            "elevation_gained": {
-                "display_value": 113.843,
-                "display_unit": "feet",
-                "metric_value": 113.843
-            },
-            "max_incline": {
-                "display_value": 10.0,
-                "display_unit": "%",
-                "metric_value": 10.0
-            }
-        }
-    }
-    """
-
-    # telemetry is a detailed record of a specific workout - minute by minute, or more granular if desired
-    # this endpoint takes a performance_summary_id, as well as a number of max data points (default 120)
-
-    telemetry = otf.get_telemetry(performance_summary_id=data_list[1].performance_summary_id)
-    telemetry.telemetry = telemetry.telemetry[:2]
-    print(telemetry.model_dump_json(indent=4))
-
-    """
-    {
-        "member_uuid": "7d2f2b96-7e03-426e-b1dd-39491b79222f",
-        "performance_summary_id": "fcff805a-4e0c-4606-9976-5e85a54dc972",
-        "class_start_time": "2025-01-16T15:47:25Z",
-        "max_hr": 191,
-        "zones": {
-            "gray": {
-                "start_bpm": 96,
-                "end_bpm": 116
-            },
-            "blue": {
-                "start_bpm": 117,
-                "end_bpm": 135
-            },
-            "green": {
-                "start_bpm": 136,
-                "end_bpm": 159
-            },
-            "orange": {
-                "start_bpm": 160,
-                "end_bpm": 175
-            },
-            "red": {
-                "start_bpm": 176,
-                "end_bpm": 191
-            }
-        },
-        "window_size": 28,
-        "telemetry": [
-            {
-                "relative_timestamp": 0,
-                "hr": 97,
-                "agg_splats": 0,
-                "agg_calories": 1,
-                "timestamp": "2025-01-16T15:47:25Z",
-                "tread_data": {
-                    "tread_speed": 2.24,
-                    "tread_incline": 1.0,
-                    "agg_tread_distance": 24
-                },
-                "row_data": null
-            },
-            {
-                "relative_timestamp": 28,
-                "hr": 127,
-                "agg_splats": 0,
-                "agg_calories": 4,
-                "timestamp": "2025-01-16T15:47:53Z",
-                "tread_data": {
-                    "tread_speed": 2.46,
-                    "tread_incline": 1.0,
-                    "agg_tread_distance": 78
-                },
-                "row_data": null
-            }
-        ]
-    }
-
     """
 
 
