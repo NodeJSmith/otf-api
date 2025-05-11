@@ -86,6 +86,3 @@ class PerformanceSummary(OtfItemBase):
 
     rower_data: Rower | None = Field(None, validation_alias=AliasPath("details", "equipment_data", "rower"))
     treadmill_data: Treadmill | None = Field(None, validation_alias=AliasPath("details", "equipment_data", "treadmill"))
-
-    # always 0 from this endpoint
-    # active_time_seconds: int | None = Field(None, validation_alias=AliasPath("details", "active_time_seconds"))

@@ -1,6 +1,6 @@
 import atexit
 import contextlib
-import functools
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from json import JSONDecodeError
 from logging import getLogger
@@ -176,14 +176,18 @@ class Otf:
         ends_before = ends_before or pendulum.today().start_of("day").add(days=45)
         starts_after = starts_after or pendulum.datetime(1970, 1, 1).start_of("day")
         params: dict[str, bool | str] = {
-            "ends_before": ends_before.isoformat(),
-            "starts_after": starts_after.isoformat(),
+            "ends_before": pendulum.instance(ends_before).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "starts_after": pendulum.instance(starts_after).strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
 
         params["include_canceled"] = include_canceled if include_canceled is not None else True
         params["expand"] = expand if expand is not None else False
 
         return self._classes_request("GET", "/v1/bookings/me", params=params)
+
+    def _get_booking_new_raw(self, booking_id: str) -> dict:
+        """Retrieve raw booking data."""
+        return self._classes_request("GET", f"/v1/bookings/me/{booking_id}")
 
     def _get_member_detail_raw(self) -> dict:
         """Retrieve raw member details."""
@@ -365,18 +369,23 @@ class Otf:
 
     def get_bookings_new(
         self,
-        ends_before: datetime | None = None,
-        starts_after: datetime | None = None,
+        start_dtme: datetime | None = None,
+        end_dtme: datetime | None = None,
         include_canceled: bool = True,
         expand: bool = True,
     ) -> list[models.BookingV2]:
         """Get the bookings for the user."""
 
         bookings_resp = self._get_bookings_new_raw(
-            ends_before=ends_before, starts_after=starts_after, include_canceled=include_canceled, expand=expand
+            ends_before=end_dtme, starts_after=start_dtme, include_canceled=include_canceled, expand=expand
         )
 
         return [models.BookingV2(**b) for b in bookings_resp["items"]]
+
+    def get_booking_new(self, booking_id: str) -> models.BookingV2:
+        """Get a booking by ID."""
+        booking_resp = self._get_booking_new_raw(booking_id)
+        return models.BookingV2(**booking_resp)
 
     def get_classes(
         self,
@@ -1144,7 +1153,6 @@ class Otf:
 
         return models.FitnessBenchmark(**data["Dto"][0])
 
-    @functools.lru_cache(maxsize=1024)
     def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummary:
         """Get the details for a performance summary. Generally should not be called directly. This
 
@@ -1153,10 +1161,6 @@ class Otf:
 
         Returns:
             dict[str, Any]: The performance summary details.
-
-        Developer Notes:
-            ---
-            This is mostly here to cache the results of the raw method.
         """
 
         resp = self._get_performance_summary_raw(performance_summary_id)
@@ -1175,7 +1179,7 @@ class Otf:
         resp = self._get_hr_history_raw()
         return [models.TelemetryHistoryItem(**item) for item in resp["history"]]
 
-    def get_telemetry(self, performance_summary_id: str, max_data_points: int = 120) -> models.Telemetry:
+    def get_telemetry(self, performance_summary_id: str, max_data_points: int = 150) -> models.Telemetry:
         """Get the telemetry for a performance summary.
 
         This returns an object that contains the max heartrate, start/end bpm for each zone,
@@ -1183,7 +1187,7 @@ class Otf:
 
         Args:
             performance_summary_id (str): The performance summary id.
-            max_data_points (int): The max data points to use for the telemetry. Default is 120.
+            max_data_points (int): The max data points to use for the telemetry. Default is 150, to match the app.
 
         Returns:
             TelemetryItem: The telemetry for the class history.
@@ -1323,9 +1327,8 @@ class Otf:
         performance_summary_id: str,
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
-    ) -> models.PerformanceSummary:
-        """Rate a class and coach. A simpler method is provided in `rate_class_from_performance_summary`.
-
+    ):
+        """Rate a class and coach. A simpler method is provided in `rate_class_from_workout`.
 
         The class rating must be between 0 and 4.
         0 is the same as dismissing the prompt to rate the class/coach in the app.
@@ -1338,76 +1341,164 @@ class Otf:
             coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
 
         Returns:
-            PerformanceSummary: The updated performance summary.
+            None
+
         """
 
-        # com/orangetheoryfitness/fragment/rating/RateStatus.java
-
-        # we convert these to the new values that the app uses
-        # mainly because we don't want to cause any issues with the API and/or with OTF corporate
-        # wondering where the old values are coming from
-
-        COACH_RATING_MAP = {0: 0, 1: 16, 2: 17, 3: 18}
-        CLASS_RATING_MAP = {0: 0, 1: 19, 2: 20, 3: 21}
-
-        if class_rating not in CLASS_RATING_MAP:
-            raise ValueError(f"Invalid class rating {class_rating}")
-
-        if coach_rating not in COACH_RATING_MAP:
-            raise ValueError(f"Invalid coach rating {coach_rating}")
-
-        body_class_rating = CLASS_RATING_MAP[class_rating]
-        body_coach_rating = COACH_RATING_MAP[coach_rating]
+        body_class_rating = models.get_class_rating_value(class_rating)
+        body_coach_rating = models.get_coach_rating_value(coach_rating)
 
         try:
             self._rate_class_raw(class_uuid, performance_summary_id, body_class_rating, body_coach_rating)
         except exc.OtfRequestError as e:
             if e.response.status_code == 403:
-                raise exc.AlreadyRatedError(f"Performance summary {performance_summary_id} is already rated.") from None
+                raise exc.AlreadyRatedError(f"Workout {performance_summary_id} is already rated.") from None
             raise
 
-        return self.get_performance_summary(performance_summary_id)
+    def get_workout(self, booking_id: str) -> models.Workout:
+        """Get the member's workout. This is a wrapper around the get_workouts method that returns only one workout.
 
-    # @typechecked
-    # def rate_class_from_performance_summary(
-    #     self,
-    #     perf_summary: models.PerformanceSummary,
-    #     class_rating: Literal[0, 1, 2, 3],
-    #     coach_rating: Literal[0, 1, 2, 3],
-    # ) -> models.PerformanceSummary:
-    #     """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
-    #         rate the class/coach. 1 - 3 is a range from bad to good.
+        Args:
+            booking_id (str | None): The booking ID to get the workout for. If None, the most recent workout will be
+                returned.
 
-    #     Args:
-    #         perf_summary (PerformanceSummary): The performance summary to rate.
-    #         class_rating (int): The class rating. Must be 0, 1, 2, or 3.
-    #         coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
+        Returns:
+            Workout: The member's workout.
+        """
+        booking = self.get_booking_new(booking_id)
+        if not booking:
+            raise exc.BookingNotFoundError(f"Booking {booking_id} not found.")
 
-    #     Returns:
-    #         PerformanceSummary: The updated performance summary.
+        if not booking.workout or not booking.workout.performance_summary_id:
+            raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
 
-    #     Raises:
-    #         AlreadyRatedError: If the performance summary is already rated.
-    #         ClassNotRatableError: If the performance summary is not rateable.
-    #         ValueError: If the performance summary does not have an associated class.
-    #     """
+        perf_summary = self._get_performance_summary_raw(booking.workout.performance_summary_id)
+        telemetry = self.get_telemetry(booking.workout.performance_summary_id)
+        workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
+        return workout
 
-    #     if perf_summary.is_rated:
-    #         raise exc.AlreadyRatedError(f"Performance summary {perf_summary.performance_summary_id} already rated.")
+    def get_workouts(self, start_date: date | None = None, end_date: date | None = None) -> list[models.Workout]:
+        """Get the member's workouts, using the new bookings endpoint and the performance summary endpoint.
 
-    #     if not perf_summary.ratable:
-    #         raise exc.ClassNotRatableError(
-    #             f"Performance summary {perf_summary.performance_summary_id} is not rateable."
-    #         )
+        Args:
+            start_date (date | None): The start date for the workouts. If None, defaults to 30 days ago.
+            end_date (date | None): The end date for the workouts. If None, defaults to today.
 
-    #     if not perf_summary.otf_class or not perf_summary.otf_class.class_uuid:
-    #         raise ValueError(
-    #             f"Performance summary {perf_summary.performance_summary_id} does not have an associated class."
-    #         )
+        Returns:
+            list[Workout]: The member's workouts.
+        """
+        start_date = start_date or pendulum.today().subtract(days=30).date()
 
-    #     return self._rate_class(
-    #         perf_summary.otf_class.class_uuid, perf_summary.performance_summary_id, class_rating, coach_rating
-    #     )
+        end_date = end_date or datetime.today().date()
+
+        start_dtme = pendulum.datetime(start_date.year, start_date.month, start_date.day, 0, 0, 0)
+        end_dtme = pendulum.datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
+
+        bookings = self.get_bookings_new(start_dtme, end_dtme, include_canceled=False)
+        bookings_dict = {b.workout.id: b for b in bookings if b.workout}
+
+        perf_summaries_dict = self._get_perf_summaries_threaded(list(bookings_dict.keys()))
+        telemetry_dict = self._get_telemetry_threaded(list(perf_summaries_dict.keys()))
+        perf_summary_to_class_uuid_map = self._get_perf_summary_to_class_uuid_mapping()
+
+        workouts: list[models.Workout] = []
+        for perf_id, perf_summary in perf_summaries_dict.items():
+            workout = models.Workout(
+                **perf_summary,
+                v2_booking=bookings_dict[perf_id],
+                telemetry=telemetry_dict.get(perf_id),
+                class_uuid=perf_summary_to_class_uuid_map.get(perf_id),
+            )
+            workouts.append(workout)
+
+        return workouts
+
+    def _get_perf_summary_to_class_uuid_mapping(self) -> dict[str, str | None]:
+        """Get a mapping of performance summary IDs to class UUIDs.
+
+        Returns:
+            dict[str, str]: A dictionary mapping performance summary IDs to class UUIDs.
+        """
+        perf_summaries = self._get_performance_summaries_raw()["items"]
+        return {item["id"]: item["class"].get("ot_base_class_uuid") for item in perf_summaries}
+
+    def _get_perf_summaries_threaded(self, performance_summary_ids: list[str]) -> dict[str, dict[str, Any]]:
+        """Get performance summaries in a ThreadPoolExecutor, to speed up the process.
+
+        Args:
+            performance_summary_ids (list[str]): The performance summary IDs to get.
+
+        Returns:
+            dict[str, dict[str, Any]]: A dictionary of raw performance summaries, keyed by performance summary ID.
+        """
+        perf_summaries_dict = {}
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            future_to_perf_summary = {
+                perf_id: executor.submit(self._get_performance_summary_raw, perf_id)
+                for perf_id in performance_summary_ids
+            }
+            for workout_id, future in future_to_perf_summary.items():
+                perf_summaries_dict[workout_id] = future.result()
+        return perf_summaries_dict
+
+    def _get_telemetry_threaded(
+        self, performance_summary_ids: list[str], max_data_points: int = 150
+    ) -> dict[str, dict[str, Any]]:
+        """Get telemetry in a ThreadPoolExecutor, to speed up the process.
+
+        Args:
+            performance_summary_ids (list[str]): The performance summary IDs to get.
+            max_data_points (int): The max data points to use for the telemetry. Default is 150.
+
+        Returns:
+            dict[str, dict[str, Any]]: A dictionary of raw telemetry, keyed by performance summary ID.
+        """
+        telemetry_dict = {}
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            future_to_perf_summary = {
+                perf_id: executor.submit(self._get_telemetry_raw, perf_id, max_data_points)
+                for perf_id in performance_summary_ids
+            }
+            for workout_id, future in future_to_perf_summary.items():
+                telemetry_dict[workout_id] = future.result()
+        return telemetry_dict
+
+    def rate_class_from_workout(
+        self,
+        workout: models.Workout,
+        class_rating: Literal[0, 1, 2, 3],
+        coach_rating: Literal[0, 1, 2, 3],
+    ) -> models.Workout:
+        """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
+            rate the class/coach. 1 - 3 is a range from bad to good.
+
+        Args:
+            workout (Workout): The workout to rate.
+            class_rating (int): The class rating. Must be 0, 1, 2, or 3.
+            coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
+
+        Returns:
+            Workout: The updated workout.
+
+        Raises:
+            AlreadyRatedError: If the performance summary is already rated.
+            ClassNotRatableError: If the performance summary is not rateable.
+            ValueError: If the performance summary does not have an associated class uuid.
+        """
+
+        if not workout.ratable:
+            raise exc.ClassNotRatableError(f"Performance summary {workout.performance_summary_id} is not rateable.")
+
+        if workout.class_rating is not None or workout.coach_rating is not None:
+            raise exc.AlreadyRatedError(f"Performance summary {workout.performance_summary_id} already rated.")
+
+        if not workout.class_uuid:
+            raise ValueError(
+                f"Performance summary {workout.performance_summary_id} does not have an associated class uuid."
+            )
+
+        self._rate_class(workout.class_uuid, workout.performance_summary_id, class_rating, coach_rating)
+        return self.get_workout(workout.booking_id)
 
     # the below do not return any data for me, so I can't test them
 

@@ -17,7 +17,7 @@ class Rating(OtfItemBase):
     value: int
 
 
-class Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
+class BookingV2Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
     studio_uuid: str = Field(alias="id")
     name: str | None = None
     time_zone: str | None = None
@@ -28,7 +28,7 @@ class Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
     mbo_studio_id: str | None = Field(None, description="MindBody attr", repr=False, exclude=True)
 
 
-class Class(OtfItemBase):
+class BookingV2Class(OtfItemBase):
     class_id: str = Field(alias="id", description="Matches the `class_id` attribute of the OtfClass model")
     name: str
     class_type: ClassType = Field(alias="type")
@@ -36,7 +36,7 @@ class Class(OtfItemBase):
         alias="starts_at_local",
         description="The start time of the class. Reflects local time, but the object does not have a timezone.",
     )
-    studio: Studio | None = None
+    studio: BookingV2Studio | None = None
     coach: str | None = Field(None, validation_alias=AliasPath("coach", "first_name"))
 
     ot_base_class_uuid: str | None = Field(
@@ -45,8 +45,9 @@ class Class(OtfItemBase):
     starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True, repr=False)
 
 
-class Workout(OtfItemBase):
+class BookingV2Workout(OtfItemBase):
     id: str
+    performance_summary_id: str = Field(..., alias="id", description="Alias to id, to simplify the API")
     calories_burned: int
     splat_points: int
     step_count: int
@@ -70,8 +71,8 @@ class BookingV2(OtfItemBase):
     canceled_at: str | None = None
     ratable: bool
 
-    otf_class: Class = Field(..., alias="class")
-    workout: Workout | None = None
+    otf_class: BookingV2Class = Field(..., alias="class")
+    workout: BookingV2Workout | None = None
     coach_rating: Rating | None = Field(None, validation_alias=AliasPath("ratings", "coach"))
     class_rating: Rating | None = Field(None, validation_alias=AliasPath("ratings", "class"))
 

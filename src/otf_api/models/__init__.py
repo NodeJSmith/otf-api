@@ -21,9 +21,11 @@ from .member_purchases import MemberPurchase
 from .notifications import EmailNotificationSettings, SmsNotificationSettings
 from .out_of_studio_workout_history import OutOfStudioWorkoutHistory
 from .performance_summary import PerformanceSummary
+from .ratings import get_class_rating_value, get_coach_rating_value
 from .studio_detail import StudioDetail
 from .studio_services import StudioService
 from .telemetry import Telemetry, TelemetryHistoryItem
+from .workout import Workout
 
 __all__ = [
     "HISTORICAL_BOOKING_STATUSES",
@@ -55,4 +57,7 @@ __all__ = [
     "Telemetry",
     "TelemetryHistoryItem",
     "TimeStats",
+    "Workout",
+    "get_class_rating_value",
+    "get_coach_rating_value",
 ]
