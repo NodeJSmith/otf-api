@@ -210,7 +210,7 @@ class Otf:
         """Retrieve raw heart rate history."""
         return self._telemetry_request("GET", "/v1/physVars/maxHr/history", params={"memberUuid": self.member_uuid})
 
-    def _get_telemetry_raw(self, performance_summary_id: str, max_data_points: int) -> dict:
+    def _get_telemetry_raw(self, performance_summary_id: str, max_data_points: int = 150) -> dict:
         """Retrieve raw telemetry data."""
         return self._telemetry_request(
             "GET",
