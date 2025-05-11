@@ -10,6 +10,7 @@ from typing import Any, Literal
 
 import attrs
 import httpx
+import pendulum
 from cachetools import TTLCache, cached
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 from yarl import URL
@@ -164,6 +165,27 @@ class Otf:
             f"/member/members/{self.member_uuid}/bookings",
             params={"startDate": start_date, "endDate": end_date, "statuses": status},
         )
+
+    def _get_bookings_new_raw(
+        self,
+        ends_before: datetime | None = None,
+        starts_after: datetime | None = None,
+        include_canceled: bool = True,
+        expand: bool = False,
+    ) -> dict:
+        """Retrieve raw bookings data."""
+
+        ends_before = ends_before or pendulum.today().start_of("day").add(days=45)
+        starts_after = starts_after or pendulum.datetime(1970, 1, 1).start_of("day")
+        params: dict[str, bool | str] = {
+            "ends_before": ends_before.isoformat(),
+            "starts_after": starts_after.isoformat(),
+        }
+
+        params["include_canceled"] = include_canceled if include_canceled is not None else True
+        params["expand"] = expand if expand is not None else False
+
+        return self._classes_request("GET", "/v1/bookings/me", params=params)
 
     def _get_member_detail_raw(self) -> dict:
         """Retrieve raw member details."""
@@ -342,6 +364,21 @@ class Otf:
             f"/member/members/{self.member_uuid}",
             json={"firstName": first_name, "lastName": last_name},
         )
+
+    def get_bookings_new(
+        self,
+        ends_before: datetime | None = None,
+        starts_after: datetime | None = None,
+        include_canceled: bool = True,
+        expand: bool = True,
+    ) -> list[models.BookingV2]:
+        """Get the bookings for the user."""
+
+        bookings_resp = self._get_bookings_new_raw(
+            ends_before=ends_before, starts_after=starts_after, include_canceled=include_canceled, expand=expand
+        )
+
+        return [models.BookingV2(**b) for b in bookings_resp["items"]]
 
     def get_classes(
         self,
