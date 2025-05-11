@@ -27,6 +27,7 @@ dependencies = [
     "yarl>=1.18.3,<2",
     "tenacity>=9.0.0,<10",
     "cachetools>=5.5.0",
+    "pendulum>=3.1.0",
 ]
 
 [project.urls]
@@ -65,7 +66,7 @@ docs = [
 ]
 
 [tool.uv]
-default-groups = ["dev", "docs"]
+default-groups = ["dev"]
 
 
 [tool.pytest.ini_options]

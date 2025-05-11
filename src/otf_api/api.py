@@ -1,8 +1,6 @@
 import atexit
 import contextlib
 import functools
-from concurrent.futures import ThreadPoolExecutor
-from copy import deepcopy
 from datetime import date, datetime, timedelta
 from json import JSONDecodeError
 from logging import getLogger
@@ -1146,94 +1144,8 @@ class Otf:
 
         return models.FitnessBenchmark(**data["Dto"][0])
 
-    @cached(cache=TTLCache(maxsize=1024, ttl=600))
-    def get_performance_summaries_dict(self, limit: int | None = None) -> dict[str, models.PerformanceSummary]:
-        """Get a dictionary of performance summaries for the authenticated user.
-
-        Args:
-            limit (int | None): The maximum number of entries to return. Default is None.
-
-        Returns:
-            dict[str, PerformanceSummary]: A dictionary of performance summaries, keyed by class history UUID.
-
-        Developer Notes:
-            ---
-            In the app, this is referred to as 'getInStudioWorkoutHistory'.
-
-        """
-
-        items = self._get_performance_summaries_raw(limit=limit)["items"]
-
-        distinct_studio_ids = set([rec["class"]["studio"]["id"] for rec in items])
-        perf_summary_ids = set([rec["id"] for rec in items])
-
-        with ThreadPoolExecutor() as pool:
-            studio_futures = {s: pool.submit(self.get_studio_detail, s) for s in distinct_studio_ids}
-            perf_summary_futures = {s: pool.submit(self._get_performancy_summary_detail, s) for s in perf_summary_ids}
-
-            studio_dict = {k: v.result() for k, v in studio_futures.items()}
-            # deepcopy these so that mutating them in PerformanceSummary doesn't affect the cache
-            perf_summary_dict = {k: deepcopy(v.result()) for k, v in perf_summary_futures.items()}
-
-        for item in items:
-            item["class"]["studio"] = studio_dict[item["class"]["studio"]["id"]]
-            item["detail"] = perf_summary_dict[item["id"]]
-
-        entries = [models.PerformanceSummary(**item) for item in items]
-        entries_dict = {entry.performance_summary_id: entry for entry in entries}
-
-        return entries_dict
-
-    def get_performance_summaries(self, limit: int | None = None) -> list[models.PerformanceSummary]:
-        """Get a list of all performance summaries for the authenticated user.
-
-        Args:
-            limit (int | None): The maximum number of entries to return. Default is None.
-
-        Returns:
-            list[PerformanceSummary]: A list of performance summaries.
-
-        Developer Notes:
-            ---
-            In the app, this is referred to as 'getInStudioWorkoutHistory'.
-
-        """
-
-        records = list(self.get_performance_summaries_dict(limit=limit).values())
-
-        sorted_records = sorted(records, key=lambda x: x.otf_class.starts_at, reverse=True)  # type: ignore
-
-        return sorted_records
-
-    def get_performance_summary(
-        self, performance_summary_id: str, limit: int | None = None
-    ) -> models.PerformanceSummary:
-        """Get performance summary for a given workout.
-
-        Note: Due to the way the OTF API is set up, we have to call both the list and the get endpoints. By
-        default this will call the list endpoint with no limit, in order to ensure that the performance summary
-        is returned if it exists. This could result in a lot of requests, so you also have the option to provide
-        a limit to only fetch a certain number of performance summaries.
-
-        Args:
-            performance_summary_id (str): The ID of the performance summary to retrieve.
-
-        Returns:
-            PerformanceSummary: The performance summary.
-
-        Raises:
-            ResourceNotFoundError: If the performance_summary_id is not in the list of performance summaries.
-        """
-
-        perf_summary = self.get_performance_summaries_dict(limit=limit).get(performance_summary_id)
-
-        if perf_summary is None:
-            raise exc.ResourceNotFoundError(f"Performance summary {performance_summary_id} not found")
-
-        return perf_summary
-
     @functools.lru_cache(maxsize=1024)
-    def _get_performancy_summary_detail(self, performance_summary_id: str) -> dict[str, Any]:
+    def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummary:
         """Get the details for a performance summary. Generally should not be called directly. This
 
         Args:
@@ -1247,7 +1159,8 @@ class Otf:
             This is mostly here to cache the results of the raw method.
         """
 
-        return self._get_performance_summary_raw(performance_summary_id)
+        resp = self._get_performance_summary_raw(performance_summary_id)
+        return models.PerformanceSummary(**resp)
 
     def get_hr_history(self) -> list[models.TelemetryHistoryItem]:
         """Get the heartrate history for the user.
@@ -1453,54 +1366,48 @@ class Otf:
                 raise exc.AlreadyRatedError(f"Performance summary {performance_summary_id} is already rated.") from None
             raise
 
-        # we have to clear the cache after rating a class, otherwise we will get back the same data
-        # showing it not rated. that would be incorrect, confusing, and would cause errors if the user
-        # then attempted to rate the class again.
-        # we could attempt to only refresh the one record but with these endpoints that's not simple
-        # NOTE: the individual perf summary endpoint does not have rating data, so it's cache is not cleared
-        self.get_performance_summaries_dict.cache_clear()
-
         return self.get_performance_summary(performance_summary_id)
 
-    def rate_class_from_performance_summary(
-        self,
-        perf_summary: models.PerformanceSummary,
-        class_rating: Literal[0, 1, 2, 3],
-        coach_rating: Literal[0, 1, 2, 3],
-    ) -> models.PerformanceSummary:
-        """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
-            rate the class/coach. 1 - 3 is a range from bad to good.
+    # @typechecked
+    # def rate_class_from_performance_summary(
+    #     self,
+    #     perf_summary: models.PerformanceSummary,
+    #     class_rating: Literal[0, 1, 2, 3],
+    #     coach_rating: Literal[0, 1, 2, 3],
+    # ) -> models.PerformanceSummary:
+    #     """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
+    #         rate the class/coach. 1 - 3 is a range from bad to good.
 
-        Args:
-            perf_summary (PerformanceSummary): The performance summary to rate.
-            class_rating (int): The class rating. Must be 0, 1, 2, or 3.
-            coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
+    #     Args:
+    #         perf_summary (PerformanceSummary): The performance summary to rate.
+    #         class_rating (int): The class rating. Must be 0, 1, 2, or 3.
+    #         coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
 
-        Returns:
-            PerformanceSummary: The updated performance summary.
+    #     Returns:
+    #         PerformanceSummary: The updated performance summary.
 
-        Raises:
-            AlreadyRatedError: If the performance summary is already rated.
-            ClassNotRatableError: If the performance summary is not rateable.
-            ValueError: If the performance summary does not have an associated class.
-        """
+    #     Raises:
+    #         AlreadyRatedError: If the performance summary is already rated.
+    #         ClassNotRatableError: If the performance summary is not rateable.
+    #         ValueError: If the performance summary does not have an associated class.
+    #     """
 
-        if perf_summary.is_rated:
-            raise exc.AlreadyRatedError(f"Performance summary {perf_summary.performance_summary_id} is already rated.")
+    #     if perf_summary.is_rated:
+    #         raise exc.AlreadyRatedError(f"Performance summary {perf_summary.performance_summary_id} already rated.")
 
-        if not perf_summary.ratable:
-            raise exc.ClassNotRatableError(
-                f"Performance summary {perf_summary.performance_summary_id} is not rateable."
-            )
+    #     if not perf_summary.ratable:
+    #         raise exc.ClassNotRatableError(
+    #             f"Performance summary {perf_summary.performance_summary_id} is not rateable."
+    #         )
 
-        if not perf_summary.otf_class or not perf_summary.otf_class.class_uuid:
-            raise ValueError(
-                f"Performance summary {perf_summary.performance_summary_id} does not have an associated class."
-            )
+    #     if not perf_summary.otf_class or not perf_summary.otf_class.class_uuid:
+    #         raise ValueError(
+    #             f"Performance summary {perf_summary.performance_summary_id} does not have an associated class."
+    #         )
 
-        return self._rate_class(
-            perf_summary.otf_class.class_uuid, perf_summary.performance_summary_id, class_rating, coach_rating
-        )
+    #     return self._rate_class(
+    #         perf_summary.otf_class.class_uuid, perf_summary.performance_summary_id, class_rating, coach_rating
+    #     )
 
     # the below do not return any data for me, so I can't test them
 
