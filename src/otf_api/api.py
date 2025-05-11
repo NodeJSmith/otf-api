@@ -101,10 +101,8 @@ class Otf:
             if e.response.status_code == 404:
                 raise exc.ResourceNotFoundError("Resource not found")
 
-            if e.response.status_code == 403:
-                raise
+            raise
 
-            raise exc.OtfRequestError("Error making request", e, response=response, request=request)
         except Exception as e:
             LOGGER.exception(f"Error making request: {e}")
             raise
