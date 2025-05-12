@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any
 
-from pydantic import AliasPath, Field
+from pydantic import AliasPath, Field, field_serializer
 
 from otf_api.models.base import OtfItemBase
 
@@ -66,6 +66,13 @@ class Telemetry(OtfItemBase):
                 continue
 
             telem.timestamp = self.class_start_time + timedelta(seconds=telem.relative_timestamp)
+
+    @field_serializer("telemetry", when_used="json")
+    def reduce_telemetry_list(self, value: list[TelemetryItem]) -> list[TelemetryItem]:
+        """Reduces the telemetry list to only include the first 10 items."""
+        if len(value) > 10:
+            return value[:5] + value[-5:]
+        return value
 
 
 class TelemetryHistoryItem(OtfItemBase):
