@@ -2,6 +2,7 @@ import atexit
 import contextlib
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
+from functools import partial
 from json import JSONDecodeError
 from logging import getLogger
 from typing import Any, Literal
@@ -1321,7 +1322,7 @@ class Otf:
 
         return models.MemberDetail(**res["data"])
 
-    def _rate_class(
+    def rate_class(
         self,
         class_uuid: str,
         performance_summary_id: str,
@@ -1355,16 +1356,21 @@ class Otf:
                 raise exc.AlreadyRatedError(f"Workout {performance_summary_id} is already rated.") from None
             raise
 
-    def get_workout(self, booking_id: str) -> models.Workout:
-        """Get the member's workout. This is a wrapper around the get_workouts method that returns only one workout.
+    def get_workout_from_booking(self, booking: str | models.BookingV2) -> models.Workout:
+        """Get a workout for a specific booking.
 
         Args:
-            booking_id (str | None): The booking ID to get the workout for. If None, the most recent workout will be
-                returned.
+            booking_id (str | Booking): The booking ID or Booking object to get the workout for.
 
         Returns:
             Workout: The member's workout.
+
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the workout does not exist.
         """
+        booking_id = booking if isinstance(booking, str) else booking.booking_id
+
         booking = self.get_booking_new(booking_id)
         if not booking:
             raise exc.BookingNotFoundError(f"Booking {booking_id} not found.")
@@ -1388,7 +1394,6 @@ class Otf:
             list[Workout]: The member's workouts.
         """
         start_date = start_date or pendulum.today().subtract(days=30).date()
-
         end_date = end_date or datetime.today().date()
 
         start_dtme = pendulum.datetime(start_date.year, start_date.month, start_date.day, 0, 0, 0)
@@ -1414,10 +1419,11 @@ class Otf:
         return workouts
 
     def _get_perf_summary_to_class_uuid_mapping(self) -> dict[str, str | None]:
-        """Get a mapping of performance summary IDs to class UUIDs.
+        """Get a mapping of performance summary IDs to class UUIDs. These will be used
+        when rating a class.
 
         Returns:
-            dict[str, str]: A dictionary mapping performance summary IDs to class UUIDs.
+            dict[str, str | None]: A dictionary mapping performance summary IDs to class UUIDs.
         """
         perf_summaries = self._get_performance_summaries_raw()["items"]
         return {item["id"]: item["class"].get("ot_base_class_uuid") for item in perf_summaries}
@@ -1429,21 +1435,18 @@ class Otf:
             performance_summary_ids (list[str]): The performance summary IDs to get.
 
         Returns:
-            dict[str, dict[str, Any]]: A dictionary of raw performance summaries, keyed by performance summary ID.
+            dict[str, dict[str, Any]]: A dictionary of performance summaries, keyed by performance summary ID.
         """
-        perf_summaries_dict = {}
-        with ThreadPoolExecutor(max_workers=10) as executor:
-            future_to_perf_summary = {
-                perf_id: executor.submit(self._get_performance_summary_raw, perf_id)
-                for perf_id in performance_summary_ids
-            }
-            for workout_id, future in future_to_perf_summary.items():
-                perf_summaries_dict[workout_id] = future.result()
+
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            perf_summaries = pool.map(self._get_performance_summary_raw, performance_summary_ids)
+
+        perf_summaries_dict = {perf_summary["id"]: perf_summary for perf_summary in perf_summaries}
         return perf_summaries_dict
 
     def _get_telemetry_threaded(
         self, performance_summary_ids: list[str], max_data_points: int = 150
-    ) -> dict[str, dict[str, Any]]:
+    ) -> dict[str, models.Telemetry]:
         """Get telemetry in a ThreadPoolExecutor, to speed up the process.
 
         Args:
@@ -1451,16 +1454,12 @@ class Otf:
             max_data_points (int): The max data points to use for the telemetry. Default is 150.
 
         Returns:
-            dict[str, dict[str, Any]]: A dictionary of raw telemetry, keyed by performance summary ID.
+            dict[str, Telemetry]: A dictionary of telemetry, keyed by performance summary ID.
         """
-        telemetry_dict = {}
-        with ThreadPoolExecutor(max_workers=10) as executor:
-            future_to_perf_summary = {
-                perf_id: executor.submit(self._get_telemetry_raw, perf_id, max_data_points)
-                for perf_id in performance_summary_ids
-            }
-            for workout_id, future in future_to_perf_summary.items():
-                telemetry_dict[workout_id] = future.result()
+        partial_fn = partial(self.get_telemetry, max_data_points=max_data_points)
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            telemetry = pool.map(partial_fn, performance_summary_ids)
+        telemetry_dict = {perf_summary.performance_summary_id: perf_summary for perf_summary in telemetry}
         return telemetry_dict
 
     def rate_class_from_workout(
@@ -1483,22 +1482,16 @@ class Otf:
         Raises:
             AlreadyRatedError: If the performance summary is already rated.
             ClassNotRatableError: If the performance summary is not rateable.
-            ValueError: If the performance summary does not have an associated class uuid.
         """
 
-        if not workout.ratable:
-            raise exc.ClassNotRatableError(f"Performance summary {workout.performance_summary_id} is not rateable.")
+        if not workout.ratable or not workout.class_uuid:
+            raise exc.ClassNotRatableError(f"Workout {workout.performance_summary_id} is not rateable.")
 
         if workout.class_rating is not None or workout.coach_rating is not None:
-            raise exc.AlreadyRatedError(f"Performance summary {workout.performance_summary_id} already rated.")
+            raise exc.AlreadyRatedError(f"Workout {workout.performance_summary_id} already rated.")
 
-        if not workout.class_uuid:
-            raise ValueError(
-                f"Performance summary {workout.performance_summary_id} does not have an associated class uuid."
-            )
-
-        self._rate_class(workout.class_uuid, workout.performance_summary_id, class_rating, coach_rating)
-        return self.get_workout(workout.booking_id)
+        self.rate_class(workout.class_uuid, workout.performance_summary_id, class_rating, coach_rating)
+        return self.get_workout_from_booking(workout.booking_id)
 
     # the below do not return any data for me, so I can't test them
 
