@@ -48,8 +48,6 @@ class Workout(OtfItemBase):
 
     otf_class: BookingV2Class
     studio: BookingV2Studio
-    v2_workout: BookingV2Workout
-
     telemetry: Telemetry | None = None
 
     def __init__(self, **data):
@@ -69,10 +67,16 @@ class Workout(OtfItemBase):
         data["coach"] = otf_class.coach
         data["ratable"] = v2_booking.ratable  # this seems to be more accurate
 
-        data["v2_workout"] = v2_workout
+        # data["v2_workout"] = v2_workout
         data["booking_id"] = v2_booking.booking_id
         data["active_time_seconds"] = v2_workout.active_time_seconds
         data["class_rating"] = v2_booking.class_rating
         data["coach_rating"] = v2_booking.coach_rating
+
+        telemetry = data.get("telemetry")
+        if telemetry and isinstance(telemetry, Telemetry):
+            # max_hr seems to be left out of the heart rate data - it has peak_hr but they do not match
+            # so if we have telemetry data, we can get the max_hr from there
+            data["details"]["heart_rate"]["max_hr"] = telemetry.max_hr
 
         super().__init__(**data)
