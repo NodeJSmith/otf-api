@@ -39,8 +39,8 @@ class BookingV2Class(OtfItemBase):
     studio: BookingV2Studio | None = None
     coach: str | None = Field(None, validation_alias=AliasPath("coach", "first_name"))
 
-    ot_base_class_uuid: str | None = Field(
-        None, description="Only present when class is ratable", exclude=True, repr=False
+    class_uuid: str | None = Field(
+        None, alias="ot_base_class_uuid", description="Only present when class is ratable", exclude=True, repr=False
     )
     starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True, repr=False)
 
