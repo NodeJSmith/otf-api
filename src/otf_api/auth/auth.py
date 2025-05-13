@@ -272,3 +272,69 @@ class OtfCognito(Cognito):
         self.device_key = device_metadata.get("DeviceKey", self.device_key)
         self.device_group_key = device_metadata.get("DeviceGroupKey", self.device_group_key)
         CRED_CACHE.write_to_cache(self.device_metadata)
+
+
+class HttpxCognitoAuth(httpx.Auth):
+    http_header: str = "Authorization"
+    http_header_prefix: str = "Bearer "
+
+    def __init__(self, cognito: OtfCognito):
+        """HTTPX Authentication extension for Cognito User Pools.
+
+        Args:
+            cognito (Cognito): A Cognito instance.
+        """
+
+        self.cognito = cognito
+
+    def auth_flow(self, request: httpx.Request) -> Generator[httpx.Request, Any, None]:
+        self.cognito.check_token(renew=True)
+
+        token = self.cognito.id_token
+
+        assert isinstance(token, str), "Token is not a string"
+
+        request.headers[self.http_header] = self.http_header_prefix + token
+
+        if request.headers.get("SIGV4AUTH_REQUIRED"):
+            del request.headers["SIGV4AUTH_REQUIRED"]
+            yield from self.sign_httpx_request(request)
+            return
+
+        yield request
+
+    def sign_httpx_request(self, request: httpx.Request) -> Generator[httpx.Request, Any, None]:
+        """
+        Sign an HTTP request using AWS SigV4 for use with httpx.
+        """
+        headers = request.headers.copy()
+
+        # ensure this header is not included, it will break the signature
+        headers.pop("connection", None)
+
+        body = b"" if request.method in ("GET", "HEAD") else request.content or b""
+
+        if hasattr(body, "read"):
+            raise ValueError("Streaming bodies are not supported in signed requests")
+
+        creds = self.cognito.get_identity_credentials()
+
+        credentials = Credentials(
+            access_key=creds["AccessKeyId"], secret_key=creds["SecretKey"], token=creds["SessionToken"]
+        )
+
+        aws_request = AWSRequest(method=request.method, url=str(request.url), data=body, headers=headers)
+
+        SigV4Auth(credentials, "execute-api", REGION).add_auth(aws_request)
+
+        signed_headers = dict(aws_request.headers.items())
+
+        # Return a brand new request object with signed headers
+        signed_request = httpx.Request(
+            method=request.method,
+            url=request.url,
+            headers=signed_headers,
+            content=body,
+        )
+
+        yield signed_request

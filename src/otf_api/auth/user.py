@@ -2,9 +2,8 @@ from logging import getLogger
 
 import attrs
 
-from otf_api.auth.auth import CRED_CACHE, NoCredentialsError, OtfCognito
+from otf_api.auth.auth import CRED_CACHE, HttpxCognitoAuth, NoCredentialsError, OtfCognito
 from otf_api.auth.utils import (
-    HttpxCognitoAuth,
     can_provide_input,
     get_credentials_from_env,
     prompt_for_username_and_password,
