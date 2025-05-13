@@ -1,14 +1,50 @@
 from datetime import datetime
+from logging import getLogger
 
+import pendulum
 from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import ClassType
+from otf_api.models.enums import BookingStatus, ClassType
 from otf_api.models.mixins import AddressMixin, PhoneLongitudeLatitudeMixin
 from otf_api.models.performance_summary import ZoneTimeMinutes
 
+LOGGER = getLogger(__name__)
+
 
 class Address(AddressMixin, OtfItemBase): ...
+
+
+def get_end_time(start_time: datetime, class_type: ClassType) -> datetime:
+    """
+    Get the end time of a class based on the start time and class type.
+    """
+
+    start_time = pendulum.instance(start_time)
+
+    match class_type:
+        case ClassType.ORANGE_60:
+            return start_time.add(minutes=60)
+        case ClassType.ORANGE_90:
+            return start_time.add(minutes=90)
+        case ClassType.STRENGTH_50 | ClassType.TREAD_50:
+            return start_time.add(minutes=50)
+        case ClassType.OTHER:
+            LOGGER.warning(
+                f"Class type {class_type} does not have defined length, returning start time plus 60 minutes"
+            )
+            return start_time.add(minutes=60)
+        case _:
+            LOGGER.warning(f"Class type {class_type} is not recognized, returning start time plus 60 minutes")
+            return start_time.add(minutes=60)
+
+    # if class_type == ClassType.ORANGE_60:
+    #     return start_time.add(minutes=60)
+
+    # if class_type == ClassType.ORANGE_90:
+    #     return start_time.add(minutes=90)
+
+    # if class_type in
 
 
 class Rating(OtfItemBase):
@@ -44,6 +80,10 @@ class BookingV2Class(OtfItemBase):
     )
     starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True, repr=False)
 
+    def __str__(self) -> str:
+        starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
+        return f"Class: {starts_at_str} {self.name} - {self.coach}"
+
 
 class BookingV2Workout(OtfItemBase):
     id: str
@@ -68,7 +108,7 @@ class BookingV2(OtfItemBase):
     checked_in: bool
     canceled: bool
     late_canceled: bool | None = None
-    canceled_at: str | None = None
+    canceled_at: datetime | None = None
     ratable: bool
 
     otf_class: BookingV2Class = Field(..., alias="class")
@@ -91,3 +131,49 @@ class BookingV2(OtfItemBase):
     updated_at: datetime | None = Field(
         None, description="Date the booking was updated, not when the booking was made", exclude=True, repr=False
     )
+
+    @property
+    def status(self) -> BookingStatus:
+        """Emulates the booking status from the old API, but with less specificity"""
+        if self.late_canceled:
+            return BookingStatus.LateCancelled
+
+        if self.checked_in:
+            return BookingStatus.CheckedIn
+
+        if self.canceled:
+            return BookingStatus.Cancelled
+
+        return BookingStatus.Booked
+
+    @property
+    def studio_uuid(self) -> str:
+        """Shortcut to get the studio UUID"""
+        if self.otf_class.studio is None:
+            return ""
+        return self.otf_class.studio.studio_uuid
+
+    @property
+    def class_uuid(self) -> str:
+        """Shortcut to get the class UUID"""
+        if self.otf_class.class_uuid is None:
+            return ""
+        return self.otf_class.class_uuid
+
+    @property
+    def starts_at(self) -> datetime:
+        """Shortcut to get the class start time"""
+        return self.otf_class.starts_at
+
+    @property
+    def ends_at(self) -> datetime:
+        """Shortcut to get the class end time"""
+        return get_end_time(self.otf_class.starts_at, self.otf_class.class_type)
+
+    def __str__(self) -> str:
+        starts_at_str = self.otf_class.starts_at.strftime("%a %b %d, %I:%M %p")
+        class_name = self.otf_class.name
+        coach_name = self.otf_class.coach
+        booked_str = self.status.value
+
+        return f"Booking: {starts_at_str} {class_name} - {coach_name} ({booked_str})"
