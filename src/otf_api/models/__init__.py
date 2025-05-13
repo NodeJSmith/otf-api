@@ -1,6 +1,6 @@
 from .body_composition_list import BodyCompositionData
 from .bookings import Booking
-from .bookings_v2 import BookingV2
+from .bookings_v2 import BookingV2, BookingV2Class
 from .challenge_tracker_content import ChallengeTracker
 from .challenge_tracker_detail import FitnessBenchmark
 from .classes import OtfClass
@@ -33,6 +33,7 @@ __all__ = [
     "Booking",
     "BookingStatus",
     "BookingV2",
+    "BookingV2Class",
     "ChallengeCategory",
     "ChallengeTracker",
     "ClassType",
