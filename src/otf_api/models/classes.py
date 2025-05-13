@@ -29,7 +29,7 @@ class OtfClass(OtfItemBase):
     full: bool | None = None
     max_capacity: int | None = None
     waitlist_available: bool | None = None
-    waitlist_size: int | None = None
+    waitlist_size: int | None = Field(None, description="The number of people on the waitlist")
     is_booked: bool | None = Field(None, description="Custom helper field to determine if class is already booked")
     is_cancelled: bool | None = Field(None, alias="canceled")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
