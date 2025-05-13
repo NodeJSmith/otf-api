@@ -1,13 +1,19 @@
+# pyright: reportTypedDictNotRequiredAccess=none
 import platform
 import typing
+from collections.abc import Generator
 from logging import getLogger
 from pathlib import Path
 from time import sleep
 from typing import Any, ClassVar
 
+import httpx
 from boto3 import Session
 from botocore import UNSIGNED
+from botocore.auth import SigV4Auth
+from botocore.awsrequest import AWSRequest
 from botocore.config import Config
+from botocore.credentials import Credentials
 from botocore.exceptions import ClientError
 from pycognito import AWSSRP, Cognito
 from pycognito.aws_srp import generate_hash_device
@@ -15,6 +21,7 @@ from pycognito.aws_srp import generate_hash_device
 from otf_api.utils import CacheableData
 
 if typing.TYPE_CHECKING:
+    from mypy_boto3_cognito_identity import CognitoIdentityClient
     from mypy_boto3_cognito_idp import CognitoIdentityProviderClient
     from mypy_boto3_cognito_idp.type_defs import InitiateAuthResponseTypeDef
 
@@ -23,6 +30,9 @@ CLIENT_ID = "1457d19r0pcjgmp5agooi0rb1b"  # from android app
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
 REGION = "us-east-1"
 COGNITO_IDP_URL = f"https://cognito-idp.{REGION}.amazonaws.com/"
+
+ID_POOL_ID = "us-east-1:4943c880-fb02-4fd7-bc37-2f4c32ecb2a3"
+PROVIDER_KEY = f"cognito-idp.{REGION}.amazonaws.com/{USER_POOL_ID}"
 
 BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
 CRED_CACHE = CacheableData("creds", Path("~/.otf-api"))
@@ -98,8 +108,12 @@ class OtfCognito(Cognito):
         self.device_group_key = dd.get("device_group_key")  # type: ignore
         self.device_password = dd.get("device_password")  # type: ignore
 
-        self.client: CognitoIdentityProviderClient = Session().client(
+        self.idp_client: CognitoIdentityProviderClient = Session().client(
             "cognito-idp", config=BOTO_CONFIG, region_name=REGION
+        )  # type: ignore
+
+        self.id_client: CognitoIdentityClient = Session().client(
+            "cognito-identity", config=BOTO_CONFIG, region_name=REGION
         )  # type: ignore
 
         try:
@@ -132,6 +146,15 @@ class OtfCognito(Cognito):
         self.verify_tokens()
         CRED_CACHE.write_to_cache(self.tokens)
 
+    def get_identity_credentials(self):
+        """Get the AWS credentials for the user using the Cognito Identity Pool.
+        This is used to access AWS resources using the Cognito Identity Pool."""
+        cognito_id = self.id_client.get_id(IdentityPoolId=ID_POOL_ID, Logins={PROVIDER_KEY: self.id_token})
+        creds = self.id_client.get_credentials_for_identity(
+            IdentityId=cognito_id["IdentityId"], Logins={PROVIDER_KEY: self.id_token}
+        )
+        return creds["Credentials"]
+
     @property
     def tokens(self) -> dict[str, str]:
         tokens = {
@@ -160,7 +183,7 @@ class OtfCognito(Cognito):
             password=password,
             pool_id=USER_POOL_ID,
             client_id=CLIENT_ID,
-            client=self.client,
+            client=self.idp_client,
         )
         try:
             tokens: InitiateAuthResponseTypeDef = aws.authenticate_user()
@@ -191,7 +214,7 @@ class OtfCognito(Cognito):
             self.device_group_key, self.device_key
         )
 
-        self.client.confirm_device(
+        self.idp_client.confirm_device(
             AccessToken=self.access_token,
             DeviceKey=self.device_key,
             DeviceSecretVerifierConfig=device_secret_verifier_config,  # type: ignore (pycognito is untyped)
@@ -220,7 +243,7 @@ class OtfCognito(Cognito):
         if not self.refresh_token:
             raise ValueError("No refresh token set - cannot renew access token")
 
-        refresh_response = self.client.initiate_auth(
+        refresh_response = self.idp_client.initiate_auth(
             ClientId=self.client_id,
             AuthFlow="REFRESH_TOKEN_AUTH",
             AuthParameters={"REFRESH_TOKEN": self.refresh_token, "DEVICE_KEY": self.device_key},
