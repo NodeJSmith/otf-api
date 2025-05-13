@@ -18,12 +18,16 @@ from otf_api import exceptions as exc
 from otf_api import filters, models
 from otf_api.auth import OtfUser
 from otf_api.models.enums import HISTORICAL_BOOKING_STATUSES
-from otf_api.utils import ensure_date, ensure_list, get_booking_uuid, get_class_uuid
+from otf_api.utils import ensure_date, ensure_datetime, ensure_list, get_booking_id, get_booking_uuid, get_class_uuid
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
 API_TELEMETRY_BASE_URL = "api.yuzu.orangetheory.com"
-JSON_HEADERS = {"Content-Type": "application/json", "Accept": "application/json"}
+HEADERS = {
+    "content-type": "application/json",
+    "accept": "application/json",
+    "user-agent": "okhttp/4.12.0",
+}
 LOGGER = getLogger(__name__)
 
 
@@ -46,7 +50,7 @@ class Otf:
         self.member_uuid = self.user.member_uuid
 
         self.session = httpx.Client(
-            headers=JSON_HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
+            headers=HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
         )
         atexit.register(self.session.close)
 
@@ -101,6 +105,16 @@ class Otf:
             if e.response.status_code == 404:
                 raise exc.ResourceNotFoundError("Resource not found")
 
+            try:
+                resp_text = e.response.json()
+            except JSONDecodeError:
+                resp_text = e.response.text
+
+            LOGGER.exception(f"Error making request - {resp_text!r}: {type(e).__name__} {e}")
+
+            LOGGER.info(f"Request details: {vars(request)}")
+            LOGGER.info(f"Response details: {vars(response)}")
+
             raise
 
         except Exception as e:
@@ -128,26 +142,65 @@ class Otf:
 
         return resp
 
-    def _classes_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+    def _classes_request(
+        self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
+    ) -> Any:
         """Perform an API request to the classes API."""
-        return self._do(method, API_IO_BASE_URL, url, params)
+        return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
 
-    def _default_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs: Any) -> Any:
+    def _default_request(
+        self,
+        method: str,
+        url: str,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, Any] | None = None,
+        **kwargs: Any,
+    ) -> Any:
         """Perform an API request to the default API."""
-        return self._do(method, API_BASE_URL, url, params, **kwargs)
+        return self._do(method, API_BASE_URL, url, params, headers=headers, **kwargs)
 
-    def _telemetry_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+    def _telemetry_request(
+        self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
+    ) -> Any:
         """Perform an API request to the Telemetry API."""
-        return self._do(method, API_TELEMETRY_BASE_URL, url, params)
+        return self._do(method, API_TELEMETRY_BASE_URL, url, params, headers=headers)
 
-    def _performance_summary_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+    def _performance_summary_request(
+        self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
+    ) -> Any:
         """Perform an API request to the performance summary API."""
         perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
-        return self._do(method, API_IO_BASE_URL, url, params, perf_api_headers)
+        headers = perf_api_headers | (headers or {})
+
+        return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
 
     def _get_classes_raw(self, studio_uuids: list[str] | None) -> dict:
         """Retrieve raw class data."""
         return self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
+
+    def _cancel_booking_raw(self, booking_uuid: str) -> dict:
+        """Cancel a booking by booking_uuid."""
+        return self._default_request(
+            "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params={"confirmed": "true"}
+        )
+
+    def _book_class_raw(self, class_uuid, body):
+        try:
+            resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
+        except exc.OtfRequestError as e:
+            resp_obj = e.response.json()
+
+            if resp_obj["code"] == "ERROR":
+                err_code = resp_obj["data"]["errorCode"]
+                if err_code == "603":
+                    raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
+                if err_code == "602":
+                    raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
+
+            raise
+        except Exception as e:
+            raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
+        return resp
 
     def _get_booking_raw(self, booking_uuid: str) -> dict:
         """Retrieve raw booking data."""
@@ -167,15 +220,13 @@ class Otf:
 
     def _get_bookings_new_raw(
         self,
-        ends_before: datetime | None = None,
-        starts_after: datetime | None = None,
+        ends_before: datetime,
+        starts_after: datetime,
         include_canceled: bool = True,
         expand: bool = False,
     ) -> dict:
         """Retrieve raw bookings data."""
 
-        ends_before = ends_before or pendulum.today().start_of("day").add(days=45)
-        starts_after = starts_after or pendulum.datetime(1970, 1, 1).start_of("day")
         params: dict[str, bool | str] = {
             "ends_before": pendulum.instance(ends_before).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "starts_after": pendulum.instance(starts_after).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -186,9 +237,17 @@ class Otf:
 
         return self._classes_request("GET", "/v1/bookings/me", params=params)
 
+    def _cancel_booking_new_raw(self, booking_id: str) -> dict:
+        """Cancel a booking by booking_id."""
+        return self._classes_request("DELETE", f"/v1/bookings/me/{booking_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
+
     def _get_booking_new_raw(self, booking_id: str) -> dict:
         """Retrieve raw booking data."""
-        return self._classes_request("GET", f"/v1/bookings/me/{booking_id}")
+        return self._classes_request("GET", f"/v1/bookings/me/{booking_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
+
+    def _book_class_new_raw(self, class_id: str) -> dict:
+        """Book a class by class_id."""
+        return self._classes_request("POST", f"/v1/bookings/me/{class_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
 
     def _get_member_detail_raw(self) -> dict:
         """Retrieve raw member details."""
@@ -368,14 +427,45 @@ class Otf:
             json={"firstName": first_name, "lastName": last_name},
         )
 
+    def _get_all_bookings_new(self) -> list[models.BookingV2]:
+        """Get bookings from the new endpoint with no date filters."""
+        start_date = pendulum.datetime(1970, 1, 1)
+        end_date = pendulum.today().start_of("day").add(days=45)
+        return self.get_bookings_new(start_date, end_date, exclude_canceled=False)
+
     def get_bookings_new(
         self,
-        start_dtme: datetime | None = None,
-        end_dtme: datetime | None = None,
-        include_canceled: bool = True,
-        expand: bool = True,
+        start_dtme: datetime | str | None = None,
+        end_dtme: datetime | str | None = None,
+        exclude_canceled: bool = True,
     ) -> list[models.BookingV2]:
-        """Get the bookings for the user."""
+        """Get the bookings for the user. If no dates are provided, it will return all bookings
+        between today and 45 days from now.
+
+        Warning:
+            ---
+        If you do not exclude cancelled bookings, you may receive multiple bookings for the same workout, such
+        as when a class changes from a 2G to a 3G. Apparently the system actually creates a new booking for the
+        new class, which is normally transparent to the user.
+
+        Args:
+            start_dtme (datetime | str | None): The start date for the bookings. Default is None.
+            end_dtme (datetime | str | None): The end date for the bookings. Default is None.
+            exclude_canceled (bool): Whether to exclude canceled bookings. Default is True.
+        Returns:
+            list[BookingV2]: The bookings for the user.
+        """
+
+        expand = True  # this doesn't seem to have an effect? so leaving it out of the argument list
+
+        # leaving the parameter as `exclude_canceled` for backwards compatibility
+        include_canceled = not exclude_canceled
+
+        end_dtme = ensure_datetime(end_dtme)
+        start_dtme = ensure_datetime(start_dtme)
+
+        end_dtme = end_dtme or pendulum.today().start_of("day").add(days=45)
+        start_dtme = start_dtme or pendulum.datetime(1970, 1, 1).start_of("day")
 
         bookings_resp = self._get_bookings_new_raw(
             ends_before=end_dtme, starts_after=start_dtme, include_canceled=include_canceled, expand=expand
@@ -385,13 +475,14 @@ class Otf:
 
     def get_booking_new(self, booking_id: str) -> models.BookingV2:
         """Get a booking by ID."""
+        raise NotImplementedError("This method is not implemented yet, as we do not yet have the correct credentials.")
         booking_resp = self._get_booking_new_raw(booking_id)
         return models.BookingV2(**booking_resp)
 
     def get_classes(
         self,
-        start_date: date | None = None,
-        end_date: date | None = None,
+        start_date: date | str | None = None,
+        end_date: date | str | None = None,
         studio_uuids: list[str] | None = None,
         include_home_studio: bool | None = None,
         filters: list[filters.ClassFilter] | filters.ClassFilter | None = None,
@@ -413,6 +504,9 @@ class Otf:
         Returns:
             list[OtfClass]: The classes for the user.
         """
+
+        start_date = ensure_date(start_date)
+        end_date = ensure_date(end_date)
 
         classes = self._get_classes(studio_uuids, include_home_studio)
 
@@ -574,6 +668,29 @@ class Otf:
 
         raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
 
+    def get_booking_from_class_new(self, otf_class: str | models.OtfClass | models.BookingV2Class) -> models.BookingV2:
+        """Get a specific booking by class_uuid or OtfClass object.
+
+        Args:
+            otf_class (str | OtfClass | BookingV2Class): The class UUID or the OtfClass object to get the booking for.
+
+        Returns:
+            BookingV2: The booking.
+
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ValueError: If class_uuid is None or empty string.
+        """
+
+        class_uuid = get_class_uuid(otf_class)
+
+        all_bookings = self._get_all_bookings_new()
+
+        if booking := next((b for b in all_bookings if b.class_uuid == class_uuid), None):
+            return booking
+
+        raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
+
     def book_class(self, otf_class: str | models.OtfClass) -> models.Booking:
         """Book a class by providing either the class_uuid or the OtfClass object.
 
@@ -599,21 +716,7 @@ class Otf:
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
-        try:
-            resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
-        except exc.OtfRequestError as e:
-            resp_obj = e.response.json()
-
-            if resp_obj["code"] == "ERROR":
-                err_code = resp_obj["data"]["errorCode"]
-                if err_code == "603":
-                    raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
-                if err_code == "602":
-                    raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
-
-            raise
-        except Exception as e:
-            raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
+        resp = self._book_class_raw(class_uuid, body)
 
         # get the booking uuid - we will only use this to return a Booking object using `get_booking`
         # this is an attempt to improve on OTF's terrible data model
@@ -676,21 +779,44 @@ class Otf:
             ValueError: If booking_uuid is None or empty string
             BookingNotFoundError: If the booking does not exist.
         """
+        if isinstance(booking, models.BookingV2):
+            LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
+            self.cancel_booking_new(booking)
+
         booking_uuid = get_booking_uuid(booking)
 
-        try:
-            self.get_booking(booking_uuid)
-        except Exception:
-            raise exc.BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
+        if booking == booking_uuid:  # ensure this booking exists by calling the booking endpoint
+            try:
+                self.get_booking(booking_uuid)
+            except Exception:
+                raise exc.BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
 
-        params = {"confirmed": "true"}
-        resp = self._default_request(
-            "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params=params
-        )
+        resp = self._cancel_booking_raw(booking_uuid)
         if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
             raise exc.BookingAlreadyCancelledError(
                 f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
             )
+
+    def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
+        """Cancel a booking by providing either the booking_id or the BookingV2 object.
+        Args:
+            booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
+        Raises:
+            ValueError: If booking_id is None or empty string
+            BookingNotFoundError: If the booking does not exist.
+        """
+        raise NotImplementedError("This method is not implemented yet, as we do not yet have the correct credentials.")
+
+        if isinstance(booking, models.Booking):
+            LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
+            self.cancel_booking(booking)
+
+        booking_id = get_booking_id(booking)
+
+        if booking == booking_id:  # ensure this booking exists by calling the booking endpoint
+            self.get_booking_new(booking_id)
+
+        self._cancel_booking_new_raw(booking_id)
 
     def get_bookings(
         self,
@@ -1369,6 +1495,7 @@ class Otf:
             BookingNotFoundError: If the booking does not exist.
             ResourceNotFoundError: If the workout does not exist.
         """
+        raise NotImplementedError("This method is not implemented yet, as we do not yet have the correct credentials.")
         booking_id = booking if isinstance(booking, str) else booking.booking_id
 
         booking = self.get_booking_new(booking_id)
@@ -1383,7 +1510,9 @@ class Otf:
         workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
         return workout
 
-    def get_workouts(self, start_date: date | None = None, end_date: date | None = None) -> list[models.Workout]:
+    def get_workouts(
+        self, start_date: date | str | None = None, end_date: date | str | None = None
+    ) -> list[models.Workout]:
         """Get the member's workouts, using the new bookings endpoint and the performance summary endpoint.
 
         Args:
@@ -1393,13 +1522,13 @@ class Otf:
         Returns:
             list[Workout]: The member's workouts.
         """
-        start_date = start_date or pendulum.today().subtract(days=30).date()
-        end_date = end_date or datetime.today().date()
+        start_date = ensure_date(start_date) or pendulum.today().subtract(days=30).date()
+        end_date = ensure_date(end_date) or datetime.today().date()
 
         start_dtme = pendulum.datetime(start_date.year, start_date.month, start_date.day, 0, 0, 0)
         end_dtme = pendulum.datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
 
-        bookings = self.get_bookings_new(start_dtme, end_dtme, include_canceled=False)
+        bookings = self.get_bookings_new(start_dtme, end_dtme, exclude_canceled=False)
         bookings_dict = {b.workout.id: b for b in bookings if b.workout}
 
         perf_summaries_dict = self._get_perf_summaries_threaded(list(bookings_dict.keys()))
