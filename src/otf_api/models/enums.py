@@ -157,6 +157,7 @@ class ChallengeCategory(IntEnum):
     RemixInSix = 65
     Push = 66
     QuarterMileTreadmill = 69
+    OneThousandMeterRow = 70
 
 
 class DriTriChallengeSubCategory(IntEnum):
