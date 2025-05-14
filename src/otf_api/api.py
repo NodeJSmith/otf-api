@@ -18,7 +18,7 @@ from otf_api import exceptions as exc
 from otf_api import filters, models
 from otf_api.auth import OtfUser
 from otf_api.models.enums import HISTORICAL_BOOKING_STATUSES
-from otf_api.utils import ensure_date, ensure_datetime, ensure_list, get_booking_id, get_booking_uuid, get_class_uuid
+from otf_api.utils import ensure_date, ensure_datetime, ensure_list, get_booking_uuid, get_class_uuid  # get_booking_id
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
@@ -473,11 +473,10 @@ class Otf:
 
         return [models.BookingV2(**b) for b in bookings_resp["items"]]
 
-    def get_booking_new(self, booking_id: str) -> models.BookingV2:
-        """Get a booking by ID."""
-        raise NotImplementedError("This method is not implemented yet, as we do not yet have the correct credentials.")
-        booking_resp = self._get_booking_new_raw(booking_id)
-        return models.BookingV2(**booking_resp)
+    # def get_booking_new(self, booking_id: str) -> models.BookingV2:
+    #     """Get a booking by ID."""
+    #     booking_resp = self._get_booking_new_raw(booking_id)
+    #     return models.BookingV2(**booking_resp)
 
     def get_classes(
         self,
@@ -779,9 +778,9 @@ class Otf:
             ValueError: If booking_uuid is None or empty string
             BookingNotFoundError: If the booking does not exist.
         """
-        if isinstance(booking, models.BookingV2):
-            LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
-            self.cancel_booking_new(booking)
+        # if isinstance(booking, models.BookingV2):
+        #     LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
+        #     self.cancel_booking_new(booking)
 
         booking_uuid = get_booking_uuid(booking)
 
@@ -797,26 +796,25 @@ class Otf:
                 f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
             )
 
-    def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
-        """Cancel a booking by providing either the booking_id or the BookingV2 object.
-        Args:
-            booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
-        Raises:
-            ValueError: If booking_id is None or empty string
-            BookingNotFoundError: If the booking does not exist.
-        """
-        raise NotImplementedError("This method is not implemented yet, as we do not yet have the correct credentials.")
+    # def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
+    #     """Cancel a booking by providing either the booking_id or the BookingV2 object.
+    #     Args:
+    #         booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
+    #     Raises:
+    #         ValueError: If booking_id is None or empty string
+    #         BookingNotFoundError: If the booking does not exist.
+    #     """
 
-        if isinstance(booking, models.Booking):
-            LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
-            self.cancel_booking(booking)
+    #     if isinstance(booking, models.Booking):
+    #         LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
+    #         self.cancel_booking(booking)
 
-        booking_id = get_booking_id(booking)
+    #     booking_id = get_booking_id(booking)
 
-        if booking == booking_id:  # ensure this booking exists by calling the booking endpoint
-            self.get_booking_new(booking_id)
+    #     if booking == booking_id:  # ensure this booking exists by calling the booking endpoint
+    #         self.get_booking_new(booking_id)
 
-        self._cancel_booking_new_raw(booking_id)
+    #     self._cancel_booking_new_raw(booking_id)
 
     def get_bookings(
         self,
@@ -1482,33 +1480,32 @@ class Otf:
                 raise exc.AlreadyRatedError(f"Workout {performance_summary_id} is already rated.") from None
             raise
 
-    def get_workout_from_booking(self, booking: str | models.BookingV2) -> models.Workout:
-        """Get a workout for a specific booking.
+    # def get_workout_from_booking(self, booking: str | models.BookingV2) -> models.Workout:
+    #     """Get a workout for a specific booking.
 
-        Args:
-            booking_id (str | Booking): The booking ID or Booking object to get the workout for.
+    #     Args:
+    #         booking_id (str | Booking): The booking ID or Booking object to get the workout for.
 
-        Returns:
-            Workout: The member's workout.
+    #     Returns:
+    #         Workout: The member's workout.
 
-        Raises:
-            BookingNotFoundError: If the booking does not exist.
-            ResourceNotFoundError: If the workout does not exist.
-        """
-        raise NotImplementedError("This method is not implemented yet, as we do not yet have the correct credentials.")
-        booking_id = booking if isinstance(booking, str) else booking.booking_id
+    #     Raises:
+    #         BookingNotFoundError: If the booking does not exist.
+    #         ResourceNotFoundError: If the workout does not exist.
+    #     """
+    #     booking_id = booking if isinstance(booking, str) else booking.booking_id
 
-        booking = self.get_booking_new(booking_id)
-        if not booking:
-            raise exc.BookingNotFoundError(f"Booking {booking_id} not found.")
+    #     booking = self.get_booking_new(booking_id)
+    #     if not booking:
+    #         raise exc.BookingNotFoundError(f"Booking {booking_id} not found.")
 
-        if not booking.workout or not booking.workout.performance_summary_id:
-            raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
+    #     if not booking.workout or not booking.workout.performance_summary_id:
+    #         raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
 
-        perf_summary = self._get_performance_summary_raw(booking.workout.performance_summary_id)
-        telemetry = self.get_telemetry(booking.workout.performance_summary_id)
-        workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
-        return workout
+    #     perf_summary = self._get_performance_summary_raw(booking.workout.performance_summary_id)
+    #     telemetry = self.get_telemetry(booking.workout.performance_summary_id)
+    #     workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
+    #     return workout
 
     def get_workouts(
         self, start_date: date | str | None = None, end_date: date | str | None = None
@@ -1596,7 +1593,7 @@ class Otf:
         workout: models.Workout,
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
-    ) -> models.Workout:
+    ) -> None:
         """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
             rate the class/coach. 1 - 3 is a range from bad to good.
 
@@ -1606,7 +1603,7 @@ class Otf:
             coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
 
         Returns:
-            Workout: The updated workout.
+            None
 
         Raises:
             AlreadyRatedError: If the performance summary is already rated.
@@ -1620,7 +1617,7 @@ class Otf:
             raise exc.AlreadyRatedError(f"Workout {workout.performance_summary_id} already rated.")
 
         self.rate_class(workout.class_uuid, workout.performance_summary_id, class_rating, coach_rating)
-        return self.get_workout_from_booking(workout.booking_id)
+        # return self.get_workout_from_booking(workout.booking_id)
 
     # the below do not return any data for me, so I can't test them
 
