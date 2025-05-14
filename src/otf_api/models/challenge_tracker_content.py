@@ -11,7 +11,7 @@ endpoint.
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import ChallengeCategory, EquipmentType
+from otf_api.models.enums import EquipmentType
 
 
 class Year(OtfItemBase):
@@ -39,7 +39,7 @@ class Challenge(OtfItemBase):
     # all related to the ChallengeType enums or the few SubCategory enums I've
     # been able to puzzle out. I haven't been able to link them to any code
     # in the OTF app. Due to that, they are being excluded from the model for now.
-    challenge_category_id: ChallengeCategory | None = Field(None, alias="ChallengeCategoryId")
+    challenge_category_id: int | None = Field(None, alias="ChallengeCategoryId")
     challenge_sub_category_id: int | None = Field(None, alias="ChallengeSubCategoryId")
     challenge_name: str | None = Field(None, alias="ChallengeName")
     years: list[Year] = Field(default_factory=list, alias="Years")

@@ -1206,14 +1206,14 @@ class Otf:
 
     def get_benchmarks(
         self,
-        challenge_category_id: models.ChallengeCategory | Literal[0] = 0,
+        challenge_category_id: int = 0,
         equipment_id: models.EquipmentType | Literal[0] = 0,
         challenge_subcategory_id: int = 0,
     ) -> list[models.FitnessBenchmark]:
         """Get the member's challenge tracker participation details.
 
         Args:
-            challenge_category_id (ChallengeType): The challenge type ID.
+            challenge_category_id (int): The challenge type ID.
             equipment_id (EquipmentType | Literal[0]): The equipment ID, default is 0 - this doesn't seem\
                 to be have any impact on the results.
             challenge_subcategory_id (int): The challenge sub type ID. Default is 0 - this doesn't seem\
@@ -1240,13 +1240,11 @@ class Otf:
 
         return benchmarks
 
-    def get_benchmarks_by_challenge_category(
-        self, challenge_category_id: models.ChallengeCategory
-    ) -> list[models.FitnessBenchmark]:
+    def get_benchmarks_by_challenge_category(self, challenge_category_id: int) -> list[models.FitnessBenchmark]:
         """Get the member's challenge tracker participation details by challenge.
 
         Args:
-            challenge_category_id (ChallengeType): The challenge type ID.
+            challenge_category_id (int): The challenge type ID.
 
         Returns:
             list[FitnessBenchmark]: The member's challenge tracker details.
@@ -1257,12 +1255,12 @@ class Otf:
 
         return benchmarks
 
-    def get_challenge_tracker_detail(self, challenge_category_id: models.ChallengeCategory) -> models.FitnessBenchmark:
+    def get_challenge_tracker_detail(self, challenge_category_id: int) -> models.FitnessBenchmark:
         """Get details about a challenge. This endpoint does not (usually) return member participation, but rather
         details about the challenge itself.
 
         Args:
-            challenge_category_id (ChallengeType): The challenge type ID.
+            challenge_category_id (int): The challenge type ID.
 
         Returns:
             FitnessBenchmark: Details about the challenge.
