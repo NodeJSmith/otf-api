@@ -295,6 +295,8 @@ class HttpxCognitoAuth(httpx.Auth):
 
         request.headers[self.http_header] = self.http_header_prefix + token
 
+        # as of now this is not used, but it took me too long to figure out how to do this to just remove it
+        # plus i think there is at least one endpoint that I haven't implemented yet that uses this
         if request.headers.get("SIGV4AUTH_REQUIRED"):
             del request.headers["SIGV4AUTH_REQUIRED"]
             yield from self.sign_httpx_request(request)
