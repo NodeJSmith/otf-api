@@ -1,6 +1,6 @@
 name: Test and Lint
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   test:
@@ -33,17 +33,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install tox ruff
+          curl -LsSf https://astral.sh/uv/0.6.6/install.sh | sh
+          uv sync
 
       - name: Run tests
-        run: tox -e ${{ matrix.python-version }}
+        run: uv run pytest
 
       - name: Run lint checks
-        run: tox -e lint
-
-      - name: Run mkdocs build
-        run: tox -e docs
-
-      - name: Run build checks
-        run: tox -e build
+        run: uv run pre-commit run --all-files

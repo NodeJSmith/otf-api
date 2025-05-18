@@ -4,7 +4,7 @@ from typing import Any
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import ChallengeCategory, EquipmentType
+from otf_api.models.enums import EquipmentType
 
 
 class MetricEntry(OtfItemBase):
@@ -74,7 +74,7 @@ class Goal(OtfItemBase):
 
 
 class FitnessBenchmark(OtfItemBase):
-    challenge_category_id: ChallengeCategory | None = Field(None, alias="ChallengeCategoryId")
+    challenge_category_id: int | None = Field(None, alias="ChallengeCategoryId")
     challenge_sub_category_id: int | None = Field(None, alias="ChallengeSubCategoryId")
     equipment_id: EquipmentType = Field(None, alias="EquipmentId")
     equipment_name: str | None = Field(None, alias="EquipmentName")

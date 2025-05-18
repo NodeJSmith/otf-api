@@ -7,10 +7,10 @@ from otf_api.models.enums import StudioStatus
 from otf_api.models.mixins import AddressMixin
 
 
-class StudioLocation(AddressMixin):
-    phone_number: str | None = Field(None, alias=AliasChoices("phone", "phoneNumber"))
-    latitude: float | None = Field(None, alias=AliasChoices("latitude"))
-    longitude: float | None = Field(None, alias=AliasChoices("longitude"))
+class StudioLocation(AddressMixin, OtfItemBase):
+    phone_number: str | None = Field(None, validation_alias=AliasChoices("phone", "phoneNumber"))
+    latitude: float | None = Field(None, validation_alias=AliasChoices("latitude"))
+    longitude: float | None = Field(None, validation_alias=AliasChoices("longitude"))
 
     physical_region: str | None = Field(None, alias="physicalRegion", exclude=True, repr=False)
     physical_country_id: int | None = Field(None, alias="physicalCountryId", exclude=True, repr=False)
@@ -27,7 +27,7 @@ class StudioDetail(OtfItemBase):
         exclude=True,
         repr=False,
     )
-    location: StudioLocation = Field(..., alias="studioLocation", default_factory=StudioLocation)
+    location: StudioLocation = Field(..., alias="studioLocation", default_factory=StudioLocation)  # type: ignore
     name: str | None = Field(None, alias="studioName")
     status: StudioStatus | None = Field(
         None, alias="studioStatus", description="Active, Temporarily Closed, Coming Soon"
@@ -41,13 +41,13 @@ class StudioDetail(OtfItemBase):
     accepts_visa_master_card: bool | None = Field(None, alias="acceptsVisaMasterCard", exclude=True, repr=False)
     allows_cr_waitlist: bool | None = Field(None, alias="allowsCrWaitlist", exclude=True, repr=False)
     allows_dashboard_access: bool | None = Field(None, alias="allowsDashboardAccess", exclude=True, repr=False)
-    is_crm: bool | None = Field(None, alias=AliasPath("studioProfiles", "isCrm"), exclude=True, repr=False)
+    is_crm: bool | None = Field(None, validation_alias=AliasPath("studioProfiles", "isCrm"), exclude=True, repr=False)
     is_integrated: bool | None = Field(
         None, alias="isIntegrated", exclude=True, repr=False, description="Always 'True'"
     )
     is_mobile: bool | None = Field(None, alias="isMobile", exclude=True, repr=False)
     is_otbeat: bool | None = Field(None, alias="isOtbeat", exclude=True, repr=False)
-    is_web: bool | None = Field(None, alias=AliasPath("studioProfiles", "isWeb"), exclude=True, repr=False)
+    is_web: bool | None = Field(None, validation_alias=AliasPath("studioProfiles", "isWeb"), exclude=True, repr=False)
     sms_package_enabled: bool | None = Field(None, alias="smsPackageEnabled", exclude=True, repr=False)
 
     # misc
@@ -62,3 +62,10 @@ class StudioDetail(OtfItemBase):
     studio_physical_location_id: int | None = Field(None, alias="studioPhysicalLocationId", exclude=True, repr=False)
     studio_token: str | None = Field(None, alias="studioToken", exclude=True, repr=False)
     studio_type_id: int | None = Field(None, alias="studioTypeId", exclude=True, repr=False)
+
+    @classmethod
+    def create_empty_model(cls, studio_uuid: str) -> "StudioDetail":
+        """Create an empty model with the given studio_uuid."""
+
+        # pylance doesn't know that the rest of the fields default to None, so we use type: ignore
+        return StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")  # type: ignore

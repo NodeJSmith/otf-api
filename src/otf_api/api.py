@@ -1,15 +1,15 @@
 import atexit
 import contextlib
-import functools
 from concurrent.futures import ThreadPoolExecutor
-from copy import deepcopy
 from datetime import date, datetime, timedelta
+from functools import partial
 from json import JSONDecodeError
 from logging import getLogger
 from typing import Any, Literal
 
 import attrs
 import httpx
+import pendulum
 from cachetools import TTLCache, cached
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 from yarl import URL
@@ -18,13 +18,18 @@ from otf_api import exceptions as exc
 from otf_api import filters, models
 from otf_api.auth import OtfUser
 from otf_api.models.enums import HISTORICAL_BOOKING_STATUSES
-from otf_api.utils import ensure_date, ensure_list, get_booking_uuid, get_class_uuid
+from otf_api.utils import ensure_date, ensure_datetime, ensure_list, get_booking_uuid, get_class_uuid  # get_booking_id
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
 API_TELEMETRY_BASE_URL = "api.yuzu.orangetheory.com"
-JSON_HEADERS = {"Content-Type": "application/json", "Accept": "application/json"}
+HEADERS = {
+    "content-type": "application/json",
+    "accept": "application/json",
+    "user-agent": "okhttp/4.12.0",
+}
 LOGGER = getLogger(__name__)
+LOGGED_ONCE: set[str] = set()
 
 
 @attrs.define(init=False)
@@ -46,7 +51,7 @@ class Otf:
         self.member_uuid = self.user.member_uuid
 
         self.session = httpx.Client(
-            headers=JSON_HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
+            headers=HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
         )
         atexit.register(self.session.close)
 
@@ -101,10 +106,18 @@ class Otf:
             if e.response.status_code == 404:
                 raise exc.ResourceNotFoundError("Resource not found")
 
-            if e.response.status_code == 403:
-                raise
+            try:
+                resp_text = e.response.json()
+            except JSONDecodeError:
+                resp_text = e.response.text
 
-            raise exc.OtfRequestError("Error making request", e, response=response, request=request)
+            LOGGER.exception(f"Error making request - {resp_text!r}: {type(e).__name__} {e}")
+
+            LOGGER.info(f"Request details: {vars(request)}")
+            LOGGER.info(f"Response details: {vars(response)}")
+
+            raise
+
         except Exception as e:
             LOGGER.exception(f"Error making request: {e}")
             raise
@@ -130,26 +143,65 @@ class Otf:
 
         return resp
 
-    def _classes_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+    def _classes_request(
+        self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
+    ) -> Any:
         """Perform an API request to the classes API."""
-        return self._do(method, API_IO_BASE_URL, url, params)
+        return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
 
-    def _default_request(self, method: str, url: str, params: dict[str, Any] | None = None, **kwargs: Any) -> Any:
+    def _default_request(
+        self,
+        method: str,
+        url: str,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, Any] | None = None,
+        **kwargs: Any,
+    ) -> Any:
         """Perform an API request to the default API."""
-        return self._do(method, API_BASE_URL, url, params, **kwargs)
+        return self._do(method, API_BASE_URL, url, params, headers=headers, **kwargs)
 
-    def _telemetry_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+    def _telemetry_request(
+        self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
+    ) -> Any:
         """Perform an API request to the Telemetry API."""
-        return self._do(method, API_TELEMETRY_BASE_URL, url, params)
+        return self._do(method, API_TELEMETRY_BASE_URL, url, params, headers=headers)
 
-    def _performance_summary_request(self, method: str, url: str, params: dict[str, Any] | None = None) -> Any:
+    def _performance_summary_request(
+        self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
+    ) -> Any:
         """Perform an API request to the performance summary API."""
         perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
-        return self._do(method, API_IO_BASE_URL, url, params, perf_api_headers)
+        headers = perf_api_headers | (headers or {})
+
+        return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
 
     def _get_classes_raw(self, studio_uuids: list[str] | None) -> dict:
         """Retrieve raw class data."""
         return self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
+
+    def _cancel_booking_raw(self, booking_uuid: str) -> dict:
+        """Cancel a booking by booking_uuid."""
+        return self._default_request(
+            "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params={"confirmed": "true"}
+        )
+
+    def _book_class_raw(self, class_uuid, body):
+        try:
+            resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
+        except exc.OtfRequestError as e:
+            resp_obj = e.response.json()
+
+            if resp_obj["code"] == "ERROR":
+                err_code = resp_obj["data"]["errorCode"]
+                if err_code == "603":
+                    raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
+                if err_code == "602":
+                    raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
+
+            raise
+        except Exception as e:
+            raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
+        return resp
 
     def _get_booking_raw(self, booking_uuid: str) -> dict:
         """Retrieve raw booking data."""
@@ -166,6 +218,37 @@ class Otf:
             f"/member/members/{self.member_uuid}/bookings",
             params={"startDate": start_date, "endDate": end_date, "statuses": status},
         )
+
+    def _get_bookings_new_raw(
+        self,
+        ends_before: datetime,
+        starts_after: datetime,
+        include_canceled: bool = True,
+        expand: bool = False,
+    ) -> dict:
+        """Retrieve raw bookings data."""
+
+        params: dict[str, bool | str] = {
+            "ends_before": pendulum.instance(ends_before).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "starts_after": pendulum.instance(starts_after).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        }
+
+        params["include_canceled"] = include_canceled if include_canceled is not None else True
+        params["expand"] = expand if expand is not None else False
+
+        return self._classes_request("GET", "/v1/bookings/me", params=params)
+
+    def _cancel_booking_new_raw(self, booking_id: str) -> dict:
+        """Cancel a booking by booking_id."""
+        return self._classes_request("DELETE", f"/v1/bookings/me/{booking_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
+
+    def _get_booking_new_raw(self, booking_id: str) -> dict:
+        """Retrieve raw booking data."""
+        return self._classes_request("GET", f"/v1/bookings/me/{booking_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
+
+    def _book_class_new_raw(self, class_id: str) -> dict:
+        """Book a class by class_id."""
+        return self._classes_request("POST", f"/v1/bookings/me/{class_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
 
     def _get_member_detail_raw(self) -> dict:
         """Retrieve raw member details."""
@@ -190,7 +273,7 @@ class Otf:
         """Retrieve raw heart rate history."""
         return self._telemetry_request("GET", "/v1/physVars/maxHr/history", params={"memberUuid": self.member_uuid})
 
-    def _get_telemetry_raw(self, performance_summary_id: str, max_data_points: int) -> dict:
+    def _get_telemetry_raw(self, performance_summary_id: str, max_data_points: int = 150) -> dict:
         """Retrieve raw telemetry data."""
         return self._telemetry_request(
             "GET",
@@ -345,10 +428,61 @@ class Otf:
             json={"firstName": first_name, "lastName": last_name},
         )
 
+    def _get_all_bookings_new(self) -> list[models.BookingV2]:
+        """Get bookings from the new endpoint with no date filters."""
+        start_date = pendulum.datetime(1970, 1, 1)
+        end_date = pendulum.today().start_of("day").add(days=45)
+        return self.get_bookings_new(start_date, end_date, exclude_canceled=False)
+
+    def get_bookings_new(
+        self,
+        start_dtme: datetime | str | None = None,
+        end_dtme: datetime | str | None = None,
+        exclude_canceled: bool = True,
+    ) -> list[models.BookingV2]:
+        """Get the bookings for the user. If no dates are provided, it will return all bookings
+        between today and 45 days from now.
+
+        Warning:
+            ---
+        If you do not exclude cancelled bookings, you may receive multiple bookings for the same workout, such
+        as when a class changes from a 2G to a 3G. Apparently the system actually creates a new booking for the
+        new class, which is normally transparent to the user.
+
+        Args:
+            start_dtme (datetime | str | None): The start date for the bookings. Default is None.
+            end_dtme (datetime | str | None): The end date for the bookings. Default is None.
+            exclude_canceled (bool): Whether to exclude canceled bookings. Default is True.
+        Returns:
+            list[BookingV2]: The bookings for the user.
+        """
+
+        expand = True  # this doesn't seem to have an effect? so leaving it out of the argument list
+
+        # leaving the parameter as `exclude_canceled` for backwards compatibility
+        include_canceled = not exclude_canceled
+
+        end_dtme = ensure_datetime(end_dtme)
+        start_dtme = ensure_datetime(start_dtme)
+
+        end_dtme = end_dtme or pendulum.today().start_of("day").add(days=45)
+        start_dtme = start_dtme or pendulum.datetime(1970, 1, 1).start_of("day")
+
+        bookings_resp = self._get_bookings_new_raw(
+            ends_before=end_dtme, starts_after=start_dtme, include_canceled=include_canceled, expand=expand
+        )
+
+        return [models.BookingV2(**b) for b in bookings_resp["items"]]
+
+    # def get_booking_new(self, booking_id: str) -> models.BookingV2:
+    #     """Get a booking by ID."""
+    #     booking_resp = self._get_booking_new_raw(booking_id)
+    #     return models.BookingV2(**booking_resp)
+
     def get_classes(
         self,
-        start_date: date | None = None,
-        end_date: date | None = None,
+        start_date: date | str | None = None,
+        end_date: date | str | None = None,
         studio_uuids: list[str] | None = None,
         include_home_studio: bool | None = None,
         filters: list[filters.ClassFilter] | filters.ClassFilter | None = None,
@@ -370,6 +504,9 @@ class Otf:
         Returns:
             list[OtfClass]: The classes for the user.
         """
+
+        start_date = ensure_date(start_date)
+        end_date = ensure_date(end_date)
 
         classes = self._get_classes(studio_uuids, include_home_studio)
 
@@ -531,6 +668,29 @@ class Otf:
 
         raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
 
+    def get_booking_from_class_new(self, otf_class: str | models.OtfClass | models.BookingV2Class) -> models.BookingV2:
+        """Get a specific booking by class_uuid or OtfClass object.
+
+        Args:
+            otf_class (str | OtfClass | BookingV2Class): The class UUID or the OtfClass object to get the booking for.
+
+        Returns:
+            BookingV2: The booking.
+
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ValueError: If class_uuid is None or empty string.
+        """
+
+        class_uuid = get_class_uuid(otf_class)
+
+        all_bookings = self._get_all_bookings_new()
+
+        if booking := next((b for b in all_bookings if b.class_uuid == class_uuid), None):
+            return booking
+
+        raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
+
     def book_class(self, otf_class: str | models.OtfClass) -> models.Booking:
         """Book a class by providing either the class_uuid or the OtfClass object.
 
@@ -556,21 +716,7 @@ class Otf:
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
-        try:
-            resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
-        except exc.OtfRequestError as e:
-            resp_obj = e.response.json()
-
-            if resp_obj["code"] == "ERROR":
-                err_code = resp_obj["data"]["errorCode"]
-                if err_code == "603":
-                    raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
-                if err_code == "602":
-                    raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
-
-            raise
-        except Exception as e:
-            raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
+        resp = self._book_class_raw(class_uuid, body)
 
         # get the booking uuid - we will only use this to return a Booking object using `get_booking`
         # this is an attempt to improve on OTF's terrible data model
@@ -633,21 +779,43 @@ class Otf:
             ValueError: If booking_uuid is None or empty string
             BookingNotFoundError: If the booking does not exist.
         """
+        # if isinstance(booking, models.BookingV2):
+        #     LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
+        #     self.cancel_booking_new(booking)
+
         booking_uuid = get_booking_uuid(booking)
 
-        try:
-            self.get_booking(booking_uuid)
-        except Exception:
-            raise exc.BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
+        if booking == booking_uuid:  # ensure this booking exists by calling the booking endpoint
+            try:
+                self.get_booking(booking_uuid)
+            except Exception:
+                raise exc.BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
 
-        params = {"confirmed": "true"}
-        resp = self._default_request(
-            "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params=params
-        )
+        resp = self._cancel_booking_raw(booking_uuid)
         if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
             raise exc.BookingAlreadyCancelledError(
                 f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
             )
+
+    # def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
+    #     """Cancel a booking by providing either the booking_id or the BookingV2 object.
+    #     Args:
+    #         booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
+    #     Raises:
+    #         ValueError: If booking_id is None or empty string
+    #         BookingNotFoundError: If the booking does not exist.
+    #     """
+
+    #     if isinstance(booking, models.Booking):
+    #         LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
+    #         self.cancel_booking(booking)
+
+    #     booking_id = get_booking_id(booking)
+
+    #     if booking == booking_id:  # ensure this booking exists by calling the booking endpoint
+    #         self.get_booking_new(booking_id)
+
+    #     self._cancel_booking_new_raw(booking_id)
 
     def get_bookings(
         self,
@@ -798,7 +966,7 @@ class Otf:
             It is being provided anyway, in case this changes in the future.
 
         Returns:
-            Any: The member's lifetime stats.
+            StatsResponse: The member's lifetime stats.
         """
 
         data = self._get_member_lifetime_stats_raw(select_time.value)
@@ -809,14 +977,14 @@ class Otf:
 
     def get_member_lifetime_stats_in_studio(
         self, select_time: models.StatsTime = models.StatsTime.AllTime
-    ) -> models.TimeStats:
+    ) -> models.InStudioStatsData:
         """Get the member's lifetime stats in studio.
 
         Args:
             select_time (StatsTime): The time period to get stats for. Default is StatsTime.AllTime.
 
         Returns:
-            Any: The member's lifetime stats in studio.
+            InStudioStatsData: The member's lifetime stats in studio.
         """
 
         data = self._get_member_lifetime_stats(select_time)
@@ -825,14 +993,14 @@ class Otf:
 
     def get_member_lifetime_stats_out_of_studio(
         self, select_time: models.StatsTime = models.StatsTime.AllTime
-    ) -> models.TimeStats:
+    ) -> models.OutStudioStatsData:
         """Get the member's lifetime stats out of studio.
 
         Args:
             select_time (StatsTime): The time period to get stats for. Default is StatsTime.AllTime.
 
         Returns:
-            Any: The member's lifetime stats out of studio.
+            OutStudioStatsData: The member's lifetime stats out of studio.
         """
 
         data = self._get_member_lifetime_stats(select_time)
@@ -935,7 +1103,7 @@ class Otf:
         try:
             res = self._get_studio_detail_raw(studio_uuid)
         except exc.ResourceNotFoundError:
-            return models.StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")
+            return models.StudioDetail.create_empty_model(studio_uuid)
 
         return models.StudioDetail(**res["data"])
 
@@ -1039,14 +1207,14 @@ class Otf:
 
     def get_benchmarks(
         self,
-        challenge_category_id: models.ChallengeCategory | Literal[0] = 0,
+        challenge_category_id: int = 0,
         equipment_id: models.EquipmentType | Literal[0] = 0,
         challenge_subcategory_id: int = 0,
     ) -> list[models.FitnessBenchmark]:
         """Get the member's challenge tracker participation details.
 
         Args:
-            challenge_category_id (ChallengeType): The challenge type ID.
+            challenge_category_id (int): The challenge type ID.
             equipment_id (EquipmentType | Literal[0]): The equipment ID, default is 0 - this doesn't seem\
                 to be have any impact on the results.
             challenge_subcategory_id (int): The challenge sub type ID. Default is 0 - this doesn't seem\
@@ -1073,13 +1241,11 @@ class Otf:
 
         return benchmarks
 
-    def get_benchmarks_by_challenge_category(
-        self, challenge_category_id: models.ChallengeCategory
-    ) -> list[models.FitnessBenchmark]:
+    def get_benchmarks_by_challenge_category(self, challenge_category_id: int) -> list[models.FitnessBenchmark]:
         """Get the member's challenge tracker participation details by challenge.
 
         Args:
-            challenge_category_id (ChallengeType): The challenge type ID.
+            challenge_category_id (int): The challenge type ID.
 
         Returns:
             list[FitnessBenchmark]: The member's challenge tracker details.
@@ -1090,12 +1256,12 @@ class Otf:
 
         return benchmarks
 
-    def get_challenge_tracker_detail(self, challenge_category_id: models.ChallengeCategory) -> models.FitnessBenchmark:
+    def get_challenge_tracker_detail(self, challenge_category_id: int) -> models.FitnessBenchmark:
         """Get details about a challenge. This endpoint does not (usually) return member participation, but rather
         details about the challenge itself.
 
         Args:
-            challenge_category_id (ChallengeType): The challenge type ID.
+            challenge_category_id (int): The challenge type ID.
 
         Returns:
             FitnessBenchmark: Details about the challenge.
@@ -1111,94 +1277,7 @@ class Otf:
 
         return models.FitnessBenchmark(**data["Dto"][0])
 
-    @cached(cache=TTLCache(maxsize=1024, ttl=600))
-    def get_performance_summaries_dict(self, limit: int | None = None) -> dict[str, models.PerformanceSummary]:
-        """Get a dictionary of performance summaries for the authenticated user.
-
-        Args:
-            limit (int | None): The maximum number of entries to return. Default is None.
-
-        Returns:
-            dict[str, PerformanceSummary]: A dictionary of performance summaries, keyed by class history UUID.
-
-        Developer Notes:
-            ---
-            In the app, this is referred to as 'getInStudioWorkoutHistory'.
-
-        """
-
-        items = self._get_performance_summaries_raw(limit=limit)["items"]
-
-        distinct_studio_ids = set([rec["class"]["studio"]["id"] for rec in items])
-        perf_summary_ids = set([rec["id"] for rec in items])
-
-        with ThreadPoolExecutor() as pool:
-            studio_futures = {s: pool.submit(self.get_studio_detail, s) for s in distinct_studio_ids}
-            perf_summary_futures = {s: pool.submit(self._get_performancy_summary_detail, s) for s in perf_summary_ids}
-
-            studio_dict = {k: v.result() for k, v in studio_futures.items()}
-            # deepcopy these so that mutating them in PerformanceSummary doesn't affect the cache
-            perf_summary_dict = {k: deepcopy(v.result()) for k, v in perf_summary_futures.items()}
-
-        for item in items:
-            item["class"]["studio"] = studio_dict[item["class"]["studio"]["id"]]
-            item["detail"] = perf_summary_dict[item["id"]]
-
-        entries = [models.PerformanceSummary(**item) for item in items]
-        entries_dict = {entry.performance_summary_id: entry for entry in entries}
-
-        return entries_dict
-
-    def get_performance_summaries(self, limit: int | None = None) -> list[models.PerformanceSummary]:
-        """Get a list of all performance summaries for the authenticated user.
-
-        Args:
-            limit (int | None): The maximum number of entries to return. Default is None.
-
-        Returns:
-            list[PerformanceSummary]: A list of performance summaries.
-
-        Developer Notes:
-            ---
-            In the app, this is referred to as 'getInStudioWorkoutHistory'.
-
-        """
-
-        records = list(self.get_performance_summaries_dict(limit=limit).values())
-
-        sorted_records = sorted(records, key=lambda x: x.otf_class.starts_at, reverse=True)
-
-        return sorted_records
-
-    def get_performance_summary(
-        self, performance_summary_id: str, limit: int | None = None
-    ) -> models.PerformanceSummary:
-        """Get performance summary for a given workout.
-
-        Note: Due to the way the OTF API is set up, we have to call both the list and the get endpoints. By
-        default this will call the list endpoint with no limit, in order to ensure that the performance summary
-        is returned if it exists. This could result in a lot of requests, so you also have the option to provide
-        a limit to only fetch a certain number of performance summaries.
-
-        Args:
-            performance_summary_id (str): The ID of the performance summary to retrieve.
-
-        Returns:
-            PerformanceSummary: The performance summary.
-
-        Raises:
-            ResourceNotFoundError: If the performance_summary_id is not in the list of performance summaries.
-        """
-
-        perf_summary = self.get_performance_summaries_dict(limit=limit).get(performance_summary_id)
-
-        if perf_summary is None:
-            raise exc.ResourceNotFoundError(f"Performance summary {performance_summary_id} not found")
-
-        return perf_summary
-
-    @functools.lru_cache(maxsize=1024)
-    def _get_performancy_summary_detail(self, performance_summary_id: str) -> dict[str, Any]:
+    def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummary:
         """Get the details for a performance summary. Generally should not be called directly. This
 
         Args:
@@ -1206,13 +1285,14 @@ class Otf:
 
         Returns:
             dict[str, Any]: The performance summary details.
-
-        Developer Notes:
-            ---
-            This is mostly here to cache the results of the raw method.
         """
 
-        return self._get_performance_summary_raw(performance_summary_id)
+        warning_msg = "This endpoint does not return all data, consider using `get_workouts` instead."
+        if warning_msg not in LOGGED_ONCE:
+            LOGGER.warning(warning_msg)
+
+        resp = self._get_performance_summary_raw(performance_summary_id)
+        return models.PerformanceSummary(**resp)
 
     def get_hr_history(self) -> list[models.TelemetryHistoryItem]:
         """Get the heartrate history for the user.
@@ -1227,7 +1307,7 @@ class Otf:
         resp = self._get_hr_history_raw()
         return [models.TelemetryHistoryItem(**item) for item in resp["history"]]
 
-    def get_telemetry(self, performance_summary_id: str, max_data_points: int = 120) -> models.Telemetry:
+    def get_telemetry(self, performance_summary_id: str, max_data_points: int = 150) -> models.Telemetry:
         """Get the telemetry for a performance summary.
 
         This returns an object that contains the max heartrate, start/end bpm for each zone,
@@ -1235,7 +1315,7 @@ class Otf:
 
         Args:
             performance_summary_id (str): The performance summary id.
-            max_data_points (int): The max data points to use for the telemetry. Default is 120.
+            max_data_points (int): The max data points to use for the telemetry. Default is 150, to match the app.
 
         Returns:
             TelemetryItem: The telemetry for the class history.
@@ -1295,7 +1375,7 @@ class Otf:
             transactional_enabled if transactional_enabled is not None else current_settings.is_transactional_sms_opt_in
         )
 
-        self._update_sms_notification_settings_raw(promotional_enabled, transactional_enabled)
+        self._update_sms_notification_settings_raw(promotional_enabled, transactional_enabled)  # type: ignore
 
         # the response returns nothing useful, so we just query the settings again
         new_settings = self.get_sms_notification_settings()
@@ -1334,7 +1414,7 @@ class Otf:
             else current_settings.is_transactional_email_opt_in
         )
 
-        self._update_email_notification_settings_raw(promotional_enabled, transactional_enabled)
+        self._update_email_notification_settings_raw(promotional_enabled, transactional_enabled)  # type: ignore
 
         # the response returns nothing useful, so we just query the settings again
         new_settings = self.get_email_notification_settings()
@@ -1362,19 +1442,21 @@ class Otf:
             LOGGER.warning("No changes to names, nothing to update.")
             return self.member
 
+        assert first_name is not None, "First name is required"
+        assert last_name is not None, "Last name is required"
+
         res = self._update_member_name_raw(first_name, last_name)
 
         return models.MemberDetail(**res["data"])
 
-    def _rate_class(
+    def rate_class(
         self,
         class_uuid: str,
         performance_summary_id: str,
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
-    ) -> models.PerformanceSummary:
-        """Rate a class and coach. A simpler method is provided in `rate_class_from_performance_summary`.
-
+    ):
+        """Rate a class and coach. A simpler method is provided in `rate_class_from_workout`.
 
         The class rating must be between 0 and 4.
         0 is the same as dismissing the prompt to rate the class/coach in the app.
@@ -1387,82 +1469,171 @@ class Otf:
             coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
 
         Returns:
-            PerformanceSummary: The updated performance summary.
+            None
+
         """
 
-        # com/orangetheoryfitness/fragment/rating/RateStatus.java
-
-        # we convert these to the new values that the app uses
-        # mainly because we don't want to cause any issues with the API and/or with OTF corporate
-        # wondering where the old values are coming from
-
-        COACH_RATING_MAP = {0: 0, 1: 16, 2: 17, 3: 18}
-        CLASS_RATING_MAP = {0: 0, 1: 19, 2: 20, 3: 21}
-
-        if class_rating not in CLASS_RATING_MAP:
-            raise ValueError(f"Invalid class rating {class_rating}")
-
-        if coach_rating not in COACH_RATING_MAP:
-            raise ValueError(f"Invalid coach rating {coach_rating}")
-
-        body_class_rating = CLASS_RATING_MAP[class_rating]
-        body_coach_rating = COACH_RATING_MAP[coach_rating]
+        body_class_rating = models.get_class_rating_value(class_rating)
+        body_coach_rating = models.get_coach_rating_value(coach_rating)
 
         try:
             self._rate_class_raw(class_uuid, performance_summary_id, body_class_rating, body_coach_rating)
         except exc.OtfRequestError as e:
             if e.response.status_code == 403:
-                raise exc.AlreadyRatedError(f"Performance summary {performance_summary_id} is already rated.") from None
+                raise exc.AlreadyRatedError(f"Workout {performance_summary_id} is already rated.") from None
             raise
 
-        # we have to clear the cache after rating a class, otherwise we will get back the same data
-        # showing it not rated. that would be incorrect, confusing, and would cause errors if the user
-        # then attempted to rate the class again.
-        # we could attempt to only refresh the one record but with these endpoints that's not simple
-        # NOTE: the individual perf summary endpoint does not have rating data, so it's cache is not cleared
-        self.get_performance_summaries_dict.cache_clear()
+    # def get_workout_from_booking(self, booking: str | models.BookingV2) -> models.Workout:
+    #     """Get a workout for a specific booking.
 
-        return self.get_performance_summary(performance_summary_id)
+    #     Args:
+    #         booking_id (str | Booking): The booking ID or Booking object to get the workout for.
 
-    def rate_class_from_performance_summary(
+    #     Returns:
+    #         Workout: The member's workout.
+
+    #     Raises:
+    #         BookingNotFoundError: If the booking does not exist.
+    #         ResourceNotFoundError: If the workout does not exist.
+    #     """
+    #     booking_id = booking if isinstance(booking, str) else booking.booking_id
+
+    #     booking = self.get_booking_new(booking_id)
+    #     if not booking:
+    #         raise exc.BookingNotFoundError(f"Booking {booking_id} not found.")
+
+    #     if not booking.workout or not booking.workout.performance_summary_id:
+    #         raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
+
+    #     perf_summary = self._get_performance_summary_raw(booking.workout.performance_summary_id)
+    #     telemetry = self.get_telemetry(booking.workout.performance_summary_id)
+    #     workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
+    #     return workout
+
+    def get_workouts(
+        self, start_date: date | str | None = None, end_date: date | str | None = None
+    ) -> list[models.Workout]:
+        """Get the member's workouts, using the new bookings endpoint and the performance summary endpoint.
+
+        Args:
+            start_date (date | None): The start date for the workouts. If None, defaults to 30 days ago.
+            end_date (date | None): The end date for the workouts. If None, defaults to today.
+
+        Returns:
+            list[Workout]: The member's workouts.
+        """
+        start_date = ensure_date(start_date) or pendulum.today().subtract(days=30).date()
+        end_date = ensure_date(end_date) or datetime.today().date()
+
+        start_dtme = pendulum.datetime(start_date.year, start_date.month, start_date.day, 0, 0, 0)
+        end_dtme = pendulum.datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
+
+        bookings = self.get_bookings_new(start_dtme, end_dtme, exclude_canceled=False)
+        bookings_dict = {b.workout.id: b for b in bookings if b.workout}
+
+        perf_summaries_dict = self._get_perf_summaries_threaded(list(bookings_dict.keys()))
+        telemetry_dict = self._get_telemetry_threaded(list(perf_summaries_dict.keys()))
+        perf_summary_to_class_uuid_map = self._get_perf_summary_to_class_uuid_mapping()
+
+        workouts: list[models.Workout] = []
+        for perf_id, perf_summary in perf_summaries_dict.items():
+            workout = models.Workout(
+                **perf_summary,
+                v2_booking=bookings_dict[perf_id],
+                telemetry=telemetry_dict.get(perf_id),
+                class_uuid=perf_summary_to_class_uuid_map.get(perf_id),
+            )
+            workouts.append(workout)
+
+        return workouts
+
+    def _get_perf_summary_to_class_uuid_mapping(self) -> dict[str, str | None]:
+        """Get a mapping of performance summary IDs to class UUIDs. These will be used
+        when rating a class.
+
+        Returns:
+            dict[str, str | None]: A dictionary mapping performance summary IDs to class UUIDs.
+        """
+        perf_summaries = self._get_performance_summaries_raw()["items"]
+        return {item["id"]: item["class"].get("ot_base_class_uuid") for item in perf_summaries}
+
+    def _get_perf_summaries_threaded(self, performance_summary_ids: list[str]) -> dict[str, dict[str, Any]]:
+        """Get performance summaries in a ThreadPoolExecutor, to speed up the process.
+
+        Args:
+            performance_summary_ids (list[str]): The performance summary IDs to get.
+
+        Returns:
+            dict[str, dict[str, Any]]: A dictionary of performance summaries, keyed by performance summary ID.
+        """
+
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            perf_summaries = pool.map(self._get_performance_summary_raw, performance_summary_ids)
+
+        perf_summaries_dict = {perf_summary["id"]: perf_summary for perf_summary in perf_summaries}
+        return perf_summaries_dict
+
+    def _get_telemetry_threaded(
+        self, performance_summary_ids: list[str], max_data_points: int = 150
+    ) -> dict[str, models.Telemetry]:
+        """Get telemetry in a ThreadPoolExecutor, to speed up the process.
+
+        Args:
+            performance_summary_ids (list[str]): The performance summary IDs to get.
+            max_data_points (int): The max data points to use for the telemetry. Default is 150.
+
+        Returns:
+            dict[str, Telemetry]: A dictionary of telemetry, keyed by performance summary ID.
+        """
+        partial_fn = partial(self.get_telemetry, max_data_points=max_data_points)
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            telemetry = pool.map(partial_fn, performance_summary_ids)
+        telemetry_dict = {perf_summary.performance_summary_id: perf_summary for perf_summary in telemetry}
+        return telemetry_dict
+
+    def rate_class_from_workout(
         self,
-        perf_summary: models.PerformanceSummary,
+        workout: models.Workout,
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
-    ) -> models.PerformanceSummary:
+    ) -> models.Workout:
         """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
             rate the class/coach. 1 - 3 is a range from bad to good.
 
         Args:
-            perf_summary (PerformanceSummary): The performance summary to rate.
+            workout (Workout): The workout to rate.
             class_rating (int): The class rating. Must be 0, 1, 2, or 3.
             coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
 
         Returns:
-            PerformanceSummary: The updated performance summary.
+            Workout: The updated workout with the new ratings.
 
         Raises:
             AlreadyRatedError: If the performance summary is already rated.
             ClassNotRatableError: If the performance summary is not rateable.
-            ValueError: If the performance summary does not have an associated class.
         """
 
-        if perf_summary.is_rated:
-            raise exc.AlreadyRatedError(f"Performance summary {perf_summary.performance_summary_id} is already rated.")
+        if not workout.ratable or not workout.class_uuid:
+            raise exc.ClassNotRatableError(f"Workout {workout.performance_summary_id} is not rateable.")
 
-        if not perf_summary.ratable:
-            raise exc.ClassNotRatableError(
-                f"Performance summary {perf_summary.performance_summary_id} is not rateable."
-            )
+        if workout.class_rating is not None or workout.coach_rating is not None:
+            raise exc.AlreadyRatedError(f"Workout {workout.performance_summary_id} already rated.")
 
-        if not perf_summary.otf_class or not perf_summary.otf_class.class_uuid:
-            raise ValueError(
-                f"Performance summary {perf_summary.performance_summary_id} does not have an associated class."
-            )
+        self.rate_class(workout.class_uuid, workout.performance_summary_id, class_rating, coach_rating)
 
-        return self._rate_class(
-            perf_summary.otf_class.class_uuid, perf_summary.performance_summary_id, class_rating, coach_rating
+        # TODO: use this once we get it working, getting workout list is substitute for now
+        # return self.get_workout_from_booking(workout.booking_id)
+
+        workout_date = pendulum.instance(workout.otf_class.starts_at).start_of("day")
+        workouts = self.get_workouts(workout_date.subtract(days=1), workout_date.add(days=1))
+
+        selected_workout = next(
+            (w for w in workouts if w.performance_summary_id == workout.performance_summary_id), None
         )
+
+        assert selected_workout is not None, "Workout not found in the list of workouts"
+
+        return selected_workout
 
     # the below do not return any data for me, so I can't test them
 

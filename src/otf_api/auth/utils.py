@@ -1,14 +1,8 @@
 import os
 import sys
-from collections.abc import Generator
 from functools import partial
 from getpass import getpass
 from logging import getLogger
-from typing import Any
-
-import httpx
-from httpx import Request
-from pycognito import Cognito
 
 LOGGER = getLogger(__name__)
 USERNAME_PROMPT = "Enter your Orangetheory Fitness username/email: "
@@ -17,9 +11,9 @@ PASSWORD_PROMPT = "Enter your Orangetheory Fitness password: "
 
 def _show_error_message(message: str) -> None:
     try:
-        from rich import print  # type: ignore
+        from rich import get_console  # type: ignore
 
-        print(message, style="bold red")
+        get_console().print(message, style="bold red")
     except ImportError:
         print(message)
 
@@ -84,6 +78,23 @@ def _prompt_for_password() -> str:
     return password
 
 
+def get_credentials_from_env() -> tuple[str, str]:
+    """Get credentials from environment variables.
+
+    Returns:
+        tuple[str, str]: A tuple containing the username and password.
+    """
+
+    username = os.getenv("OTF_EMAIL")
+    password = os.getenv("OTF_PASSWORD")
+
+    if not username or not password:
+        _show_error_message("Environment variables OTF_EMAIL and OTF_PASSWORD are required")
+        return "", ""
+
+    return username, password
+
+
 def prompt_for_username_and_password() -> tuple[str, str]:
     """Prompt for a username and password.
 
@@ -91,8 +102,8 @@ def prompt_for_username_and_password() -> tuple[str, str]:
         tuple[str, str]: A tuple containing the username and password.
     """
 
-    username = os.getenv("OTF_EMAIL") or _prompt_for_username()
-    password = os.getenv("OTF_PASSWORD") or _prompt_for_password()
+    username = _prompt_for_username()
+    password = _prompt_for_password()
 
     return username, password
 
@@ -104,26 +115,3 @@ def can_provide_input() -> bool:
         bool: True if the script is running in an interactive shell.
     """
     return os.isatty(sys.stdin.fileno()) and os.isatty(sys.stdout.fileno())
-
-
-class HttpxCognitoAuth(httpx.Auth):
-    http_header: str = "Authorization"
-    http_header_prefix: str = "Bearer "
-
-    def __init__(self, cognito: Cognito):
-        """HTTPX Authentication extension for Cognito User Pools.
-
-        Args:
-            cognito (Cognito): A Cognito instance.
-        """
-
-        self.cognito = cognito
-
-    def auth_flow(self, request: Request) -> Generator[Request, Any, None]:
-        self.cognito.check_token(renew=True)
-
-        token = self.cognito.id_token
-
-        request.headers[self.http_header] = self.http_header_prefix + token
-
-        yield request

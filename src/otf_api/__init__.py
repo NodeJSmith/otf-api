@@ -4,7 +4,7 @@ from otf_api.api import Otf
 from otf_api import models
 from otf_api.auth import OtfUser
 
-__version__ = "0.10.2"
+__version__ = "0.11.0-rc1"
 
 
 __all__ = ["Otf", "OtfUser", "models"]

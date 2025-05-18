@@ -9,9 +9,11 @@ from otf_api.models.studio_detail import StudioDetail
 
 class OtfClass(OtfItemBase):
     class_uuid: str = Field(alias="ot_base_class_uuid", description="The OTF class UUID")
+    class_id: str | None = Field(None, alias="id", description="Matches new booking endpoint class id")
+
     name: str | None = Field(None, description="The name of the class")
     class_type: ClassType = Field(alias="type")
-    coach: str | None = Field(None, alias=AliasPath("coach", "first_name"))
+    coach: str | None = Field(None, validation_alias=AliasPath("coach", "first_name"))
     ends_at: datetime = Field(
         alias="ends_at_local",
         description="The end time of the class. Reflects local time, but the object does not have a timezone.",
@@ -27,15 +29,10 @@ class OtfClass(OtfItemBase):
     full: bool | None = None
     max_capacity: int | None = None
     waitlist_available: bool | None = None
-    waitlist_size: int | None = None
+    waitlist_size: int | None = Field(None, description="The number of people on the waitlist")
     is_booked: bool | None = Field(None, description="Custom helper field to determine if class is already booked")
     is_cancelled: bool | None = Field(None, alias="canceled")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
-
-    # unused fields
-    class_id: str | None = Field(
-        None, alias="id", exclude=True, repr=False, description="Matches new booking endpoint class id"
-    )
 
     created_at: datetime | None = Field(None, exclude=True, repr=False)
     ends_at_utc: datetime | None = Field(None, alias="ends_at", exclude=True, repr=False)

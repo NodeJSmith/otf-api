@@ -8,13 +8,12 @@ from typing import Any
 import attrs
 
 if typing.TYPE_CHECKING:
-    from otf_api.models.bookings import Booking
-    from otf_api.models.classes import OtfClass
+    from otf_api import models
 
 LOGGER = getLogger(__name__)
 
 
-def get_booking_uuid(booking_or_uuid: "str | Booking") -> str:
+def get_booking_uuid(booking_or_uuid: "str | models.Booking") -> str:
     from otf_api.models.bookings import Booking
 
     if isinstance(booking_or_uuid, str):
@@ -26,16 +25,29 @@ def get_booking_uuid(booking_or_uuid: "str | Booking") -> str:
     raise ValueError(f"Expected Booking or str, got {type(booking_or_uuid)}")
 
 
-def get_class_uuid(class_or_uuid: "str | OtfClass") -> str:
-    from otf_api.models.classes import OtfClass
+def get_booking_id(booking_or_id: "str | models.BookingV2") -> str:
+    from otf_api.models.bookings_v2 import BookingV2
 
+    if isinstance(booking_or_id, str):
+        return booking_or_id
+
+    if isinstance(booking_or_id, BookingV2):
+        return booking_or_id.booking_id
+
+    raise ValueError(f"Expected BookingV2 or str, got {type(booking_or_id)}")
+
+
+def get_class_uuid(class_or_uuid: "str | models.OtfClass | models.BookingV2Class") -> str:
     if isinstance(class_or_uuid, str):
         return class_or_uuid
 
-    if isinstance(class_or_uuid, OtfClass):
-        return class_or_uuid.class_uuid
+    if hasattr(class_or_uuid, "class_uuid"):
+        class_uuid = getattr(class_or_uuid, "class_uuid", None)
+        if class_uuid:
+            return class_uuid
+        raise ValueError("Class does not have a class_uuid")
 
-    raise ValueError(f"Expected OtfClass or str, got {type(class_or_uuid)}")
+    raise ValueError(f"Expected OtfClass, BookingV2Class, or str, got {type(class_or_uuid)}")
 
 
 def ensure_list(obj: list | Any | None) -> list:
@@ -44,6 +56,22 @@ def ensure_list(obj: list | Any | None) -> list:
     if not isinstance(obj, list):
         return [obj]
     return obj
+
+
+def ensure_datetime(date_str: str | datetime | None) -> datetime | None:
+    if not date_str:
+        return None
+
+    if isinstance(date_str, str):
+        return datetime.fromisoformat(date_str)
+
+    if isinstance(date_str, datetime):
+        return date_str
+
+    if isinstance(date_str, date):
+        return datetime.combine(date_str, datetime.min.time())
+
+    raise ValueError(f"Expected str or datetime, got {type(date_str)}")
 
 
 def ensure_date(date_str: str | date | None) -> date | None:
