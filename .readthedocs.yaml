@@ -12,7 +12,7 @@ build:
     post_install:
       # VIRTUAL_ENV needs to be set manually for now.
       # See https://github.com/readthedocs/readthedocs.org/pull/11152/
-      - source $HOME/.local/bin/env && VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH uv sync --group docs
+      - PATH="$HOME/.local/bin/env:$PATH" && VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH uv sync --group docs
 
 mkdocs:
   configuration: mkdocs.yml
