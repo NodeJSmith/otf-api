@@ -814,10 +814,7 @@ class Otf:
         booking_uuid = get_booking_uuid(booking)
 
         if booking == booking_uuid:  # ensure this booking exists by calling the booking endpoint
-            try:
-                self.get_booking(booking_uuid)
-            except Exception:
-                raise exc.BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
+            _ = self.get_booking(booking_uuid)  # allow the exception to be raised if it doesn't exist
 
         resp = self._cancel_booking_raw(booking_uuid)
         if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
