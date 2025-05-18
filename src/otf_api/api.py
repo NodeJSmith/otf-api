@@ -493,11 +493,11 @@ class Otf:
         UUIDs are provided, it will default to the user's home studio.
 
         Args:
-            start_date (date | None): The start date for the classes. Default is None.
-            end_date (date | None): The end date for the classes. Default is None.
+            start_date (date | str | None): The start date for the classes. Default is None.
+            end_date (date | str | None): The end date for the classes. Default is None.
             studio_uuids (list[str] | None): The studio UUIDs to get the classes for. Default is None, which will\
             default to the user's home studio only.
-            include_home_studio (bool): Whether to include the home studio in the classes. Default is True.
+            include_home_studio (bool | None): Whether to include the home studio in the classes. Default is True.
             filters (list[ClassFilter] | ClassFilter | None): A list of filters to apply to the classes, or a single\
             filter. Filters are applied as an OR operation. Default is None.
 
@@ -1516,8 +1516,8 @@ class Otf:
         """Get the member's workouts, using the new bookings endpoint and the performance summary endpoint.
 
         Args:
-            start_date (date | None): The start date for the workouts. If None, defaults to 30 days ago.
-            end_date (date | None): The end date for the workouts. If None, defaults to today.
+            start_date (date | str | None): The start date for the workouts. If None, defaults to 30 days ago.
+            end_date (date | str | None): The end date for the workouts. If None, defaults to today.
 
         Returns:
             list[Workout]: The member's workouts.
