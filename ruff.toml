@@ -36,6 +36,7 @@ target-version = "py310"
 
 [lint]
 select = [
+    "D",    # docstrings
     "E",    # pycodestyle (error)
     "W",    # pycodestyle (warning)
     "F",    # pyflakes
@@ -62,6 +63,11 @@ ignore = [
     "DTZ001",
     "DTZ002",
     "DTZ007",
+    "D100",   # undocumented-public-module
+    "D101",   # undocumented-public-class
+    "D104",   # undocumented-public-package
+    # "D103", # undocumented-public-function
+    "D107", # undocumented-public-init
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
@@ -83,3 +89,6 @@ skip-magic-trailing-comma = false
 
 # Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
+
+[lint.pydocstyle]
+convention = "google" # Accepts: "google", "numpy", or "pep257".
