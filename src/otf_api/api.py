@@ -18,7 +18,7 @@ from otf_api import exceptions as exc
 from otf_api import filters, models
 from otf_api.auth import OtfUser
 from otf_api.models.enums import HISTORICAL_BOOKING_STATUSES
-from otf_api.utils import ensure_date, ensure_datetime, ensure_list, get_booking_uuid, get_class_uuid  # get_booking_id
+from otf_api.utils import ensure_date, ensure_datetime, ensure_list, get_booking_id, get_booking_uuid, get_class_uuid
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
@@ -779,9 +779,9 @@ class Otf:
             ValueError: If booking_uuid is None or empty string
             BookingNotFoundError: If the booking does not exist.
         """
-        # if isinstance(booking, models.BookingV2):
-        #     LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
-        #     self.cancel_booking_new(booking)
+        if isinstance(booking, models.BookingV2):
+            LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
+            self.cancel_booking_new(booking)
 
         booking_uuid = get_booking_uuid(booking)
 
@@ -797,25 +797,27 @@ class Otf:
                 f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
             )
 
-    # def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
-    #     """Cancel a booking by providing either the booking_id or the BookingV2 object.
-    #     Args:
-    #         booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
-    #     Raises:
-    #         ValueError: If booking_id is None or empty string
-    #         BookingNotFoundError: If the booking does not exist.
-    #     """
+    def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
+        """Cancel a booking by providing either the booking_id or the BookingV2 object.
 
-    #     if isinstance(booking, models.Booking):
-    #         LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
-    #         self.cancel_booking(booking)
+        Args:
+            booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
 
-    #     booking_id = get_booking_id(booking)
+        Raises:
+            ValueError: If booking_id is None or empty string
+            BookingNotFoundError: If the booking does not exist.
+        """
 
-    #     if booking == booking_id:  # ensure this booking exists by calling the booking endpoint
-    #         self.get_booking_new(booking_id)
+        if isinstance(booking, models.Booking):
+            LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
+            self.cancel_booking(booking)
 
-    #     self._cancel_booking_new_raw(booking_id)
+        booking_id = get_booking_id(booking)
+
+        # if booking == booking_id:  # ensure this booking exists by calling the booking endpoint
+        #     self.get_booking_new(booking_id)
+
+        self._cancel_booking_new_raw(booking_id)
 
     def get_bookings(
         self,
