@@ -35,6 +35,15 @@ class BodyFatPercentIndicator(StrEnum):
 def get_percent_body_fat_descriptor(
     percent_body_fat: float, body_fat_percent_dividers: list[float]
 ) -> BodyFatPercentIndicator:
+    """Get the body fat percent descriptor based on the percent body fat and dividers.
+
+    Args:
+        percent_body_fat (float): The percent body fat to check
+        body_fat_percent_dividers (list[float]): The dividers for the percent body fat
+
+    Returns:
+        BodyFatPercentIndicator: The body fat percent descriptor
+    """
     if not percent_body_fat or not body_fat_percent_dividers[3]:
         return BodyFatPercentIndicator.NO_INDICATOR
 
@@ -48,6 +57,15 @@ def get_percent_body_fat_descriptor(
 
 
 def get_relative_descriptor(in_body_value: float, in_body_dividers: list[float]) -> AverageType:
+    """Get the relative descriptor for the InBody value.
+
+    Args:
+        in_body_value (float): The InBody value to check
+        in_body_dividers (list[float]): The dividers for the InBody value
+
+    Returns:
+        AverageType: The relative descriptor for the InBody value
+    """
     if in_body_value <= in_body_dividers[2]:
         return AverageType.BELOW_AVERAGE
 
@@ -58,6 +76,17 @@ def get_relative_descriptor(in_body_value: float, in_body_dividers: list[float])
 
 
 def get_body_fat_percent_dividers(age: int, gender: Literal["M", "F"]) -> list[float]:
+    """Get the body fat percent dividers based on age and gender.
+
+    Converted more or less directly from the Java code in the OTF app.
+
+    Args:
+        age (int): The age of the person
+        gender (Literal["M", "F"]): The gender from the member details
+
+    Returns:
+        list[float]: The body fat percent dividers
+    """
     if gender == "M":
         return get_body_fat_percent_dividers_male(age)
 
@@ -65,6 +94,16 @@ def get_body_fat_percent_dividers(age: int, gender: Literal["M", "F"]) -> list[f
 
 
 def get_body_fat_percent_dividers_male(age: int) -> list[float]:
+    """Get the body fat percent dividers for males based on age.
+
+    Converted more or less directly from the Java code in the OTF app.
+
+    Args:
+        age (int): The age of the person
+
+    Returns:
+        list[float]: The body fat percent dividers
+    """
     match age:
         case age if 0 <= age < 30:
             return [0.0, 13.1, 21.1, 100.0]
@@ -81,6 +120,16 @@ def get_body_fat_percent_dividers_male(age: int) -> list[float]:
 
 
 def get_body_fat_percent_dividers_female(age: int) -> list[float]:
+    """Get the body fat percent dividers for females based on age.
+
+    Converted more or less directly from the Java code in the OTF app.
+
+    Args:
+        age (int): The age of the person
+
+    Returns:
+        list[float]: The body fat percent dividers
+    """
     match age:
         case age if 0 <= age < 30:
             return [0.0, 19.1, 26.1, 100.0]
@@ -236,11 +285,27 @@ class BodyCompositionData(OtfItemBase):
     @field_validator("skeletal_muscle_mass_dividers", "weight_dividers", "body_fat_mass_dividers", mode="before")
     @classmethod
     def convert_dividers_to_float_list(cls, v: str):
+        """Convert the dividers from a string to a list of floats.
+
+        Args:
+            v (str): The dividers as a string, separated by semicolons.
+
+        Returns:
+            list[float]: The dividers as a list of floats.
+        """
         return [float(i) for i in v.split(";")]
 
     @field_validator("total_body_weight", mode="before")
     @classmethod
     def convert_body_weight_from_kg_to_pounds(cls, v: float):
+        """Convert the body weight from kg to pounds.
+
+        Args:
+            v (float): The body weight in kg.
+
+        Returns:
+            float: The body weight in pounds.
+        """
         return ureg.Quantity(v, ureg.kilogram).to(ureg.pound).magnitude
 
     @property

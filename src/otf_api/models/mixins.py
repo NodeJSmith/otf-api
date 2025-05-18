@@ -27,7 +27,8 @@ class AddressMixin:
 
     @model_validator(mode="before")
     @classmethod
-    def check_country(cls, values):
+    def validate_model(cls, values):
+        """Validates address fields and country format, handling specific cases."""
         if set(values.keys()) == set(
             ["phone", "latitude", "longitude", "address1", "address2", "city", "state", "postalCode"]
         ):
@@ -44,6 +45,7 @@ class AddressMixin:
     @field_validator("address_line1", "address_line2", "city", "postal_code", "state", "country")
     @classmethod
     def clean_strings(cls, value: str | None, **_kwargs) -> str | None:
+        """Clean strings by stripping whitespace and returning None if empty."""
         if value is None:
             return value
         value = value.strip()

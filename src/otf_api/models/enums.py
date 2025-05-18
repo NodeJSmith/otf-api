@@ -99,6 +99,7 @@ class ClassType(StrEnum):
 
     @classmethod
     def get_case_insensitive(cls, value: str) -> str:
+        """Returns the actual value of the enum, regardless of case."""
         value = (value or "").strip()
         value = value.replace(" ", "_")
         lcase_to_actual = {item.value.lower(): item.value for item in cls}
@@ -106,12 +107,12 @@ class ClassType(StrEnum):
 
     @staticmethod
     def get_standard_class_types() -> list["ClassType"]:
-        """Returns 2G/3G/Tornado - 60/90 minute classes"""
+        """Returns 2G/3G/Tornado - 60/90 minute classes."""
         return [ClassType.ORANGE_60, ClassType.ORANGE_90]
 
     @staticmethod
     def get_tread_strength_class_types() -> list["ClassType"]:
-        """Returns Tread/Strength 50 minute classes"""
+        """Returns Tread/Strength 50 minute classes."""
         return [ClassType.TREAD_50, ClassType.STRENGTH_50]
 
 

@@ -17,6 +17,7 @@ class Coach(OtfItemBase):
 
     @property
     def full_name(self) -> str:
+        """Returns the full name of the coach."""
         return f"{self.first_name} {self.last_name}"
 
 
@@ -37,6 +38,7 @@ class OtfClass(OtfItemBase):
     virtual_class: bool | None = Field(None, alias="virtualClass", exclude=True, repr=False)
 
     def __str__(self) -> str:
+        """Returns a string representation of the class."""
         starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
         return f"Class: {starts_at_str} {self.name} - {self.coach.first_name}"
 
@@ -72,25 +74,26 @@ class Booking(OtfItemBase):
 
     @property
     def studio_uuid(self) -> str:
-        """Shortcut to get the studio UUID"""
+        """Shortcut to get the studio UUID."""
         return self.otf_class.studio.studio_uuid
 
     @property
     def class_uuid(self) -> str:
-        """Shortcut to get the class UUID"""
+        """Shortcut to get the class UUID."""
         return self.otf_class.class_uuid
 
     @property
     def starts_at(self) -> datetime:
-        """Shortcut to get the class start time"""
+        """Shortcut to get the class start time."""
         return self.otf_class.starts_at
 
     @property
     def ends_at(self) -> datetime:
-        """Shortcut to get the class end time"""
+        """Shortcut to get the class end time."""
         return self.otf_class.ends_at
 
     def __str__(self) -> str:
+        """Returns a string representation of the booking."""
         starts_at_str = self.otf_class.starts_at.strftime("%a %b %d, %I:%M %p")
         class_name = self.otf_class.name
         coach_name = self.otf_class.coach.name

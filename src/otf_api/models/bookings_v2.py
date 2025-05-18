@@ -16,10 +16,7 @@ class Address(AddressMixin, OtfItemBase): ...
 
 
 def get_end_time(start_time: datetime, class_type: ClassType) -> datetime:
-    """
-    Get the end time of a class based on the start time and class type.
-    """
-
+    """Get the end time of a class based on the start time and class type."""
     start_time = pendulum.instance(start_time)
 
     match class_type:
@@ -73,6 +70,7 @@ class BookingV2Class(OtfItemBase):
     starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True, repr=False)
 
     def __str__(self) -> str:
+        """Returns a string representation of the class."""
         starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
         return f"Class: {starts_at_str} {self.name} - {self.coach}"
 
@@ -126,7 +124,7 @@ class BookingV2(OtfItemBase):
 
     @property
     def status(self) -> BookingStatus:
-        """Emulates the booking status from the old API, but with less specificity"""
+        """Emulates the booking status from the old API, but with less specificity."""
         if self.late_canceled:
             return BookingStatus.LateCancelled
 
@@ -140,29 +138,30 @@ class BookingV2(OtfItemBase):
 
     @property
     def studio_uuid(self) -> str:
-        """Shortcut to get the studio UUID"""
+        """Shortcut to get the studio UUID."""
         if self.otf_class.studio is None:
             return ""
         return self.otf_class.studio.studio_uuid
 
     @property
     def class_uuid(self) -> str:
-        """Shortcut to get the class UUID"""
+        """Shortcut to get the class UUID."""
         if self.otf_class.class_uuid is None:
             return ""
         return self.otf_class.class_uuid
 
     @property
     def starts_at(self) -> datetime:
-        """Shortcut to get the class start time"""
+        """Shortcut to get the class start time."""
         return self.otf_class.starts_at
 
     @property
     def ends_at(self) -> datetime:
-        """Shortcut to get the class end time"""
+        """Shortcut to get the class end time."""
         return get_end_time(self.otf_class.starts_at, self.otf_class.class_type)
 
     def __str__(self) -> str:
+        """Returns a string representation of the booking."""
         starts_at_str = self.otf_class.starts_at.strftime("%a %b %d, %I:%M %p")
         class_name = self.otf_class.name
         coach_name = self.otf_class.coach

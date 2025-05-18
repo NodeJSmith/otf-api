@@ -55,6 +55,7 @@ class TimeStats(OtfItemBase, Generic[T]):
     all_time: T = Field(..., alias="allTime")
 
     def get_by_time(self, stats_time: StatsTime) -> T:
+        """Get the stats data by time."""
         match stats_time:
             case StatsTime.LastYear:
                 return self.last_year

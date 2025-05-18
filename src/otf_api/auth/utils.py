@@ -84,7 +84,6 @@ def get_credentials_from_env() -> tuple[str, str]:
     Returns:
         tuple[str, str]: A tuple containing the username and password.
     """
-
     username = os.getenv("OTF_EMAIL")
     password = os.getenv("OTF_PASSWORD")
 
@@ -101,7 +100,6 @@ def prompt_for_username_and_password() -> tuple[str, str]:
     Returns:
         tuple[str, str]: A tuple containing the username and password.
     """
-
     username = _prompt_for_username()
     password = _prompt_for_password()
 

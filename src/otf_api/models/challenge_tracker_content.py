@@ -1,5 +1,4 @@
-"""
-These models represent the data returned by the challenge tracker endpoint.
+"""These models represent the data returned by the challenge tracker endpoint.
 
 I believe these are used by the app to populate the list of challenges, programs,
 and benchmarks that a member can compete in.

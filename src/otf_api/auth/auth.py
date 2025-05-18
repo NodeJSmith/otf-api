@@ -46,8 +46,10 @@ class NoCredentialsError(Exception):
 
 
 class OtfCognito(Cognito):
-    """A subclass of the pycognito Cognito class that adds the device_key to the auth_params. Without this
-    being set the renew_access_token call will always fail with NOT_AUTHORIZED."""
+    """A subclass of the pycognito Cognito class that adds the device_key to the auth_params.
+
+    Without this being set the renew_access_token call will always fail with NOT_AUTHORIZED.
+    """
 
     user_pool_id: ClassVar[str] = USER_POOL_ID
     client_id: ClassVar[str] = CLIENT_ID
@@ -69,16 +71,6 @@ class OtfCognito(Cognito):
         access_token: str | None = None,
         refresh_token: str | None = None,
     ):
-        """
-
-        Args:
-            username (str, optional): User Pool username
-            password (str, optional): User Pool password
-            id_token (str, optional): ID Token returned by authentication
-            access_token (str, optional): Access Token returned by authentication
-            refresh_token (str, optional): Refresh Token returned by authentication
-        """
-
         self.username = username
         self.id_token = id_token  # type: ignore
         self.access_token = access_token  # type: ignore
@@ -97,6 +89,18 @@ class OtfCognito(Cognito):
     def handle_login(
         self, username: str | None, password: str | None, id_token: str | None = None, access_token: str | None = None
     ) -> None:
+        """Handles the login process for the user.
+
+        This will set the tokens and device metadata.
+        If the user is not logged in, it will attempt to login with the provided username and password.
+        If the user is already logged in, it will check the tokens and refresh them if necessary.
+
+        Args:
+            username (str | None): The username of the user.
+            password (str | None): The password of the user.
+            id_token (str | None): The ID token of the user.
+            access_token (str | None): The access token of the user.
+        """
         try:
             dd = CRED_CACHE.get_cached_data(DEVICE_KEYS)
         except Exception:
@@ -148,7 +152,9 @@ class OtfCognito(Cognito):
 
     def get_identity_credentials(self):
         """Get the AWS credentials for the user using the Cognito Identity Pool.
-        This is used to access AWS resources using the Cognito Identity Pool."""
+
+        This is used to access AWS resources using the Cognito Identity Pool.
+        """
         cognito_id = self.id_client.get_id(IdentityPoolId=ID_POOL_ID, Logins={PROVIDER_KEY: self.id_token})
         creds = self.id_client.get_credentials_for_identity(
             IdentityId=cognito_id["IdentityId"], Logins={PROVIDER_KEY: self.id_token}
@@ -157,6 +163,7 @@ class OtfCognito(Cognito):
 
     @property
     def tokens(self) -> dict[str, str]:
+        """Returns the tokens as a dictionary."""
         tokens = {
             "access_token": self.access_token,
             "id_token": self.id_token,
@@ -166,6 +173,7 @@ class OtfCognito(Cognito):
 
     @property
     def device_metadata(self) -> dict[str, str]:
+        """Returns the device metadata as a dictionary."""
         dm = {
             "device_key": self.device_key,
             "device_group_key": self.device_group_key,
@@ -175,7 +183,6 @@ class OtfCognito(Cognito):
 
     def login(self, password: str) -> None:
         """Called when logging in with a username and password. Will set the tokens and device metadata."""
-
         LOGGER.debug("Logging in with username and password...")
 
         aws = AWSSRP(
@@ -206,7 +213,6 @@ class OtfCognito(Cognito):
         is no benefit to remembering the device. Additionally, it does not appear that the OTF app remembers devices,
         so this matches the behavior of the app.
         """
-
         if not self.device_key:
             raise ValueError("Device key not set - device key is required by this Cognito pool")
 
@@ -284,10 +290,10 @@ class HttpxCognitoAuth(httpx.Auth):
         Args:
             cognito (Cognito): A Cognito instance.
         """
-
         self.cognito = cognito
 
     def auth_flow(self, request: httpx.Request) -> Generator[httpx.Request, Any, None]:
+        """Add the Cognito access token to the request headers."""
         self.cognito.check_token(renew=True)
 
         token = self.cognito.id_token
@@ -304,9 +310,7 @@ class HttpxCognitoAuth(httpx.Auth):
         yield request
 
     def sign_httpx_request(self, request: httpx.Request) -> Generator[httpx.Request, Any, None]:
-        """
-        Sign an HTTP request using AWS SigV4 for use with httpx.
-        """
+        """Sign an HTTP request using AWS SigV4 for use with httpx."""
         headers = request.headers.copy()
 
         # ensure this header is not included, it will break the signature

@@ -29,6 +29,7 @@ class PerformanceMetric(OtfItemBase):
     @field_validator("display_value", mode="before")
     @classmethod
     def convert_to_time_format(cls, value) -> time | float:
+        """Convert display_value to a time object if it is in the format of HH:MM:SS or MM:SS."""
         if not value:
             return value
 

@@ -9,9 +9,7 @@ CLASS_RATING_MAP = {0: 0, 1: 19, 2: 20, 3: 21}
 
 
 def get_class_rating_value(class_rating: int) -> int:
-    """
-    Convert the class rating from the old values to the new values.
-    """
+    """Convert the class rating from the old values to the new values."""
     if class_rating not in CLASS_RATING_MAP:
         raise ValueError(f"Invalid class rating {class_rating}")
 
@@ -19,9 +17,7 @@ def get_class_rating_value(class_rating: int) -> int:
 
 
 def get_coach_rating_value(coach_rating: int) -> int:
-    """
-    Convert the coach rating from the old values to the new values.
-    """
+    """Convert the coach rating from the old values to the new values."""
     if coach_rating not in COACH_RATING_MAP:
         raise ValueError(f"Invalid coach rating {coach_rating}")
 

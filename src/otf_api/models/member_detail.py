@@ -114,6 +114,7 @@ class MemberDetail(OtfItemBase):
     @field_validator("birth_day")
     @classmethod
     def validate_birth_day(cls, value: date | str | None, **_kwargs) -> date | None:
+        """Convert birth_day to a date object if it is in the format of YYYY-MM-DD."""
         if value is None:
             return value
         if not isinstance(value, date):

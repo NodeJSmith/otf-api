@@ -44,10 +44,12 @@ class OtfClass(OtfItemBase):
 
     @property
     def day_of_week(self) -> DoW:
+        """Returns the day of the week as an enum."""
         dow = self.starts_at.strftime("%A")
         return DoW(dow)
 
     def __str__(self) -> str:
+        """Returns a string representation of the class."""
         starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
         booked_str = ""
         if self.is_booked:
@@ -62,9 +64,11 @@ class OtfClass(OtfItemBase):
 
     @property
     def has_availability(self) -> bool:
+        """Represents if the class has availability."""
         return not self.full
 
     @property
     def day_of_week_enum(self) -> DoW:
+        """Returns the day of the week as an enum."""
         dow = self.starts_at.strftime("%A").upper()
         return DoW(dow)

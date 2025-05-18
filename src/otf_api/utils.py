@@ -14,6 +14,17 @@ LOGGER = getLogger(__name__)
 
 
 def get_booking_uuid(booking_or_uuid: "str | models.Booking") -> str:
+    """Gets the booking UUID from the input, which can be a string or Booking object.
+
+    Args:
+        booking_or_uuid (str | Booking): The input booking or UUID.
+
+    Returns:
+        str: The booking UUID.
+
+    Raises:
+        TypeError: If the input is not a string or Booking object.
+    """
     from otf_api.models.bookings import Booking
 
     if isinstance(booking_or_uuid, str):
@@ -22,10 +33,21 @@ def get_booking_uuid(booking_or_uuid: "str | models.Booking") -> str:
     if isinstance(booking_or_uuid, Booking):
         return booking_or_uuid.booking_uuid
 
-    raise ValueError(f"Expected Booking or str, got {type(booking_or_uuid)}")
+    raise TypeError(f"Expected Booking or str, got {type(booking_or_uuid)}")
 
 
 def get_booking_id(booking_or_id: "str | models.BookingV2") -> str:
+    """Gets the booking ID from the input, which can be a string or BookingV2 object.
+
+    Args:
+        booking_or_id (str | BookingV2): The input booking or ID.
+
+    Returns:
+        str: The booking ID.
+
+    Raises:
+        TypeError: If the input is not a string or BookingV2 object.
+    """
     from otf_api.models.bookings_v2 import BookingV2
 
     if isinstance(booking_or_id, str):
@@ -34,10 +56,23 @@ def get_booking_id(booking_or_id: "str | models.BookingV2") -> str:
     if isinstance(booking_or_id, BookingV2):
         return booking_or_id.booking_id
 
-    raise ValueError(f"Expected BookingV2 or str, got {type(booking_or_id)}")
+    raise TypeError(f"Expected BookingV2 or str, got {type(booking_or_id)}")
 
 
 def get_class_uuid(class_or_uuid: "str | models.OtfClass | models.BookingV2Class") -> str:
+    """Gets the class UUID from the input, which can be a string, OtfClass, or BookingV2Class.
+
+    Args:
+        class_or_uuid (str | OtfClass | BookingV2Class): The input class or UUID.
+
+    Returns:
+        str: The class UUID.
+
+    Raises:
+        ValueError: If the class does not have a class_uuid.
+        TypeError: If the input is not a string, OtfClass, or BookingV2Class.
+
+    """
     if isinstance(class_or_uuid, str):
         return class_or_uuid
 
@@ -47,10 +82,18 @@ def get_class_uuid(class_or_uuid: "str | models.OtfClass | models.BookingV2Class
             return class_uuid
         raise ValueError("Class does not have a class_uuid")
 
-    raise ValueError(f"Expected OtfClass, BookingV2Class, or str, got {type(class_or_uuid)}")
+    raise TypeError(f"Expected OtfClass, BookingV2Class, or str, got {type(class_or_uuid)}")
 
 
 def ensure_list(obj: list | Any | None) -> list:
+    """Ensures the input is a list. If None, returns an empty list. If not a list, returns a list containing the input.
+
+    Args:
+        obj (list | Any | None): The input object to ensure is a list.
+
+    Returns:
+        list: The input object as a list. If None, returns an empty list.
+    """
     if obj is None:
         return []
     if not isinstance(obj, list):
@@ -58,7 +101,19 @@ def ensure_list(obj: list | Any | None) -> list:
     return obj
 
 
-def ensure_datetime(date_str: str | datetime | None) -> datetime | None:
+def ensure_datetime(date_str: str | date | datetime | None) -> datetime | None:
+    """Ensures the input is a date/datetime object or a string that can be converted to a datetime.
+
+    Args:
+        date_str (str | date | datetime | None): The input date string or date object.
+        If None, returns None.
+
+    Returns:
+        datetime | None: The converted datetime object or None if the input is None.
+
+    Raises:
+        TypeError: If the input is not a string, date, or datetime object.
+    """
     if not date_str:
         return None
 
@@ -71,10 +126,21 @@ def ensure_datetime(date_str: str | datetime | None) -> datetime | None:
     if isinstance(date_str, date):
         return datetime.combine(date_str, datetime.min.time())
 
-    raise ValueError(f"Expected str or datetime, got {type(date_str)}")
+    raise TypeError(f"Expected str or datetime, got {type(date_str)}")
 
 
-def ensure_date(date_str: str | date | None) -> date | None:
+def ensure_date(date_str: str | date | datetime | None) -> date | None:
+    """Ensures the input is a date object or a string that can be converted to a date.
+
+    Args:
+        date_str (str | date | None): The input date string or date object.
+
+    Returns:
+        date | None: The converted date object or None if the input is None.
+
+    Raises:
+        TypeError: If the input is not a string or date object.
+    """
     if not date_str:
         return None
 
@@ -84,7 +150,10 @@ def ensure_date(date_str: str | date | None) -> date | None:
     if isinstance(date_str, datetime):
         return date_str.date()
 
-    return date_str
+    if isinstance(date_str, date):
+        return date_str
+
+    raise TypeError(f"Expected str or date, got {type(date_str)}")
 
 
 @attrs.define
@@ -95,6 +164,7 @@ class CacheableData:
     cache_dir: Path
 
     def __attrs_post_init__(self):
+        """Ensures the cache directory exists."""
         self.cache_path.parent.mkdir(parents=True, exist_ok=True)
 
     @property

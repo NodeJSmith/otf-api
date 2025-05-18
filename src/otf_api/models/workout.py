@@ -14,8 +14,7 @@ from otf_api.models.telemetry import Telemetry
 
 
 class Workout(OtfItemBase):
-    """Represents a workout - this combines the performance summary, data from the new bookings endpoint, and
-    telemetry data.
+    """Represents a workout - combines the performance summary, data from the new bookings endpoint, and telemetry data.
 
     The final product contains all the performance summary data, the detailed data over time, as well as the class,
     coach, studio, and rating data from the new endpoint.

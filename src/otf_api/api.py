@@ -60,11 +60,13 @@ class Otf:
         self.home_studio_uuid = self.home_studio.studio_uuid
 
     def __eq__(self, other):
+        """Check if two Otf objects are equal."""
         if not isinstance(other, Otf):
             return False
         return self.member_uuid == other.member_uuid
 
     def __hash__(self):
+        """Return a hash value for the object."""
         # Combine immutable attributes into a single hash value
         return hash(self.member_uuid)
 
@@ -84,7 +86,6 @@ class Otf:
         **kwargs: Any,
     ) -> Any:
         """Perform an API request."""
-
         headers = headers or {}
         params = params or {}
         params = {k: v for k, v in params.items() if v is not None}
@@ -209,7 +210,6 @@ class Otf:
 
     def _get_bookings_raw(self, start_date: str | None, end_date: str | None, status: str | list[str] | None) -> dict:
         """Retrieve raw bookings data."""
-
         if isinstance(status, list):
             status = ",".join(status)
 
@@ -227,7 +227,6 @@ class Otf:
         expand: bool = False,
     ) -> dict:
         """Retrieve raw bookings data."""
-
         params: dict[str, bool | str] = {
             "ends_before": pendulum.instance(ends_before).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "starts_after": pendulum.instance(starts_after).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -440,8 +439,9 @@ class Otf:
         end_dtme: datetime | str | None = None,
         exclude_canceled: bool = True,
     ) -> list[models.BookingV2]:
-        """Get the bookings for the user. If no dates are provided, it will return all bookings
-        between today and 45 days from now.
+        """Get the bookings for the user.
+
+        If no dates are provided, it will return all bookings between today and 45 days from now.
 
         Warning:
             ---
@@ -453,10 +453,10 @@ class Otf:
             start_dtme (datetime | str | None): The start date for the bookings. Default is None.
             end_dtme (datetime | str | None): The end date for the bookings. Default is None.
             exclude_canceled (bool): Whether to exclude canceled bookings. Default is True.
+
         Returns:
             list[BookingV2]: The bookings for the user.
         """
-
         expand = True  # this doesn't seem to have an effect? so leaving it out of the argument list
 
         # leaving the parameter as `exclude_canceled` for backwards compatibility
@@ -504,7 +504,6 @@ class Otf:
         Returns:
             list[OtfClass]: The classes for the user.
         """
-
         start_date = ensure_date(start_date)
         end_date = ensure_date(end_date)
 
@@ -543,7 +542,6 @@ class Otf:
         Returns:
             list[OtfClass]: The classes for the user.
         """
-
         studio_uuids = ensure_list(studio_uuids) or [self.home_studio_uuid]
         studio_uuids = list(set(studio_uuids))  # remove duplicates
 
@@ -582,7 +580,6 @@ class Otf:
         Returns:
             list[OtfClass]: The filtered classes.
         """
-
         # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
         max_date = datetime.today().date() + timedelta(days=29)
 
@@ -658,7 +655,6 @@ class Otf:
             BookingNotFoundError: If the booking does not exist.
             ValueError: If class_uuid is None or empty string.
         """
-
         class_uuid = get_class_uuid(otf_class)
 
         all_bookings = self.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
@@ -681,7 +677,6 @@ class Otf:
             BookingNotFoundError: If the booking does not exist.
             ValueError: If class_uuid is None or empty string.
         """
-
         class_uuid = get_class_uuid(otf_class)
 
         all_bookings = self._get_all_bookings_new()
@@ -706,7 +701,6 @@ class Otf:
             ValueError: If class_uuid is None or empty string.
             OtfException: If there is an error booking the class.
         """
-
         class_uuid = get_class_uuid(otf_class)
 
         self._check_class_already_booked(class_uuid)
@@ -754,7 +748,6 @@ class Otf:
         Checks the member's bookings to see if the provided class overlaps with any existing bookings. If a conflict is
         found, a ConflictingBookingError is raised.
         """
-
         bookings = self.get_bookings(start_date=otf_class.starts_at.date(), end_date=otf_class.starts_at.date())
         if not bookings:
             return
@@ -851,7 +844,6 @@ class Otf:
             If dates are provided, the endpoint will return bookings where the class date is within the provided
             date range. If no dates are provided, it will go back 45 days and forward about 30 days.
         """
-
         if exclude_cancelled and status == models.BookingStatus.Cancelled:
             LOGGER.warning(
                 "Cannot exclude cancelled bookings when status is Cancelled. Setting exclude_cancelled to False."
@@ -895,8 +887,9 @@ class Otf:
         return bookings
 
     def get_historical_bookings(self) -> list[models.Booking]:
-        """Get the member's historical bookings. This will go back 45 days and return all bookings
-        for that time period.
+        """Get the member's historical bookings.
+
+        This will go back 45 days and return all bookings for that time period.
 
         Returns:
             list[Booking]: The member's historical bookings.
@@ -919,7 +912,6 @@ class Otf:
         Returns:
             MemberDetail: The member details.
         """
-
         resp = self._get_member_detail_raw()
         data = resp["data"]
 
@@ -935,7 +927,6 @@ class Otf:
         Returns:
             MemberMembership: The member's membership details.
         """
-
         data = self._get_member_membership_raw()
         return models.MemberMembership(**data["data"])
 
@@ -968,7 +959,6 @@ class Otf:
         Returns:
             StatsResponse: The member's lifetime stats.
         """
-
         data = self._get_member_lifetime_stats_raw(select_time.value)
 
         stats = models.StatsResponse(**data["data"])
@@ -986,7 +976,6 @@ class Otf:
         Returns:
             InStudioStatsData: The member's lifetime stats in studio.
         """
-
         data = self._get_member_lifetime_stats(select_time)
 
         return data.in_studio.get_by_time(select_time)
@@ -1002,7 +991,6 @@ class Otf:
         Returns:
             OutStudioStatsData: The member's lifetime stats out of studio.
         """
-
         data = self._get_member_lifetime_stats(select_time)
 
         return data.out_studio.get_by_time(select_time)
@@ -1068,8 +1056,9 @@ class Otf:
         self._remove_favorite_studio_raw(studio_uuids)
 
     def get_studio_services(self, studio_uuid: str | None = None) -> list[models.StudioService]:
-        """Get the services available at a specific studio. If no studio UUID is provided, the member's home studio
-        will be used.
+        """Get the services available at a specific studio.
+
+        If no studio UUID is provided, the member's home studio will be used.
 
         Args:
             studio_uuid (str, optional): The studio UUID to get services for.
@@ -1087,8 +1076,9 @@ class Otf:
 
     @cached(cache=TTLCache(maxsize=1024, ttl=600))
     def get_studio_detail(self, studio_uuid: str | None = None) -> models.StudioDetail:
-        """Get detailed information about a specific studio. If no studio UUID is provided, it will default to the
-        user's home studio.
+        """Get detailed information about a specific studio.
+
+        If no studio UUID is provided, it will default to the user's home studio.
 
         If the studio is not found, it will return a StudioDetail object with default values.
 
@@ -1111,7 +1101,6 @@ class Otf:
         self, latitude: float | None = None, longitude: float | None = None
     ) -> list[models.StudioDetail]:
         """Alias for search_studios_by_geo."""
-
         return self.search_studios_by_geo(latitude, longitude)
 
     def search_studios_by_geo(
@@ -1133,8 +1122,9 @@ class Otf:
         return self._get_studios_by_geo(latitude, longitude, distance)
 
     def _get_all_studios(self) -> list[models.StudioDetail]:
-        """Gets all studios. Marked as private to avoid random users calling it. Useful for testing and validating
-        models.
+        """Gets all studios. Marked as private to avoid random users calling it.
+
+        Useful for testing and validating models.
 
         Returns:
             list[StudioDetail]: List of studios that match the search criteria.
@@ -1145,12 +1135,12 @@ class Otf:
     def _get_studios_by_geo(
         self, latitude: float | None, longitude: float | None, distance: int = 50
     ) -> list[models.StudioDetail]:
-        """
-        Searches for studios by geographic location.
+        """Searches for studios by geographic location.
 
         Args:
             latitude (float | None): Latitude of the location.
             longitude (float | None): Longitude of the location.
+            distance (int): The distance in miles to search around the location. Default is 50.
 
         Returns:
             list[models.StudioDetail]: List of studios matching the search criteria.
@@ -1257,8 +1247,9 @@ class Otf:
         return benchmarks
 
     def get_challenge_tracker_detail(self, challenge_category_id: int) -> models.FitnessBenchmark:
-        """Get details about a challenge. This endpoint does not (usually) return member participation, but rather
-        details about the challenge itself.
+        """Get details about a challenge.
+
+        This endpoint does not (usually) return member participation, but rather details about the challenge itself.
 
         Args:
             challenge_category_id (int): The challenge type ID.
@@ -1266,7 +1257,6 @@ class Otf:
         Returns:
             FitnessBenchmark: Details about the challenge.
         """
-
         data = self._get_challenge_tracker_detail_raw(int(challenge_category_id))
 
         if len(data["Dto"]) > 1:
@@ -1278,7 +1268,7 @@ class Otf:
         return models.FitnessBenchmark(**data["Dto"][0])
 
     def get_performance_summary(self, performance_summary_id: str) -> models.PerformanceSummary:
-        """Get the details for a performance summary. Generally should not be called directly. This
+        """Get the details for a performance summary. Generally should not be called directly. This.
 
         Args:
             performance_summary_id (str): The performance summary ID.
@@ -1286,7 +1276,6 @@ class Otf:
         Returns:
             dict[str, Any]: The performance summary details.
         """
-
         warning_msg = "This endpoint does not return all data, consider using `get_workouts` instead."
         if warning_msg not in LOGGED_ONCE:
             LOGGER.warning(warning_msg)
@@ -1320,7 +1309,6 @@ class Otf:
         Returns:
             TelemetryItem: The telemetry for the class history.
         """
-
         res = self._get_telemetry_raw(performance_summary_id, max_data_points)
         return models.Telemetry(**res)
 
@@ -1365,7 +1353,6 @@ class Otf:
             }
             ```
         """
-
         current_settings = self.get_sms_notification_settings()
 
         promotional_enabled = (
@@ -1430,7 +1417,6 @@ class Otf:
         Returns:
             MemberDetail: The updated member details or the original member details if no changes were made.
         """
-
         if not first_name and not last_name:
             LOGGER.warning("No names provided, nothing to update.")
             return self.member
@@ -1472,7 +1458,6 @@ class Otf:
             None
 
         """
-
         body_class_rating = models.get_class_rating_value(class_rating)
         body_coach_rating = models.get_coach_rating_value(coach_rating)
 
@@ -1548,8 +1533,7 @@ class Otf:
         return workouts
 
     def _get_perf_summary_to_class_uuid_mapping(self) -> dict[str, str | None]:
-        """Get a mapping of performance summary IDs to class UUIDs. These will be used
-        when rating a class.
+        """Get a mapping of performance summary IDs to class UUIDs. These will be used when rating a class.
 
         Returns:
             dict[str, str | None]: A dictionary mapping performance summary IDs to class UUIDs.
@@ -1566,7 +1550,6 @@ class Otf:
         Returns:
             dict[str, dict[str, Any]]: A dictionary of performance summaries, keyed by performance summary ID.
         """
-
         with ThreadPoolExecutor(max_workers=10) as pool:
             perf_summaries = pool.map(self._get_performance_summary_raw, performance_summary_ids)
 
@@ -1597,8 +1580,10 @@ class Otf:
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
     ) -> models.Workout:
-        """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
-            rate the class/coach. 1 - 3 is a range from bad to good.
+        """Rate a class and coach.
+
+        The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to rate the class/coach. 1 - 3\
+            is a range from bad to good.
 
         Args:
             workout (Workout): The workout to rate.
@@ -1612,7 +1597,6 @@ class Otf:
             AlreadyRatedError: If the performance summary is already rated.
             ClassNotRatableError: If the performance summary is not rateable.
         """
-
         if not workout.ratable or not workout.class_uuid:
             raise exc.ClassNotRatableError(f"Workout {workout.performance_summary_id} is not rateable.")
 

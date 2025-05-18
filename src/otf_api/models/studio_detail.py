@@ -66,6 +66,5 @@ class StudioDetail(OtfItemBase):
     @classmethod
     def create_empty_model(cls, studio_uuid: str) -> "StudioDetail":
         """Create an empty model with the given studio_uuid."""
-
         # pylance doesn't know that the rest of the fields default to None, so we use type: ignore
         return StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")  # type: ignore
