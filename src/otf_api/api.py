@@ -147,10 +147,15 @@ class Otf:
         return resp
 
     def _classes_request(
-        self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
+        self,
+        method: str,
+        url: str,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, Any] | None = None,
+        **kwargs: Any,
     ) -> Any:
         """Perform an API request to the classes API."""
-        return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
+        return self._do(method, API_IO_BASE_URL, url, params, headers=headers, **kwargs)
 
     def _default_request(
         self,
@@ -206,6 +211,11 @@ class Otf:
             raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
         return resp
 
+    def _book_class_new_raw(self, body: dict[str, str | bool]) -> dict:
+        """Book a class by class_id."""
+
+        return self._classes_request("POST", "/v1/bookings/me", json=body)
+
     def _get_booking_raw(self, booking_uuid: str) -> dict:
         """Retrieve raw booking data."""
         return self._default_request("GET", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}")
@@ -248,10 +258,6 @@ class Otf:
     def _get_booking_new_raw(self, booking_id: str) -> dict:
         """Retrieve raw booking data."""
         return self._classes_request("GET", f"/v1/bookings/me/{booking_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
-
-    def _book_class_new_raw(self, class_id: str) -> dict:
-        """Book a class by class_id."""
-        return self._classes_request("POST", f"/v1/bookings/me/{class_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
 
     def _get_member_detail_raw(self) -> dict:
         """Retrieve raw member details."""
@@ -728,6 +734,26 @@ class Otf:
         booking = self.get_booking(booking_uuid)
 
         return booking
+
+    def book_class_new(self, class_id: str) -> models.BookingV2:
+        """Book a class by providing the class_id.
+
+        Args:
+            class_id (str): The class ID to book.
+
+        Returns:
+            BookingV2: The booking.
+        """
+        if not class_id:
+            raise ValueError("class_id is required")
+
+        body = {"class_id": class_id, "confirmed": False, "waitlist": False}
+
+        resp = self._book_class_new_raw(body)
+
+        new_booking = models.BookingV2(**resp)
+
+        return new_booking
 
     def _check_class_already_booked(self, class_uuid: str) -> None:
         """Check if the class is already booked.
