@@ -29,7 +29,6 @@ LOGGER = getLogger(__name__)
 CLIENT_ID = "1457d19r0pcjgmp5agooi0rb1b"  # from android app
 USER_POOL_ID = "us-east-1_dYDxUeyL1"
 REGION = "us-east-1"
-COGNITO_IDP_URL = f"https://cognito-idp.{REGION}.amazonaws.com/"
 
 ID_POOL_ID = "us-east-1:4943c880-fb02-4fd7-bc37-2f4c32ecb2a3"
 PROVIDER_KEY = f"cognito-idp.{REGION}.amazonaws.com/{USER_POOL_ID}"
