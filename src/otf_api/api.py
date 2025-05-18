@@ -479,10 +479,13 @@ class Otf:
 
         return [models.BookingV2(**b) for b in bookings_resp["items"]]
 
-    # def get_booking_new(self, booking_id: str) -> models.BookingV2:
-    #     """Get a booking by ID."""
-    #     booking_resp = self._get_booking_new_raw(booking_id)
-    #     return models.BookingV2(**booking_resp)
+    def get_booking_new(self, booking_id: str) -> models.BookingV2:
+        """Get a booking by ID."""
+        all_bookings = self._get_all_bookings_new()
+        booking = next((b for b in all_bookings if b.booking_id == booking_id), None)
+        if not booking:
+            raise exc.ResourceNotFoundError(f"Booking with ID {booking_id} not found")
+        return booking
 
     def get_classes(
         self,
