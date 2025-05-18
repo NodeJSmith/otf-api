@@ -67,7 +67,6 @@ class Workout(OtfItemBase):
         data["coach"] = otf_class.coach
         data["ratable"] = v2_booking.ratable  # this seems to be more accurate
 
-        # data["v2_workout"] = v2_workout
         data["booking_id"] = v2_booking.booking_id
         data["active_time_seconds"] = v2_workout.active_time_seconds
         data["class_rating"] = v2_booking.class_rating

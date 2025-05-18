@@ -38,14 +38,6 @@ def get_end_time(start_time: datetime, class_type: ClassType) -> datetime:
             LOGGER.warning(f"Class type {class_type} is not recognized, returning start time plus 60 minutes")
             return start_time.add(minutes=60)
 
-    # if class_type == ClassType.ORANGE_60:
-    #     return start_time.add(minutes=60)
-
-    # if class_type == ClassType.ORANGE_90:
-    #     return start_time.add(minutes=90)
-
-    # if class_type in
-
 
 class Rating(OtfItemBase):
     id: str
