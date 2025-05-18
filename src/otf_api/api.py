@@ -240,7 +240,7 @@ class Otf:
 
     def _cancel_booking_new_raw(self, booking_id: str) -> dict:
         """Cancel a booking by booking_id."""
-        return self._classes_request("DELETE", f"/v1/bookings/me/{booking_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
+        return self._classes_request("DELETE", f"/v1/bookings/me/{booking_id}")
 
     def _get_booking_new_raw(self, booking_id: str) -> dict:
         """Retrieve raw booking data."""
