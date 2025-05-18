@@ -122,7 +122,7 @@ class Otf:
             LOGGER.exception(f"Error making request: {e}")
             raise
 
-        if not response.text:
+        if method == "GET" and not response.text:
             # insanely enough, at least one endpoint (get perf summary) returns None without error instead of 404
             raise exc.OtfRequestError("Empty response", None, response=response, request=request)
 
