@@ -68,6 +68,6 @@ class OtfUser:
         self.httpx_auth = HttpxCognitoAuth(cognito=self.cognito)
 
     @staticmethod
-    def clear_cache():
+    def clear_cache() -> None:
         """Clear the cached credentials."""
         CRED_CACHE.clear_cache()

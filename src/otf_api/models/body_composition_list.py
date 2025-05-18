@@ -284,7 +284,7 @@ class BodyCompositionData(OtfItemBase):
 
     @field_validator("skeletal_muscle_mass_dividers", "weight_dividers", "body_fat_mass_dividers", mode="before")
     @classmethod
-    def convert_dividers_to_float_list(cls, v: str):
+    def convert_dividers_to_float_list(cls, v: str) -> list[float]:
         """Convert the dividers from a string to a list of floats.
 
         Args:
@@ -297,7 +297,7 @@ class BodyCompositionData(OtfItemBase):
 
     @field_validator("total_body_weight", mode="before")
     @classmethod
-    def convert_body_weight_from_kg_to_pounds(cls, v: float):
+    def convert_body_weight_from_kg_to_pounds(cls, v: float) -> float:
         """Convert the body weight from kg to pounds.
 
         Args:

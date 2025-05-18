@@ -59,7 +59,7 @@ class Otf:
         self.home_studio = self.member.home_studio
         self.home_studio_uuid = self.home_studio.studio_uuid
 
-    def __eq__(self, other):
+    def __eq__(self, other: "Otf | Any") -> bool:  # noqa: ANN401
         """Check if two Otf objects are equal."""
         if not isinstance(other, Otf):
             return False
@@ -83,8 +83,8 @@ class Otf:
         url: str,
         params: dict[str, Any] | None = None,
         headers: dict[str, str] | None = None,
-        **kwargs: Any,
-    ) -> Any:
+        **kwargs,
+    ) -> Any:  # noqa: ANN401
         """Perform an API request."""
         headers = headers or {}
         params = params or {}
@@ -146,7 +146,7 @@ class Otf:
 
     def _classes_request(
         self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
-    ) -> Any:
+    ) -> Any:  # noqa: ANN401
         """Perform an API request to the classes API."""
         return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
 
@@ -156,20 +156,20 @@ class Otf:
         url: str,
         params: dict[str, Any] | None = None,
         headers: dict[str, Any] | None = None,
-        **kwargs: Any,
-    ) -> Any:
+        **kwargs,
+    ) -> Any:  # noqa: ANN401
         """Perform an API request to the default API."""
         return self._do(method, API_BASE_URL, url, params, headers=headers, **kwargs)
 
     def _telemetry_request(
         self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
-    ) -> Any:
+    ) -> Any:  # noqa: ANN401
         """Perform an API request to the Telemetry API."""
         return self._do(method, API_TELEMETRY_BASE_URL, url, params, headers=headers)
 
     def _performance_summary_request(
         self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
-    ) -> Any:
+    ) -> Any:  # noqa: ANN401
         """Perform an API request to the performance summary API."""
         perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
         headers = perf_api_headers | (headers or {})
@@ -186,7 +186,7 @@ class Otf:
             "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params={"confirmed": "true"}
         )
 
-    def _book_class_raw(self, class_uuid, body):
+    def _book_class_raw(self, class_uuid: str, body: dict) -> dict:
         try:
             resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
         except exc.OtfRequestError as e:
@@ -1441,7 +1441,7 @@ class Otf:
         performance_summary_id: str,
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
-    ):
+    ) -> None:
         """Rate a class and coach. A simpler method is provided in `rate_class_from_workout`.
 
         The class rating must be between 0 and 4.
@@ -1621,7 +1621,7 @@ class Otf:
 
     # the below do not return any data for me, so I can't test them
 
-    def _get_member_services(self, active_only: bool = True) -> Any:
+    def _get_member_services(self, active_only: bool = True) -> Any:  # noqa: ANN401
         """Get the member's services.
 
         Args:
@@ -1633,7 +1633,7 @@ class Otf:
         data = self._get_member_services_raw(active_only)
         return data
 
-    def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> Any:
+    def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> Any:  # noqa: ANN401
         """Get data from the member's aspire wearable.
 
         Note: I don't have an aspire wearable, so I can't test this.

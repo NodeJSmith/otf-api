@@ -1,4 +1,5 @@
 from enum import IntEnum, StrEnum
+from typing import Self
 
 
 class StudioStatus(StrEnum):
@@ -98,11 +99,11 @@ class ClassType(StrEnum):
     TREAD_50 = "TREAD_50"
 
     @classmethod
-    def get_case_insensitive(cls, value: str) -> str:
+    def get_case_insensitive(cls, value: str) -> "Self":
         """Returns the actual value of the enum, regardless of case."""
         value = (value or "").strip()
         value = value.replace(" ", "_")
-        lcase_to_actual = {item.value.lower(): item.value for item in cls}
+        lcase_to_actual = {item.value.lower(): item for item in cls}
         return lcase_to_actual[value.lower()]
 
     @staticmethod

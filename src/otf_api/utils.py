@@ -85,7 +85,7 @@ def get_class_uuid(class_or_uuid: "str | models.OtfClass | models.BookingV2Class
     raise TypeError(f"Expected OtfClass, BookingV2Class, or str, got {type(class_or_uuid)}")
 
 
-def ensure_list(obj: list | Any | None) -> list:
+def ensure_list(obj: list | Any | None) -> list:  # noqa: ANN401
     """Ensures the input is a list. If None, returns an empty list. If not a list, returns a list containing the input.
 
     Args:

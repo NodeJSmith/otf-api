@@ -22,6 +22,7 @@ from otf_api.utils import CacheableData
 
 if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_identity import CognitoIdentityClient
+    from mypy_boto3_cognito_identity.type_defs import CredentialsTypeDef
     from mypy_boto3_cognito_idp import CognitoIdentityProviderClient
     from mypy_boto3_cognito_idp.type_defs import InitiateAuthResponseTypeDef
 
@@ -150,10 +151,13 @@ class OtfCognito(Cognito):
         self.verify_tokens()
         CRED_CACHE.write_to_cache(self.tokens)
 
-    def get_identity_credentials(self):
+    def get_identity_credentials(self) -> "CredentialsTypeDef":
         """Get the AWS credentials for the user using the Cognito Identity Pool.
 
         This is used to access AWS resources using the Cognito Identity Pool.
+
+        Returns:
+            CredentialsTypeDef: The AWS credentials for the user.
         """
         cognito_id = self.id_client.get_id(IdentityPoolId=ID_POOL_ID, Logins={PROVIDER_KEY: self.id_token})
         creds = self.id_client.get_credentials_for_identity(

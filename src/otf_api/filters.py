@@ -69,29 +69,39 @@ class ClassFilter(BaseModel):
 
     @field_validator("class_type", "day_of_week", "start_time", mode="before")
     @classmethod
-    def _single_item_to_list(cls, v):
+    def _single_item_to_list(cls, v: str | list | None) -> list | None:
         if v and not isinstance(v, list):
             return [v]
+
+        if not v:
+            return None
+
         return v
 
     @field_validator("day_of_week", mode="before")
     @classmethod
-    def _day_of_week_str_to_enum(cls, v):
+    def _day_of_week_str_to_enum(cls, v: str | list[str] | None) -> list[DoW] | None:
         if v and isinstance(v, str):
             return [DoW(v.title())]
 
         if v and isinstance(v, list) and not all(isinstance(i, DoW) for i in v):
             return [DoW(i.title()) for i in v]
 
-        return v
+        if not v:
+            return None
+
+        return v  # type: ignore
 
     @field_validator("class_type", mode="before")
     @classmethod
-    def _class_type_str_to_enum(cls, v):
+    def _class_type_str_to_enum(cls, v: str | list[str] | None) -> list[ClassType] | None:
         if v and isinstance(v, str):
             return [ClassType.get_case_insensitive(v)]
 
         if v and isinstance(v, list) and not all(isinstance(i, ClassType) for i in v):
             return [ClassType.get_case_insensitive(i) for i in v]
 
-        return v
+        if not v:
+            return None
+
+        return v  # type: ignore

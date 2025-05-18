@@ -1,3 +1,5 @@
+from typing import Any
+
 from pydantic import AliasChoices, Field, field_validator, model_validator
 
 
@@ -27,7 +29,7 @@ class AddressMixin:
 
     @model_validator(mode="before")
     @classmethod
-    def validate_model(cls, values):
+    def validate_model(cls, values: Any) -> Any:  # noqa: ANN401
         """Validates address fields and country format, handling specific cases."""
         if set(values.keys()) == set(
             ["phone", "latitude", "longitude", "address1", "address2", "city", "state", "postalCode"]

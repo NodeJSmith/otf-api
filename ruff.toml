@@ -36,6 +36,7 @@ target-version = "py310"
 
 [lint]
 select = [
+    "ANN",
     "D",    # docstrings
     "E",    # pycodestyle (error)
     "W",    # pycodestyle (warning)
@@ -51,6 +52,7 @@ select = [
     "TCH",  # flake8-type-checking
     "I",    # isort
     "DTZ",  # flake8-datetimez
+    "TC",
 
 ]
 ignore = [
@@ -67,7 +69,9 @@ ignore = [
     "D101",   # undocumented-public-class
     "D104",   # undocumented-public-package
     # "D103", # undocumented-public-function
-    "D107", # undocumented-public-init
+    "D107",   # undocumented-public-init
+    "ANN204", # missing-return-type-special-method
+    "ANN003", # missing-type-kwargs
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
