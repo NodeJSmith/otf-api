@@ -1,17 +1,17 @@
 [tool.bumpversion]
-current_version = "0.11.0"
+current_version = "0.11.0-rc1"
 
-parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)(?:-(?P<dev_l>dev)(?P<dev>0|[1-9]\\d*))?"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)(?:-(?P<rc_l>rc)(?P<rc>0|[1-9]\\d*))?"
 
-serialize = ["{major}.{minor}.{patch}-{dev_l}{dev}", "{major}.{minor}.{patch}"]
+serialize = ["{major}.{minor}.{patch}-{rc_l}{rc}", "{major}.{minor}.{patch}"]
 commit = false
 tag = false
 
 [tool.bumpversion.parts.minor]
 optional = false
 
-[tool.bumpversion.parts.dev_l]
-values = ["dev"]
+[tool.bumpversion.parts.rc_l]
+values = ["rc"]
 
 [[tool.bumpversion.files]]
 filename = "pyproject.toml"
