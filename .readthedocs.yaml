@@ -8,7 +8,7 @@ build:
 
   jobs:
     post_create_environment:
-      - curl -LsSf https://astral.sh/uv/0.6.6/install.sh | sh
+      - curl -LsSf https://astral.sh/uv/0.7.3/install.sh | sh
     post_install:
       # VIRTUAL_ENV needs to be set manually for now.
       # See https://github.com/readthedocs/readthedocs.org/pull/11152/
