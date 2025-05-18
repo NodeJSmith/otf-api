@@ -68,10 +68,9 @@ class Rower(BaseEquipment):
 
 
 class PerformanceSummary(OtfItemBase):
-    """Represents a workout performance summary - the same data that is shown in the OTF app after a workout - mostly.
+    """Represents a workout performance summary - much of the same data as in the app, but not all.
 
-    The app actually includes data from another endpoint as well, so this is likely going to change soon.
-
+    You likely want to use the `Workout` model and `get_workouts` method instead.
     """
 
     performance_summary_id: str = Field(..., alias="id", description="Unique identifier for this performance summary")

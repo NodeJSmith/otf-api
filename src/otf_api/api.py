@@ -29,6 +29,7 @@ HEADERS = {
     "user-agent": "okhttp/4.12.0",
 }
 LOGGER = getLogger(__name__)
+LOGGED_ONCE: set[str] = set()
 
 
 @attrs.define(init=False)
@@ -1285,6 +1286,10 @@ class Otf:
         Returns:
             dict[str, Any]: The performance summary details.
         """
+
+        warning_msg = "This endpoint does not return all data, consider using `get_workouts` instead."
+        if warning_msg not in LOGGED_ONCE:
+            LOGGER.warning(warning_msg)
 
         resp = self._get_performance_summary_raw(performance_summary_id)
         return models.PerformanceSummary(**resp)
