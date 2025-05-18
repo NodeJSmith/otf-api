@@ -839,8 +839,8 @@ class Otf:
 
         booking_id = get_booking_id(booking)
 
-        # if booking == booking_id:  # ensure this booking exists by calling the booking endpoint
-        #     self.get_booking_new(booking_id)
+        if booking == booking_id:
+            _ = self.get_booking_new(booking_id)  # allow the exception to be raised if it doesn't exist
 
         self._cancel_booking_new_raw(booking_id)
 
