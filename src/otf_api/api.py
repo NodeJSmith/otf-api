@@ -1510,32 +1510,31 @@ class Otf:
                 raise exc.AlreadyRatedError(f"Workout {performance_summary_id} is already rated.") from None
             raise
 
-    # def get_workout_from_booking(self, booking: str | models.BookingV2) -> models.Workout:
-    #     """Get a workout for a specific booking.
+    def get_workout_from_booking(self, booking: str | models.BookingV2) -> models.Workout:
+        """Get a workout for a specific booking.
 
-    #     Args:
-    #         booking_id (str | Booking): The booking ID or Booking object to get the workout for.
+        Args:
+            booking (str | Booking): The booking ID or BookingV2 object to get the workout for.
 
-    #     Returns:
-    #         Workout: The member's workout.
+        Returns:
+            Workout: The member's workout.
 
-    #     Raises:
-    #         BookingNotFoundError: If the booking does not exist.
-    #         ResourceNotFoundError: If the workout does not exist.
-    #     """
-    #     booking_id = booking if isinstance(booking, str) else booking.booking_id
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the workout does not exist.
+        """
+        booking_id = get_booking_id(booking)
 
-    #     booking = self.get_booking_new(booking_id)
-    #     if not booking:
-    #         raise exc.BookingNotFoundError(f"Booking {booking_id} not found.")
+        booking = self.get_booking_new(booking_id)
 
-    #     if not booking.workout or not booking.workout.performance_summary_id:
-    #         raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
+        if not booking.workout or not booking.workout.performance_summary_id:
+            raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
 
-    #     perf_summary = self._get_performance_summary_raw(booking.workout.performance_summary_id)
-    #     telemetry = self.get_telemetry(booking.workout.performance_summary_id)
-    #     workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
-    #     return workout
+        perf_summary = self._get_performance_summary_raw(booking.workout.performance_summary_id)
+        telemetry = self.get_telemetry(booking.workout.performance_summary_id)
+        workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
+
+        return workout
 
     def get_workouts(
         self, start_date: date | str | None = None, end_date: date | str | None = None
@@ -1648,19 +1647,7 @@ class Otf:
 
         self.rate_class(workout.class_uuid, workout.performance_summary_id, class_rating, coach_rating)
 
-        # TODO: use this once we get it working, getting workout list is substitute for now
-        # return self.get_workout_from_booking(workout.booking_id)
-
-        workout_date = pendulum.instance(workout.otf_class.starts_at).start_of("day")
-        workouts = self.get_workouts(workout_date.subtract(days=1), workout_date.add(days=1))
-
-        selected_workout = next(
-            (w for w in workouts if w.performance_summary_id == workout.performance_summary_id), None
-        )
-
-        assert selected_workout is not None, "Workout not found in the list of workouts"
-
-        return selected_workout
+        return self.get_workout_from_booking(workout.booking_id)
 
     # the below do not return any data for me, so I can't test them
 
