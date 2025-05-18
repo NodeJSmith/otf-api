@@ -1591,7 +1591,7 @@ class Otf:
         workout: models.Workout,
         class_rating: Literal[0, 1, 2, 3],
         coach_rating: Literal[0, 1, 2, 3],
-    ) -> None:
+    ) -> models.Workout:
         """Rate a class and coach. The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to
             rate the class/coach. 1 - 3 is a range from bad to good.
 
@@ -1601,7 +1601,7 @@ class Otf:
             coach_rating (int): The coach rating. Must be 0, 1, 2, or 3.
 
         Returns:
-            None
+            Workout: The updated workout with the new ratings.
 
         Raises:
             AlreadyRatedError: If the performance summary is already rated.
@@ -1615,7 +1615,20 @@ class Otf:
             raise exc.AlreadyRatedError(f"Workout {workout.performance_summary_id} already rated.")
 
         self.rate_class(workout.class_uuid, workout.performance_summary_id, class_rating, coach_rating)
+
+        # TODO: use this once we get it working, getting workout list is substitute for now
         # return self.get_workout_from_booking(workout.booking_id)
+
+        workout_date = pendulum.instance(workout.otf_class.starts_at).start_of("day")
+        workouts = self.get_workouts(workout_date.subtract(days=1), workout_date.add(days=1))
+
+        selected_workout = next(
+            (w for w in workouts if w.performance_summary_id == workout.performance_summary_id), None
+        )
+
+        assert selected_workout is not None, "Workout not found in the list of workouts"
+
+        return selected_workout
 
     # the below do not return any data for me, so I can't test them
 
