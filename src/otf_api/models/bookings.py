@@ -36,6 +36,11 @@ class OtfClass(OtfItemBase):
     program_name: str | None = Field(None, alias="programName", exclude=True, repr=False)
     virtual_class: bool | None = Field(None, alias="virtualClass", exclude=True, repr=False)
 
+    @property
+    def coach_name(self) -> str:
+        """Shortcut to get the coach's name, to be compatible with new BookingV2Class"""
+        return self.coach.first_name or ""
+
     def __str__(self) -> str:
         starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
         return f"Class: {starts_at_str} {self.name} - {self.coach.first_name}"
@@ -89,6 +94,11 @@ class Booking(OtfItemBase):
     def ends_at(self) -> datetime:
         """Shortcut to get the class end time"""
         return self.otf_class.ends_at
+
+    @property
+    def id_value(self) -> str:
+        """Returns the booking_uuid, to be compatible with new BookingV2 model"""
+        return self.booking_uuid
 
     def __str__(self) -> str:
         starts_at_str = self.otf_class.starts_at.strftime("%a %b %d, %I:%M %p")

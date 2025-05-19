@@ -1,7 +1,7 @@
 import atexit
 import contextlib
 from concurrent.futures import ThreadPoolExecutor
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from functools import partial
 from json import JSONDecodeError
 from logging import getLogger
@@ -437,16 +437,16 @@ class Otf:
         """Get bookings from the new endpoint with no date filters."""
         start_date = pendulum.datetime(1970, 1, 1)
         end_date = pendulum.today().start_of("day").add(days=45)
-        return self.get_bookings_new(start_date, end_date, exclude_canceled=False)
+        return self.get_bookings_new(start_date, end_date, exclude_cancelled=False)
 
     def _get_app_config_raw(self) -> dict[str, Any]:
         return self._default_request("GET", "/member/app-configurations", headers={"SIGV4AUTH_REQUIRED": "true"})
 
     def get_bookings_new(
         self,
-        start_dtme: datetime | str | None = None,
-        end_dtme: datetime | str | None = None,
-        exclude_canceled: bool = True,
+        start_date: datetime | str | None = None,
+        end_date: datetime | str | None = None,
+        exclude_cancelled: bool = True,
     ) -> list[models.BookingV2]:
         """Get the bookings for the user. If no dates are provided, it will return all bookings
         between today and 45 days from now.
@@ -458,9 +458,9 @@ class Otf:
         new class, which is normally transparent to the user.
 
         Args:
-            start_dtme (datetime | str | None): The start date for the bookings. Default is None.
-            end_dtme (datetime | str | None): The end date for the bookings. Default is None.
-            exclude_canceled (bool): Whether to exclude canceled bookings. Default is True.
+            start_dtme (datetime | date | str | None): The start date for the bookings. Default is None.
+            end_dtme (datetime | date | str | None): The end date for the bookings. Default is None.
+            exclude_cancelled (bool): Whether to exclude canceled bookings. Default is True.
         Returns:
             list[BookingV2]: The bookings for the user.
         """
@@ -468,16 +468,16 @@ class Otf:
         expand = True  # this doesn't seem to have an effect? so leaving it out of the argument list
 
         # leaving the parameter as `exclude_canceled` for backwards compatibility
-        include_canceled = not exclude_canceled
+        include_canceled = not exclude_cancelled
 
-        end_dtme = ensure_datetime(end_dtme)
-        start_dtme = ensure_datetime(start_dtme)
+        end_date = ensure_datetime(end_date, time(23, 59, 59))
+        start_date = ensure_datetime(start_date)
 
-        end_dtme = end_dtme or pendulum.today().start_of("day").add(days=45)
-        start_dtme = start_dtme or pendulum.datetime(1970, 1, 1).start_of("day")
+        end_date = end_date or pendulum.today().start_of("day").add(days=45)
+        start_date = start_date or pendulum.datetime(1970, 1, 1).start_of("day")
 
         bookings_resp = self._get_bookings_new_raw(
-            ends_before=end_dtme, starts_after=start_dtme, include_canceled=include_canceled, expand=expand
+            ends_before=end_date, starts_after=start_date, include_canceled=include_canceled, expand=expand
         )
 
         return [models.BookingV2(**b) for b in bookings_resp["items"]]
@@ -1557,7 +1557,7 @@ class Otf:
         start_dtme = pendulum.datetime(start_date.year, start_date.month, start_date.day, 0, 0, 0)
         end_dtme = pendulum.datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
 
-        bookings = self.get_bookings_new(start_dtme, end_dtme, exclude_canceled=False)
+        bookings = self.get_bookings_new(start_dtme, end_dtme, exclude_cancelled=False)
         bookings_dict = {b.workout.id: b for b in bookings if b.workout}
 
         perf_summaries_dict = self._get_perf_summaries_threaded(list(bookings_dict.keys()))

@@ -1,6 +1,6 @@
 import json
 import typing
-from datetime import date, datetime
+from datetime import date, datetime, time
 from logging import getLogger
 from pathlib import Path
 from typing import Any
@@ -11,6 +11,8 @@ if typing.TYPE_CHECKING:
     from otf_api import models
 
 LOGGER = getLogger(__name__)
+
+MIN_TIME = datetime.min.time()
 
 
 def get_booking_uuid(booking_or_uuid: "str | models.Booking") -> str:
@@ -58,7 +60,7 @@ def ensure_list(obj: list | Any | None) -> list:
     return obj
 
 
-def ensure_datetime(date_str: str | datetime | None) -> datetime | None:
+def ensure_datetime(date_str: str | datetime | None, combine_with: time = MIN_TIME) -> datetime | None:
     if not date_str:
         return None
 
@@ -69,7 +71,7 @@ def ensure_datetime(date_str: str | datetime | None) -> datetime | None:
         return date_str
 
     if isinstance(date_str, date):
-        return datetime.combine(date_str, datetime.min.time())
+        return datetime.combine(date_str, combine_with)
 
     raise ValueError(f"Expected str or datetime, got {type(date_str)}")
 
