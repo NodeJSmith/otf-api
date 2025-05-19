@@ -69,7 +69,7 @@ class Otf:
         return hash(self.member_uuid)
 
     @retry(
-        retry=retry_if_exception_type(exc.OtfRequestError),
+        retry=retry_if_exception_type((exc.OtfRequestError, httpx.HTTPStatusError)),
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=4, max=10),
         reraise=True,
