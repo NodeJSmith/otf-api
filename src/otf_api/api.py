@@ -439,6 +439,9 @@ class Otf:
         end_date = pendulum.today().start_of("day").add(days=45)
         return self.get_bookings_new(start_date, end_date, exclude_canceled=False)
 
+    def _get_app_config_raw(self) -> dict[str, Any]:
+        return self._default_request("GET", "/member/app-configurations", headers={"SIGV4AUTH_REQUIRED": "true"})
+
     def get_bookings_new(
         self,
         start_dtme: datetime | str | None = None,
