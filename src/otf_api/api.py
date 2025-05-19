@@ -183,7 +183,7 @@ class Otf:
 
         return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
 
-    def _get_classes_raw(self, studio_uuids: list[str] | None) -> dict:
+    def _get_classes_raw(self, studio_uuids: list[str]) -> dict:
         """Retrieve raw class data."""
         return self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
 
