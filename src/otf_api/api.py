@@ -444,8 +444,8 @@ class Otf:
 
     def get_bookings_new(
         self,
-        start_date: datetime | str | None = None,
-        end_date: datetime | str | None = None,
+        start_date: datetime | date | str | None = None,
+        end_date: datetime | date | str | None = None,
         exclude_cancelled: bool = True,
     ) -> list[models.BookingV2]:
         """Get the bookings for the user. If no dates are provided, it will return all bookings

@@ -60,7 +60,7 @@ def ensure_list(obj: list | Any | None) -> list:
     return obj
 
 
-def ensure_datetime(date_str: str | datetime | None, combine_with: time = MIN_TIME) -> datetime | None:
+def ensure_datetime(date_str: str | datetime | date | None, combine_with: time = MIN_TIME) -> datetime | None:
     if not date_str:
         return None
 
