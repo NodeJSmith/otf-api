@@ -18,7 +18,7 @@ from otf_api import exceptions as exc
 from otf_api import filters, models
 from otf_api.auth import OtfUser
 from otf_api.models.enums import HISTORICAL_BOOKING_STATUSES
-from otf_api.utils import ensure_date, ensure_datetime, ensure_list, get_booking_uuid, get_class_uuid  # get_booking_id
+from otf_api.utils import ensure_date, ensure_datetime, ensure_list, get_booking_id, get_booking_uuid, get_class_uuid
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
@@ -69,7 +69,7 @@ class Otf:
         return hash(self.member_uuid)
 
     @retry(
-        retry=retry_if_exception_type(exc.OtfRequestError),
+        retry=retry_if_exception_type((exc.OtfRequestError, httpx.HTTPStatusError)),
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=4, max=10),
         reraise=True,
@@ -123,8 +123,11 @@ class Otf:
             raise
 
         if not response.text:
-            # insanely enough, at least one endpoint (get perf summary) returns None without error instead of 404
-            raise exc.OtfRequestError("Empty response", None, response=response, request=request)
+            if method == "GET":
+                raise exc.OtfRequestError("Empty response", None, response=response, request=request)
+
+            LOGGER.debug(f"Request {method!r} to {full_url!r} returned no content")
+            return None
 
         try:
             resp = response.json()
@@ -144,10 +147,15 @@ class Otf:
         return resp
 
     def _classes_request(
-        self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
+        self,
+        method: str,
+        url: str,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, Any] | None = None,
+        **kwargs: Any,
     ) -> Any:
         """Perform an API request to the classes API."""
-        return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
+        return self._do(method, API_IO_BASE_URL, url, params, headers=headers, **kwargs)
 
     def _default_request(
         self,
@@ -175,7 +183,7 @@ class Otf:
 
         return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
 
-    def _get_classes_raw(self, studio_uuids: list[str] | None) -> dict:
+    def _get_classes_raw(self, studio_uuids: list[str]) -> dict:
         """Retrieve raw class data."""
         return self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
 
@@ -202,6 +210,11 @@ class Otf:
         except Exception as e:
             raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
         return resp
+
+    def _book_class_new_raw(self, body: dict[str, str | bool]) -> dict:
+        """Book a class by class_id."""
+
+        return self._classes_request("POST", "/v1/bookings/me", json=body)
 
     def _get_booking_raw(self, booking_uuid: str) -> dict:
         """Retrieve raw booking data."""
@@ -240,15 +253,7 @@ class Otf:
 
     def _cancel_booking_new_raw(self, booking_id: str) -> dict:
         """Cancel a booking by booking_id."""
-        return self._classes_request("DELETE", f"/v1/bookings/me/{booking_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
-
-    def _get_booking_new_raw(self, booking_id: str) -> dict:
-        """Retrieve raw booking data."""
-        return self._classes_request("GET", f"/v1/bookings/me/{booking_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
-
-    def _book_class_new_raw(self, class_id: str) -> dict:
-        """Book a class by class_id."""
-        return self._classes_request("POST", f"/v1/bookings/me/{class_id}", headers={"SIGV4AUTH_REQUIRED": "true"})
+        return self._classes_request("DELETE", f"/v1/bookings/me/{booking_id}")
 
     def _get_member_detail_raw(self) -> dict:
         """Retrieve raw member details."""
@@ -434,6 +439,9 @@ class Otf:
         end_date = pendulum.today().start_of("day").add(days=45)
         return self.get_bookings_new(start_date, end_date, exclude_canceled=False)
 
+    def _get_app_config_raw(self) -> dict[str, Any]:
+        return self._default_request("GET", "/member/app-configurations", headers={"SIGV4AUTH_REQUIRED": "true"})
+
     def get_bookings_new(
         self,
         start_dtme: datetime | str | None = None,
@@ -474,10 +482,13 @@ class Otf:
 
         return [models.BookingV2(**b) for b in bookings_resp["items"]]
 
-    # def get_booking_new(self, booking_id: str) -> models.BookingV2:
-    #     """Get a booking by ID."""
-    #     booking_resp = self._get_booking_new_raw(booking_id)
-    #     return models.BookingV2(**booking_resp)
+    def get_booking_new(self, booking_id: str) -> models.BookingV2:
+        """Get a booking by ID."""
+        all_bookings = self._get_all_bookings_new()
+        booking = next((b for b in all_bookings if b.booking_id == booking_id), None)
+        if not booking:
+            raise exc.ResourceNotFoundError(f"Booking with ID {booking_id} not found")
+        return booking
 
     def get_classes(
         self,
@@ -726,6 +737,26 @@ class Otf:
 
         return booking
 
+    def book_class_new(self, class_id: str) -> models.BookingV2:
+        """Book a class by providing the class_id.
+
+        Args:
+            class_id (str): The class ID to book.
+
+        Returns:
+            BookingV2: The booking.
+        """
+        if not class_id:
+            raise ValueError("class_id is required")
+
+        body = {"class_id": class_id, "confirmed": False, "waitlist": False}
+
+        resp = self._book_class_new_raw(body)
+
+        new_booking = models.BookingV2(**resp)
+
+        return new_booking
+
     def _check_class_already_booked(self, class_uuid: str) -> None:
         """Check if the class is already booked.
 
@@ -779,17 +810,14 @@ class Otf:
             ValueError: If booking_uuid is None or empty string
             BookingNotFoundError: If the booking does not exist.
         """
-        # if isinstance(booking, models.BookingV2):
-        #     LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
-        #     self.cancel_booking_new(booking)
+        if isinstance(booking, models.BookingV2):
+            LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
+            self.cancel_booking_new(booking)
 
         booking_uuid = get_booking_uuid(booking)
 
         if booking == booking_uuid:  # ensure this booking exists by calling the booking endpoint
-            try:
-                self.get_booking(booking_uuid)
-            except Exception:
-                raise exc.BookingNotFoundError(f"Booking {booking_uuid} does not exist.")
+            _ = self.get_booking(booking_uuid)  # allow the exception to be raised if it doesn't exist
 
         resp = self._cancel_booking_raw(booking_uuid)
         if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
@@ -797,25 +825,27 @@ class Otf:
                 f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
             )
 
-    # def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
-    #     """Cancel a booking by providing either the booking_id or the BookingV2 object.
-    #     Args:
-    #         booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
-    #     Raises:
-    #         ValueError: If booking_id is None or empty string
-    #         BookingNotFoundError: If the booking does not exist.
-    #     """
+    def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
+        """Cancel a booking by providing either the booking_id or the BookingV2 object.
 
-    #     if isinstance(booking, models.Booking):
-    #         LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
-    #         self.cancel_booking(booking)
+        Args:
+            booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
 
-    #     booking_id = get_booking_id(booking)
+        Raises:
+            ValueError: If booking_id is None or empty string
+            BookingNotFoundError: If the booking does not exist.
+        """
 
-    #     if booking == booking_id:  # ensure this booking exists by calling the booking endpoint
-    #         self.get_booking_new(booking_id)
+        if isinstance(booking, models.Booking):
+            LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
+            self.cancel_booking(booking)
 
-    #     self._cancel_booking_new_raw(booking_id)
+        booking_id = get_booking_id(booking)
+
+        if booking == booking_id:
+            _ = self.get_booking_new(booking_id)  # allow the exception to be raised if it doesn't exist
+
+        self._cancel_booking_new_raw(booking_id)
 
     def get_bookings(
         self,
@@ -1483,32 +1513,31 @@ class Otf:
                 raise exc.AlreadyRatedError(f"Workout {performance_summary_id} is already rated.") from None
             raise
 
-    # def get_workout_from_booking(self, booking: str | models.BookingV2) -> models.Workout:
-    #     """Get a workout for a specific booking.
+    def get_workout_from_booking(self, booking: str | models.BookingV2) -> models.Workout:
+        """Get a workout for a specific booking.
 
-    #     Args:
-    #         booking_id (str | Booking): The booking ID or Booking object to get the workout for.
+        Args:
+            booking (str | Booking): The booking ID or BookingV2 object to get the workout for.
 
-    #     Returns:
-    #         Workout: The member's workout.
+        Returns:
+            Workout: The member's workout.
 
-    #     Raises:
-    #         BookingNotFoundError: If the booking does not exist.
-    #         ResourceNotFoundError: If the workout does not exist.
-    #     """
-    #     booking_id = booking if isinstance(booking, str) else booking.booking_id
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the workout does not exist.
+        """
+        booking_id = get_booking_id(booking)
 
-    #     booking = self.get_booking_new(booking_id)
-    #     if not booking:
-    #         raise exc.BookingNotFoundError(f"Booking {booking_id} not found.")
+        booking = self.get_booking_new(booking_id)
 
-    #     if not booking.workout or not booking.workout.performance_summary_id:
-    #         raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
+        if not booking.workout or not booking.workout.performance_summary_id:
+            raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
 
-    #     perf_summary = self._get_performance_summary_raw(booking.workout.performance_summary_id)
-    #     telemetry = self.get_telemetry(booking.workout.performance_summary_id)
-    #     workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
-    #     return workout
+        perf_summary = self._get_performance_summary_raw(booking.workout.performance_summary_id)
+        telemetry = self.get_telemetry(booking.workout.performance_summary_id)
+        workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
+
+        return workout
 
     def get_workouts(
         self, start_date: date | str | None = None, end_date: date | str | None = None
@@ -1621,19 +1650,7 @@ class Otf:
 
         self.rate_class(workout.class_uuid, workout.performance_summary_id, class_rating, coach_rating)
 
-        # TODO: use this once we get it working, getting workout list is substitute for now
-        # return self.get_workout_from_booking(workout.booking_id)
-
-        workout_date = pendulum.instance(workout.otf_class.starts_at).start_of("day")
-        workouts = self.get_workouts(workout_date.subtract(days=1), workout_date.add(days=1))
-
-        selected_workout = next(
-            (w for w in workouts if w.performance_summary_id == workout.performance_summary_id), None
-        )
-
-        assert selected_workout is not None, "Workout not found in the list of workouts"
-
-        return selected_workout
+        return self.get_workout_from_booking(workout.booking_id)
 
     # the below do not return any data for me, so I can't test them
 
