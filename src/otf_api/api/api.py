@@ -1104,8 +1104,8 @@ class Otf:
     def _get_studio_detail_threaded(self, studio_uuids: list[str]) -> dict[str, models.StudioDetail]:
         """Get detailed information about multiple studios in a threaded manner.
 
-        This is marked as private to avoid random users calling it.
-        Useful for testing and validating models.
+        This is used to improve performance when fetching details for multiple studios at once.
+        This method is on the Otf class because it inherits from ApiMixin, which provides the client.
 
         Args:
             studio_uuids (list[str]): List of studio UUIDs to get details for.
