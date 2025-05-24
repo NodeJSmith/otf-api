@@ -1,3 +1,5 @@
+from typing import Any
+
 from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
@@ -71,10 +73,10 @@ class Workout(OtfItemBase):
         data["class_rating"] = v2_booking.class_rating
         data["coach_rating"] = v2_booking.coach_rating
 
-        telemetry = data.get("telemetry")
-        if telemetry and isinstance(telemetry, Telemetry):
+        telemetry: dict[str, Any] | None = data.get("telemetry")
+        if telemetry and "maxHr" in telemetry:
             # max_hr seems to be left out of the heart rate data - it has peak_hr but they do not match
             # so if we have telemetry data, we can get the max_hr from there
-            data["details"]["heart_rate"]["max_hr"] = telemetry.max_hr
+            data["details"]["heart_rate"]["max_hr"] = telemetry["maxHr"]
 
         super().__init__(**data)

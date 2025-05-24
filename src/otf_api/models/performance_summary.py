@@ -26,6 +26,10 @@ class PerformanceMetric(OtfItemBase):
     display_unit: str
     metric_value: float
 
+    def __str__(self) -> str:
+        """Return a string representation of the PerformanceMetric."""
+        return f"{self.display_value} {self.display_unit}"
+
     @field_validator("display_value", mode="before")
     @classmethod
     def convert_to_time_format(cls, value: str | None | float | int) -> time | float | None:

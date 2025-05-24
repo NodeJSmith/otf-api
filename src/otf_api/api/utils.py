@@ -1,18 +1,132 @@
 import json
 import typing
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta
 from logging import getLogger
 from pathlib import Path
 from typing import Any
 
 import attrs
 
+from otf_api import exceptions as exc
+
 if typing.TYPE_CHECKING:
-    from otf_api import models
+    from otf_api import filters, models
 
 LOGGER = getLogger(__name__)
 
 MIN_TIME = datetime.min.time()
+
+
+def get_studio_uuid_list(
+    home_studio_uuid: str, studio_uuids: list[str] | str | None, include_home_studio: bool = True
+) -> list[str]:
+    """Get a list of studio UUIDs to request classes for.
+
+    If `studio_uuids` is None or empty, it will return a list containing only the home studio UUID.
+    If `studio_uuids` is a string, it will be converted to a list.
+    If `studio_uuids` is a list, it will be ensured that it contains unique values.
+
+    Args:
+        home_studio_uuid (str): The UUID of the home studio.
+        studio_uuids (list[str] | str | None): A list of studio UUIDs or a single UUID string.
+        include_home_studio (bool): Whether to include the home studio UUID in the list. Defaults to True.
+
+    Returns:
+        list[str]: A list of unique studio UUIDs to request classes for.
+    """
+    studio_uuids = ensure_list(studio_uuids) or [home_studio_uuid]
+    studio_uuids = list(set(studio_uuids))  # remove duplicates
+
+    if len(studio_uuids) > 50:
+        LOGGER.warning("Cannot request classes for more than 50 studios at a time.")
+        studio_uuids = studio_uuids[:50]
+
+    if include_home_studio and home_studio_uuid not in studio_uuids:
+        if len(studio_uuids) == 50:
+            LOGGER.warning("Cannot include home studio, request already includes 50 studios.")
+        else:
+            studio_uuids.append(home_studio_uuid)
+
+    return studio_uuids
+
+
+def check_for_booking_conflicts(bookings: list["models.Booking"], otf_class: "models.OtfClass") -> None:
+    """Check for booking conflicts with the provided class.
+
+    Checks the member's bookings to see if the provided class overlaps with any existing bookings. If a conflict is
+    found, a ConflictingBookingError is raised.
+    """
+    if not bookings:
+        return
+
+    for booking in bookings:
+        booking_start = booking.otf_class.starts_at
+        booking_end = booking.otf_class.ends_at
+        # Check for overlap
+        if not (otf_class.ends_at < booking_start or otf_class.starts_at > booking_end):
+            raise exc.ConflictingBookingError(
+                f"You already have a booking that conflicts with this class ({booking.otf_class.class_uuid}).",
+                booking_uuid=booking.booking_uuid,
+            )
+
+
+def filter_classes_by_filters(
+    classes: list["models.OtfClass"], filters: "list[filters.ClassFilter] | filters.ClassFilter | None"
+) -> list["models.OtfClass"]:
+    """Filter classes by the provided filters.
+
+    Args:
+        classes (list[OtfClass]): The classes to filter.
+        filters (list[ClassFilter] | ClassFilter | None): The filters to apply.
+
+    Returns:
+        list[OtfClass]: The filtered classes.
+    """
+    if not filters:
+        return classes
+
+    filters = ensure_list(filters)
+    filtered_classes: list[models.OtfClass] = []
+
+    # apply each filter as an OR operation
+    for f in filters:
+        filtered_classes.extend(f.filter_classes(classes))
+
+    # remove duplicates
+    classes = list({c.class_uuid: c for c in filtered_classes}.values())
+
+    return classes
+
+
+def filter_classes_by_date(
+    classes: list["models.OtfClass"], start_date: date | None, end_date: date | None
+) -> list["models.OtfClass"]:
+    """Filter classes by start and end dates, as well as the max date the booking endpoint will accept.
+
+    Args:
+        classes (list[OtfClass]): The classes to filter.
+        start_date (date | None): The start date to filter by.
+        end_date (date | None): The end date to filter by.
+
+    Returns:
+        list[OtfClass]: The filtered classes.
+    """
+    # this endpoint returns classes that the `book_class` endpoint will reject, this filters them out
+    max_date = datetime.today().date() + timedelta(days=29)
+
+    classes = [c for c in classes if c.starts_at.date() <= max_date]
+
+    # if not start date or end date, we're done
+    if not start_date and not end_date:
+        return classes
+
+    if start_date := ensure_date(start_date):
+        classes = [c for c in classes if c.starts_at.date() >= start_date]
+
+    if end_date := ensure_date(end_date):
+        classes = [c for c in classes if c.starts_at.date() <= end_date]
+
+    return classes
 
 
 def get_booking_uuid(booking_or_uuid: "str | models.Booking") -> str:

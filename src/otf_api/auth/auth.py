@@ -18,7 +18,7 @@ from botocore.exceptions import ClientError
 from pycognito import AWSSRP, Cognito
 from pycognito.aws_srp import generate_hash_device
 
-from otf_api.utils import CacheableData
+from otf_api.api.utils import CacheableData
 
 if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_identity import CognitoIdentityClient

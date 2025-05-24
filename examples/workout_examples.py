@@ -9,6 +9,7 @@ def main():  # noqa: D103, ANN201
     otf = Otf()
 
     resp = otf.get_member_lifetime_stats_in_studio()
+    print("Lifetime in-studio stats:")
     print(resp.model_dump_json(indent=4))
 
     """
@@ -30,6 +31,7 @@ def main():  # noqa: D103, ANN201
     """
 
     resp = otf.get_member_lifetime_stats_in_studio(StatsTime.ThisMonth)
+    print("This month in-studio stats:")
     print(resp.model_dump_json(indent=4))
 
     """

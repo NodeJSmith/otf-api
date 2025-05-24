@@ -1,6 +1,6 @@
 from typing import Generic, TypeVar
 
-from pydantic import Field
+from pydantic import Field, field_serializer
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import StatsTime
@@ -13,12 +13,28 @@ class OutStudioMixin:
     running_distance: float | None = Field(None, alias="runningDistance")
     cycling_distance: float | None = Field(None, alias="cyclingDistance")
 
+    @field_serializer("walking_distance", "running_distance", "cycling_distance")
+    @staticmethod
+    def limit_floats(value: float | int | None) -> float | None:
+        """Limit the float values to 2 decimal places."""
+        if value is not None:
+            return round(value, 2)
+        return value
+
 
 class InStudioMixin:
     treadmill_distance: float | None = Field(None, alias="treadmillDistance")
     treadmill_elevation_gained: float | None = Field(None, alias="treadmillElevationGained")
     rower_distance: float | None = Field(None, alias="rowerDistance")
     rower_watt: float | None = Field(None, alias="rowerWatt")
+
+    @field_serializer("treadmill_distance", "treadmill_elevation_gained", "rower_distance", "rower_watt")
+    @staticmethod
+    def limit_floats(value: float | int | None) -> float | None:
+        """Limit the float values to 2 decimal places."""
+        if value is not None:
+            return round(value, 2)
+        return value
 
 
 class BaseStatsData(OtfItemBase):
