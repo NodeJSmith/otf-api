@@ -35,21 +35,34 @@ class Otf:
         start_date: datetime | date | str | None = None,
         end_date: datetime | date | str | None = None,
         exclude_cancelled: bool = True,
+        remove_duplicates: bool = True,
     ) -> list[models.BookingV2]:
         """Get the bookings for the user.
 
         If no dates are provided, it will return all bookings between today and 45 days from now.
 
+        Note:
+            ---
+        Setting `exclude_cancelled` to `False` will return all bookings, which may result in multiple bookings for\
+        the same `class_id`. Setting `exclude_cancelled` to `True` will prevent this, but has the side effect of\
+        not returning *any* results for a cancelled (and not rebooked) booking. If you want a unique list of bookings\
+        that includes cancelled bookings, you should set `exclude_cancelled` to `False` and `remove_duplicates` to\
+        `True`.
+
         Warning:
             ---
-        If you do not exclude cancelled bookings, you may receive multiple bookings for the same workout, such
-        as when a class changes from a 2G to a 3G. Apparently the system actually creates a new booking for the
-        new class, which is normally transparent to the user.
+        If you do not set either `exclude_cancelled` or `remove_duplicates` to True you may receive multiple bookings\
+        for the same workout. This will happen if you cancel and rebook or if a class changes, such as from a 2G to a\
+        3G. Apparently the system actually creates a new booking for the new class, which is normally transparent to\
+        the user.
 
         Args:
             start_date (datetime | date | str | None): The start date for the bookings. Default is None.
             end_date (datetime | date | str | None): The end date for the bookings. Default is None.
-            exclude_cancelled (bool): Whether to exclude canceled bookings. Default is True.
+            exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
+            remove_duplicates (bool): When True, only keeps the most recent booking for a given class_id.\
+                This is helpful to avoid duplicates caused by cancel/rebook scenarios, class changes, etc.\
+                Default is True.
 
         Returns:
             list[BookingV2]: The bookings for the user.
@@ -63,13 +76,63 @@ class Otf:
         start_date = utils.ensure_datetime(start_date)
 
         end_date = end_date or pendulum.today().start_of("day").add(days=45)
-        start_date = start_date or pendulum.datetime(1970, 1, 1).start_of("day")
+        start_date = start_date or pendulum.today().start_of("day")
 
         bookings_resp = self.client.get_bookings_new(
             ends_before=end_date, starts_after=start_date, include_canceled=include_canceled, expand=expand
         )
 
-        return [models.BookingV2.create(**b, api=self) for b in bookings_resp]
+        results = [models.BookingV2.create(**b, api=self) for b in bookings_resp]
+
+        if not remove_duplicates:
+            return results
+
+        # remove duplicates by class_id, keeping the one with the most recent updated_at timestamp
+        seen_classes: dict[str, models.BookingV2] = {}
+
+        for booking in results:
+            class_id = booking.otf_class.class_id
+            if class_id not in seen_classes:
+                seen_classes[class_id] = booking
+                continue
+
+            existing_booking = seen_classes[class_id]
+            if exclude_cancelled:
+                LOGGER.warning(
+                    f"Duplicate class_id {class_id} found when `exclude_cancelled` is True, "
+                    "this is unexpected behavior."
+                )
+            if booking.updated_at > existing_booking.updated_at:
+                seen_classes[class_id] = booking
+
+        results = list(seen_classes.values())
+        results = sorted(results, key=lambda x: x.starts_at)
+
+        return results
+
+    def get_bookings_new_by_date(
+        self,
+        start_date: datetime | date | str | None = None,
+        end_date: datetime | date | str | None = None,
+    ) -> dict[datetime, models.BookingV2]:
+        """Get the bookings for the user, returned in a dictionary keyed by start datetime.
+
+        This is a convenience method that calls `get_bookings_new` and returns a dictionary instead\
+        of a list. Because this returns a dictionary, it will only return the most recent booking for each class_id.
+        It will also include cancelled bookings.
+
+        Returns:
+            dict[datetime, BookingV2]: A dictionary of bookings keyed by their start datetime.
+        """
+        bookings = self.get_bookings_new(
+            start_date=start_date,
+            end_date=end_date,
+            exclude_cancelled=False,
+            remove_duplicates=True,
+        )
+
+        bookings_by_date = {b.starts_at: b for b in bookings}
+        return bookings_by_date
 
     def get_booking_new(self, booking_id: str) -> models.BookingV2:
         """Get a booking by ID from the new bookings endpoint.
