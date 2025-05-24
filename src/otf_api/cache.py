@@ -1,8 +1,9 @@
+from logging import getLogger
 from pathlib import Path
 
 from diskcache import Cache
 
-from otf_api.logging import logger as LOGGER
+LOGGER = getLogger(__name__)
 
 CACHE = Cache(Path("~/.otf-api").expanduser())
 

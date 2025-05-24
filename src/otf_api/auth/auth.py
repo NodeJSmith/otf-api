@@ -3,6 +3,7 @@ import platform
 import typing
 from collections.abc import Generator
 from datetime import datetime
+from logging import getLogger
 from time import sleep
 from typing import Any, ClassVar
 
@@ -18,9 +19,7 @@ from botocore.exceptions import ClientError
 from pycognito import AWSSRP, Cognito
 from pycognito.aws_srp import generate_hash_device
 
-from otf_api.logging import logger as LOGGER
-
-from . import cache
+from otf_api import cache
 
 if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_identity import CognitoIdentityClient
@@ -28,6 +27,7 @@ if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_idp import CognitoIdentityProviderClient
     from mypy_boto3_cognito_idp.type_defs import InitiateAuthResponseTypeDef
 
+LOGGER = getLogger(__name__)
 
 CLIENT_ID = "1457d19r0pcjgmp5agooi0rb1b"  # from android app
 REGION = "us-east-1"
