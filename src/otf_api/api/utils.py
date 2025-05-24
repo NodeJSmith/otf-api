@@ -201,6 +201,29 @@ def get_class_uuid(class_or_uuid: "str | models.OtfClass | models.BookingV2Class
     raise TypeError(f"Expected OtfClass, BookingV2Class, or str, got {type(class_or_uuid)}")
 
 
+def get_class_id(class_or_id: "str | models.BookingV2Class") -> str:
+    """Gets the class ID from the input, which can be a string or BookingV2Class.
+
+    Args:
+        class_or_id (str | BookingV2Class): The input class or ID.
+
+    Returns:
+        str: The class ID.
+
+    Raises:
+        TypeError: If the input is not a string or BookingV2Class.
+    """
+    from otf_api.models.bookings_v2 import BookingV2Class
+
+    if isinstance(class_or_id, str):
+        return class_or_id
+
+    if isinstance(class_or_id, BookingV2Class):
+        return class_or_id.class_id
+
+    raise TypeError(f"Expected BookingV2Class or str, got {type(class_or_id)}")
+
+
 def ensure_list(obj: list | Any | None) -> list:  # noqa: ANN401
     """Ensures the input is a list. If None, returns an empty list. If not a list, returns a list containing the input.
 
