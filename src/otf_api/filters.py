@@ -30,9 +30,9 @@ class ClassFilter(BaseModel):
 
     start_date: date | None = None
     end_date: date | None = None
-    class_type: list[ClassType] | None = None
-    day_of_week: list[DoW] | None = None
-    start_time: list[time] | None = None
+    class_type: list[ClassType] | ClassType | None = None
+    day_of_week: list[DoW] | DoW | None = None
+    start_time: list[time] | time | None = None
 
     def filter_classes(self, classes: list[OtfClass]) -> list[OtfClass]:
         """Filters a list of classes based on the filter arguments.
@@ -63,6 +63,7 @@ class ClassFilter(BaseModel):
             classes = [c for c in classes if c.day_of_week in self.day_of_week]
 
         if self.start_time:
+            assert isinstance(self.start_time, list), "start_time must be a list of time objects"
             classes = [c for c in classes if c.starts_at.time() in self.start_time]
 
         return classes
