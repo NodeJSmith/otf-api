@@ -8,6 +8,7 @@ from typing import Any, Self
 
 import httpx
 import pendulum
+from cachetools import TTLCache, cached
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 from yarl import URL
 
@@ -57,7 +58,7 @@ class OtfClient:
         wait=wait_exponential(multiplier=1, min=4, max=10),
         reraise=True,
     )
-    def _do(
+    def do(
         self,
         method: str,
         base_url: str,
@@ -123,7 +124,7 @@ class OtfClient:
 
         return resp
 
-    def _classes_request(
+    def classes_request(
         self,
         method: str,
         url: str,
@@ -133,9 +134,9 @@ class OtfClient:
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the classes API."""
         LOGGER.debug(f"Making {method!r} request to '{API_IO_BASE_URL}{url}', params: {params}, headers: {headers}")
-        return self._do(method, API_IO_BASE_URL, url, params, headers=headers, **kwargs)
+        return self.do(method, API_IO_BASE_URL, url, params, headers=headers, **kwargs)
 
-    def _default_request(
+    def default_request(
         self,
         method: str,
         url: str,
@@ -145,18 +146,18 @@ class OtfClient:
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the default API."""
         LOGGER.debug(f"Making {method!r} request to '{API_BASE_URL}{url}', params: {params}, headers: {headers}")
-        return self._do(method, API_BASE_URL, url, params, headers=headers, **kwargs)
+        return self.do(method, API_BASE_URL, url, params, headers=headers, **kwargs)
 
-    def _telemetry_request(
+    def telemetry_request(
         self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the Telemetry API."""
         LOGGER.debug(
             f"Making {method!r} request to '{API_TELEMETRY_BASE_URL}{url}', params: {params}, headers: {headers}"
         )
-        return self._do(method, API_TELEMETRY_BASE_URL, url, params, headers=headers)
+        return self.do(method, API_TELEMETRY_BASE_URL, url, params, headers=headers)
 
-    def _performance_summary_request(
+    def performance_summary_request(
         self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the performance summary API."""
@@ -164,15 +165,15 @@ class OtfClient:
         headers = perf_api_headers | (headers or {})
 
         LOGGER.debug(f"Making {method!r} request to '{API_IO_BASE_URL}{url}', params: {params}, headers: {headers}")
-        return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
+        return self.do(method, API_IO_BASE_URL, url, params, headers=headers)
 
-    def _get_classes_raw(self, studio_uuids: list[str]) -> dict:
+    def get_classes(self, studio_uuids: list[str]) -> dict:
         """Retrieve raw class data."""
-        return self._classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
+        return self.classes_request("GET", "/v1/classes", params={"studio_ids": studio_uuids})
 
-    def _cancel_booking_raw(self, booking_uuid: str) -> dict:
+    def delete_booking(self, booking_uuid: str) -> dict:
         """Cancel a booking by booking_uuid."""
-        resp = self._default_request(
+        resp = self.default_request(
             "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params={"confirmed": "true"}
         )
 
@@ -183,9 +184,23 @@ class OtfClient:
 
         return resp
 
-    def _book_class_raw(self, class_uuid: str, body: dict) -> dict:
+    def put_class(self, class_uuid: str, body: dict) -> dict:
+        """Book a class by class_uuid.
+
+        Args:
+            class_uuid (str): The UUID of the class to book.
+            body (dict): The request body containing booking details.
+
+        Returns:
+            dict: The response from the booking request.
+
+        Raises:
+            AlreadyBookedError: If the class is already booked.
+            OutsideSchedulingWindowError: If the class is outside the scheduling window.
+            OtfException: If there is an error booking the class.
+        """
         try:
-            resp = self._default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
+            resp = self.default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
         except exc.OtfRequestError as e:
             resp_obj = e.response.json()
 
@@ -201,26 +216,26 @@ class OtfClient:
             raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
         return resp
 
-    def _book_class_new_raw(self, body: dict[str, str | bool]) -> dict:
+    def post_class_new(self, body: dict[str, str | bool]) -> dict:
         """Book a class by class_id."""
-        return self._classes_request("POST", "/v1/bookings/me", json=body)
+        return self.classes_request("POST", "/v1/bookings/me", json=body)
 
-    def _get_booking_raw(self, booking_uuid: str) -> dict:
+    def get_booking(self, booking_uuid: str) -> dict:
         """Retrieve raw booking data."""
-        return self._default_request("GET", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}")
+        return self.default_request("GET", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}")
 
-    def _get_bookings_raw(self, start_date: str | None, end_date: str | None, status: str | list[str] | None) -> dict:
+    def get_bookings(self, start_date: str | None, end_date: str | None, status: str | list[str] | None) -> dict:
         """Retrieve raw bookings data."""
         if isinstance(status, list):
             status = ",".join(status)
 
-        return self._default_request(
+        return self.default_request(
             "GET",
             f"/member/members/{self.member_uuid}/bookings",
             params={"startDate": start_date, "endDate": end_date, "statuses": status},
         )
 
-    def _get_bookings_new_raw(
+    def get_bookings_new(
         self,
         ends_before: datetime,
         starts_after: datetime,
@@ -236,52 +251,56 @@ class OtfClient:
         params["include_canceled"] = include_canceled if include_canceled is not None else True
         params["expand"] = expand if expand is not None else False
 
-        return self._classes_request("GET", "/v1/bookings/me", params=params)
+        return self.classes_request("GET", "/v1/bookings/me", params=params)
 
-    def _cancel_booking_new_raw(self, booking_id: str) -> dict:
+    def delete_booking_new(self, booking_id: str) -> dict:
         """Cancel a booking by booking_id."""
-        return self._classes_request("DELETE", f"/v1/bookings/me/{booking_id}")
+        return self.classes_request("DELETE", f"/v1/bookings/me/{booking_id}")
 
-    def _get_member_detail_raw(self) -> dict:
+    @cached(cache=TTLCache(maxsize=1024, ttl=600))
+    def get_member_detail(self) -> dict:
         """Retrieve raw member details."""
-        return self._default_request(
+        return self.default_request(
             "GET", f"/member/members/{self.member_uuid}", params={"include": "memberAddresses,memberClassSummary"}
         )
 
-    def _get_member_membership_raw(self) -> dict:
+    def get_member_membership(self) -> dict:
         """Retrieve raw member membership details."""
-        return self._default_request("GET", f"/member/members/{self.member_uuid}/memberships")
+        return self.default_request("GET", f"/member/members/{self.member_uuid}/memberships")
 
-    def _get_performance_summaries_raw(self, limit: int | None = None) -> dict:
+    def get_performance_summaries(self, limit: int | None = None) -> dict:
         """Retrieve raw performance summaries data."""
         params = {"limit": limit} if limit else {}
-        return self._performance_summary_request("GET", "/v1/performance-summaries", params=params)
+        return self.performance_summary_request("GET", "/v1/performance-summaries", params=params)
 
-    def _get_performance_summary_raw(self, performance_summary_id: str) -> dict:
+    @cached(cache=TTLCache(maxsize=1024, ttl=600))
+    def get_performance_summary(self, performance_summary_id: str) -> dict:
         """Retrieve raw performance summary data."""
-        return self._performance_summary_request("GET", f"/v1/performance-summaries/{performance_summary_id}")
+        return self.performance_summary_request("GET", f"/v1/performance-summaries/{performance_summary_id}")
 
-    def _get_hr_history_raw(self) -> dict:
+    def get_hr_history_raw(self) -> dict:
         """Retrieve raw heart rate history."""
-        return self._telemetry_request("GET", "/v1/physVars/maxHr/history", params={"memberUuid": self.member_uuid})
+        return self.telemetry_request("GET", "/v1/physVars/maxHr/history", params={"memberUuid": self.member_uuid})
 
-    def _get_telemetry_raw(self, performance_summary_id: str, max_data_points: int = 150) -> dict:
+    @cached(cache=TTLCache(maxsize=1024, ttl=600))
+    def get_telemetry(self, performance_summary_id: str, max_data_points: int = 150) -> dict:
         """Retrieve raw telemetry data."""
-        return self._telemetry_request(
+        return self.telemetry_request(
             "GET",
             "/v1/performance/summary",
             params={"classHistoryUuid": performance_summary_id, "maxDataPoints": max_data_points},
         )
 
-    def _get_studio_detail_raw(self, studio_uuid: str) -> dict:
+    @cached(cache=TTLCache(maxsize=1024, ttl=600))
+    def get_studio_detail(self, studio_uuid: str) -> dict:
         """Retrieve raw studio details."""
-        return self._default_request("GET", f"/mobile/v1/studios/{studio_uuid}")
+        return self.default_request("GET", f"/mobile/v1/studios/{studio_uuid}")
 
-    def _get_studios_by_geo_raw(
+    def _get_studios_by_geo(
         self, latitude: float | None, longitude: float | None, distance: int, page_index: int, page_size: int
     ) -> dict:
         """Retrieve raw studios by geo data."""
-        return self._default_request(
+        return self.default_request(
             "GET",
             "/mobile/v1/studios",
             params={
@@ -293,7 +312,7 @@ class OtfClient:
             },
         )
 
-    def _get_studios_by_geo(
+    def get_studios_by_geo(
         self, latitude: float | None, longitude: float | None, distance: int = 50
     ) -> list[dict[str, Any]]:
         """Searches for studios by geographic location.
@@ -326,7 +345,7 @@ class OtfClient:
         all_results: dict[str, dict[str, Any]] = {}
 
         while True:
-            res = self._get_studios_by_geo_raw(latitude, longitude, distance, page_index, page_size)
+            res = self._get_studios_by_geo(latitude, longitude, distance, page_index, page_size)
 
             studios = res["data"].get("studios", [])
             total_count = res["data"].get("pagination", {}).get("totalCount", 0)
@@ -341,17 +360,17 @@ class OtfClient:
 
         return list(all_results.values())
 
-    def _get_body_composition_list_raw(self) -> dict:
+    def get_body_composition_list(self) -> dict:
         """Retrieve raw body composition list."""
-        return self._default_request("GET", f"/member/members/{self.user.cognito_id}/body-composition")
+        return self.default_request("GET", f"/member/members/{self.user.cognito_id}/body-composition")
 
-    def _get_challenge_tracker_raw(self) -> dict:
+    def get_challenge_tracker(self) -> dict:
         """Retrieve raw challenge tracker data."""
-        return self._default_request("GET", f"/challenges/v3.1/member/{self.member_uuid}")
+        return self.default_request("GET", f"/challenges/v3.1/member/{self.member_uuid}")
 
-    def _get_benchmarks_raw(self, challenge_category_id: int, equipment_id: int, challenge_subcategory_id: int) -> dict:
+    def get_benchmarks(self, challenge_category_id: int, equipment_id: int, challenge_subcategory_id: int) -> dict:
         """Retrieve raw fitness benchmark data."""
-        return self._default_request(
+        return self.default_request(
             "GET",
             f"/challenges/v3/member/{self.member_uuid}/benchmarks",
             params={
@@ -361,69 +380,67 @@ class OtfClient:
             },
         )
 
-    def _get_sms_notification_settings_raw(self, phone_number: str) -> dict:
+    def get_sms_notification_settings(self, phone_number: str) -> dict:
         """Retrieve raw SMS notification settings."""
-        return self._default_request("GET", url="/sms/v1/preferences", params={"phoneNumber": phone_number})
+        return self.default_request("GET", url="/sms/v1/preferences", params={"phoneNumber": phone_number})
 
-    def _get_email_notification_settings_raw(self, email: str) -> dict:
+    def get_email_notification_settings(self, email: str) -> dict:
         """Retrieve raw email notification settings."""
-        return self._default_request("GET", url="/otfmailing/v2/preferences", params={"email": email})
+        return self.default_request("GET", url="/otfmailing/v2/preferences", params={"email": email})
 
-    def _get_member_lifetime_stats_raw(self, select_time: str) -> dict:
+    def get_member_lifetime_stats(self, select_time: str) -> dict:
         """Retrieve raw lifetime stats data."""
-        return self._default_request("GET", f"/performance/v2/{self.member_uuid}/over-time/{select_time}")
+        return self.default_request("GET", f"/performance/v2/{self.member_uuid}/over-time/{select_time}")
 
-    def _get_member_services_raw(self, active_only: bool) -> dict:
+    def get_member_services(self, active_only: bool) -> dict:
         """Retrieve raw member services data."""
-        return self._default_request(
+        return self.default_request(
             "GET", f"/member/members/{self.member_uuid}/services", params={"activeOnly": str(active_only).lower()}
         )
 
-    def _get_aspire_data_raw(self, datetime: str | None, unit: str | None) -> dict:
+    def get_aspire_data(self, datetime: str | None, unit: str | None) -> dict:
         """Retrieve raw aspire wearable data."""
-        return self._default_request(
+        return self.default_request(
             "GET", f"/member/wearables/{self.member_uuid}/wearable-daily", params={"datetime": datetime, "unit": unit}
         )
 
-    def _get_member_purchases_raw(self) -> dict:
+    def get_member_purchases(self) -> dict:
         """Retrieve raw member purchases data."""
-        return self._default_request("GET", f"/member/members/{self.member_uuid}/purchases")
+        return self.default_request("GET", f"/member/members/{self.member_uuid}/purchases")
 
-    def _get_favorite_studios_raw(self) -> dict:
+    def get_favorite_studios(self) -> dict:
         """Retrieve raw favorite studios data."""
-        return self._default_request("GET", f"/member/members/{self.member_uuid}/favorite-studios")
+        return self.default_request("GET", f"/member/members/{self.member_uuid}/favorite-studios")
 
-    def _get_studio_services_raw(self, studio_uuid: str) -> dict:
+    def get_studio_services(self, studio_uuid: str) -> dict:
         """Retrieve raw studio services data."""
-        return self._default_request("GET", f"/member/studios/{studio_uuid}/services")
+        return self.default_request("GET", f"/member/studios/{studio_uuid}/services")
 
-    def _get_out_of_studio_workout_history_raw(self) -> dict:
+    def get_out_of_studio_workout_history(self) -> dict:
         """Retrieve raw out-of-studio workout history data."""
-        return self._default_request("GET", f"/member/members/{self.member_uuid}/out-of-studio-workout")
+        return self.default_request("GET", f"/member/members/{self.member_uuid}/out-of-studio-workout")
 
-    def _add_favorite_studio_raw(self, studio_uuids: list[str]) -> dict:
+    def post_favorite_studio(self, studio_uuids: list[str]) -> dict:
         """Retrieve raw response from adding a studio to favorite studios."""
-        return self._default_request("POST", "/mobile/v1/members/favorite-studios", json={"studioUUIds": studio_uuids})
+        return self.default_request("POST", "/mobile/v1/members/favorite-studios", json={"studioUUIds": studio_uuids})
 
-    def _remove_favorite_studio_raw(self, studio_uuids: list[str]) -> dict:
+    def delete_favorite_studio(self, studio_uuids: list[str]) -> dict:
         """Retrieve raw response from removing a studio from favorite studios."""
-        return self._default_request(
-            "DELETE", "/mobile/v1/members/favorite-studios", json={"studioUUIds": studio_uuids}
-        )
+        return self.default_request("DELETE", "/mobile/v1/members/favorite-studios", json={"studioUUIds": studio_uuids})
 
-    def _get_challenge_tracker_detail_raw(self, challenge_category_id: int) -> dict:
+    def get_challenge_tracker_detail(self, challenge_category_id: int) -> dict:
         """Retrieve raw challenge tracker detail data."""
-        return self._default_request(
+        return self.default_request(
             "GET",
             f"/challenges/v1/member/{self.member_uuid}/participation",
             params={"challengeTypeId": challenge_category_id},
         )
 
-    def _update_sms_notification_settings_raw(
+    def post_sms_notification_settings(
         self, phone_number: str, promotional_enabled: bool, transactional_enabled: bool
     ) -> dict:
         """Retrieve raw response from updating SMS notification settings."""
-        return self._default_request(
+        return self.default_request(
             "POST",
             "/sms/v1/preferences",
             json={
@@ -434,11 +451,11 @@ class OtfClient:
             },
         )
 
-    def _update_email_notification_settings_raw(
+    def post_email_notification_settings(
         self, email: str, promotional_enabled: bool, transactional_enabled: bool
     ) -> dict:
         """Retrieve raw response from updating email notification settings."""
-        return self._default_request(
+        return self.default_request(
             "POST",
             "/otfmailing/v2/preferences",
             json={
@@ -449,11 +466,11 @@ class OtfClient:
             },
         )
 
-    def _rate_class_raw(
+    def post_class_rating(
         self, class_uuid: str, performance_summary_id: str, class_rating: int, coach_rating: int
     ) -> dict:
         """Retrieve raw response from rating a class and coach."""
-        return self._default_request(
+        return self.default_request(
             "POST",
             "/mobile/v1/members/classes/ratings",
             json={
@@ -464,27 +481,32 @@ class OtfClient:
             },
         )
 
-    def _update_member_name_raw(self, first_name: str, last_name: str) -> dict:
+    def put_member_name(self, first_name: str, last_name: str) -> dict:
         """Retrieve raw response from updating member name."""
-        return self._default_request(
+        return self.default_request(
             "PUT",
             f"/member/members/{self.member_uuid}",
             json={"firstName": first_name, "lastName": last_name},
         )
 
-    def _get_app_config_raw(self) -> dict[str, Any]:
-        return self._default_request("GET", "/member/app-configurations", headers={"SIGV4AUTH_REQUIRED": "true"})
+    def get_app_config(self) -> dict[str, Any]:
+        """Retrieve raw app configuration data.
 
-    def _get_perf_summary_to_class_uuid_mapping(self) -> dict[str, str | None]:
+        Returns:
+            dict[str, Any]: A dictionary containing app configuration data.
+        """
+        return self.default_request("GET", "/member/app-configurations", headers={"SIGV4AUTH_REQUIRED": "true"})
+
+    def get_perf_summary_to_class_uuid_mapping(self) -> dict[str, str | None]:
         """Get a mapping of performance summary IDs to class UUIDs. These will be used when rating a class.
 
         Returns:
             dict[str, str | None]: A dictionary mapping performance summary IDs to class UUIDs.
         """
-        perf_summaries = self._get_performance_summaries_raw()["items"]
+        perf_summaries = self.get_performance_summaries()["items"]
         return {item["id"]: item["class"].get("ot_base_class_uuid") for item in perf_summaries}
 
-    def _get_perf_summaries_threaded(self, performance_summary_ids: list[str]) -> dict[str, dict[str, Any]]:
+    def get_perf_summaries_threaded(self, performance_summary_ids: list[str]) -> dict[str, dict[str, Any]]:
         """Get performance summaries in a ThreadPoolExecutor, to speed up the process.
 
         Args:
@@ -494,12 +516,12 @@ class OtfClient:
             dict[str, dict[str, Any]]: A dictionary of performance summaries, keyed by performance summary ID.
         """
         with ThreadPoolExecutor(max_workers=10) as pool:
-            perf_summaries = pool.map(self._get_performance_summary_raw, performance_summary_ids)
+            perf_summaries = pool.map(self.get_performance_summary, performance_summary_ids)
 
         perf_summaries_dict = {perf_summary["id"]: perf_summary for perf_summary in perf_summaries}
         return perf_summaries_dict
 
-    def _get_telemetry_threaded(
+    def get_telemetry_threaded(
         self, performance_summary_ids: list[str], max_data_points: int = 150
     ) -> dict[str, dict[str, Any]]:
         """Get telemetry in a ThreadPoolExecutor, to speed up the process.
@@ -511,8 +533,23 @@ class OtfClient:
         Returns:
             dict[str, Telemetry]: A dictionary of telemetry, keyed by performance summary ID.
         """
-        partial_fn = partial(self._get_telemetry_raw, max_data_points=max_data_points)
+        partial_fn = partial(self.get_telemetry, max_data_points=max_data_points)
         with ThreadPoolExecutor(max_workers=10) as pool:
             telemetry = pool.map(partial_fn, performance_summary_ids)
         telemetry_dict = {perf_summary["classHistoryUuid"]: perf_summary for perf_summary in telemetry}
         return telemetry_dict
+
+    def get_studio_detail_threaded(self, studio_uuids: list[str]) -> dict[str, dict[str, Any]]:
+        """Get studio details in a ThreadPoolExecutor, to speed up the process.
+
+        Args:
+            studio_uuids (list[str]): The studio UUIDs to get.
+
+        Returns:
+            dict[str, dict[str, Any]]: A dictionary of studio details, keyed by studio UUID.
+        """
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            studios = pool.map(self.get_studio_detail, studio_uuids)
+
+        studios_dict = {studio["data"]["studioUUId"]: studio["data"] for studio in studios}
+        return studios_dict
