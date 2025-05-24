@@ -22,7 +22,7 @@ class HeartRate(OtfItemBase):
 
 
 class PerformanceMetric(OtfItemBase):
-    display_value: time | float
+    display_value: time | float | None
     display_unit: str
     metric_value: float
 
