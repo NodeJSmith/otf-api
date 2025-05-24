@@ -8,6 +8,13 @@ if typing.TYPE_CHECKING:
 
 
 class ApiMixin:
+    """Mixin for models that require an API instance to be set.
+
+    This allows us to create model methods such as `cancel`, `book`, etc., that require an API instance to function.
+    The API instance is set using the `set_api` method, and it can be accessed via the `_api` attribute.
+    If the API instance is not set, calling methods that require it will raise a ValueError.
+    """
+
     _api: "Otf" = PrivateAttr(default=None)
 
     def set_api(self, api: "Otf") -> None:
@@ -30,12 +37,22 @@ class ApiMixin:
 
 
 class PhoneLongitudeLatitudeMixin:
+    """Mixin for models that require phone number, latitude, and longitude fields.
+
+    This mixin exists to make it easier to handle the various names these fields can have in different APIs.
+    """
+
     phone_number: str | None = Field(None, validation_alias=AliasChoices("phone", "phoneNumber"))
     latitude: float | None = Field(None, validation_alias=AliasChoices("latitude"))
     longitude: float | None = Field(None, validation_alias=AliasChoices("longitude"))
 
 
 class AddressMixin:
+    """Mixin for models that require address fields.
+
+    This mixin exists to make it easier to handle the various names these fields can have in different APIs.
+    """
+
     address_line1: str | None = Field(
         None, validation_alias=AliasChoices("line1", "address1", "address", "physicalAddress")
     )
