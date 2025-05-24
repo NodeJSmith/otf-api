@@ -971,7 +971,11 @@ class Otf:
         Raises:
             BookingNotFoundError: If the booking does not exist.
             ResourceNotFoundError: If the workout does not exist.
+            TypeError: If the booking is an old Booking model, as these do not have the necessary fields.
         """
+        if isinstance(booking, models.Booking):
+            raise TypeError("This method cannot be used with the old Booking model")
+
         booking_id = utils.get_booking_id(booking)
 
         booking = self.get_booking_new(booking_id)
