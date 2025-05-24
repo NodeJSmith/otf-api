@@ -1,11 +1,8 @@
-from logging import getLogger
-
 import attrs
 
-from otf_api.auth.auth import CRED_CACHE, HttpxCognitoAuth, NoCredentialsError, OtfCognito
+from otf_api.auth.auth import HttpxCognitoAuth, NoCredentialsError, OtfCognito
 from otf_api.auth.utils import can_provide_input, get_credentials_from_env, prompt_for_username_and_password
-
-LOGGER = getLogger(__name__)
+from otf_api.logging import logger as LOGGER
 
 
 @attrs.define(init=False)
@@ -66,8 +63,3 @@ class OtfUser:
         self.email_address = self.cognito.id_claims["email"]
 
         self.httpx_auth = HttpxCognitoAuth(cognito=self.cognito)
-
-    @staticmethod
-    def clear_cache() -> None:
-        """Clear the cached credentials."""
-        CRED_CACHE.clear_cache()

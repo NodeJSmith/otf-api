@@ -356,6 +356,15 @@ wheels = [
 ]
 
 [[package]]
+name = "diskcache"
+version = "5.6.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/3f/21/1c1ffc1a039ddcc459db43cc108658f32c57d271d7289a2794e401d0fdb6/diskcache-5.6.3.tar.gz", hash = "sha256:2c3a3fa2743d8535d832ec61c2054a1641f41775aa7c556758a109941e33e4fc", size = 67916 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3f/27/4570e78fc0bf5ea0ca45eb1de3818a23787af9b390c0b0a0033a1b8236f9/diskcache-5.6.3-py3-none-any.whl", hash = "sha256:5e31b2d5fbad117cc363ebaf6b689474db18a1f6438bc82358b024abd4c2ca19", size = 45550 },
+]
+
+[[package]]
 name = "distlib"
 version = "0.3.9"
 source = { registry = "https://pypi.org/simple" }
@@ -1082,11 +1091,12 @@ wheels = [
 
 [[package]]
 name = "otf-api"
-version = "0.11.0"
+version = "0.12.1"
 source = { editable = "." }
 dependencies = [
     { name = "attrs" },
     { name = "cachetools" },
+    { name = "diskcache" },
     { name = "httpx" },
     { name = "humanize" },
     { name = "inflection" },
@@ -1135,6 +1145,7 @@ docs = [
 requires-dist = [
     { name = "attrs", specifier = ">=24.3.0,<25" },
     { name = "cachetools", specifier = ">=5.5.0" },
+    { name = "diskcache", specifier = ">=5.6.3" },
     { name = "httpx", specifier = ">=0.27.2" },
     { name = "humanize", specifier = ">=4.9.0,<5" },
     { name = "inflection", specifier = "==0.5.*" },
