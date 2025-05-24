@@ -1003,7 +1003,7 @@ class Otf:
         start_dtme = pendulum.datetime(start_date.year, start_date.month, start_date.day, 0, 0, 0)
         end_dtme = pendulum.datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
 
-        bookings = self.get_bookings_new(start_dtme, end_dtme, exclude_cancelled=False)
+        bookings = self.get_bookings_new(start_dtme, end_dtme, exclude_cancelled=True, remove_duplicates=True)
         bookings_dict = {b.workout.id: b for b in bookings if b.workout}
 
         perf_summaries_dict = self.client.get_perf_summaries_threaded(list(bookings_dict.keys()))
