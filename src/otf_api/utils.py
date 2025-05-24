@@ -1,6 +1,6 @@
 import json
 import typing
-from datetime import date, datetime
+from datetime import date, datetime, time
 from logging import getLogger
 from pathlib import Path
 from typing import Any
@@ -11,6 +11,8 @@ if typing.TYPE_CHECKING:
     from otf_api import models
 
 LOGGER = getLogger(__name__)
+
+MIN_TIME = datetime.min.time()
 
 
 def get_booking_uuid(booking_or_uuid: "str | models.Booking") -> str:
@@ -101,12 +103,12 @@ def ensure_list(obj: list | Any | None) -> list:  # noqa: ANN401
     return obj
 
 
-def ensure_datetime(date_str: str | date | datetime | None) -> datetime | None:
+def ensure_datetime(date_str: str | date | datetime | date | None, combine_with: time = MIN_TIME) -> datetime | None:
     """Ensures the input is a date/datetime object or a string that can be converted to a datetime.
 
     Args:
-        date_str (str | date | datetime | None): The input date string or date object.
-        If None, returns None.
+        date_str (str | date | datetime | None): The input date string or date object. If None, returns None.
+        combine_with (time): The time to combine with if the input is a date object. Defaults to MIN_TIME.
 
     Returns:
         datetime | None: The converted datetime object or None if the input is None.
@@ -124,7 +126,7 @@ def ensure_datetime(date_str: str | date | datetime | None) -> datetime | None:
         return date_str
 
     if isinstance(date_str, date):
-        return datetime.combine(date_str, datetime.min.time())
+        return datetime.combine(date_str, combine_with)
 
     raise TypeError(f"Expected str or datetime, got {type(date_str)}")
 

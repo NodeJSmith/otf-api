@@ -2,7 +2,7 @@ from otf_api import Otf
 from otf_api.models.enums import ChallengeCategory, EquipmentType
 
 
-def main():
+def main():  # noqa: D103, ANN201
     otf = Otf()
 
     # You can get challenges by equipment or by challenge category

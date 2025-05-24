@@ -5,7 +5,7 @@ from otf_api.exceptions import AlreadyRatedError, ClassNotRatableError
 from otf_api.models.enums import StatsTime
 
 
-def main():
+def main():  # noqa: D103, ANN201
     otf = Otf()
 
     resp = otf.get_member_lifetime_stats_in_studio()
@@ -354,7 +354,12 @@ def main():
     # if you already rated the class it will return an exception
     # likewise if the class is not ratable (seems to be an age cutoff) or if the class is not found
     with suppress(AlreadyRatedError, ClassNotRatableError):
-        _ = otf.rate_class_from_workout(data_list[0], 3, 3)
+        unrated_class = next((w for w in data_list if w.ratable and not w.class_rating), None)
+        if unrated_class:
+            rated_workout = otf.rate_class_from_workout(unrated_class, 3, 3)
+            print(rated_workout.model_dump_json(indent=4))
+        else:
+            print("No unrated classes found")
 
 
 if __name__ == "__main__":

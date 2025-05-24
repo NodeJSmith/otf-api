@@ -1,7 +1,7 @@
 from otf_api import Otf
 
 
-def main():
+def main():  # noqa: D103, ANN201
     otf = Otf()
 
     # if you need to figure out what studios are in an area, you can call `search_studios_by_geo`

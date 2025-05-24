@@ -69,6 +69,16 @@ class BookingV2Class(OtfItemBase):
     )
     starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True, repr=False)
 
+    @property
+    def coach_name(self) -> str:
+        """Shortcut to get the coach's name, to be compatible with old Booking OtfClass model."""
+        return self.coach or ""
+
+    @property
+    def ends_at(self) -> datetime:
+        """Emulates the end time of the class, to be compatible with old Booking OtfClass model."""
+        return get_end_time(self.starts_at, self.class_type)
+
     def __str__(self) -> str:
         """Returns a string representation of the class."""
         starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
@@ -158,7 +168,17 @@ class BookingV2(OtfItemBase):
     @property
     def ends_at(self) -> datetime:
         """Shortcut to get the class end time."""
-        return get_end_time(self.otf_class.starts_at, self.otf_class.class_type)
+        return self.otf_class.ends_at
+
+    @property
+    def cancelled_date(self) -> datetime | None:
+        """Returns the canceled_at value in a backward-compatible way."""
+        return self.canceled_at
+
+    @property
+    def id_value(self) -> str:
+        """Returns the booking_id, to be compatible with old Booking model."""
+        return self.booking_id
 
     def __str__(self) -> str:
         """Returns a string representation of the booking."""
