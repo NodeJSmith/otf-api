@@ -47,22 +47,40 @@ class OtfUser:
                 refresh_token=refresh_token,
             )
         except NoCredentialsError:
-            username, password = get_credentials_from_env()
-            if not username or not password:
-                if not can_provide_input():
-                    LOGGER.error("Unable to prompt for credentials in a non-interactive shell")
-                    raise
-                username, password = prompt_for_username_and_password()
-                if not username or not password:
-                    raise NoCredentialsError("No credentials provided and no tokens cached, cannot authenticate")
+            LOGGER.debug("No credentials provided, attempting to get them from environment or prompt user")
+            username, password = _get_username_password()
+            self.cognito = OtfCognito(username=username, password=password)
         except Exception as e:
             LOGGER.exception("Failed to authenticate with Cognito")
             raise e
-
-        self.cognito = OtfCognito(username=username, password=password)
 
         self.cognito_id = self.cognito.access_claims["sub"]
         self.member_uuid = self.cognito.id_claims["cognito:username"]
         self.email_address = self.cognito.id_claims["email"]
 
         self.httpx_auth = HttpxCognitoAuth(cognito=self.cognito)
+
+
+def _get_username_password() -> tuple[str, str]:
+    """Get username and password for OTF authentication.
+
+    This function checks for credentials in the environment variables first.
+    If not found, it prompts the user for credentials if the environment allows it.
+    If neither is available, it raises a NoCredentialsError.
+
+    Returns:
+        tuple[str, str]: A tuple containing the username and password.
+
+    Raises:
+        NoCredentialsError: If no credentials are provided and cannot prompt for input.
+    """
+    username, password = get_credentials_from_env()
+    if not username or not password:
+        if not can_provide_input():
+            LOGGER.error("Unable to prompt for credentials in a non-interactive shell")
+            raise
+        username, password = prompt_for_username_and_password()
+        if not username or not password:
+            raise NoCredentialsError("No credentials provided and no tokens cached, cannot authenticate")
+
+    return username, password
