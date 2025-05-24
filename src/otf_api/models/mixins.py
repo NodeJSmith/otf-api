@@ -1,6 +1,32 @@
+import typing
 from typing import Any
 
-from pydantic import AliasChoices, Field, field_validator, model_validator
+from pydantic import AliasChoices, Field, PrivateAttr, field_validator, model_validator
+
+if typing.TYPE_CHECKING:
+    from otf_api.api.api import Otf
+
+
+class ApiMixin:
+    _api: "Otf" = PrivateAttr(default=None)
+
+    def set_api(self, api: "Otf") -> None:
+        """Set the API instance for this model."""
+        self._api = api
+
+    @classmethod
+    def create(cls, **kwargs) -> typing.Self:
+        """Creates a new instance of the model with the given keyword arguments."""
+        api = kwargs.pop("api", None)
+        instance = cls(**kwargs)
+        if api is not None:
+            instance.set_api(api)
+        return instance
+
+    def raise_if_api_not_set(self) -> None:
+        """Raises an error if the API instance is not set."""
+        if self._api is None:
+            raise ValueError("API instance is not set. Use set_api() to set it before calling this method.")
 
 
 class PhoneLongitudeLatitudeMixin:

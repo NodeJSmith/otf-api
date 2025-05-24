@@ -3,7 +3,7 @@ from datetime import date, datetime
 from pydantic import Field, field_validator
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.mixins import AddressMixin
+from otf_api.models.mixins import AddressMixin, ApiMixin
 from otf_api.models.studio_detail import StudioDetail
 
 
@@ -38,7 +38,7 @@ class MemberClassSummary(OtfItemBase):
     last_class_studio_visited: int | None = Field(None, alias="lastClassStudioVisited", exclude=True, repr=False)
 
 
-class MemberDetail(OtfItemBase):
+class MemberDetail(ApiMixin, OtfItemBase):
     member_uuid: str = Field(..., alias="memberUUId")
     cognito_id: str = Field(
         ...,
@@ -120,3 +120,16 @@ class MemberDetail(OtfItemBase):
         if not isinstance(value, date):
             return datetime.strptime(value, "%Y-%m-%d").date()
         return value
+
+    def update_name(self, first_name: str | None = None, last_name: str | None = None) -> None:
+        """Update the name of the member.
+
+        Args:
+            first_name (str | None): The new first name of the member.
+            last_name (str | None): The new last name of the member.
+        """
+        self.raise_if_api_not_set()
+
+        updated_member = self._api.update_member_name(first_name, last_name)
+        self.first_name = updated_member.first_name
+        self.last_name = updated_member.last_name

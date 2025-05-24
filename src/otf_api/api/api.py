@@ -81,7 +81,7 @@ class Otf:
             ends_before=end_date, starts_after=start_date, include_canceled=include_canceled, expand=expand
         )
 
-        return [models.BookingV2(**b) for b in bookings_resp["items"]]
+        return [models.BookingV2.create(**b, api=self) for b in bookings_resp["items"]]
 
     def get_booking_new(self, booking_id: str) -> models.BookingV2:
         """Get a booking by ID."""
@@ -168,7 +168,7 @@ class Otf:
             raise ValueError("booking_uuid is required")
 
         data = self.client._get_booking_raw(booking_uuid)
-        return models.Booking(**data["data"])
+        return models.Booking.create(**data["data"], api=self)
 
     def get_booking_from_class(self, otf_class: str | models.OtfClass) -> models.Booking:
         """Get a specific booking by class_uuid or OtfClass object.
@@ -272,7 +272,7 @@ class Otf:
 
         resp = self.client._book_class_new_raw(body)
 
-        new_booking = models.BookingV2(**resp)
+        new_booking = models.BookingV2.create(**resp, api=self)
 
         return new_booking
 
@@ -295,11 +295,7 @@ class Otf:
         if booking == booking_uuid:  # ensure this booking exists by calling the booking endpoint
             _ = self.get_booking(booking_uuid)  # allow the exception to be raised if it doesn't exist
 
-        resp = self.client._cancel_booking_raw(booking_uuid)
-        if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
-            raise exc.BookingAlreadyCancelledError(
-                f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
-            )
+        self.client._cancel_booking_raw(booking_uuid)
 
     def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
         """Cancel a booking by providing either the booking_id or the BookingV2 object.
@@ -387,7 +383,7 @@ class Otf:
             b["class"]["studio"] = studios[b["class"]["studio"]["studioUUId"]]
             b["is_home_studio"] = b["class"]["studio"].studio_uuid == self.home_studio_uuid
 
-        bookings = [models.Booking(**b) for b in resp]
+        bookings = [models.Booking.create(**b, api=self) for b in resp]
         bookings = sorted(bookings, key=lambda x: x.otf_class.starts_at)
 
         if exclude_cancelled:
@@ -431,7 +427,7 @@ class Otf:
         home_studio_uuid = data["homeStudio"]["studioUUId"]
         data["home_studio"] = self.get_studio_detail(home_studio_uuid)
 
-        return models.MemberDetail(**data)
+        return models.MemberDetail.create(**data, api=self)
 
     def get_member_membership(self) -> models.MemberMembership:
         """Get the member's membership details.
@@ -528,7 +524,7 @@ class Otf:
 
         new_faves = resp.get("data", {}).get("studios", [])
 
-        return [models.StudioDetail(**studio) for studio in new_faves]
+        return [models.StudioDetail.create(**studio, api=self) for studio in new_faves]
 
     def remove_favorite_studio(self, studio_uuids: list[str] | str) -> None:
         """Remove a studio from the member's favorite studios.
@@ -589,7 +585,7 @@ class Otf:
         except exc.ResourceNotFoundError:
             return models.StudioDetail.create_empty_model(studio_uuid)
 
-        return models.StudioDetail(**res["data"])
+        return models.StudioDetail.create(**res["data"], api=self)
 
     def get_studios_by_geo(
         self, latitude: float | None = None, longitude: float | None = None
@@ -614,7 +610,7 @@ class Otf:
         longitude = longitude or self.home_studio.location.longitude
 
         results = self.client._get_studios_by_geo(latitude, longitude, distance)
-        return [models.StudioDetail(**studio) for studio in results]
+        return [models.StudioDetail.create(**studio, api=self) for studio in results]
 
     def get_body_composition_list(self) -> list[models.BodyCompositionData]:
         """Get the member's body composition list.
@@ -880,7 +876,7 @@ class Otf:
 
         res = self.client._update_member_name_raw(first_name, last_name)
 
-        return models.MemberDetail(**res["data"])
+        return models.MemberDetail.create(**res["data"], api=self)
 
     def rate_class(
         self,
@@ -937,7 +933,7 @@ class Otf:
 
         perf_summary = self.client._get_performance_summary_raw(booking.workout.performance_summary_id)
         telemetry = self.get_telemetry(booking.workout.performance_summary_id)
-        workout = models.Workout(**perf_summary, v2_booking=booking, telemetry=telemetry)
+        workout = models.Workout.create(**perf_summary, v2_booking=booking, telemetry=telemetry, api=self)
 
         return workout
 
@@ -968,11 +964,12 @@ class Otf:
 
         workouts: list[models.Workout] = []
         for perf_id, perf_summary in perf_summaries_dict.items():
-            workout = models.Workout(
+            workout = models.Workout.create(
                 **perf_summary,
                 v2_booking=bookings_dict[perf_id],
                 telemetry=telemetry_dict.get(perf_id),
                 class_uuid=perf_summary_to_class_uuid_map.get(perf_id),
+                api=self,
             )
             workouts.append(workout)
 
@@ -1034,7 +1031,7 @@ class Otf:
         """
         # long/lat being None will cause the endpoint to return all studios
         results = self.client._get_studios_by_geo(None, None)
-        return [models.StudioDetail(**studio) for studio in results]
+        return [models.StudioDetail.create(**studio, api=self) for studio in results]
 
     # the below do not return any data for me, so I can't test them
 

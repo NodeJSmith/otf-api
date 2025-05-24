@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import AliasPath, Field
 
@@ -11,11 +11,12 @@ from otf_api.models.bookings_v2 import (
     Rating,
     ZoneTimeMinutes,
 )
+from otf_api.models.mixins import ApiMixin
 from otf_api.models.performance_summary import HeartRate, Rower, Treadmill
 from otf_api.models.telemetry import Telemetry
 
 
-class Workout(OtfItemBase):
+class Workout(ApiMixin, OtfItemBase):
     """Represents a workout - combines the performance summary, data from the new bookings endpoint, and telemetry data.
 
     The final product contains all the performance summary data, the detailed data over time, as well as the class,
@@ -80,3 +81,21 @@ class Workout(OtfItemBase):
             data["details"]["heart_rate"]["max_hr"] = telemetry["maxHr"]
 
         super().__init__(**data)
+
+    def rate(self, class_rating: Literal[0, 1, 2, 3], coach_rating: Literal[0, 1, 2, 3]) -> None:
+        """Rate the class and coach for this workout.
+
+        The class rating must be 0, 1, 2, or 3. 0 is the same as dismissing the prompt to rate the class/coach. 1 - 3\
+            is a range from bad to good.
+
+        Args:
+            class_rating (Literal[0, 1, 2, 3]): Rating for the class.
+            coach_rating (Literal[0, 1, 2, 3]): Rating for the coach.
+
+        Raises:
+            ValueError: If the API instance is not set.
+            AlreadyRatedError: If the performance summary is already rated.
+            ClassNotRatableError: If the performance summary is not rateable.
+        """
+        self.raise_if_api_not_set()
+        self._api.rate_class_from_workout(self, class_rating=class_rating, coach_rating=coach_rating)

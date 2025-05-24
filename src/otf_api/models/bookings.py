@@ -4,6 +4,7 @@ from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import BookingStatus
+from otf_api.models.mixins import ApiMixin
 from otf_api.models.studio_detail import StudioDetail
 
 
@@ -48,7 +49,7 @@ class OtfClass(OtfItemBase):
         return f"Class: {starts_at_str} {self.name} - {self.coach.first_name}"
 
 
-class Booking(OtfItemBase):
+class Booking(ApiMixin, OtfItemBase):
     booking_uuid: str = Field(alias="classBookingUUId", description="ID used to cancel the booking")
     is_intro: bool = Field(alias="isIntro")
     status: BookingStatus
@@ -110,3 +111,13 @@ class Booking(OtfItemBase):
         booked_str = self.status.value
 
         return f"Booking: {starts_at_str} {class_name} - {coach_name} ({booked_str})"
+
+    def cancel(self) -> None:
+        """Cancels the booking by calling the proper API method.
+
+        Raises:
+            ValueError: If the API instance is not set.
+        """
+        self.raise_if_api_not_set()
+
+        self._api.cancel_booking(self)

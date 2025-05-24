@@ -4,7 +4,7 @@ from pydantic import AliasChoices, AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import StudioStatus
-from otf_api.models.mixins import AddressMixin
+from otf_api.models.mixins import AddressMixin, ApiMixin
 
 
 class StudioLocation(AddressMixin, OtfItemBase):
@@ -16,7 +16,7 @@ class StudioLocation(AddressMixin, OtfItemBase):
     physical_country_id: int | None = Field(None, alias="physicalCountryId", exclude=True, repr=False)
 
 
-class StudioDetail(OtfItemBase):
+class StudioDetail(ApiMixin, OtfItemBase):
     studio_uuid: str = Field(..., alias="studioUUId", description="The OTF studio UUID")
 
     contact_email: str | None = Field(None, alias="contactEmail")
@@ -68,3 +68,13 @@ class StudioDetail(OtfItemBase):
         """Create an empty model with the given studio_uuid."""
         # pylance doesn't know that the rest of the fields default to None, so we use type: ignore
         return StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")  # type: ignore
+
+    def add_to_favorites(self) -> None:
+        """Adds the studio to the user's favorites."""
+        self.raise_if_api_not_set()
+        self._api.add_favorite_studio(self.studio_uuid)
+
+    def remove_from_favorites(self) -> None:
+        """Removes the studio from the user's favorites."""
+        self.raise_if_api_not_set()
+        self._api.remove_favorite_studio(self.studio_uuid)

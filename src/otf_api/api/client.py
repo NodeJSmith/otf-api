@@ -73,8 +73,6 @@ class OtfClient:
 
         full_url = str(URL.build(scheme="https", host=base_url, path=url))
 
-        LOGGER.debug(f"Making {method!r} request to {full_url}, params: {params}")
-
         request = self.session.build_request(method, full_url, headers=headers, params=params, **kwargs)
         response = self.session.send(request)
 
@@ -94,9 +92,6 @@ class OtfClient:
                 resp_text = e.response.text
 
             LOGGER.exception(f"Error making request - {resp_text!r}: {type(e).__name__} {e}")
-
-            LOGGER.info(f"Request details: {vars(request)}")
-            LOGGER.info(f"Response details: {vars(response)}")
 
             raise
 
@@ -137,6 +132,7 @@ class OtfClient:
         **kwargs,
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the classes API."""
+        LOGGER.debug(f"Making {method!r} request to '{API_IO_BASE_URL}{url}', params: {params}, headers: {headers}")
         return self._do(method, API_IO_BASE_URL, url, params, headers=headers, **kwargs)
 
     def _default_request(
@@ -148,12 +144,16 @@ class OtfClient:
         **kwargs,
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the default API."""
+        LOGGER.debug(f"Making {method!r} request to '{API_BASE_URL}{url}', params: {params}, headers: {headers}")
         return self._do(method, API_BASE_URL, url, params, headers=headers, **kwargs)
 
     def _telemetry_request(
         self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the Telemetry API."""
+        LOGGER.debug(
+            f"Making {method!r} request to '{API_TELEMETRY_BASE_URL}{url}', params: {params}, headers: {headers}"
+        )
         return self._do(method, API_TELEMETRY_BASE_URL, url, params, headers=headers)
 
     def _performance_summary_request(
@@ -163,6 +163,7 @@ class OtfClient:
         perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
         headers = perf_api_headers | (headers or {})
 
+        LOGGER.debug(f"Making {method!r} request to '{API_IO_BASE_URL}{url}', params: {params}, headers: {headers}")
         return self._do(method, API_IO_BASE_URL, url, params, headers=headers)
 
     def _get_classes_raw(self, studio_uuids: list[str]) -> dict:
@@ -171,9 +172,16 @@ class OtfClient:
 
     def _cancel_booking_raw(self, booking_uuid: str) -> dict:
         """Cancel a booking by booking_uuid."""
-        return self._default_request(
+        resp = self._default_request(
             "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params={"confirmed": "true"}
         )
+
+        if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
+            raise exc.BookingAlreadyCancelledError(
+                f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
+            )
+
+        return resp
 
     def _book_class_raw(self, class_uuid: str, body: dict) -> dict:
         try:

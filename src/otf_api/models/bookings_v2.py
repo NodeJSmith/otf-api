@@ -6,7 +6,7 @@ from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import BookingStatus, ClassType
-from otf_api.models.mixins import AddressMixin, PhoneLongitudeLatitudeMixin
+from otf_api.models.mixins import AddressMixin, ApiMixin, PhoneLongitudeLatitudeMixin
 from otf_api.models.performance_summary import ZoneTimeMinutes
 
 LOGGER = getLogger(__name__)
@@ -53,7 +53,7 @@ class BookingV2Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
     mbo_studio_id: str | None = Field(None, description="MindBody attr", repr=False, exclude=True)
 
 
-class BookingV2Class(OtfItemBase):
+class BookingV2Class(ApiMixin, OtfItemBase):
     class_id: str = Field(alias="id", description="Matches the `class_id` attribute of the OtfClass model")
     name: str
     class_type: ClassType = Field(alias="type")
@@ -84,6 +84,31 @@ class BookingV2Class(OtfItemBase):
         starts_at_str = self.starts_at.strftime("%a %b %d, %I:%M %p")
         return f"Class: {starts_at_str} {self.name} - {self.coach}"
 
+    def get_booking(self) -> "BookingV2":
+        """Returns a BookingV2 instance for this class.
+
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ValueError: If class_uuid is None or empty string or if the API instance is not set.
+        """
+        self.raise_if_api_not_set()
+
+        if not self.class_uuid:
+            raise ValueError("class_uuid is required to get the booking")
+
+        return self._api.get_booking_from_class_new(self)
+
+    def cancel_booking(self) -> None:
+        """Cancels the booking by calling the proper API method.
+
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ValueError: If class_uuid is None or empty string or if the API instance is not set.
+        """
+        self.raise_if_api_not_set()
+
+        self.get_booking().cancel()
+
 
 class BookingV2Workout(OtfItemBase):
     id: str
@@ -95,7 +120,7 @@ class BookingV2Workout(OtfItemBase):
     zone_time_minutes: ZoneTimeMinutes
 
 
-class BookingV2(OtfItemBase):
+class BookingV2(ApiMixin, OtfItemBase):
     booking_id: str = Field(
         ..., alias="id", description="The booking ID used to cancel the booking - must be canceled through new endpoint"
     )
@@ -188,3 +213,13 @@ class BookingV2(OtfItemBase):
         booked_str = self.status.value
 
         return f"Booking: {starts_at_str} {class_name} - {coach_name} ({booked_str})"
+
+    def cancel(self) -> None:
+        """Cancels the booking by calling the proper API method.
+
+        Raises:
+            ValueError: If the API instance is not set.
+        """
+        self.raise_if_api_not_set()
+
+        self._api.cancel_booking_new(self)

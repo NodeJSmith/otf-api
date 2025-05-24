@@ -2,12 +2,15 @@ from datetime import datetime
 
 from pydantic import AliasPath, Field
 
+from otf_api import exceptions as exc
+from otf_api import models
 from otf_api.models.base import OtfItemBase
 from otf_api.models.enums import ClassType, DoW
+from otf_api.models.mixins import ApiMixin
 from otf_api.models.studio_detail import StudioDetail
 
 
-class OtfClass(OtfItemBase):
+class OtfClass(ApiMixin, OtfItemBase):
     class_uuid: str = Field(alias="ot_base_class_uuid", description="The OTF class UUID")
     class_id: str | None = Field(None, alias="id", description="Matches new booking endpoint class id")
 
@@ -72,3 +75,46 @@ class OtfClass(OtfItemBase):
         """Returns the day of the week as an enum."""
         dow = self.starts_at.strftime("%A").upper()
         return DoW(dow)
+
+    def book_class(self) -> models.Booking:
+        """Book a class by providing either the class_uuid or the OtfClass object.
+
+        Returns:
+            Booking: The booking.
+
+        Raises:
+            AlreadyBookedError: If the class is already booked.
+            OutsideSchedulingWindowError: If the class is outside the scheduling window.
+            ValueError: If class_uuid is None or empty string.
+            OtfException: If there is an error booking the class.
+        """
+        self.raise_if_api_not_set()
+        new_booking = self._api.book_class(self.class_uuid)
+        self.is_booked = True
+        return new_booking
+
+    def cancel_booking(self) -> None:
+        """Cancels the class booking.
+
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ValueError: If booking_uuid is None or empty string or the API is not set.
+        """
+        self.raise_if_api_not_set()
+        self.get_booking().cancel()
+
+    def get_booking(self) -> models.Booking | models.BookingV2:
+        """Get the booking for this class.
+
+        Returns:
+            Booking | BookingV2: The booking associated with this class.
+
+        Raises:
+            BookingNotFoundError: If the booking does not exist.
+            ValueError: If the API is not set.
+        """
+        self.raise_if_api_not_set()
+        try:
+            return self._api.get_booking_from_class(self)
+        except exc.BookingNotFoundError:
+            return self._api.get_booking_from_class_new(self)
