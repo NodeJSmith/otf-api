@@ -30,17 +30,6 @@ class Otf:
         self.home_studio = self.member.home_studio
         self.home_studio_uuid = self.home_studio.studio_uuid
 
-    def __eq__(self, other: "Otf | Any") -> bool:  # noqa: ANN401
-        """Check if two Otf objects are equal."""
-        if not isinstance(other, Otf):
-            return False
-        return self.member_uuid == other.member_uuid
-
-    def __hash__(self):
-        """Return a hash value for the object."""
-        # Combine immutable attributes into a single hash value
-        return hash(self.member_uuid)
-
     def get_bookings_new(
         self,
         start_date: datetime | date | str | None = None,
@@ -83,7 +72,18 @@ class Otf:
         return [models.BookingV2.create(**b, api=self) for b in bookings_resp]
 
     def get_booking_new(self, booking_id: str) -> models.BookingV2:
-        """Get a booking by ID."""
+        """Get a booking by ID from the new bookings endpoint.
+
+        Args:
+            booking_id (str): The booking ID to get.
+
+        Returns:
+            BookingV2: The booking.
+
+        Raises:
+            ValueError: If booking_id is None or empty string.
+            ResourceNotFoundError: If the booking with the given ID does not exist.
+        """
         all_bookings = self._get_all_bookings_new()
         booking = next((b for b in all_bookings if b.booking_id == booking_id), None)
         if not booking:
@@ -152,7 +152,7 @@ class Otf:
         return classes
 
     def get_booking(self, booking_uuid: str) -> models.Booking:
-        """Get a specific booking by booking_uuid.
+        """Get a specific booking by booking_uuid, from the old bookings endpoint.
 
         Args:
             booking_uuid (str): The booking UUID to get.
@@ -255,17 +255,22 @@ class Otf:
 
         return booking
 
-    def book_class_new(self, class_id: str) -> models.BookingV2:
-        """Book a class by providing the class_id.
+    def book_class_new(self, class_id: str | models.BookingV2Class) -> models.BookingV2:
+        """Book a class by providing either the class_id or the BookingV2Class object.
+
+        This uses the new booking endpoint.
 
         Args:
             class_id (str): The class ID to book.
 
         Returns:
             BookingV2: The booking.
+
+        Raises:
+            OtfException: If there is an error booking the class.
+            TypeError: If the input is not a string or BookingV2Class.
         """
-        if not class_id:
-            raise ValueError("class_id is required")
+        class_id = utils.get_class_id(class_id)
 
         body = {"class_id": class_id, "confirmed": False, "waitlist": False}
 
