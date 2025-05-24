@@ -767,25 +767,6 @@ class Otf:
 
         Returns:
             SmsNotificationSettings: The updated SMS notification settings.
-
-        Warning:
-            ---
-            This endpoint seems to accept almost anything, converting values to truthy/falsey and
-            updating the settings accordingly. The one error I've gotten is with -1
-
-            ```
-            ERROR - Response:
-            {
-            "code": "ER_WARN_DATA_OUT_OF_RANGE",
-            "message": "An unexpected server error occurred, please try again.",
-            "details": [
-                    {
-                "message": "ER_WARN_DATA_OUT_OF_RANGE: Out of range value for column 'IsPromotionalSMSOptIn' at row 1",
-                "additionalInfo": ""
-                    }
-                ]
-            }
-            ```
         """
         current_settings = self.get_sms_notification_settings()
 

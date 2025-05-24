@@ -443,7 +443,27 @@ class OtfClient:
     def post_sms_notification_settings(
         self, phone_number: str, promotional_enabled: bool, transactional_enabled: bool
     ) -> dict:
-        """Retrieve raw response from updating SMS notification settings."""
+        """Retrieve raw response from updating SMS notification settings.
+
+        Warning:
+            ---
+            This endpoint seems to accept almost anything, converting values to truthy/falsey and
+            updating the settings accordingly. The one error I've gotten is with -1
+
+            ```
+            ERROR - Response:
+            {
+            "code": "ER_WARN_DATA_OUT_OF_RANGE",
+            "message": "An unexpected server error occurred, please try again.",
+            "details": [
+                    {
+                "message": "ER_WARN_DATA_OUT_OF_RANGE: Out of range value for column 'IsPromotionalSMSOptIn' at row 1",
+                "additionalInfo": ""
+                    }
+                ]
+            }
+            ```
+        """
         return self.default_request(
             "POST",
             "/sms/v1/preferences",
