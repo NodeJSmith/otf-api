@@ -28,8 +28,8 @@ class ClassFilter(BaseModel):
         start_time (list[time]): Filter classes by start time.
     """
 
-    start_date: date | None = None
-    end_date: date | None = None
+    start_date: date | str | None = None
+    end_date: date | str | None = None
     class_type: list[ClassType] | ClassType | None = None
     day_of_week: list[DoW] | DoW | None = None
     start_time: list[time] | time | None = None
@@ -51,9 +51,11 @@ class ClassFilter(BaseModel):
             self.end_date = self.end_date.date()
 
         if self.start_date:
+            assert isinstance(self.start_date, date), "start_date must be a date object"
             classes = [c for c in classes if c.starts_at.date() >= self.start_date]
 
         if self.end_date:
+            assert isinstance(self.end_date, date), "end_date must be a date object"
             classes = [c for c in classes if c.starts_at.date() <= self.end_date]
 
         if self.class_type:
