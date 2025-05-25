@@ -17,6 +17,17 @@ LOGGED_ONCE: set[str] = set()
 
 
 class Otf:
+    """The main OTF API client.
+
+    This class handles serialization and enrichment of data from the OTF API. The actual requests to the OTF API are\
+    handled by the `OtfClient` class. This class provides methods to get bookings, classes, member details, and more.
+    It also provides methods to book and cancel classes, get member stats, and manage favorite studios.
+
+    It is designed to be used with an authenticated user, which can be provided as an `OtfUser` object. If no user is\
+    provided, the `OtfClient` class will attempt to use cached credentials, environment variables, or prompt the user\
+    for credentials.
+    """
+
     def __init__(self, user: OtfUser | None = None):
         """Initialize the OTF API client.
 
