@@ -41,37 +41,41 @@ def _get_json_from_response(response: httpx.Response) -> dict[str, Any]:
 
 
 def _map_logical_error(data: dict, response: httpx.Response, request: httpx.Request) -> None:
-    error_code: str = data.get("data", {}).get("errorCode")
+    # not actually sure this is necessary, so far all of them have been HttpStatusError
     data_status: int | None = data.get("Status") or data.get("status") or None
 
     if isinstance(data, dict) and isinstance(data_status, int) and not 200 <= data_status <= 299:
         LOGGER.error(f"API returned error: {data}")
         raise exc.OtfRequestError("Bad API response", None, response=response, request=request)
 
-    match error_code:
-        case "603":
-            raise exc.AlreadyBookedError("Class is already booked.")
-        case "602":
-            raise exc.OutsideSchedulingWindowError("Class is outside scheduling window.")
-        case _:
-            raise exc.OtfRequestError(
-                f"Logical error in API response: {data}", original_exception=None, response=response, request=request
-            )
+    raise exc.OtfRequestError(
+        f"Logical error in API response: {data}", original_exception=None, response=response, request=request
+    )
 
 
 def _map_http_error(data: dict, error: httpx.HTTPStatusError, response: httpx.Response, request: httpx.Request) -> None:
     code = data.get("code")
     path = request.url.path
+    error_code = data.get("data", {}).get("errorCode")
+    error_msg = data.get("message") or data.get("data", {}).get("message", "") or ""
 
     if response.status_code == 404:
         raise exc.ResourceNotFoundError(f"Resource not found: {path}")
 
-    if code == "NOT_AUTHORIZED" and re.match(r"^/member/members/.*?/bookings/", path):
-        raise exc.BookingAlreadyCancelledError("Booking was already cancelled")
-
     # Match based on error code and path
-    if code == "BOOKING_CANCELED" and re.match(r"^/v1/bookings/me/", path):
-        raise exc.BookingAlreadyCancelledError(data.get("message", "Booking was already cancelled"))
+    if re.match(r"^/v1/bookings/me", path):
+        if code == "BOOKING_CANCELED":
+            raise exc.BookingAlreadyCancelledError(error_msg or "Booking was already cancelled")
+        if code == "BOOKING_ALREADY_BOOKED":
+            raise exc.AlreadyBookedError("This class is already booked")
+
+    if re.match(r"^/member/members/.*?/bookings", path):
+        if code == "NOT_AUTHORIZED" and error_msg.startswith("This class booking has been cancelled"):
+            raise exc.BookingNotFoundError("Booking was already cancelled")
+        if error_code == "603":
+            raise exc.AlreadyBookedError("Class is already booked")
+        if error_code == "602":
+            raise exc.OutsideSchedulingWindowError("Class is outside scheduling window")
 
     raise exc.OtfRequestError(
         message=f"HTTP error {error.response.status_code} for {request.method} {request.url}",
