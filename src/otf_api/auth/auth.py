@@ -118,31 +118,6 @@ class OtfCognito(Cognito):
         self.mfa_tokens: dict[str, Any] = {}
         self.pool_domain_url: str | None = None
 
-        self.handle_login(username, password, id_token, access_token)
-
-    def handle_login(
-        self, username: str | None, password: str | None, id_token: str | None = None, access_token: str | None = None
-    ) -> None:
-        """Handles the login process for the user.
-
-        This will set the tokens and device metadata.
-        If the user is not logged in, it will attempt to login with the provided username and password.
-        If the user is already logged in, it will check the tokens and refresh them if necessary.
-
-        Args:
-            username (str | None): The username of the user.
-            password (str | None): The password of the user.
-            id_token (str | None): The ID token of the user.
-            access_token (str | None): The access token of the user.
-        """
-        dd = cache.read_device_data_from_cache()
-        token_cache = cache.read_token_data_from_cache()
-
-        self.device_name = platform.node()
-        self.device_key = dd.get("device_key")  # type: ignore
-        self.device_group_key = dd.get("device_group_key")  # type: ignore
-        self.device_password = dd.get("device_password")  # type: ignore
-
         self.idp_client: CognitoIdentityProviderClient = Session().client(
             "cognito-idp", config=BOTO_CONFIG, region_name=REGION
         )  # type: ignore
@@ -151,29 +126,45 @@ class OtfCognito(Cognito):
             "cognito-identity", config=BOTO_CONFIG, region_name=REGION
         )  # type: ignore
 
-        if not (username and password) and not (id_token and access_token) and not token_cache:
+        self.handle_login(password)
+
+    def handle_login(self, password: str | None = None) -> None:
+        """Handles the login process for the user.
+
+        This will set the tokens and device metadata.
+        If the user is not logged in, it will attempt to login with the provided username and password.
+        If the user is already logged in, it will check the tokens and refresh them if necessary.
+
+        Args:
+            password (str, optional): The password to use for login. If not provided, the user will be prompted for it.
+        """
+        self.set_attributes_from_cache()
+
+        if not (self.username and password) and not (self.id_token and self.access_token):
             raise NoCredentialsError("No credentials provided and no tokens cached, cannot authenticate")
 
-        if username and password:
-            self.login(password)
-        elif token_cache and not (id_token and access_token):
-            LOGGER.debug("Using cached tokens")
-            self.id_token = token_cache["id_token"]  # type: ignore
-            self.access_token = token_cache["access_token"]  # type: ignore
-            self.refresh_token = token_cache["refresh_token"]
+        if self.username and password:
+            self.login_with_password(password)
+            return
 
-        try:
-            self.check_token()
-        except ClientError as e:
-            if e.response["Error"]["Code"] == "NotAuthorizedException":
-                LOGGER.warning("Tokens expired, attempting to login with username and password")
-                cache.clear()
-                if not username or not password:
-                    raise NoCredentialsError("No credentials provided and no tokens cached, cannot authenticate")
-                self.handle_login(username, password)
+        # at this point we have tokens, so let's hand it off to the proper method
+        self.authenticate_with_saved_tokens()
 
-        self.verify_tokens()
-        cache.write_token_data_to_cache(self.tokens, self.expiration_seconds)
+    def set_attributes_from_cache(self) -> None:
+        """Sets the attributes from the cache.
+
+        This is useful for initializing the Cognito instance with tokens that have been previously cached.
+        It will read the tokens and device metadata from the cache and set the instance attributes accordingly.
+        """
+        token_cache = cache.read_token_data_from_cache()
+        self.id_token = self.id_token or token_cache.get("id_token")  # type: ignore
+        self.access_token = self.access_token or token_cache.get("access_token")  # type: ignore
+        self.refresh_token = self.refresh_token or token_cache.get("refresh_token")  # type: ignore
+
+        dd_cache = cache.read_device_data_from_cache()
+        self.device_key = dd_cache.get("device_key") or ""
+        self.device_group_key = dd_cache.get("device_group_key") or ""
+        self.device_password = dd_cache.get("device_password") or ""
 
     def get_identity_credentials(self) -> "CredentialsTypeDef":
         """Get the AWS credentials for the user using the Cognito Identity Pool.
@@ -202,7 +193,16 @@ class OtfCognito(Cognito):
         dec_access_token = jwt.decode(self.access_token, options={"verify_signature": False})
         return dec_access_token
 
-    def login(self, password: str) -> None:
+    def authenticate_with_saved_tokens(self) -> None:
+        """Authenticate using saved tokens from the cache.
+
+        This method is useful for initializing the Cognito instance with tokens that have been previously cached.
+        It will verify the tokens and set the device metadata if available.
+        """
+        self.check_token()
+        self.verify_tokens()
+
+    def login_with_password(self, password: str) -> None:
         """Called when logging in with a username and password. Will set the tokens and device metadata."""
         LOGGER.debug("Logging in with username and password...")
 
@@ -234,6 +234,12 @@ class OtfCognito(Cognito):
         is no benefit to remembering the device. Additionally, it does not appear that the OTF app remembers devices,
         so this matches the behavior of the app.
         """
+        dd = cache.read_device_data_from_cache()
+        self.device_key = dd.get("device_key") or ""
+        self.device_group_key = dd.get("device_group_key") or ""
+        self.device_password = dd.get("device_password") or ""
+        self.device_name = platform.node()
+
         if not self.device_key:
             raise ValueError("Device key not set - device key is required by this Cognito pool")
 
@@ -254,6 +260,39 @@ class OtfCognito(Cognito):
             LOGGER.exception("Failed to write device key cache")
 
     ##### OVERRIDDEN METHODS #####
+
+    def verify_tokens(self) -> None:
+        """Verifies the current id_token and access_token.
+
+        This method will also write the tokens to the cache if they are valid.
+        It is useful to call this method after creating a Cognito instance where you've provided
+        externally-remembered token values.
+        """
+        self.verify_token(self.id_token, "id_token", "id")
+        self.verify_token(self.access_token, "access_token", "access")
+        cache.write_token_data_to_cache(self.tokens, self.expiration_seconds)
+
+    def check_token(self, renew: bool = True) -> bool:
+        """Checks the exp attribute of the access_token and refreshes it if it has expired and renew is True.
+
+        Args:
+            renew (bool): whether to refresh on expiration
+
+        Raises:
+            AttributeError: If access_token is not set
+            NoCredentialsError: If refresh token has expired
+
+        Returns:
+            bool: True if the access_token has expired, False otherwise
+        """
+        try:
+            return super().check_token(renew=renew)
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NotAuthorizedException":
+                LOGGER.warning("Tokens expired, attempting to login with username and password")
+                cache.clear()
+                raise NoCredentialsError("Cached tokens expired, please login again") from e
+            raise
 
     def renew_access_token(self) -> None:
         """Sets a new access token on the User using the cached refresh token and device metadata.
