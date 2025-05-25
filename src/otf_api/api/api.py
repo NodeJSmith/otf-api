@@ -10,7 +10,7 @@ from otf_api.auth import OtfUser
 from otf_api.models.enums import HISTORICAL_BOOKING_STATUSES
 
 from . import utils
-from .client import OtfClient
+from .client import BookingClient, MemberClient, OtfClient, StudioClient, WorkoutClient
 
 LOGGER = getLogger(__name__)
 LOGGED_ONCE: set[str] = set()
@@ -20,7 +20,7 @@ class Otf:
     """The main OTF API client.
 
     This class handles serialization and enrichment of data from the OTF API. The actual requests to the OTF API are\
-    handled by the `OtfClient` class. This class provides methods to get bookings, classes, member details, and more.
+    handled by separate client classes. This class provides methods to get bookings, classes, member details, and more.
     It also provides methods to book and cancel classes, get member stats, and manage favorite studios.
 
     It is designed to be used with an authenticated user, which can be provided as an `OtfUser` object. If no user is\
@@ -34,9 +34,13 @@ class Otf:
         Args:
             user (OtfUser): The user to authenticate as.
         """
-        self.client = OtfClient(user)
+        client = OtfClient(user)
+        self.booking_client = BookingClient(client)
+        self.member_client = MemberClient(client)
+        self.studio_client = StudioClient(client)
+        self.workout_client = WorkoutClient(client)
 
-        self.member_uuid = self.client.member_uuid
+        self.member_uuid = client.member_uuid
         self.member = self.get_member_detail()
         self.home_studio = self.member.home_studio
         self.home_studio_uuid = self.home_studio.studio_uuid
@@ -89,7 +93,7 @@ class Otf:
         end_date = end_date or pendulum.today().start_of("day").add(days=45)
         start_date = start_date or pendulum.today().start_of("day")
 
-        bookings_resp = self.client.get_bookings_new(
+        bookings_resp = self.booking_client.get_bookings_new(
             ends_before=end_date, starts_after=start_date, include_canceled=include_canceled, expand=expand
         )
 
@@ -194,7 +198,7 @@ class Otf:
         studio_uuids = utils.get_studio_uuid_list(self.home_studio_uuid, studio_uuids, include_home_studio)
 
         # get the classes and add the studio details
-        classes_resp = self.client.get_classes(studio_uuids)
+        classes_resp = self.booking_client.get_classes(studio_uuids)
         studio_dict = self._get_studio_detail_threaded(studio_uuids)
         classes: list[models.OtfClass] = []
 
@@ -240,7 +244,7 @@ class Otf:
         if not booking_uuid:
             raise ValueError("booking_uuid is required")
 
-        data = self.client.get_booking(booking_uuid)
+        data = self.booking_client.get_booking(booking_uuid)
         return models.Booking.create(**data, api=self)
 
     def get_booking_from_class(self, otf_class: str | models.OtfClass) -> models.Booking:
@@ -319,7 +323,7 @@ class Otf:
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
-        resp = self.client.put_class(body)
+        resp = self.booking_client.put_class(body)
 
         # get the booking uuid - we will only use this to return a Booking object using `get_booking`
         # this is an attempt to improve on OTF's terrible data model
@@ -348,7 +352,7 @@ class Otf:
 
         body = {"class_id": class_id, "confirmed": False, "waitlist": False}
 
-        resp = self.client.post_class_new(body)
+        resp = self.booking_client.post_class_new(body)
 
         new_booking = models.BookingV2.create(**resp, api=self)
 
@@ -373,7 +377,7 @@ class Otf:
         if booking == booking_uuid:  # ensure this booking exists by calling the booking endpoint
             _ = self.get_booking(booking_uuid)  # allow the exception to be raised if it doesn't exist
 
-        self.client.delete_booking(booking_uuid)
+        self.booking_client.delete_booking(booking_uuid)
 
     def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
         """Cancel a booking by providing either the booking_id or the BookingV2 object.
@@ -394,7 +398,7 @@ class Otf:
         if booking == booking_id:
             _ = self.get_booking_new(booking_id)  # allow the exception to be raised if it doesn't exist
 
-        self.client.delete_booking_new(booking_id)
+        self.booking_client.delete_booking_new(booking_id)
 
     def get_bookings(
         self,
@@ -451,7 +455,7 @@ class Otf:
         else:
             status_value = None
 
-        resp = self.client.get_bookings(start_date, end_date, status_value)
+        resp = self.booking_client.get_bookings(start_date, end_date, status_value)
 
         # add studio details for each booking, instead of using the different studio model returned by this endpoint
         studio_uuids = {b["class"]["studio"]["studioUUId"] for b in resp}
@@ -498,7 +502,7 @@ class Otf:
         Returns:
             MemberDetail: The member details.
         """
-        data = self.client.get_member_detail()
+        data = self.member_client.get_member_detail()
 
         # use standard StudioDetail model instead of the one returned by this endpoint
         home_studio_uuid = data["homeStudio"]["studioUUId"]
@@ -512,7 +516,7 @@ class Otf:
         Returns:
             MemberMembership: The member's membership details.
         """
-        data = self.client.get_member_membership()
+        data = self.member_client.get_member_membership()
         return models.MemberMembership(**data)
 
     def get_member_purchases(self) -> list[models.MemberPurchase]:
@@ -521,7 +525,7 @@ class Otf:
         Returns:
             list[MemberPurchase]: The member's purchases.
         """
-        purchases = self.client.get_member_purchases()
+        purchases = self.member_client.get_member_purchases()
 
         for p in purchases:
             p["studio"] = self.get_studio_detail(p["studio"]["studioUUId"])
@@ -539,7 +543,7 @@ class Otf:
         Returns:
             InStudioStatsData: The member's lifetime stats in studio.
         """
-        data = self.client.get_member_lifetime_stats(select_time.value)
+        data = self.workout_client.get_member_lifetime_stats(select_time.value)
 
         stats = models.StatsResponse(**data)
 
@@ -556,7 +560,7 @@ class Otf:
         Returns:
             OutStudioStatsData: The member's lifetime stats out of studio.
         """
-        data = self.client.get_member_lifetime_stats(select_time.value)
+        data = self.workout_client.get_member_lifetime_stats(select_time.value)
 
         stats = models.StatsResponse(**data)
 
@@ -568,7 +572,7 @@ class Otf:
         Returns:
             list[OutOfStudioWorkoutHistory]: The member's out of studio workout history.
         """
-        data = self.client.get_out_of_studio_workout_history()
+        data = self.workout_client.get_out_of_studio_workout_history()
 
         return [models.OutOfStudioWorkoutHistory(**workout) for workout in data]
 
@@ -578,7 +582,7 @@ class Otf:
         Returns:
             list[StudioDetail]: The member's favorite studios.
         """
-        data = self.client.get_favorite_studios()
+        data = self.studio_client.get_favorite_studios()
         studio_uuids = [studio["studioUUId"] for studio in data]
         return [self.get_studio_detail(studio_uuid) for studio_uuid in studio_uuids]
 
@@ -597,7 +601,7 @@ class Otf:
         if not studio_uuids:
             raise ValueError("studio_uuids is required")
 
-        resp = self.client.post_favorite_studio(studio_uuids)
+        resp = self.studio_client.post_favorite_studio(studio_uuids)
         if not resp:
             return []
 
@@ -622,7 +626,7 @@ class Otf:
 
         # keeping the convention of regular/raw methods even though this method doesn't return anything
         # in case that changes in the future
-        self.client.delete_favorite_studio(studio_uuids)
+        self.studio_client.delete_favorite_studio(studio_uuids)
 
     def get_studio_services(self, studio_uuid: str | None = None) -> list[models.StudioService]:
         """Get the services available at a specific studio.
@@ -636,7 +640,7 @@ class Otf:
             list[StudioService]: The services available at the studio.
         """
         studio_uuid = studio_uuid or self.home_studio_uuid
-        data = self.client.get_studio_services(studio_uuid)
+        data = self.studio_client.get_studio_services(studio_uuid)
 
         for d in data:
             d["studio"] = self.get_studio_detail(studio_uuid)
@@ -659,7 +663,7 @@ class Otf:
         studio_uuid = studio_uuid or self.home_studio_uuid
 
         try:
-            res = self.client.get_studio_detail(studio_uuid)
+            res = self.studio_client.get_studio_detail(studio_uuid)
         except exc.ResourceNotFoundError:
             return models.StudioDetail.create_empty_model(studio_uuid)
 
@@ -687,7 +691,7 @@ class Otf:
         latitude = latitude or self.home_studio.location.latitude
         longitude = longitude or self.home_studio.location.longitude
 
-        results = self.client.get_studios_by_geo(latitude, longitude, distance)
+        results = self.studio_client.get_studios_by_geo(latitude, longitude, distance)
         return [models.StudioDetail.create(**studio, api=self) for studio in results]
 
     def get_body_composition_list(self) -> list[models.BodyCompositionData]:
@@ -696,7 +700,7 @@ class Otf:
         Returns:
             list[BodyCompositionData]: The member's body composition list.
         """
-        data = self.client.get_body_composition_list()
+        data = self.workout_client.get_body_composition_list()
         return [models.BodyCompositionData(**item) for item in data]
 
     def get_challenge_tracker(self) -> models.ChallengeTracker:
@@ -705,7 +709,7 @@ class Otf:
         Returns:
             ChallengeTracker: The member's challenge tracker content.
         """
-        data = self.client.get_challenge_tracker()
+        data = self.workout_client.get_challenge_tracker()
         return models.ChallengeTracker(**data["Dto"])
 
     def get_benchmarks(
@@ -726,7 +730,9 @@ class Otf:
         Returns:
             list[FitnessBenchmark]: The member's challenge tracker details.
         """
-        data = self.client.get_benchmarks(int(challenge_category_id), int(equipment_id), challenge_subcategory_id)
+        data = self.workout_client.get_benchmarks(
+            int(challenge_category_id), int(equipment_id), challenge_subcategory_id
+        )
         return [models.FitnessBenchmark(**item) for item in data]
 
     def get_benchmarks_by_equipment(self, equipment_id: models.EquipmentType) -> list[models.FitnessBenchmark]:
@@ -770,7 +776,7 @@ class Otf:
         Returns:
             FitnessBenchmark: Details about the challenge.
         """
-        data = self.client.get_challenge_tracker_detail(int(challenge_category_id))
+        data = self.workout_client.get_challenge_tracker_detail(int(challenge_category_id))
 
         if len(data) > 1:
             LOGGER.warning("Multiple challenge participations found, returning the first one.")
@@ -793,7 +799,7 @@ class Otf:
         if warning_msg not in LOGGED_ONCE:
             LOGGER.warning(warning_msg)
 
-        resp = self.client.get_performance_summary(performance_summary_id)
+        resp = self.workout_client.get_performance_summary(performance_summary_id)
         return models.PerformanceSummary(**resp)
 
     def get_hr_history(self) -> list[models.TelemetryHistoryItem]:
@@ -806,7 +812,7 @@ class Otf:
             list[HistoryItem]: The heartrate history for the user.
 
         """
-        resp = self.client.get_hr_history_raw()
+        resp = self.workout_client.get_hr_history_raw()
         return [models.TelemetryHistoryItem(**item) for item in resp]
 
     def get_telemetry(self, performance_summary_id: str, max_data_points: int = 150) -> models.Telemetry:
@@ -822,7 +828,7 @@ class Otf:
         Returns:
             TelemetryItem: The telemetry for the class history.
         """
-        res = self.client.get_telemetry(performance_summary_id, max_data_points)
+        res = self.workout_client.get_telemetry(performance_summary_id, max_data_points)
         return models.Telemetry(**res)
 
     def get_sms_notification_settings(self) -> models.SmsNotificationSettings:
@@ -831,7 +837,7 @@ class Otf:
         Returns:
             SmsNotificationSettings: The member's SMS notification settings.
         """
-        res = self.client.get_sms_notification_settings(self.member.phone_number)  # type: ignore
+        res = self.member_client.get_sms_notification_settings(self.member.phone_number)  # type: ignore
 
         return models.SmsNotificationSettings(**res)
 
@@ -856,7 +862,7 @@ class Otf:
             transactional_enabled if transactional_enabled is not None else current_settings.is_transactional_sms_opt_in
         )
 
-        self.client.post_sms_notification_settings(
+        self.member_client.post_sms_notification_settings(
             self.member.phone_number,  # type: ignore
             promotional_enabled,  # type: ignore
             transactional_enabled,  # type: ignore
@@ -872,7 +878,7 @@ class Otf:
         Returns:
             EmailNotificationSettings: The member's email notification settings.
         """
-        res = self.client.get_email_notification_settings(self.member.email)  # type: ignore
+        res = self.member_client.get_email_notification_settings(self.member.email)  # type: ignore
 
         return models.EmailNotificationSettings(**res)
 
@@ -899,7 +905,7 @@ class Otf:
             else current_settings.is_transactional_email_opt_in
         )
 
-        self.client.post_email_notification_settings(
+        self.member_client.post_email_notification_settings(
             self.member.email,  # type: ignore
             promotional_enabled,  # type: ignore
             transactional_enabled,  # type: ignore
@@ -933,7 +939,7 @@ class Otf:
         assert first_name is not None, "First name is required"
         assert last_name is not None, "Last name is required"
 
-        res = self.client.put_member_name(first_name, last_name)
+        res = self.member_client.put_member_name(first_name, last_name)
 
         return models.MemberDetail.create(**res, api=self)
 
@@ -964,7 +970,9 @@ class Otf:
         body_coach_rating = models.get_coach_rating_value(coach_rating)
 
         try:
-            self.client.post_class_rating(class_uuid, performance_summary_id, body_class_rating, body_coach_rating)
+            self.booking_client.post_class_rating(
+                class_uuid, performance_summary_id, body_class_rating, body_coach_rating
+            )
         except exc.OtfRequestError as e:
             if e.response.status_code == 403:
                 raise exc.AlreadyRatedError(f"Workout {performance_summary_id} is already rated.") from None
@@ -994,7 +1002,7 @@ class Otf:
         if not booking.workout or not booking.workout.performance_summary_id:
             raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
 
-        perf_summary = self.client.get_performance_summary(booking.workout.performance_summary_id)
+        perf_summary = self.workout_client.get_performance_summary(booking.workout.performance_summary_id)
         telemetry = self.get_telemetry(booking.workout.performance_summary_id)
         workout = models.Workout.create(**perf_summary, v2_booking=booking, telemetry=telemetry, api=self)
 
@@ -1021,9 +1029,9 @@ class Otf:
         bookings = self.get_bookings_new(start_dtme, end_dtme, exclude_cancelled=True, remove_duplicates=True)
         bookings_dict = {b.workout.id: b for b in bookings if b.workout}
 
-        perf_summaries_dict = self.client.get_perf_summaries_threaded(list(bookings_dict.keys()))
-        telemetry_dict = self.client.get_telemetry_threaded(list(perf_summaries_dict.keys()))
-        perf_summary_to_class_uuid_map = self.client.get_perf_summary_to_class_uuid_mapping()
+        perf_summaries_dict = self.workout_client.get_perf_summaries_threaded(list(bookings_dict.keys()))
+        telemetry_dict = self.workout_client.get_telemetry_threaded(list(perf_summaries_dict.keys()))
+        perf_summary_to_class_uuid_map = self.workout_client.get_perf_summary_to_class_uuid_mapping()
 
         workouts: list[models.Workout] = []
         for perf_id, perf_summary in perf_summaries_dict.items():
@@ -1113,7 +1121,7 @@ class Otf:
             list[StudioDetail]: List of studios that match the search criteria.
         """
         # long/lat being None will cause the endpoint to return all studios
-        results = self.client.get_studios_by_geo(None, None)
+        results = self.studio_client.get_studios_by_geo(None, None)
         return [models.StudioDetail.create(**studio, api=self) for studio in results]
 
     def _get_studio_detail_threaded(self, studio_uuids: list[str]) -> dict[str, models.StudioDetail]:
@@ -1128,7 +1136,7 @@ class Otf:
         Returns:
             dict[str, StudioDetail]: A dictionary mapping studio UUIDs to their detailed information.
         """
-        studio_dicts = self.client.get_studio_detail_threaded(studio_uuids)
+        studio_dicts = self.studio_client.get_studio_detail_threaded(studio_uuids)
         return {
             studio_uuid: models.StudioDetail.create(**studio, api=self) for studio_uuid, studio in studio_dicts.items()
         }
@@ -1144,7 +1152,7 @@ class Otf:
         Returns:
             Any: The member's services.
         """
-        data = self.client.get_member_services(active_only)
+        data = self.member_client.get_member_services(active_only)
         return data
 
     def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> Any:  # noqa: ANN401
@@ -1159,5 +1167,5 @@ class Otf:
         Returns:
             Any: The member's aspire data.
         """
-        data = self.client.get_aspire_data(datetime, unit)
+        data = self.workout_client.get_aspire_data(datetime, unit)
         return data
