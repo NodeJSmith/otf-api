@@ -27,6 +27,15 @@ LOGGER = getLogger(__name__)
 
 
 class OtfClient:
+    """Client for interacting with the OTF API - generally to be used by the Otf class.
+
+    This class provides methods to perform various API requests, including booking classes,
+    retrieving member details, and managing bookings. It handles authentication and session management
+    using the provided OtfUser instance or a default unauthenticated user.
+
+    It also includes retry logic for handling transient errors and caching for performance optimization.
+    """
+
     def __init__(self, user: OtfUser | None = None):
         """Initialize the OTF API client.
 
@@ -52,6 +61,68 @@ class OtfClient:
         # Combine immutable attributes into a single hash value
         return hash(self.member_uuid)
 
+    def _build_url(self, base_url: str, path: str) -> str:
+        return str(URL.build(scheme="https", host=base_url, path=path))
+
+    def _build_request(
+        self,
+        method: str,
+        full_url: str,
+        params: dict[str, Any] | None,
+        headers: dict[str, str] | None,
+        **kwargs,
+    ) -> httpx.Request:
+        params = {k: v for k, v in (params or {}).items() if v is not None}
+        headers = headers or {}
+        return self.session.build_request(method, full_url, headers=headers, params=params, **kwargs)
+
+    def _handle_transport_error(self, error: Exception, request: httpx.Request) -> None:
+        method = request.method
+        url = request.url
+
+        if isinstance(error, httpx.RequestError):
+            LOGGER.exception(f"Transport error during {method} {url}: {error}")
+
+        elif isinstance(error, httpx.HTTPStatusError):
+            response = error.response
+            try:
+                body = response.json()
+            except JSONDecodeError:
+                body = response.text
+
+            LOGGER.exception(f"HTTP {response.status_code} during {method} {url}: {type(error).__name__} - {body!r}")
+
+            if response.status_code == 404:
+                raise exc.ResourceNotFoundError("Resource not found")
+
+        else:
+            LOGGER.exception(f"Unexpected error during {method} {url}: {error}")
+
+    def _handle_response(self, method: str, response: httpx.Response, request: httpx.Request) -> Any:  # noqa: ANN401
+        if not response.text:
+            if method == "GET":
+                raise exc.OtfRequestError("Empty response", None, response=response, request=request)
+
+            LOGGER.debug(f"No content returned from {method} {response.url}")
+            return None
+
+        try:
+            json_data = response.json()
+        except JSONDecodeError as e:
+            LOGGER.error(f"Invalid JSON: {e}")
+            LOGGER.error(f"Response content: {response.text}")
+            raise
+
+        if (
+            isinstance(json_data, dict)
+            and isinstance(json_data.get("Status"), int)
+            and not 200 <= json_data["Status"] <= 299
+        ):
+            LOGGER.error(f"API returned error: {json_data}")
+            raise exc.OtfRequestError("Bad API response", None, response=response, request=request)
+
+        return json_data
+
     @retry(
         retry=retry_if_exception_type((exc.OtfRequestError, httpx.HTTPStatusError)),
         stop=stop_after_attempt(3),
@@ -67,62 +138,34 @@ class OtfClient:
         headers: dict[str, str] | None = None,
         **kwargs,
     ) -> Any:  # noqa: ANN401
-        """Perform an API request."""
-        headers = headers or {}
-        params = params or {}
-        params = {k: v for k, v in params.items() if v is not None}
+        """Perform an API request.
 
-        full_url = str(URL.build(scheme="https", host=base_url, path=url))
+        Args:
+            method (str): The HTTP method to use (e.g., 'GET', 'POST').
+            base_url (str): The base URL for the API.
+            url (str): The specific endpoint to request.
+            params (dict[str, Any] | None): Query parameters to include in the request.
+            headers (dict[str, str] | None): Additional headers to include in the request.
+            **kwargs: Additional keyword arguments to pass to the request.
 
-        request = self.session.build_request(method, full_url, headers=headers, params=params, **kwargs)
-        response = self.session.send(request)
+        Returns:
+            Any: The response data from the API request.
+
+        Raises:
+            OtfRequestError: If the request fails or the response is invalid.
+            HTTPStatusError: If the response status code indicates an error.
+        """
+        full_url = self._build_url(base_url, url)
+        request = self._build_request(method, full_url, params, headers, **kwargs)
 
         try:
+            response = self.session.send(request)
             response.raise_for_status()
-        except httpx.RequestError as e:
-            LOGGER.exception(f"Error making request: {e}")
-            LOGGER.exception(f"Response: {response.text}")
-            raise
-        except httpx.HTTPStatusError as e:
-            if e.response.status_code == 404:
-                raise exc.ResourceNotFoundError("Resource not found")
-
-            try:
-                resp_text = e.response.json()
-            except JSONDecodeError:
-                resp_text = e.response.text
-
-            LOGGER.exception(f"Error making request - {resp_text!r}: {type(e).__name__} {e}")
-
-            raise
-
         except Exception as e:
-            LOGGER.exception(f"Error making request: {e}")
+            self._handle_transport_error(e, request)
             raise
 
-        if not response.text:
-            if method == "GET":
-                raise exc.OtfRequestError("Empty response", None, response=response, request=request)
-
-            LOGGER.debug(f"Request {method!r} to {full_url!r} returned no content")
-            return None
-
-        try:
-            resp = response.json()
-        except JSONDecodeError as e:
-            LOGGER.error(f"Error decoding JSON: {e}")
-            LOGGER.error(f"Response: {response.text}")
-            raise
-
-        if (
-            "Status" in resp
-            and isinstance(resp["Status"], int)
-            and not (resp["Status"] >= 200 and resp["Status"] <= 299)
-        ):
-            LOGGER.error(f"Error making request: {resp}")
-            raise exc.OtfRequestError("Error making request", None, response=response, request=request)
-
-        return resp
+        return self._handle_response(method, response, request)
 
     def classes_request(
         self,
