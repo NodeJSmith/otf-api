@@ -1,5 +1,7 @@
 from datetime import time
 
+import pendulum
+
 from otf_api import Otf
 from otf_api.filters import ClassFilter, ClassType, DoW
 
@@ -179,6 +181,7 @@ def main():  # noqa: D103, ANN201
     """
 
     # you can get the workout data from a booking by calling `get_workout_from_booking`
+    bookings_new = otf.get_bookings_new(pendulum.today().subtract(months=1))
     booking = next(x for x in bookings_new if x.workout is not None)
     workout = otf.get_workout_from_booking(booking)
     print(workout.model_dump_json(indent=4, exclude_none=True))
