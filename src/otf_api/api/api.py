@@ -1120,7 +1120,7 @@ class Otf:
         """Get detailed information about multiple studios in a threaded manner.
 
         This is used to improve performance when fetching details for multiple studios at once.
-        This method is on the Otf class because it inherits from ApiMixin, which provides the client.
+        This method is on the Otf class because StudioDetail is a model that requires the API instance.
 
         Args:
             studio_uuids (list[str]): List of studio UUIDs to get details for.
