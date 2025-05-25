@@ -1,4 +1,5 @@
 import atexit
+import re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from functools import partial
@@ -24,6 +25,108 @@ HEADERS = {
     "user-agent": "okhttp/4.12.0",
 }
 LOGGER = getLogger(__name__)
+
+
+def _is_error_response(data: dict[str, Any]) -> bool:
+    """Check if the response data indicates an error."""
+    return isinstance(data, dict) and (data.get("code") == "ERROR" or "error" in data)
+
+
+def _get_json_from_response(response: httpx.Response) -> dict[str, Any]:
+    """Extract JSON data from an HTTP response."""
+    try:
+        return response.json()
+    except JSONDecodeError:
+        return {"raw": response.text}
+
+
+def _map_logical_error(data: dict, response: httpx.Response, request: httpx.Request) -> None:
+    error_code: str = data.get("data", {}).get("errorCode")
+    data_status: int | None = data.get("Status") or data.get("status") or None
+
+    if isinstance(data, dict) and isinstance(data_status, int) and not 200 <= data_status <= 299:
+        LOGGER.error(f"API returned error: {data}")
+        raise exc.OtfRequestError("Bad API response", None, response=response, request=request)
+
+    match error_code:
+        case "603":
+            raise exc.AlreadyBookedError("Class is already booked.")
+        case "602":
+            raise exc.OutsideSchedulingWindowError("Class is outside scheduling window.")
+        case _:
+            raise exc.OtfRequestError(
+                f"Logical error in API response: {data}", original_exception=None, response=response, request=request
+            )
+
+
+def _map_http_error(data: dict, error: httpx.HTTPStatusError, response: httpx.Response, request: httpx.Request) -> None:
+    code = data.get("code")
+    path = request.url.path
+
+    if response.status_code == 404:
+        raise exc.ResourceNotFoundError(f"Resource not found: {path}")
+
+    if code == "NOT_AUTHORIZED" and re.match(r"^/member/members/.*?/bookings/", path):
+        raise exc.BookingAlreadyCancelledError("Booking was already cancelled")
+
+    # Match based on error code and path
+    if code == "BOOKING_CANCELED" and re.match(r"^/v1/bookings/me/", path):
+        raise exc.BookingAlreadyCancelledError(data.get("message", "Booking was already cancelled"))
+
+    raise exc.OtfRequestError(
+        message=f"HTTP error {error.response.status_code} for {request.method} {request.url}",
+        original_exception=error,
+        request=request,
+        response=response,
+    )
+
+
+def _handle_transport_error(error: Exception, request: httpx.Request) -> None:
+    """Handle transport errors during API requests.
+
+    Generally we let these bubble up to the caller so they get retried, but there are a few
+    cases where we want to log the error and raise a specific exception.
+
+    Args:
+        error (Exception): The exception raised during the request.
+        request (httpx.Request): The request that caused the error.
+    """
+    method = request.method
+    url = request.url
+
+    if not isinstance(error, httpx.HTTPStatusError):
+        LOGGER.exception(f"Unexpected error during {method!r} {url!r}: {type(error).__name__} - {error}")
+        return
+
+    _map_http_error(
+        _get_json_from_response(error.response),
+        error,
+        error.response,
+        request,
+    )
+
+    return
+
+
+def _handle_response(method: str, response: httpx.Response, request: httpx.Request) -> Any:  # noqa: ANN401
+    if not response.text:
+        if method == "GET":
+            raise exc.OtfRequestError("Empty response", None, response=response, request=request)
+
+        LOGGER.debug(f"No content returned from {method} {response.url}")
+        return None
+
+    try:
+        json_data = response.json()
+    except JSONDecodeError as e:
+        LOGGER.error(f"Invalid JSON: {e}")
+        LOGGER.error(f"Response content: {response.text}")
+        raise
+
+    if _is_error_response(json_data):
+        _map_logical_error(json_data, response, request)
+
+    return json_data
 
 
 class OtfClient:
@@ -76,55 +179,8 @@ class OtfClient:
         headers = headers or {}
         return self.session.build_request(method, full_url, headers=headers, params=params, **kwargs)
 
-    def _handle_transport_error(self, error: Exception, request: httpx.Request) -> None:
-        method = request.method
-        url = request.url
-
-        if isinstance(error, httpx.RequestError):
-            LOGGER.exception(f"Transport error during {method} {url}: {error}")
-
-        elif isinstance(error, httpx.HTTPStatusError):
-            response = error.response
-            try:
-                body = response.json()
-            except JSONDecodeError:
-                body = response.text
-
-            LOGGER.exception(f"HTTP {response.status_code} during {method} {url}: {type(error).__name__} - {body!r}")
-
-            if response.status_code == 404:
-                raise exc.ResourceNotFoundError("Resource not found")
-
-        else:
-            LOGGER.exception(f"Unexpected error during {method} {url}: {error}")
-
-    def _handle_response(self, method: str, response: httpx.Response, request: httpx.Request) -> Any:  # noqa: ANN401
-        if not response.text:
-            if method == "GET":
-                raise exc.OtfRequestError("Empty response", None, response=response, request=request)
-
-            LOGGER.debug(f"No content returned from {method} {response.url}")
-            return None
-
-        try:
-            json_data = response.json()
-        except JSONDecodeError as e:
-            LOGGER.error(f"Invalid JSON: {e}")
-            LOGGER.error(f"Response content: {response.text}")
-            raise
-
-        if (
-            isinstance(json_data, dict)
-            and isinstance(json_data.get("Status"), int)
-            and not 200 <= json_data["Status"] <= 299
-        ):
-            LOGGER.error(f"API returned error: {json_data}")
-            raise exc.OtfRequestError("Bad API response", None, response=response, request=request)
-
-        return json_data
-
     @retry(
-        retry=retry_if_exception_type((exc.OtfRequestError, httpx.HTTPStatusError)),
+        retry=retry_if_exception_type((exc.RetryableOtfRequestError, httpx.HTTPStatusError)),
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=4, max=10),
         reraise=True,
@@ -162,10 +218,10 @@ class OtfClient:
             response = self.session.send(request)
             response.raise_for_status()
         except Exception as e:
-            self._handle_transport_error(e, request)
+            _handle_transport_error(e, request)
             raise
 
-        return self._handle_response(method, response, request)
+        return _handle_response(method, response, request)
 
     def classes_request(
         self,
@@ -220,18 +276,12 @@ class OtfClient:
             "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params={"confirmed": "true"}
         )
 
-        if resp["code"] == "NOT_AUTHORIZED" and resp["message"].startswith("This class booking has"):
-            raise exc.BookingAlreadyCancelledError(
-                f"Booking {booking_uuid} is already cancelled.", booking_uuid=booking_uuid
-            )
-
         return resp
 
-    def put_class(self, class_uuid: str, body: dict) -> dict:
+    def put_class(self, body: dict) -> dict:
         """Book a class by class_uuid.
 
         Args:
-            class_uuid (str): The UUID of the class to book.
             body (dict): The request body containing booking details.
 
         Returns:
@@ -242,22 +292,7 @@ class OtfClient:
             OutsideSchedulingWindowError: If the class is outside the scheduling window.
             OtfException: If there is an error booking the class.
         """
-        try:
-            resp = self.default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)
-        except exc.OtfRequestError as e:
-            resp_obj = e.response.json()
-
-            if resp_obj["code"] == "ERROR":
-                err_code = resp_obj["data"]["errorCode"]
-                if err_code == "603":
-                    raise exc.AlreadyBookedError(f"Class {class_uuid} is already booked.")
-                if err_code == "602":
-                    raise exc.OutsideSchedulingWindowError(f"Class {class_uuid} is outside the scheduling window.")
-
-            raise
-        except Exception as e:
-            raise exc.OtfException(f"Error booking class {class_uuid}: {e}")
-        return resp["data"]
+        return self.default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)["data"]
 
     def post_class_new(self, body: dict[str, str | bool]) -> dict:
         """Book a class by class_id."""
@@ -296,9 +331,11 @@ class OtfClient:
 
         return self.classes_request("GET", "/v1/bookings/me", params=params)["items"]
 
-    def delete_booking_new(self, booking_id: str) -> dict:
+    def delete_booking_new(self, booking_id: str) -> None:
         """Cancel a booking by booking_id."""
-        return self.classes_request("DELETE", f"/v1/bookings/me/{booking_id}")
+        resp = self.classes_request("DELETE", f"/v1/bookings/me/{booking_id}")
+        if resp and "code" in resp and resp["code"] == "BOOKING_CANCELED" and resp.get("status", 0) == 400:
+            raise exc.BookingAlreadyCancelledError(f"Booking {booking_id} is already cancelled.", booking_id=booking_id)
 
     @cached(cache=TTLCache(maxsize=1024, ttl=600))
     def get_member_detail(self) -> dict:

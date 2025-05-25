@@ -319,7 +319,7 @@ class Otf:
 
         body = {"classUUId": class_uuid, "confirmed": False, "waitlist": False}
 
-        resp = self.client.put_class(class_uuid, body)
+        resp = self.client.put_class(body)
 
         # get the booking uuid - we will only use this to return a Booking object using `get_booking`
         # this is an attempt to improve on OTF's terrible data model
