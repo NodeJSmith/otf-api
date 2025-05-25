@@ -1,7 +1,7 @@
 import typing
 from typing import Any
 
-from pydantic import AliasChoices, Field, PrivateAttr, field_validator, model_validator
+from pydantic import AliasChoices, Field, field_validator, model_validator
 
 if typing.TYPE_CHECKING:
     from otf_api.api.api import Otf
@@ -15,7 +15,7 @@ class ApiMixin:
     If the API instance is not set, calling methods that require it will raise a ValueError.
     """
 
-    _api: "Otf" = PrivateAttr(default=None)
+    _api: "Otf" = None  # type: ignore[assignment]
 
     def set_api(self, api: "Otf") -> None:
         """Set the API instance for this model."""
