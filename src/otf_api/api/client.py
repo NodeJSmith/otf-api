@@ -217,6 +217,7 @@ class OtfClient:
         """
         full_url = self._build_url(base_url, url)
         request = self._build_request(method, full_url, params, headers, **kwargs)
+        LOGGER.debug(f"Making {method!r} request to '{full_url}', params: {params}, headers: {headers}")
 
         try:
             response = self.session.send(request)
@@ -236,7 +237,6 @@ class OtfClient:
         **kwargs,
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the classes API."""
-        LOGGER.debug(f"Making {method!r} request to '{API_IO_BASE_URL}{url}', params: {params}, headers: {headers}")
         return self.do(method, API_IO_BASE_URL, url, params, headers=headers, **kwargs)
 
     def default_request(
@@ -248,16 +248,12 @@ class OtfClient:
         **kwargs,
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the default API."""
-        LOGGER.debug(f"Making {method!r} request to '{API_BASE_URL}{url}', params: {params}, headers: {headers}")
         return self.do(method, API_BASE_URL, url, params, headers=headers, **kwargs)
 
     def telemetry_request(
         self, method: str, url: str, params: dict[str, Any] | None = None, headers: dict[str, Any] | None = None
     ) -> Any:  # noqa: ANN401
         """Perform an API request to the Telemetry API."""
-        LOGGER.debug(
-            f"Making {method!r} request to '{API_TELEMETRY_BASE_URL}{url}', params: {params}, headers: {headers}"
-        )
         return self.do(method, API_TELEMETRY_BASE_URL, url, params, headers=headers)
 
     def performance_summary_request(
@@ -266,8 +262,6 @@ class OtfClient:
         """Perform an API request to the performance summary API."""
         perf_api_headers = {"koji-member-id": self.member_uuid, "koji-member-email": self.user.email_address}
         headers = perf_api_headers | (headers or {})
-
-        LOGGER.debug(f"Making {method!r} request to '{API_IO_BASE_URL}{url}', params: {params}, headers: {headers}")
         return self.do(method, API_IO_BASE_URL, url, params, headers=headers)
 
     def get_classes(self, studio_uuids: list[str]) -> dict:
