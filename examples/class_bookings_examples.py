@@ -3,7 +3,7 @@ from datetime import time
 import pendulum
 
 from otf_api import Otf
-from otf_api.filters import ClassFilter, ClassType, DoW
+from otf_api.models.bookings import ClassFilter, ClassType, DoW
 
 
 def main():  # noqa: D103, ANN201

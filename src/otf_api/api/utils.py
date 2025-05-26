@@ -9,7 +9,7 @@ import httpx
 from otf_api import exceptions as exc
 
 if typing.TYPE_CHECKING:
-    from otf_api import filters, models
+    from otf_api.models.bookings import Booking, BookingV2, BookingV2Class, ClassFilter, OtfClass
 
 LOGGER = getLogger(__name__)
 
@@ -49,7 +49,7 @@ def get_studio_uuid_list(
     return studio_uuids
 
 
-def check_for_booking_conflicts(bookings: list["models.Booking"], otf_class: "models.OtfClass") -> None:
+def check_for_booking_conflicts(bookings: list["Booking"], otf_class: "OtfClass") -> None:
     """Check for booking conflicts with the provided class.
 
     Checks the member's bookings to see if the provided class overlaps with any existing bookings. If a conflict is
@@ -70,8 +70,8 @@ def check_for_booking_conflicts(bookings: list["models.Booking"], otf_class: "mo
 
 
 def filter_classes_by_filters(
-    classes: list["models.OtfClass"], filters: "list[filters.ClassFilter] | filters.ClassFilter | None"
-) -> list["models.OtfClass"]:
+    classes: list["OtfClass"], filters: "list[ClassFilter] | ClassFilter | None"
+) -> list["OtfClass"]:
     """Filter classes by the provided filters.
 
     Args:
@@ -85,7 +85,7 @@ def filter_classes_by_filters(
         return classes
 
     filters = ensure_list(filters)
-    filtered_classes: list[models.OtfClass] = []
+    filtered_classes: list[OtfClass] = []
 
     # apply each filter as an OR operation
     for f in filters:
@@ -98,8 +98,8 @@ def filter_classes_by_filters(
 
 
 def filter_classes_by_date(
-    classes: list["models.OtfClass"], start_date: date | None, end_date: date | None
-) -> list["models.OtfClass"]:
+    classes: list["OtfClass"], start_date: date | None, end_date: date | None
+) -> list["OtfClass"]:
     """Filter classes by start and end dates, as well as the max date the booking endpoint will accept.
 
     Args:
@@ -128,7 +128,7 @@ def filter_classes_by_date(
     return classes
 
 
-def get_booking_uuid(booking_or_uuid: "str | models.Booking") -> str:
+def get_booking_uuid(booking_or_uuid: "str | Booking") -> str:
     """Gets the booking UUID from the input, which can be a string or Booking object.
 
     Args:
@@ -151,7 +151,7 @@ def get_booking_uuid(booking_or_uuid: "str | models.Booking") -> str:
     raise TypeError(f"Expected Booking or str, got {type(booking_or_uuid)}")
 
 
-def get_booking_id(booking_or_id: "str | models.BookingV2") -> str:
+def get_booking_id(booking_or_id: "str | BookingV2") -> str:
     """Gets the booking ID from the input, which can be a string or BookingV2 object.
 
     Args:
@@ -174,7 +174,7 @@ def get_booking_id(booking_or_id: "str | models.BookingV2") -> str:
     raise TypeError(f"Expected BookingV2 or str, got {type(booking_or_id)}")
 
 
-def get_class_uuid(class_or_uuid: "str | models.OtfClass | models.BookingV2Class") -> str:
+def get_class_uuid(class_or_uuid: "str | OtfClass | BookingV2Class") -> str:
     """Gets the class UUID from the input, which can be a string, OtfClass, or BookingV2Class.
 
     Args:
@@ -200,7 +200,7 @@ def get_class_uuid(class_or_uuid: "str | models.OtfClass | models.BookingV2Class
     raise TypeError(f"Expected OtfClass, BookingV2Class, or str, got {type(class_or_uuid)}")
 
 
-def get_class_id(class_or_id: "str | models.BookingV2Class") -> str:
+def get_class_id(class_or_id: "str | BookingV2Class") -> str:
     """Gets the class ID from the input, which can be a string or BookingV2Class.
 
     Args:

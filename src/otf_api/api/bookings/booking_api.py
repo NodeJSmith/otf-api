@@ -6,10 +6,10 @@ from typing import Literal
 import pendulum
 
 from otf_api import exceptions as exc
-from otf_api import filters, models
+from otf_api import models
 from otf_api.api import utils
 from otf_api.api.client import OtfClient
-from otf_api.models.bookings import HISTORICAL_BOOKING_STATUSES
+from otf_api.models.bookings import HISTORICAL_BOOKING_STATUSES, ClassFilter
 
 from .booking_client import BookingClient
 
@@ -159,7 +159,7 @@ class BookingApi:
         end_date: date | str | None = None,
         studio_uuids: list[str] | None = None,
         include_home_studio: bool = True,
-        filters: list[filters.ClassFilter] | filters.ClassFilter | None = None,
+        filters: list[ClassFilter] | ClassFilter | None = None,
     ) -> list[models.OtfClass]:
         """Get the classes for the user.
 
