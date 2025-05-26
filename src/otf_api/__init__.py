@@ -1,3 +1,9 @@
+"""Unofficial Orangetheory API client.
+
+This software is not affiliated with, endorsed by, or supported by Orangetheory Fitness.
+Use it at your own risk. It may break at any time if Orangetheory changes their services.
+"""
+
 import logging
 import os
 

@@ -11,4 +11,4 @@ pip install otf-api
 {% include-markdown "./usage.md" %}
 
 Disclaimer:
-This project is in no way affiliated with OrangeTheory Fitness.
+This project is not affiliated with, endorsed by, or supported by Orangetheory Fitness. It is an independent, unofficial client for interacting with Orangetheory's services. Use at your own risk.
