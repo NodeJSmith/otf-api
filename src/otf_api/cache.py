@@ -52,7 +52,7 @@ def write_device_data_to_cache(device_data: dict[str, str]) -> None:
             return
 
         for key, value in device_data.items():
-            get_cache().set(key, value)
+            get_cache().set(key, value, tag="device")
     except Exception:
         LOGGER.exception("Failed to write device key cache")
 
@@ -86,10 +86,7 @@ def write_token_data_to_cache(token_data: dict[str, str], expiration: int | None
             return
 
         for key, value in token_data.items():
-            if expiration:
-                get_cache().set(key, value, expire=expiration)
-            else:
-                get_cache().set(key, value)
+            get_cache().set(key, value, tag="token", expire=expiration)
     except Exception:
         LOGGER.exception("Failed to write token cache")
 
@@ -108,6 +105,22 @@ def read_token_data_from_cache() -> dict[str, str | None]:
     except Exception:
         LOGGER.exception("Failed to read token cache")
         return {}
+
+
+def clear_tokens() -> None:
+    """Clears the token cache."""
+    try:
+        get_cache().evict(tag="token", retry=True)
+    except Exception:
+        LOGGER.exception("Failed to clear token cache")
+
+
+def clear_device_data() -> None:
+    """Clears the device data cache."""
+    try:
+        get_cache().evict(tag="device", retry=True)
+    except Exception:
+        LOGGER.exception("Failed to clear device key cache")
 
 
 def clear() -> None:
