@@ -3,7 +3,7 @@ from datetime import date, datetime, time
 import pendulum
 from pydantic import BaseModel, field_validator
 
-from otf_api.models import ClassType, DoW, OtfClass
+from otf_api.models.bookings import ClassType, DoW, OtfClass
 
 
 class ClassFilter(BaseModel):
