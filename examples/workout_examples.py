@@ -8,7 +8,7 @@ from otf_api.models.enums import StatsTime
 def main():  # noqa: D103, ANN201
     otf = Otf()
 
-    resp = otf.get_member_lifetime_stats_in_studio()
+    resp = otf.workouts.get_member_lifetime_stats_in_studio()
     print("Lifetime in-studio stats:")
     print(resp.model_dump_json(indent=4))
 
@@ -30,7 +30,7 @@ def main():  # noqa: D103, ANN201
     }
     """
 
-    resp = otf.get_member_lifetime_stats_in_studio(StatsTime.ThisMonth)
+    resp = otf.workouts.get_member_lifetime_stats_in_studio(StatsTime.ThisMonth)
     print("This month in-studio stats:")
     print(resp.model_dump_json(indent=4))
 
@@ -55,7 +55,7 @@ def main():  # noqa: D103, ANN201
     # you can get a list of workouts by calling `get_workouts`, which optionally takes a start and end date
     # the workout includes all of the details, including the performance summary, class, coach, studio, and rating data
     # from the new endpoint - the data matches what is shown in the OTF app after a workout
-    data_list = otf.get_workouts()
+    data_list = otf.workouts.get_workouts()
     print(data_list[0].model_dump_json(indent=4, exclude_none=True))
     """
     {
@@ -358,7 +358,7 @@ def main():  # noqa: D103, ANN201
     with suppress(AlreadyRatedError, ClassNotRatableError):
         unrated_class = next((w for w in data_list if w.ratable and not w.class_rating), None)
         if unrated_class:
-            rated_workout = otf.rate_class_from_workout(unrated_class, 3, 3)
+            rated_workout = otf.workouts.rate_class_from_workout(unrated_class, 3, 3)
             print(rated_workout.model_dump_json(indent=4))
         else:
             print("No unrated classes found")

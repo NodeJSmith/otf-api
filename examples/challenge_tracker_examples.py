@@ -8,7 +8,7 @@ def main():  # noqa: D103, ANN201
     # You can get challenges by equipment or by challenge category
 
     for et in EquipmentType:
-        benchmarks = otf.get_benchmarks_by_equipment(et)
+        benchmarks = otf.workouts.get_benchmarks_by_equipment(et)
         if not benchmarks:
             continue
         print(f"Equipment: {et.name}, Challenges: {len(benchmarks):,}")
@@ -63,7 +63,7 @@ def main():  # noqa: D103, ANN201
             """
 
     for ct in ChallengeCategory:
-        benchmarks = otf.get_benchmarks_by_challenge_category(ct)
+        benchmarks = otf.workouts.get_benchmarks_by_challenge_category(ct)
         if not benchmarks:
             continue
         print(f"Challenge Name: {ct.name}, Challenges: {len(benchmarks):,}")
