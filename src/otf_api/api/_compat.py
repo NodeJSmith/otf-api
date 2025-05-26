@@ -69,9 +69,9 @@ def _generate_legacy_method(old_name, new_path):
     return method
 
 
-class LegacyCompatMixin:
+class _LegacyCompatMixin:
     pass
 
 
 for legacy_name, new_path in _LEGACY_METHOD_MAP.items():
-    setattr(LegacyCompatMixin, legacy_name, _generate_legacy_method(legacy_name, new_path))
+    setattr(_LegacyCompatMixin, legacy_name, _generate_legacy_method(legacy_name, new_path))
