@@ -1,12 +1,9 @@
 OrangeTheory API
 ====================
 
-
-otf\_api.api.api module
------------------------
-
-.. automodule:: otf_api.api.api
-
+.. autoclass:: otf_api.api.api.Otf
+    :members:
+    :inherited-members: _LegacyCompatMixin
 
 .. toctree::
    :maxdepth: 3

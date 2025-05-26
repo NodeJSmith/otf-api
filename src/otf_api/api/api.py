@@ -1,5 +1,5 @@
 from otf_api import models
-from otf_api.api.compat import LegacyCompatMixin
+from otf_api.api._compat import _LegacyCompatMixin
 from otf_api.auth import OtfUser
 
 from .bookings import BookingApi
@@ -9,7 +9,7 @@ from .studios import StudioApi
 from .workouts import WorkoutApi
 
 
-class Otf(LegacyCompatMixin):
+class Otf(_LegacyCompatMixin):
     """The main OTF API client.
 
     This class handles serialization and enrichment of data from the OTF API. The actual requests to the OTF API are\
