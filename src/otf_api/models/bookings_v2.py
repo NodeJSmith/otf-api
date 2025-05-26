@@ -96,7 +96,7 @@ class BookingV2Class(ApiMixin, OtfItemBase):
         if not self.class_uuid:
             raise ValueError("class_uuid is required to get the booking")
 
-        return self._api.get_booking_from_class_new(self)
+        return self._api.bookings.get_booking_from_class_new(self)
 
     def cancel_booking(self) -> None:
         """Cancels the booking by calling the proper API method.
@@ -222,4 +222,4 @@ class BookingV2(ApiMixin, OtfItemBase):
         """
         self.raise_if_api_not_set()
 
-        self._api.cancel_booking_new(self)
+        self._api.bookings.cancel_booking_new(self)

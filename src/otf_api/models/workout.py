@@ -98,4 +98,4 @@ class Workout(ApiMixin, OtfItemBase):
             ClassNotRatableError: If the performance summary is not rateable.
         """
         self.raise_if_api_not_set()
-        self._api.rate_class_from_workout(self, class_rating=class_rating, coach_rating=coach_rating)
+        self._api.workouts.rate_class_from_workout(self, class_rating=class_rating, coach_rating=coach_rating)

@@ -120,4 +120,4 @@ class Booking(ApiMixin, OtfItemBase):
         """
         self.raise_if_api_not_set()
 
-        self._api.cancel_booking(self)
+        self._api.bookings.cancel_booking(self)

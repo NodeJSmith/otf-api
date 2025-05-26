@@ -89,7 +89,7 @@ class OtfClass(ApiMixin, OtfItemBase):
             OtfException: If there is an error booking the class.
         """
         self.raise_if_api_not_set()
-        new_booking = self._api.book_class(self.class_uuid)
+        new_booking = self._api.bookings.book_class(self.class_uuid)
         self.is_booked = True
         return new_booking
 
@@ -115,6 +115,6 @@ class OtfClass(ApiMixin, OtfItemBase):
         """
         self.raise_if_api_not_set()
         try:
-            return self._api.get_booking_from_class(self)
+            return self._api.bookings.get_booking_from_class(self)
         except exc.BookingNotFoundError:
-            return self._api.get_booking_from_class_new(self)
+            return self._api.bookings.get_booking_from_class_new(self)

@@ -72,9 +72,9 @@ class StudioDetail(ApiMixin, OtfItemBase):
     def add_to_favorites(self) -> None:
         """Adds the studio to the user's favorites."""
         self.raise_if_api_not_set()
-        self._api.add_favorite_studio(self.studio_uuid)
+        self._api.studios.add_favorite_studio(self.studio_uuid)
 
     def remove_from_favorites(self) -> None:
         """Removes the studio from the user's favorites."""
         self.raise_if_api_not_set()
-        self._api.remove_favorite_studio(self.studio_uuid)
+        self._api.studios.remove_favorite_studio(self.studio_uuid)

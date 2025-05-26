@@ -130,6 +130,6 @@ class MemberDetail(ApiMixin, OtfItemBase):
         """
         self.raise_if_api_not_set()
 
-        updated_member = self._api.update_member_name(first_name, last_name)
+        updated_member = self._api.members.update_member_name(first_name, last_name)
         self.first_name = updated_member.first_name
         self.last_name = updated_member.last_name
