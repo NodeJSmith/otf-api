@@ -7,8 +7,8 @@ from otf_api.models.base import OtfItemBase
 
 
 class Zone(OtfItemBase):
-    start_bpm: int = Field(..., alias="startBpm")
-    end_bpm: int = Field(..., alias="endBpm")
+    start_bpm: int = Field(..., validation_alias="startBpm")
+    end_bpm: int = Field(..., validation_alias="endBpm")
 
 
 class Zones(OtfItemBase):
@@ -20,43 +20,47 @@ class Zones(OtfItemBase):
 
 
 class TreadData(OtfItemBase):
-    tread_speed: float = Field(..., alias="treadSpeed")
-    tread_incline: float = Field(..., alias="treadIncline")
-    agg_tread_distance: int = Field(..., alias="aggTreadDistance")
+    tread_speed: float = Field(..., validation_alias="treadSpeed")
+    tread_incline: float = Field(..., validation_alias="treadIncline")
+    agg_tread_distance: int = Field(..., validation_alias="aggTreadDistance")
 
 
 class RowData(OtfItemBase):
-    row_speed: float = Field(..., alias="rowSpeed")
-    row_pps: float = Field(..., alias="rowPps")
-    row_spm: float = Field(..., alias="rowSpm")
-    agg_row_distance: int = Field(..., alias="aggRowDistance")
-    row_pace: int = Field(..., alias="rowPace")
+    row_speed: float = Field(..., validation_alias="rowSpeed")
+    row_pps: float = Field(..., validation_alias="rowPps")
+    row_spm: float = Field(..., validation_alias="rowSpm")
+    agg_row_distance: int = Field(..., validation_alias="aggRowDistance")
+    row_pace: int = Field(..., validation_alias="rowPace")
 
 
 class TelemetryItem(OtfItemBase):
-    relative_timestamp: int = Field(..., alias="relativeTimestamp")
+    relative_timestamp: int = Field(..., validation_alias="relativeTimestamp")
     hr: int | None = None
-    agg_splats: int = Field(..., alias="aggSplats")
-    agg_calories: int = Field(..., alias="aggCalories")
+    agg_splats: int = Field(..., validation_alias="aggSplats")
+    agg_calories: int = Field(..., validation_alias="aggCalories")
     timestamp: datetime | None = Field(
         None,
         init_var=False,
         description="The timestamp of the telemetry item, calculated from the class start time and relative timestamp.",
     )
-    tread_data: TreadData | None = Field(None, alias="treadData")
-    row_data: RowData | None = Field(None, alias="rowData")
+    tread_data: TreadData | None = Field(None, validation_alias="treadData")
+    row_data: RowData | None = Field(None, validation_alias="rowData")
 
 
 class Telemetry(OtfItemBase):
-    member_uuid: str = Field(..., alias="memberUuid")
+    member_uuid: str = Field(..., validation_alias="memberUuid")
     performance_summary_id: str = Field(
-        ..., alias="classHistoryUuid", description="The ID of the performance summary this telemetry item belongs to."
+        ...,
+        validation_alias="classHistoryUuid",
+        description="The ID of the performance summary this telemetry item belongs to.",
     )
-    class_history_uuid: str = Field(..., alias="classHistoryUuid", description="The same as performance_summary_id.")
-    class_start_time: datetime | None = Field(None, alias="classStartTime")
-    max_hr: int | None = Field(None, alias="maxHr")
+    class_history_uuid: str = Field(
+        ..., validation_alias="classHistoryUuid", description="The same as performance_summary_id."
+    )
+    class_start_time: datetime | None = Field(None, validation_alias="classStartTime")
+    max_hr: int | None = Field(None, validation_alias="maxHr")
     zones: Zones
-    window_size: int | None = Field(None, alias="windowSize")
+    window_size: int | None = Field(None, validation_alias="windowSize")
     telemetry: list[TelemetryItem] = Field(default_factory=list)
 
     def __init__(self, **data: dict[str, Any]):
@@ -79,6 +83,6 @@ class TelemetryHistoryItem(OtfItemBase):
     max_hr_type: str | None = Field(None, validation_alias=AliasPath("maxHr", "type"))
     max_hr_value: int | None = Field(None, validation_alias=AliasPath("maxHr", "value"))
     zones: Zones | None = None
-    change_from_previous: int | None = Field(None, alias="changeFromPrevious")
-    change_bucket: str | None = Field(None, alias="changeBucket")
-    assigned_at: datetime | None = Field(None, alias="assignedAt")
+    change_from_previous: int | None = Field(None, validation_alias="changeFromPrevious")
+    change_bucket: str | None = Field(None, validation_alias="changeBucket")
+    assigned_at: datetime | None = Field(None, validation_alias="assignedAt")

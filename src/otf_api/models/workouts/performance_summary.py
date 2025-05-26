@@ -85,8 +85,10 @@ class PerformanceSummary(OtfItemBase):
     You likely want to use the `Workout` model and `get_workouts` method instead.
     """
 
-    performance_summary_id: str = Field(..., alias="id", description="Unique identifier for this performance summary")
-    class_history_uuid: str = Field(..., alias="id", description="Same as performance_summary_id")
+    performance_summary_id: str = Field(
+        ..., validation_alias="id", description="Unique identifier for this performance summary"
+    )
+    class_history_uuid: str = Field(..., validation_alias="id", description="Same as performance_summary_id")
     ratable: bool | None = None
 
     calories_burned: int | None = Field(None, validation_alias=AliasPath("details", "calories_burned"))

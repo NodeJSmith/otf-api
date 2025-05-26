@@ -44,7 +44,7 @@ class Rating(OtfItemBase):
 
 
 class BookingV2Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
-    studio_uuid: str = Field(alias="id")
+    studio_uuid: str = Field(validation_alias="id")
     name: str | None = None
     time_zone: str | None = None
     email: str | None = None
@@ -55,20 +55,24 @@ class BookingV2Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
 
 
 class BookingV2Class(ApiMixin, OtfItemBase):
-    class_id: str = Field(alias="id", description="Matches the `class_id` attribute of the OtfClass model")
+    class_id: str = Field(validation_alias="id", description="Matches the `class_id` attribute of the OtfClass model")
     name: str
-    class_type: ClassType = Field(alias="type")
+    class_type: ClassType = Field(validation_alias="type")
     starts_at: datetime = Field(
-        alias="starts_at_local",
+        validation_alias="starts_at_local",
         description="The start time of the class. Reflects local time, but the object does not have a timezone.",
     )
     studio: BookingV2Studio | None = None
     coach: str | None = Field(None, validation_alias=AliasPath("coach", "first_name"))
 
     class_uuid: str | None = Field(
-        None, alias="ot_base_class_uuid", description="Only present when class is ratable", exclude=True, repr=False
+        None,
+        validation_alias="ot_base_class_uuid",
+        description="Only present when class is ratable",
+        exclude=True,
+        repr=False,
     )
-    starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True, repr=False)
+    starts_at_utc: datetime | None = Field(None, validation_alias="starts_at", exclude=True, repr=False)
 
     @property
     def coach_name(self) -> str:
@@ -113,7 +117,7 @@ class BookingV2Class(ApiMixin, OtfItemBase):
 
 class BookingV2Workout(OtfItemBase):
     id: str
-    performance_summary_id: str = Field(..., alias="id", description="Alias to id, to simplify the API")
+    performance_summary_id: str = Field(..., validation_alias="id", description="Alias to id, to simplify the API")
     calories_burned: int
     splat_points: int
     step_count: int
@@ -123,10 +127,12 @@ class BookingV2Workout(OtfItemBase):
 
 class BookingV2(ApiMixin, OtfItemBase):
     booking_id: str = Field(
-        ..., alias="id", description="The booking ID used to cancel the booking - must be canceled through new endpoint"
+        ...,
+        validation_alias="id",
+        description="The booking ID used to cancel the booking - must be canceled through new endpoint",
     )
 
-    member_uuid: str = Field(..., alias="member_id")
+    member_uuid: str = Field(..., validation_alias="member_id")
     service_name: str | None = Field(None, description="Represents tier of member")
 
     cross_regional: bool | None = None
@@ -137,7 +143,7 @@ class BookingV2(ApiMixin, OtfItemBase):
     canceled_at: datetime | None = None
     ratable: bool
 
-    otf_class: BookingV2Class = Field(..., alias="class")
+    otf_class: BookingV2Class = Field(..., validation_alias="class")
     workout: BookingV2Workout | None = None
     coach_rating: Rating | None = Field(None, validation_alias=AliasPath("ratings", "coach"))
     class_rating: Rating | None = Field(None, validation_alias=AliasPath("ratings", "class"))

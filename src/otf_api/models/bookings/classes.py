@@ -15,18 +15,18 @@ if typing.TYPE_CHECKING:
 
 
 class OtfClass(ApiMixin, OtfItemBase):
-    class_uuid: str = Field(alias="ot_base_class_uuid", description="The OTF class UUID")
-    class_id: str | None = Field(None, alias="id", description="Matches new booking endpoint class id")
+    class_uuid: str = Field(validation_alias="ot_base_class_uuid", description="The OTF class UUID")
+    class_id: str | None = Field(None, validation_alias="id", description="Matches new booking endpoint class id")
 
     name: str | None = Field(None, description="The name of the class")
-    class_type: ClassType = Field(alias="type")
+    class_type: ClassType = Field(validation_alias="type")
     coach: str | None = Field(None, validation_alias=AliasPath("coach", "first_name"))
     ends_at: datetime = Field(
-        alias="ends_at_local",
+        validation_alias="ends_at_local",
         description="The end time of the class. Reflects local time, but the object does not have a timezone.",
     )
     starts_at: datetime = Field(
-        alias="starts_at_local",
+        validation_alias="starts_at_local",
         description="The start time of the class. Reflects local time, but the object does not have a timezone.",
     )
     studio: StudioDetail
@@ -38,15 +38,15 @@ class OtfClass(ApiMixin, OtfItemBase):
     waitlist_available: bool | None = None
     waitlist_size: int | None = Field(None, description="The number of people on the waitlist")
     is_booked: bool | None = Field(None, description="Custom helper field to determine if class is already booked")
-    is_cancelled: bool | None = Field(None, alias="canceled")
+    is_cancelled: bool | None = Field(None, validation_alias="canceled")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
     created_at: datetime | None = Field(None, exclude=True, repr=False)
-    ends_at_utc: datetime | None = Field(None, alias="ends_at", exclude=True, repr=False)
+    ends_at_utc: datetime | None = Field(None, validation_alias="ends_at", exclude=True, repr=False)
     mbo_class_description_id: str | None = Field(None, exclude=True, repr=False, description="MindBody attr")
     mbo_class_id: str | None = Field(None, exclude=True, repr=False, description="MindBody attr")
     mbo_class_schedule_id: str | None = Field(None, exclude=True, repr=False, description="MindBody attr")
-    starts_at_utc: datetime | None = Field(None, alias="starts_at", exclude=True, repr=False)
+    starts_at_utc: datetime | None = Field(None, validation_alias="starts_at", exclude=True, repr=False)
     updated_at: datetime | None = Field(None, exclude=True, repr=False)
 
     @property

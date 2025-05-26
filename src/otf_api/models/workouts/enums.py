@@ -2,6 +2,8 @@ from enum import IntEnum, StrEnum
 
 
 class StatsTime(StrEnum):
+    """Enum representing the different time periods for workout statistics."""
+
     LastYear = "lastYear"
     ThisYear = "thisYear"
     LastMonth = "lastMonth"
@@ -12,6 +14,8 @@ class StatsTime(StrEnum):
 
 
 class EquipmentType(IntEnum):
+    """Enum representing the type of equipment used in workouts."""
+
     Treadmill = 2
     Strider = 3
     Rower = 4
@@ -21,6 +25,8 @@ class EquipmentType(IntEnum):
 
 
 class ChallengeCategory(IntEnum):
+    """Enum representing the different challenge categories."""
+
     Other = 0
     DriTri = 2
     Infinity = 3
@@ -47,6 +53,8 @@ class ChallengeCategory(IntEnum):
 
 
 class DriTriChallengeSubCategory(IntEnum):
+    """Enum representing the subcategories of the DriTri challenge."""
+
     FullRun = 1
     SprintRun = 3
     Relay = 4
@@ -54,14 +62,9 @@ class DriTriChallengeSubCategory(IntEnum):
 
 
 class MarathonMonthChallengeSubCategory(IntEnum):
+    """Enum representing the subcategories of the Marathon Month challenge."""
+
     Original = 1
     Full = 14
     Half = 15
     Ultra = 16
-
-
-# only Other, DriTri, and MarathonMonth have subcategories
-
-# BackAtIt and Transformation are multi-week challenges
-
-# RemixInSix, Mayhem, HellWeek, Push, and TwelveDaysOfFitness are multi-day challenges

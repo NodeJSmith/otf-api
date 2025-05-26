@@ -17,8 +17,10 @@ class Workout(ApiMixin, OtfItemBase):
     This should match the data that is shown in the OTF app after a workout.
     """
 
-    performance_summary_id: str = Field(..., alias="id", description="Unique identifier for this performance summary")
-    class_history_uuid: str = Field(..., alias="id", description="Same as performance_summary_id")
+    performance_summary_id: str = Field(
+        ..., validation_alias="id", description="Unique identifier for this performance summary"
+    )
+    class_history_uuid: str = Field(..., validation_alias="id", description="Same as performance_summary_id")
     booking_id: str = Field(..., description="The booking id for the new bookings endpoint.")
     class_uuid: str | None = Field(
         None, description="Used by the ratings endpoint - seems to fall off after a few months"

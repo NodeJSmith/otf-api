@@ -10,9 +10,9 @@ from .enums import BookingStatus
 
 
 class Coach(OtfItemBase):
-    coach_uuid: str = Field(alias="coachUUId")
-    first_name: str | None = Field(None, alias="firstName")
-    last_name: str | None = Field(None, alias="lastName")
+    coach_uuid: str = Field(validation_alias="coachUUId")
+    first_name: str | None = Field(None, validation_alias="firstName")
+    last_name: str | None = Field(None, validation_alias="lastName")
 
     # unused fields
     name: str = Field(exclude=True, repr=False)
@@ -24,20 +24,22 @@ class Coach(OtfItemBase):
 
 
 class OtfClass(OtfItemBase):
-    class_uuid: str = Field(alias="classUUId")
+    class_uuid: str = Field(validation_alias="classUUId")
     name: str
-    starts_at: datetime = Field(alias="startDateTime", description="Start time in local timezone")
-    ends_at: datetime = Field(alias="endDateTime", description="End time in local timezone")
-    is_available: bool = Field(alias="isAvailable")
-    is_cancelled: bool = Field(alias="isCancelled")
+    starts_at: datetime = Field(validation_alias="startDateTime", description="Start time in local timezone")
+    ends_at: datetime = Field(validation_alias="endDateTime", description="End time in local timezone")
+    is_available: bool = Field(validation_alias="isAvailable")
+    is_cancelled: bool = Field(validation_alias="isCancelled")
     studio: StudioDetail
     coach: Coach
 
     # unused fields
-    coach_id: int | None = Field(None, alias="coachId", exclude=True, repr=False, description="Not used by API")
+    coach_id: int | None = Field(
+        None, validation_alias="coachId", exclude=True, repr=False, description="Not used by API"
+    )
     description: str | None = Field(None, exclude=True, repr=False)
-    program_name: str | None = Field(None, alias="programName", exclude=True, repr=False)
-    virtual_class: bool | None = Field(None, alias="virtualClass", exclude=True, repr=False)
+    program_name: str | None = Field(None, validation_alias="programName", exclude=True, repr=False)
+    virtual_class: bool | None = Field(None, validation_alias="virtualClass", exclude=True, repr=False)
 
     @property
     def coach_name(self) -> str:
@@ -51,33 +53,41 @@ class OtfClass(OtfItemBase):
 
 
 class Booking(ApiMixin, OtfItemBase):
-    booking_uuid: str = Field(alias="classBookingUUId", description="ID used to cancel the booking")
-    is_intro: bool = Field(alias="isIntro")
+    booking_uuid: str = Field(validation_alias="classBookingUUId", description="ID used to cancel the booking")
+    is_intro: bool = Field(validation_alias="isIntro")
     status: BookingStatus
-    booked_date: datetime | None = Field(None, alias="bookedDate")
-    checked_in_date: datetime | None = Field(None, alias="checkedInDate")
-    cancelled_date: datetime | None = Field(None, alias="cancelledDate")
-    created_date: datetime = Field(alias="createdDate")
-    updated_date: datetime = Field(alias="updatedDate")
-    is_deleted: bool = Field(alias="isDeleted")
-    waitlist_position: int | None = Field(None, alias="waitlistPosition")
-    otf_class: OtfClass = Field(alias="class")
+    booked_date: datetime | None = Field(None, validation_alias="bookedDate")
+    checked_in_date: datetime | None = Field(None, validation_alias="checkedInDate")
+    cancelled_date: datetime | None = Field(None, validation_alias="cancelledDate")
+    created_date: datetime = Field(validation_alias="createdDate")
+    updated_date: datetime = Field(validation_alias="updatedDate")
+    is_deleted: bool = Field(validation_alias="isDeleted")
+    waitlist_position: int | None = Field(None, validation_alias="waitlistPosition")
+    otf_class: OtfClass = Field(validation_alias="class")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
     # unused fields
-    class_booking_id: int = Field(alias="classBookingId", exclude=True, repr=False, description="Not used by API")
-    class_id: int = Field(alias="classId", exclude=True, repr=False, description="Not used by API")
-    created_by: str = Field(alias="createdBy", exclude=True, repr=False)
-    mbo_class_id: int | None = Field(None, alias="mboClassId", exclude=True, repr=False, description="MindBody attr")
-    mbo_member_id: str | None = Field(None, alias="mboMemberId", exclude=True, repr=False, description="MindBody attr")
-    mbo_sync_message: str | None = Field(
-        None, alias="mboSyncMessage", exclude=True, repr=False, description="MindBody attr"
+    class_booking_id: int = Field(
+        validation_alias="classBookingId", exclude=True, repr=False, description="Not used by API"
     )
-    mbo_visit_id: int | None = Field(None, alias="mboVisitId", exclude=True, repr=False, description="MindBody attr")
-    mbo_waitlist_entry_id: int | None = Field(None, alias="mboWaitlistEntryId", exclude=True, repr=False)
-    member_id: int = Field(alias="memberId", exclude=True, repr=False, description="Not used by API")
-    studio_id: int = Field(alias="studioId", exclude=True, repr=False, description="Not used by API")
-    updated_by: str = Field(alias="updatedBy", exclude=True, repr=False)
+    class_id: int = Field(validation_alias="classId", exclude=True, repr=False, description="Not used by API")
+    created_by: str = Field(validation_alias="createdBy", exclude=True, repr=False)
+    mbo_class_id: int | None = Field(
+        None, validation_alias="mboClassId", exclude=True, repr=False, description="MindBody attr"
+    )
+    mbo_member_id: str | None = Field(
+        None, validation_alias="mboMemberId", exclude=True, repr=False, description="MindBody attr"
+    )
+    mbo_sync_message: str | None = Field(
+        None, validation_alias="mboSyncMessage", exclude=True, repr=False, description="MindBody attr"
+    )
+    mbo_visit_id: int | None = Field(
+        None, validation_alias="mboVisitId", exclude=True, repr=False, description="MindBody attr"
+    )
+    mbo_waitlist_entry_id: int | None = Field(None, validation_alias="mboWaitlistEntryId", exclude=True, repr=False)
+    member_id: int = Field(validation_alias="memberId", exclude=True, repr=False, description="Not used by API")
+    studio_id: int = Field(validation_alias="studioId", exclude=True, repr=False, description="Not used by API")
+    updated_by: str = Field(validation_alias="updatedBy", exclude=True, repr=False)
 
     @property
     def studio_uuid(self) -> str:

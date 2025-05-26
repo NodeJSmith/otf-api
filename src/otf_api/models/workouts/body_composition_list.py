@@ -146,106 +146,110 @@ def get_body_fat_percent_dividers_female(age: int) -> list[float]:
 
 
 class LeanBodyMass(OtfItemBase):
-    left_arm: float = Field(..., alias="lbmOfLeftArm")
-    left_leg: float = Field(..., alias="lbmOfLeftLeg")
-    right_arm: float = Field(..., alias="lbmOfRightArm")
-    right_leg: float = Field(..., alias="lbmOfRightLeg")
-    trunk: float = Field(..., alias="lbmOfTrunk")
+    left_arm: float = Field(..., validation_alias="lbmOfLeftArm")
+    left_leg: float = Field(..., validation_alias="lbmOfLeftLeg")
+    right_arm: float = Field(..., validation_alias="lbmOfRightArm")
+    right_leg: float = Field(..., validation_alias="lbmOfRightLeg")
+    trunk: float = Field(..., validation_alias="lbmOfTrunk")
 
 
 class LeanBodyMassPercent(OtfItemBase):
-    left_arm: float = Field(..., alias="lbmPercentOfLeftArm")
-    left_leg: float = Field(..., alias="lbmPercentOfLeftLeg")
-    right_arm: float = Field(..., alias="lbmPercentOfRightArm")
-    right_leg: float = Field(..., alias="lbmPercentOfRightLeg")
-    trunk: float = Field(..., alias="lbmPercentOfTrunk")
+    left_arm: float = Field(..., validation_alias="lbmPercentOfLeftArm")
+    left_leg: float = Field(..., validation_alias="lbmPercentOfLeftLeg")
+    right_arm: float = Field(..., validation_alias="lbmPercentOfRightArm")
+    right_leg: float = Field(..., validation_alias="lbmPercentOfRightLeg")
+    trunk: float = Field(..., validation_alias="lbmPercentOfTrunk")
 
 
 class BodyFatMass(OtfItemBase):
-    control: float = Field(..., alias="bfmControl")
-    left_arm: float = Field(..., alias="bfmOfLeftArm")
-    left_leg: float = Field(..., alias="bfmOfLeftLeg")
-    right_arm: float = Field(..., alias="bfmOfRightArm")
-    right_leg: float = Field(..., alias="bfmOfRightLeg")
-    trunk: float = Field(..., alias="bfmOfTrunk")
+    control: float = Field(..., validation_alias="bfmControl")
+    left_arm: float = Field(..., validation_alias="bfmOfLeftArm")
+    left_leg: float = Field(..., validation_alias="bfmOfLeftLeg")
+    right_arm: float = Field(..., validation_alias="bfmOfRightArm")
+    right_leg: float = Field(..., validation_alias="bfmOfRightLeg")
+    trunk: float = Field(..., validation_alias="bfmOfTrunk")
 
 
 class BodyFatMassPercent(OtfItemBase):
-    left_arm: float = Field(..., alias="bfmPercentOfLeftArm")
-    left_leg: float = Field(..., alias="bfmPercentOfLeftLeg")
-    right_arm: float = Field(..., alias="bfmPercentOfRightArm")
-    right_leg: float = Field(..., alias="bfmPercentOfRightLeg")
-    trunk: float = Field(..., alias="bfmPercentOfTrunk")
+    left_arm: float = Field(..., validation_alias="bfmPercentOfLeftArm")
+    left_leg: float = Field(..., validation_alias="bfmPercentOfLeftLeg")
+    right_arm: float = Field(..., validation_alias="bfmPercentOfRightArm")
+    right_leg: float = Field(..., validation_alias="bfmPercentOfRightLeg")
+    trunk: float = Field(..., validation_alias="bfmPercentOfTrunk")
 
 
 class TotalBodyWeight(OtfItemBase):
-    right_arm: float = Field(..., alias="tbwOfRightArm")
-    left_arm: float = Field(..., alias="tbwOfLeftArm")
-    trunk: float = Field(..., alias="tbwOfTrunk")
-    right_leg: float = Field(..., alias="tbwOfRightLeg")
-    left_leg: float = Field(..., alias="tbwOfLeftLeg")
+    right_arm: float = Field(..., validation_alias="tbwOfRightArm")
+    left_arm: float = Field(..., validation_alias="tbwOfLeftArm")
+    trunk: float = Field(..., validation_alias="tbwOfTrunk")
+    right_leg: float = Field(..., validation_alias="tbwOfRightLeg")
+    left_leg: float = Field(..., validation_alias="tbwOfLeftLeg")
 
 
 class IntraCellularWater(OtfItemBase):
-    right_arm: float = Field(..., alias="icwOfRightArm")
-    left_arm: float = Field(..., alias="icwOfLeftArm")
-    trunk: float = Field(..., alias="icwOfTrunk")
-    right_leg: float = Field(..., alias="icwOfRightLeg")
-    left_leg: float = Field(..., alias="icwOfLeftLeg")
+    right_arm: float = Field(..., validation_alias="icwOfRightArm")
+    left_arm: float = Field(..., validation_alias="icwOfLeftArm")
+    trunk: float = Field(..., validation_alias="icwOfTrunk")
+    right_leg: float = Field(..., validation_alias="icwOfRightLeg")
+    left_leg: float = Field(..., validation_alias="icwOfLeftLeg")
 
 
 class ExtraCellularWater(OtfItemBase):
-    right_arm: float = Field(..., alias="ecwOfRightArm")
-    left_arm: float = Field(..., alias="ecwOfLeftArm")
-    trunk: float = Field(..., alias="ecwOfTrunk")
-    right_leg: float = Field(..., alias="ecwOfRightLeg")
-    left_leg: float = Field(..., alias="ecwOfLeftLeg")
+    right_arm: float = Field(..., validation_alias="ecwOfRightArm")
+    left_arm: float = Field(..., validation_alias="ecwOfLeftArm")
+    trunk: float = Field(..., validation_alias="ecwOfTrunk")
+    right_leg: float = Field(..., validation_alias="ecwOfRightLeg")
+    left_leg: float = Field(..., validation_alias="ecwOfLeftLeg")
 
 
 class ExtraCellularWaterOverTotalBodyWater(OtfItemBase):
-    right_arm: float = Field(..., alias="ecwOverTBWOfRightArm")
-    left_arm: float = Field(..., alias="ecwOverTBWOfLeftArm")
-    trunk: float = Field(..., alias="ecwOverTBWOfTrunk")
-    right_leg: float = Field(..., alias="ecwOverTBWOfRightLeg")
-    left_leg: float = Field(..., alias="ecwOverTBWOfLeftLeg")
+    right_arm: float = Field(..., validation_alias="ecwOverTBWOfRightArm")
+    left_arm: float = Field(..., validation_alias="ecwOverTBWOfLeftArm")
+    trunk: float = Field(..., validation_alias="ecwOverTBWOfTrunk")
+    right_leg: float = Field(..., validation_alias="ecwOverTBWOfRightLeg")
+    left_leg: float = Field(..., validation_alias="ecwOverTBWOfLeftLeg")
 
 
 class BodyCompositionData(OtfItemBase):
     # NOTE: weight is hardcoded to be pounds here, regardless of the unit shown in the member details
 
-    member_uuid: str = Field(..., alias="memberUUId")
-    member_id: str | int = Field(..., alias="memberId")
-    scan_result_uuid: str = Field(..., alias="scanResultUUId")
-    inbody_id: str = Field(..., alias="id", exclude=True, repr=False, description="InBody ID, same as email address")
+    member_uuid: str = Field(..., validation_alias="memberUUId")
+    member_id: str | int = Field(..., validation_alias="memberId")
+    scan_result_uuid: str = Field(..., validation_alias="scanResultUUId")
+    inbody_id: str = Field(
+        ..., validation_alias="id", exclude=True, repr=False, description="InBody ID, same as email address"
+    )
     email: str
     height: str = Field(..., description="Height in cm")
     gender: Literal["M", "F"]
     age: int
-    scan_datetime: datetime = Field(..., alias="testDatetime")
+    scan_datetime: datetime = Field(..., validation_alias="testDatetime")
     provided_weight: float = Field(
-        ..., alias="weight", description="Weight in pounds, provided by member at time of scan"
+        ..., validation_alias="weight", description="Weight in pounds, provided by member at time of scan"
     )
 
     lean_body_mass_details: LeanBodyMass
     lean_body_mass_percent_details: LeanBodyMassPercent
 
-    total_body_weight: float = Field(..., alias="tbw", description="Total body weight in pounds, based on scan results")
-    dry_lean_mass: float = Field(..., alias="dlm")
-    body_fat_mass: float = Field(..., alias="bfm")
-    lean_body_mass: float = Field(..., alias="lbm")
-    skeletal_muscle_mass: float = Field(..., alias="smm")
-    body_mass_index: float = Field(..., alias="bmi")
-    percent_body_fat: float = Field(..., alias="pbf")
-    basal_metabolic_rate: float = Field(..., alias="bmr")
-    in_body_type: str = Field(..., alias="inBodyType")
+    total_body_weight: float = Field(
+        ..., validation_alias="tbw", description="Total body weight in pounds, based on scan results"
+    )
+    dry_lean_mass: float = Field(..., validation_alias="dlm")
+    body_fat_mass: float = Field(..., validation_alias="bfm")
+    lean_body_mass: float = Field(..., validation_alias="lbm")
+    skeletal_muscle_mass: float = Field(..., validation_alias="smm")
+    body_mass_index: float = Field(..., validation_alias="bmi")
+    percent_body_fat: float = Field(..., validation_alias="pbf")
+    basal_metabolic_rate: float = Field(..., validation_alias="bmr")
+    in_body_type: str = Field(..., validation_alias="inBodyType")
 
     # excluded because they are only useful for end result of calculations
-    body_fat_mass_dividers: list[float] = Field(..., alias="bfmGraphScale", exclude=True, repr=False)
-    body_fat_mass_plot_point: float = Field(..., alias="pfatnew", exclude=True, repr=False)
-    skeletal_muscle_mass_dividers: list[float] = Field(..., alias="smmGraphScale", exclude=True, repr=False)
-    skeletal_muscle_mass_plot_point: float = Field(..., alias="psmm", exclude=True, repr=False)
-    weight_dividers: list[float] = Field(..., alias="wtGraphScale", exclude=True, repr=False)
-    weight_plot_point: float = Field(..., alias="pwt", exclude=True, repr=False)
+    body_fat_mass_dividers: list[float] = Field(..., validation_alias="bfmGraphScale", exclude=True, repr=False)
+    body_fat_mass_plot_point: float = Field(..., validation_alias="pfatnew", exclude=True, repr=False)
+    skeletal_muscle_mass_dividers: list[float] = Field(..., validation_alias="smmGraphScale", exclude=True, repr=False)
+    skeletal_muscle_mass_plot_point: float = Field(..., validation_alias="psmm", exclude=True, repr=False)
+    weight_dividers: list[float] = Field(..., validation_alias="wtGraphScale", exclude=True, repr=False)
+    weight_plot_point: float = Field(..., validation_alias="pwt", exclude=True, repr=False)
 
     # excluded due to 0 values
     body_fat_mass_details: BodyFatMass = Field(..., exclude=True, repr=False)
@@ -256,13 +260,13 @@ class BodyCompositionData(OtfItemBase):
     extra_cellular_water_over_total_body_water_details: ExtraCellularWaterOverTotalBodyWater = Field(
         ..., exclude=True, repr=False
     )
-    visceral_fat_level: float = Field(..., alias="vfl", exclude=True, repr=False)
-    visceral_fat_area: float = Field(..., alias="vfa", exclude=True, repr=False)
-    body_comp_measurement: float = Field(..., alias="bcm", exclude=True, repr=False)
-    total_body_weight_over_lean_body_mass: float = Field(..., alias="tbwOverLBM", exclude=True, repr=False)
-    intracellular_water: float = Field(..., alias="icw", exclude=True, repr=False)
-    extracellular_water: float = Field(..., alias="ecw", exclude=True, repr=False)
-    lean_body_mass_control: float = Field(..., alias="lbmControl", exclude=True, repr=False)
+    visceral_fat_level: float = Field(..., validation_alias="vfl", exclude=True, repr=False)
+    visceral_fat_area: float = Field(..., validation_alias="vfa", exclude=True, repr=False)
+    body_comp_measurement: float = Field(..., validation_alias="bcm", exclude=True, repr=False)
+    total_body_weight_over_lean_body_mass: float = Field(..., validation_alias="tbwOverLBM", exclude=True, repr=False)
+    intracellular_water: float = Field(..., validation_alias="icw", exclude=True, repr=False)
+    extracellular_water: float = Field(..., validation_alias="ecw", exclude=True, repr=False)
+    lean_body_mass_control: float = Field(..., validation_alias="lbmControl", exclude=True, repr=False)
 
     def __init__(self, **data):
         # Convert the nested dictionaries to the appropriate classes
