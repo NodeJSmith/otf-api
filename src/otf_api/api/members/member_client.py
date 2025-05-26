@@ -51,7 +51,6 @@ class MemberClient:
         """Retrieve raw response from updating SMS notification settings.
 
         Warning:
-            ---
             This endpoint seems to accept almost anything, converting values to truthy/falsey and
             updating the settings accordingly. The one error I've gotten is with -1
 

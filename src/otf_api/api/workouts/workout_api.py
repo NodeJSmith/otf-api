@@ -319,14 +319,15 @@ class WorkoutApi:
     def _get_aspire_data(self, datetime: str | None = None, unit: str | None = None) -> Any:  # noqa: ANN401
         """Get data from the member's aspire wearable.
 
-        Note: I don't have an aspire wearable, so I can't test this.
-
         Args:
             datetime (str | None): The date and time to get data for. Default is None.
             unit (str | None): The measurement unit. Default is None.
 
         Returns:
             Any: The member's aspire data.
+
+        Note:
+            I don't have an aspire wearable, so I can't test this.
         """
         data = self.client.get_aspire_data(datetime, unit)
         return data

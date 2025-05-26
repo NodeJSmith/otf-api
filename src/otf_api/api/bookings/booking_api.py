@@ -41,21 +41,6 @@ class BookingApi:
 
         If no dates are provided, it will return all bookings between today and 45 days from now.
 
-        Note:
-            ---
-        Setting `exclude_cancelled` to `False` will return all bookings, which may result in multiple bookings for\
-        the same `class_id`. Setting `exclude_cancelled` to `True` will prevent this, but has the side effect of\
-        not returning *any* results for a cancelled (and not rebooked) booking. If you want a unique list of bookings\
-        that includes cancelled bookings, you should set `exclude_cancelled` to `False` and `remove_duplicates` to\
-        `True`.
-
-        Warning:
-            ---
-        If you do not set either `exclude_cancelled` or `remove_duplicates` to True you may receive multiple bookings\
-        for the same workout. This will happen if you cancel and rebook or if a class changes, such as from a 2G to a\
-        3G. Apparently the system actually creates a new booking for the new class, which is normally transparent to\
-        the user.
-
         Args:
             start_date (datetime | date | str | None): The start date for the bookings. Default is None.
             end_date (datetime | date | str | None): The end date for the bookings. Default is None.
@@ -66,6 +51,19 @@ class BookingApi:
 
         Returns:
             list[BookingV2]: The bookings for the user.
+
+        Note:
+            Setting `exclude_cancelled` to `False` will return all bookings, which may result in multiple bookings for\
+            the same `class_id`. Setting `exclude_cancelled` to `True` will prevent this, but has the side effect of\
+            not returning *any* results for a cancelled (and not rebooked) booking. If you want a unique list of\
+            bookings that includes cancelled bookings, you should set `exclude_cancelled` to `False` and\
+            `remove_duplicates` to `True`.
+
+        Warning:
+            If you do not set either `exclude_cancelled` or `remove_duplicates` to True you may receive multiple\
+            bookings for the same workout. This will happen if you cancel and rebook or if a class changes, such\
+            as from a 2G to a 3G. Apparently the system actually creates a new booking for the new class, which\
+             is normally transparent to the user.
         """
         expand = True  # this doesn't seem to have an effect? so leaving it out of the argument list
 
@@ -395,6 +393,8 @@ class BookingApi:
     ) -> list[models.Booking]:
         """Get the member's bookings.
 
+        If no dates are provided, it will return all bookings between today and 45 days from now.
+
         Args:
             start_date (date | str | None): The start date for the bookings. Default is None.
             end_date (date | str | None): The end date for the bookings. Default is None.
@@ -406,18 +406,11 @@ class BookingApi:
             list[Booking]: The member's bookings.
 
         Warning:
-            ---
             Incorrect statuses do not cause any bad status code, they just return no results.
 
         Tip:
-            ---
             `CheckedIn` - you must provide dates if you want to get bookings with a status of CheckedIn. If you do not
             provide dates, the endpoint will return no results for this status.
-
-        Dates Notes:
-            ---
-            If dates are provided, the endpoint will return bookings where the class date is within the provided
-            date range. If no dates are provided, it will go back 45 days and forward about 30 days.
         """
         if exclude_cancelled and status == models.BookingStatus.Cancelled:
             LOGGER.warning(
