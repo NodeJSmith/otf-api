@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.studio_detail import StudioDetail
+from otf_api.models.studios import StudioDetail
 
 
 class MemberPurchase(OtfItemBase):

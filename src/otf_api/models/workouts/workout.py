@@ -3,17 +3,9 @@ from typing import Any, Literal
 from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.bookings_v2 import (
-    BookingV2,
-    BookingV2Class,
-    BookingV2Studio,
-    BookingV2Workout,
-    Rating,
-    ZoneTimeMinutes,
-)
+from otf_api.models.bookings import BookingV2, BookingV2Class, BookingV2Studio, BookingV2Workout, Rating
 from otf_api.models.mixins import ApiMixin
-from otf_api.models.performance_summary import HeartRate, Rower, Treadmill
-from otf_api.models.telemetry import Telemetry
+from otf_api.models.workouts import HeartRate, Rower, Telemetry, Treadmill, ZoneTimeMinutes
 
 
 class Workout(ApiMixin, OtfItemBase):

@@ -163,7 +163,7 @@ def get_booking_id(booking_or_id: "str | models.BookingV2") -> str:
     Raises:
         TypeError: If the input is not a string or BookingV2 object.
     """
-    from otf_api.models.bookings_v2 import BookingV2
+    from otf_api.models.bookings import BookingV2
 
     if isinstance(booking_or_id, str):
         return booking_or_id
@@ -212,7 +212,7 @@ def get_class_id(class_or_id: "str | models.BookingV2Class") -> str:
     Raises:
         TypeError: If the input is not a string or BookingV2Class.
     """
-    from otf_api.models.bookings_v2 import BookingV2Class
+    from otf_api.models.bookings import BookingV2Class
 
     if isinstance(class_or_id, str):
         return class_or_id

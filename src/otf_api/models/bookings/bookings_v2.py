@@ -5,9 +5,10 @@ import pendulum
 from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import BookingStatus, ClassType
 from otf_api.models.mixins import AddressMixin, ApiMixin, PhoneLongitudeLatitudeMixin
-from otf_api.models.performance_summary import ZoneTimeMinutes
+
+# from otf_api.models.performance_summary import ZoneTimeMinutes
+from .enums import BookingStatus, ClassType
 
 LOGGER = getLogger(__name__)
 
@@ -117,7 +118,7 @@ class BookingV2Workout(OtfItemBase):
     splat_points: int
     step_count: int
     active_time_seconds: int
-    zone_time_minutes: ZoneTimeMinutes
+    # zone_time_minutes: ZoneTimeMinutes
 
 
 class BookingV2(ApiMixin, OtfItemBase):

@@ -2,7 +2,7 @@ from contextlib import suppress
 
 from otf_api import Otf
 from otf_api.exceptions import AlreadyRatedError, ClassNotRatableError
-from otf_api.models.enums import StatsTime
+from otf_api.models.workouts import StatsTime
 
 
 def main():  # noqa: D103, ANN201

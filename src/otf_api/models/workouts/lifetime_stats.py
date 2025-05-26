@@ -3,7 +3,8 @@ from typing import Generic, TypeVar
 from pydantic import Field, field_serializer
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import StatsTime
+
+from .enums import StatsTime
 
 T = TypeVar("T", bound=OtfItemBase)
 

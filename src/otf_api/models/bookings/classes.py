@@ -1,13 +1,17 @@
+import typing
 from datetime import datetime
 
 from pydantic import AliasPath, Field
 
 from otf_api import exceptions as exc
-from otf_api import models
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import ClassType, DoW
 from otf_api.models.mixins import ApiMixin
-from otf_api.models.studio_detail import StudioDetail
+from otf_api.models.studios import StudioDetail
+
+from .enums import ClassType, DoW
+
+if typing.TYPE_CHECKING:
+    from otf_api.models.bookings import Booking, BookingV2
 
 
 class OtfClass(ApiMixin, OtfItemBase):
@@ -76,7 +80,7 @@ class OtfClass(ApiMixin, OtfItemBase):
         dow = self.starts_at.strftime("%A").upper()
         return DoW(dow)
 
-    def book_class(self) -> models.Booking:
+    def book_class(self) -> "Booking":
         """Book a class by providing either the class_uuid or the OtfClass object.
 
         Returns:
@@ -103,7 +107,7 @@ class OtfClass(ApiMixin, OtfItemBase):
         self.raise_if_api_not_set()
         self.get_booking().cancel()
 
-    def get_booking(self) -> models.Booking | models.BookingV2:
+    def get_booking(self) -> "Booking | BookingV2":
         """Get the booking for this class.
 
         Returns:

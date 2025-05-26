@@ -3,8 +3,9 @@ from datetime import datetime
 from pydantic import AliasChoices, AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import StudioStatus
 from otf_api.models.mixins import AddressMixin, ApiMixin
+
+from .enums import StudioStatus
 
 
 class StudioLocation(AddressMixin, OtfItemBase):

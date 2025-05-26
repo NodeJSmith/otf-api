@@ -1,5 +1,5 @@
 from otf_api import Otf
-from otf_api.models.enums import ChallengeCategory, EquipmentType
+from otf_api.models.workouts import ChallengeCategory, EquipmentType
 
 
 def main():  # noqa: D103, ANN201

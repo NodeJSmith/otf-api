@@ -4,7 +4,8 @@ from typing import Any
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.enums import EquipmentType
+
+from .enums import EquipmentType
 
 
 class MetricEntry(OtfItemBase):

@@ -1,31 +1,35 @@
-from .body_composition_list import BodyCompositionData
-from .bookings import Booking
-from .bookings_v2 import BookingV2, BookingV2Class
-from .challenge_tracker_content import ChallengeTracker
-from .challenge_tracker_detail import FitnessBenchmark
-from .classes import OtfClass
-from .enums import (
+from .bookings import (
     HISTORICAL_BOOKING_STATUSES,
+    Booking,
     BookingStatus,
-    ChallengeCategory,
+    BookingV2,
+    BookingV2Class,
     ClassType,
     DoW,
-    EquipmentType,
-    StatsTime,
-    StudioStatus,
+    OtfClass,
+    get_class_rating_value,
+    get_coach_rating_value,
 )
-from .lifetime_stats import InStudioStatsData, OutStudioStatsData, StatsResponse, TimeStats
-from .member_detail import MemberDetail
-from .member_membership import MemberMembership
-from .member_purchases import MemberPurchase
-from .notifications import EmailNotificationSettings, SmsNotificationSettings
-from .out_of_studio_workout_history import OutOfStudioWorkoutHistory
-from .performance_summary import PerformanceSummary
-from .ratings import get_class_rating_value, get_coach_rating_value
-from .studio_detail import StudioDetail
-from .studio_services import StudioService
-from .telemetry import Telemetry, TelemetryHistoryItem
-from .workout import Workout
+from .members import MemberDetail, MemberMembership, MemberPurchase
+from .members.notifications import EmailNotificationSettings, SmsNotificationSettings
+from .studios import StudioDetail, StudioService, StudioStatus
+from .workouts import (
+    BodyCompositionData,
+    ChallengeCategory,
+    ChallengeTracker,
+    EquipmentType,
+    FitnessBenchmark,
+    InStudioStatsData,
+    OutOfStudioWorkoutHistory,
+    OutStudioStatsData,
+    PerformanceSummary,
+    StatsResponse,
+    StatsTime,
+    Telemetry,
+    TelemetryHistoryItem,
+    TimeStats,
+    Workout,
+)
 
 __all__ = [
     "HISTORICAL_BOOKING_STATUSES",
