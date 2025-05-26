@@ -19,7 +19,7 @@ from botocore.exceptions import ClientError
 from pycognito import AWSSRP, Cognito
 from pycognito.aws_srp import generate_hash_device
 
-from otf_api import cache
+from otf_api.cache import get_cache
 
 if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_identity import CognitoIdentityClient
@@ -35,6 +35,7 @@ USER_POOL_ID = "us-east-1_dYDxUeyL1"
 ID_POOL_ID = f"{REGION}:4943c880-fb02-4fd7-bc37-2f4c32ecb2a3"
 PROVIDER_KEY = f"cognito-idp.{REGION}.amazonaws.com/{USER_POOL_ID}"
 BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
+CACHE = get_cache()
 
 
 class NoCredentialsError(Exception):
@@ -156,12 +157,12 @@ class OtfCognito(Cognito):
         This is useful for initializing the Cognito instance with tokens that have been previously cached.
         It will read the tokens and device metadata from the cache and set the instance attributes accordingly.
         """
-        token_cache = cache.read_token_data_from_cache()
+        token_cache = CACHE.read_token_data_from_cache()
         self.id_token = self.id_token or token_cache.get("id_token")  # type: ignore
         self.access_token = self.access_token or token_cache.get("access_token")  # type: ignore
         self.refresh_token = self.refresh_token or token_cache.get("refresh_token")  # type: ignore
 
-        dd_cache = cache.read_device_data_from_cache()
+        dd_cache = CACHE.read_device_data_from_cache()
         self.device_key = dd_cache.get("device_key") or ""
         self.device_group_key = dd_cache.get("device_group_key") or ""
         self.device_password = dd_cache.get("device_password") or ""
@@ -234,7 +235,7 @@ class OtfCognito(Cognito):
         is no benefit to remembering the device. Additionally, it does not appear that the OTF app remembers devices,
         so this matches the behavior of the app.
         """
-        dd = cache.read_device_data_from_cache()
+        dd = CACHE.read_device_data_from_cache()
         self.device_key = dd.get("device_key") or ""
         self.device_group_key = dd.get("device_group_key") or ""
         self.device_password = dd.get("device_password") or ""
@@ -255,7 +256,7 @@ class OtfCognito(Cognito):
         )
 
         try:
-            cache.write_device_data_to_cache(self.device_metadata)
+            CACHE.write_device_data_to_cache(self.device_metadata)
         except Exception:
             LOGGER.exception("Failed to write device key cache")
 
@@ -270,7 +271,7 @@ class OtfCognito(Cognito):
         """
         self.verify_token(self.id_token, "id_token", "id")
         self.verify_token(self.access_token, "access_token", "access")
-        cache.write_token_data_to_cache(self.tokens, self.expiration_seconds)
+        CACHE.write_token_data_to_cache(self.tokens, self.expiration_seconds)
 
     def check_token(self, renew: bool = True) -> bool:
         """Checks the exp attribute of the access_token and refreshes it if it has expired and renew is True.
@@ -290,7 +291,7 @@ class OtfCognito(Cognito):
         except ClientError as e:
             if e.response["Error"]["Code"] == "NotAuthorizedException":
                 LOGGER.warning("Tokens expired, attempting to login with username and password")
-                cache.clear()
+                CACHE.clear()
                 raise NoCredentialsError("Cached tokens expired, please login again") from e
             raise
 
@@ -332,12 +333,12 @@ class OtfCognito(Cognito):
         self.verify_token(auth_result["AccessToken"], "access_token", "access")
         self.verify_token(auth_result["IdToken"], "id_token", "id")
         self.refresh_token = auth_result.get("RefreshToken", self.refresh_token)
-        cache.write_token_data_to_cache(self.tokens, self.expiration_seconds)
+        CACHE.write_token_data_to_cache(self.tokens, self.expiration_seconds)
 
         # device metadata - default to existing values if not present
         self.device_key = device_metadata.get("DeviceKey", self.device_key)
         self.device_group_key = device_metadata.get("DeviceGroupKey", self.device_group_key)
-        cache.write_device_data_to_cache(self.device_metadata)
+        CACHE.write_device_data_to_cache(self.device_metadata)
 
 
 class HttpxCognitoAuth(httpx.Auth):
