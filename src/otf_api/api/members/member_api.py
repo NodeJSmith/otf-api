@@ -3,7 +3,9 @@ from logging import getLogger
 from typing import Any
 
 from otf_api import models
-from otf_api.api.client import MemberClient, OtfClient
+from otf_api.api.client import OtfClient
+
+from .member_client import MemberClient
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf

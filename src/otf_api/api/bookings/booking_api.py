@@ -8,8 +8,10 @@ import pendulum
 from otf_api import exceptions as exc
 from otf_api import filters, models
 from otf_api.api import utils
-from otf_api.api.client import BookingClient, OtfClient
+from otf_api.api.client import OtfClient
 from otf_api.models.enums import HISTORICAL_BOOKING_STATUSES
+
+from .booking_client import BookingClient
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf

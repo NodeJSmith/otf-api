@@ -1,12 +1,12 @@
 from otf_api import models
-from otf_api.api.booking_api import BookingApi
 from otf_api.api.compat import LegacyCompatMixin
-from otf_api.api.member_api import MemberApi
-from otf_api.api.studio_api import StudioApi
-from otf_api.api.workout_api import WorkoutApi
 from otf_api.auth import OtfUser
 
+from .bookings import BookingApi
 from .client import OtfClient
+from .members import MemberApi
+from .studios import StudioApi
+from .workouts import WorkoutApi
 
 
 class Otf(LegacyCompatMixin):

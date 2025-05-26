@@ -9,7 +9,9 @@ import pendulum
 from otf_api import exceptions as exc
 from otf_api import models
 from otf_api.api import utils
-from otf_api.api.client import OtfClient, WorkoutClient
+from otf_api.api.client import OtfClient
+
+from .workout_client import WorkoutClient
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf
