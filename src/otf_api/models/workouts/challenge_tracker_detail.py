@@ -77,7 +77,7 @@ class Goal(OtfItemBase):
 class FitnessBenchmark(OtfItemBase):
     challenge_category_id: int | None = Field(None, alias="ChallengeCategoryId")
     challenge_sub_category_id: int | None = Field(None, alias="ChallengeSubCategoryId")
-    equipment_id: EquipmentType = Field(None, alias="EquipmentId")
+    equipment_id: EquipmentType | None = Field(None, alias="EquipmentId")
     equipment_name: str | None = Field(None, alias="EquipmentName")
     metric_entry: MetricEntry | None = Field(None, alias="MetricEntry")
     challenge_name: str | None = Field(None, alias="ChallengeName")

@@ -1,12 +1,3 @@
-"""These models represent the data returned by the challenge tracker endpoint.
-
-I believe these are used by the app to populate the list of challenges, programs,
-and benchmarks that a member can compete in.
-
-The actual data for *your* participation in these challenges is returned by a different
-endpoint.
-"""
-
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
