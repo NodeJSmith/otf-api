@@ -11,7 +11,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3.11",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: Software Development :: Libraries",
     "Topic :: Internet :: WWW/HTTP",
     "Operating System :: OS Independent",
