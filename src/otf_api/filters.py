@@ -1,5 +1,6 @@
 from datetime import date, datetime, time
 
+import pendulum
 from pydantic import BaseModel, field_validator
 
 from otf_api.models import ClassType, DoW, OtfClass
@@ -108,3 +109,17 @@ class ClassFilter(BaseModel):
             return None
 
         return v  # type: ignore
+
+    @field_validator("start_date", "end_date", mode="before")
+    @classmethod
+    def _date_string_to_date(cls, v: str | date | None) -> date | None:
+        if v is None:
+            return None
+        if isinstance(v, date):
+            return v
+
+        try:
+            value = pendulum.parse(v)
+            return value.date() if isinstance(value, datetime) else value  # type: ignore
+        except (ValueError, TypeError):
+            raise ValueError(f"Invalid date format: {v}. Expected format is YYYY-MM-DD or a date object.")
