@@ -29,6 +29,8 @@ dependencies = [
     "cachetools>=5.5.0",
     "pendulum>=3.1.0",
     "diskcache>=5.6.3",
+    "platformdirs>=4.3.6",
+    "packaging>=24.2",
 ]
 
 [project.urls]

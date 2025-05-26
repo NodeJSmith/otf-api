@@ -15,7 +15,7 @@ from yarl import URL
 from otf_api import exceptions as exc
 from otf_api.api.utils import get_json_from_response, is_error_response
 from otf_api.auth import OtfUser
-from otf_api.cache import CACHE
+from otf_api.cache import get_cache
 
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
@@ -25,6 +25,7 @@ HEADERS = {
     "accept": "application/json",
     "user-agent": "okhttp/4.12.0",
 }
+CACHE = get_cache()
 LOGGER = getLogger(__name__)
 
 
