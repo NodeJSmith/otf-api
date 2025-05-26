@@ -2,7 +2,7 @@ import atexit
 import re
 from json import JSONDecodeError
 from logging import getLogger
-from typing import Any, Self
+from typing import Any
 
 import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
@@ -48,17 +48,6 @@ class OtfClient:
             headers=HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
         )
         atexit.register(self.session.close)
-
-    def __eq__(self, other: Self | Any) -> bool:  # noqa: ANN401
-        """Check if two Otf objects are equal."""
-        if not isinstance(other, type(self)):
-            return False
-        return self.member_uuid == other.member_uuid
-
-    def __hash__(self):
-        """Return a hash value for the object."""
-        # Combine immutable attributes into a single hash value
-        return hash(self.member_uuid)
 
     def _build_request(
         self,
