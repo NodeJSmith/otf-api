@@ -6,26 +6,12 @@ nav:
   - Code Reference: reference/
   - Examples: usage.md
 theme:
-  name: material
   language: en
-  palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to light mode
+  name: material
   features:
     - navigation.index
-    - navigation.tabs
     - navigation.instant
-    - navigation.tabs.sticky
     - navigation.sections
-    - navigation.expansion
 markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
@@ -39,14 +25,13 @@ markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.highlight:
-      linenums: true
+      linenums: true # Optional: Show line numbers
+      anchor_linenums: true # Allow linking to line numbers
+      pygments_style: monokai
   - pymdownx.superfences
   - pymdownx.details
   - admonition
-  - toc:
-      baselevel: 2
-      permalink: true
-      slugify: !!python/object/apply:pymdownx.slugs.slugify {}
+  - toc
   - meta
 plugins:
   - include-markdown
@@ -63,20 +48,22 @@ plugins:
       handlers:
         python:
           options:
-            merge_init_into_class: true
+            docstring_section_style: table
+            merge_init_into_class: false
             show_root_toc_entry: false
             show_symbol_type_toc: true
             filters:
               - "!^_"
               - "^__"
-            members_order: source
             signature_crossrefs: true
-            extensions:
-              - griffe_fieldz: { include_inherited: true }
+            separate_signature: false
             show_source: true
-            preload:
-              - pydantic
-
+            extra:
+              preload:
+                - pydantic
+            # extensions:
+            #   - griffe_pydantic:
+            #       schema: true
 extra:
   version:
     provider: mike
@@ -86,6 +73,9 @@ extra:
       name: Github
     - icon: material/email
       link: "mailto:j.smith.git1@gmail.com"
+
+extra_css:
+  - stylesheets/extra.css
 
 watch:
   - src/otf_api
