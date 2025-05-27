@@ -1,5 +1,5 @@
 Otf API Code Reference
-================
+========================
 
 .. toctree::
    :maxdepth: 4
