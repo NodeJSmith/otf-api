@@ -20,30 +20,12 @@ Below are some examples of how to use the API.
 
 ## Examples
 
-### Get Upcoming Classes
+```{toctree}
+:caption: Examples
+:maxdepth: 2
 
-```python
-{% include "../examples/class_bookings_examples.py" %}
-
-```
-
-### Get Challenge Data
-
-```python
-{% include "../examples/challenge_tracker_examples.py" %}
-
-```
-
-### Get Workout Data
-
-```python
-{% include "../examples/workout_examples.py" %}
-
-```
-
-### Get Studio Data
-
-```python
-{% include "../examples/studio_examples.py" %}
-
+examples/challenge_tracker_examples.md
+examples/workout_examples.md
+examples/class_bookings_examples.md
+examples/studio_examples.md
 ```

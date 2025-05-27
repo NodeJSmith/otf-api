@@ -1,4 +1,4 @@
-otf\_api package
+Otf API
 ================
 
 Subpackages
@@ -9,8 +9,6 @@ Subpackages
 
    otf_api.api
    otf_api.models
-   index.md
-   usage.md
 
 Submodules
 ----------
