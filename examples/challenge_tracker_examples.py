@@ -1,14 +1,14 @@
 from otf_api import Otf
-from otf_api.models.enums import ChallengeCategory, EquipmentType
+from otf_api.models.workouts import ChallengeCategory, EquipmentType
 
 
-def main():
+def main():  # noqa: D103, ANN201
     otf = Otf()
 
     # You can get challenges by equipment or by challenge category
 
     for et in EquipmentType:
-        benchmarks = otf.get_benchmarks_by_equipment(et)
+        benchmarks = otf.workouts.get_benchmarks_by_equipment(et)
         if not benchmarks:
             continue
         print(f"Equipment: {et.name}, Challenges: {len(benchmarks):,}")
@@ -63,7 +63,7 @@ def main():
             """
 
     for ct in ChallengeCategory:
-        benchmarks = otf.get_benchmarks_by_challenge_category(ct)
+        benchmarks = otf.workouts.get_benchmarks_by_challenge_category(ct)
         if not benchmarks:
             continue
         print(f"Challenge Name: {ct.name}, Challenges: {len(benchmarks):,}")

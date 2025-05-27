@@ -14,5 +14,5 @@ build:
       # See https://github.com/readthedocs/readthedocs.org/pull/11152/
       - PATH="/home/docs/.local/bin:$PATH" && VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH uv sync --group docs --active --link-mode=copy
 
-mkdocs:
-  configuration: mkdocs.yml
+sphinx:
+  configuration: source/conf.py

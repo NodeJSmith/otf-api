@@ -26,6 +26,7 @@ exclude = [
     "node_modules",
     "site-packages",
     "venv",
+    "tests",
 ]
 
 # Same as Black.
@@ -36,6 +37,8 @@ target-version = "py310"
 
 [lint]
 select = [
+    "ANN",
+    "D",    # docstrings
     "E",    # pycodestyle (error)
     "W",    # pycodestyle (warning)
     "F",    # pyflakes
@@ -50,6 +53,7 @@ select = [
     "TCH",  # flake8-type-checking
     "I",    # isort
     "DTZ",  # flake8-datetimez
+    "TC",
 
 ]
 ignore = [
@@ -62,6 +66,13 @@ ignore = [
     "DTZ001",
     "DTZ002",
     "DTZ007",
+    "D100",   # undocumented-public-module
+    "D101",   # undocumented-public-class
+    "D104",   # undocumented-public-package
+    # "D103", # undocumented-public-function
+    "D107",   # undocumented-public-init
+    "ANN204", # missing-return-type-special-method
+    "ANN003", # missing-type-kwargs
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
@@ -83,3 +94,6 @@ skip-magic-trailing-comma = false
 
 # Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
+
+[lint.pydocstyle]
+convention = "google" # Accepts: "google", "numpy", or "pep257".

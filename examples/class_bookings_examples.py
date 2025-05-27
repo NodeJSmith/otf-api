@@ -1,10 +1,12 @@
 from datetime import time
 
+import pendulum
+
 from otf_api import Otf
-from otf_api.filters import ClassFilter, ClassType, DoW
+from otf_api.models.bookings import ClassFilter, ClassType, DoW
 
 
-def main():
+def main():  # noqa: D103, ANN201
     otf = Otf()
 
     # you can use the ClassFilter model to setup filters to only return the classes
@@ -25,7 +27,7 @@ def main():
 
     # the call to `get_classes` will return classes that match either of these filters
 
-    classes = otf.get_classes(filters=[cf, cf2])
+    classes = otf.bookings.get_classes(filters=[cf, cf2])
     print(classes[0].model_dump_json(indent=4))
 
     """
@@ -70,7 +72,7 @@ def main():
     # You can also get the classes that you have booked
     # You can pass a start_date, end_date, status, and limit as arguments
 
-    bookings = otf.get_bookings()
+    bookings = otf.bookings.get_bookings()
 
     print("Latest Upcoming Class:")
     print(bookings[-1].model_dump_json(indent=4))
@@ -129,7 +131,7 @@ def main():
     # If it is a past class that you attended, it will also include workout data - it is best
     # to use the `get_workout_from_boooking` method to get an actual Workout object, as this
     # combines data from multiple endpoints to give you the same data that is shown in the app
-    bookings_new = otf.get_bookings_new()
+    bookings_new = otf.bookings.get_bookings_new()
     print("Furthest Upcoming Class (New):")
     print(bookings_new[0].model_dump_json(indent=4))
     """
@@ -179,8 +181,9 @@ def main():
     """
 
     # you can get the workout data from a booking by calling `get_workout_from_booking`
+    bookings_new = otf.bookings.get_bookings_new(pendulum.today().subtract(months=1))
     booking = next(x for x in bookings_new if x.workout is not None)
-    workout = otf.get_workout_from_booking(booking)
+    workout = otf.workouts.get_workout_from_booking(booking)
     print(workout.model_dump_json(indent=4, exclude_none=True))
     """
     {

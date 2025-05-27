@@ -4,9 +4,36 @@ from functools import partial
 from getpass import getpass
 from logging import getLogger
 
+from otf_api.auth.auth import NoCredentialsError
+
 LOGGER = getLogger(__name__)
 USERNAME_PROMPT = "Enter your Orangetheory Fitness username/email: "
 PASSWORD_PROMPT = "Enter your Orangetheory Fitness password: "
+
+
+def get_username_password() -> tuple[str, str]:
+    """Get username and password for OTF authentication.
+
+    This function checks for credentials in the environment variables first.
+    If not found, it prompts the user for credentials if the environment allows it.
+    If neither is available, it raises a NoCredentialsError.
+
+    Returns:
+        tuple[str, str]: A tuple containing the username and password.
+
+    Raises:
+        NoCredentialsError: If no credentials are provided and cannot prompt for input.
+    """
+    username, password = get_credentials_from_env()
+    if not username or not password:
+        if not can_provide_input():
+            LOGGER.error("Unable to prompt for credentials in a non-interactive shell")
+            raise
+        username, password = prompt_for_username_and_password()
+        if not username or not password:
+            raise NoCredentialsError("No credentials provided and no tokens cached, cannot authenticate")
+
+    return username, password
 
 
 def _show_error_message(message: str) -> None:
@@ -84,7 +111,6 @@ def get_credentials_from_env() -> tuple[str, str]:
     Returns:
         tuple[str, str]: A tuple containing the username and password.
     """
-
     username = os.getenv("OTF_EMAIL")
     password = os.getenv("OTF_PASSWORD")
 
@@ -101,7 +127,6 @@ def prompt_for_username_and_password() -> tuple[str, str]:
     Returns:
         tuple[str, str]: A tuple containing the username and password.
     """
-
     username = _prompt_for_username()
     password = _prompt_for_password()
 

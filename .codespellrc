@@ -1,3 +1,3 @@
 [codespell]
-skip = ./build,./.venv/,./venv/,./.tox,.git,*.pdf,*.svg,versioneer.py,package-lock.json,_vendor,*.css,.codespellrc,poetry.lock
+skip = ./build,./.venv/,./venv/,./.tox,.git,*.pdf,*.svg,versioneer.py,package-lock.json,_vendor,*.css,.codespellrc,poetry.lock,uv.lock
 ignore-words-list = OT,Checkin,Tread,AllTime,allTime,tread

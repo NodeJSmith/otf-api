@@ -1,14 +1,14 @@
 from otf_api import Otf
 
 
-def main():
+def main():  # noqa: D103, ANN201
     otf = Otf()
 
     # if you need to figure out what studios are in an area, you can call `search_studios_by_geo`
     # which takes latitude, longitude, distance, page_index, and page_size as arguments
     # but you'll generally just need the first 3
     # same as with classes, you can leave it blank and get the studios within 50 miles of your home studio
-    studios_by_geo = otf.search_studios_by_geo()
+    studios_by_geo = otf.studios.search_studios_by_geo()
     print(studios_by_geo[0].model_dump_json(indent=4))
 
     """
@@ -36,7 +36,7 @@ def main():
     # if you need to get detailed information about a studio, you can call `get_studio_detail`
     # which takes a studio_uuid as an argument, but you can leave it blank to get details about your home studio
     # the return type is also StudioDetail, so the same format as the above
-    studio_detail = otf.get_studio_detail()
+    studio_detail = otf.studios.get_studio_detail()
     print(studio_detail.model_dump_json(indent=4))
 
     """
@@ -62,7 +62,7 @@ def main():
     """
 
     # you can get studio services, although I'm not sure if anyone would ever need this
-    services = otf.get_studio_services(studio_detail.studio_uuid)
+    services = otf.studios.get_studio_services(studio_detail.studio_uuid)
     for svc in services:
         print(svc.model_dump_json(indent=4))
 
@@ -85,21 +85,21 @@ def main():
 
     # you can get you favorite studios and add/remove studios from your favorites
     # this returns a list of StudioDetail, so the same format as the above
-    faves = otf.get_favorite_studios()
+    faves = otf.studios.get_favorite_studios()
     if faves:
         print(faves[0].model_dump_json(indent=4))
 
     # you can add a studio to your favorites by calling `add_favorite_studio` with a studio_uuid
-    otf.add_favorite_studio(otf.home_studio_uuid)
+    otf.studios.add_favorite_studio(otf.home_studio_uuid)
 
     # you can remove a studio from your favorites by calling `remove_favorite_studio` with a studio_uuid
-    otf.remove_favorite_studio(otf.home_studio_uuid)
+    otf.studios.remove_favorite_studio(otf.home_studio_uuid)
 
     # if you attempt to get a studio that doesn't exist, you'll a mostly empty studio detail object
     # with the studio uuid set to the provided value
     # this allows you to avoid dealing with None values + you can still group or sort by studio_uuid
 
-    invalid_studio = otf.get_studio_detail("2d07e9fc-cd14-4d5b-840e-09eb2b614c6c")
+    invalid_studio = otf.studios.get_studio_detail("2d07e9fc-cd14-4d5b-840e-09eb2b614c6c")
     assert invalid_studio.studio_uuid == "2d07e9fc-cd14-4d5b-840e-09eb2b614c6c"
     print(invalid_studio.model_dump_json(indent=4))
 

@@ -8,6 +8,8 @@ nav = mkdocs_gen_files.Nav()
 root = Path(__file__).parent.parent
 src = root / "src"
 
+skip_names = ["client", "compat", "utils", "exceptions", "auth", "cache", "base", "mixins"]
+
 REF_DIR = root / "docs" / "reference"
 if REF_DIR.exists():
     shutil.rmtree(REF_DIR)
@@ -24,6 +26,9 @@ for path in sorted(src.rglob("*.py")):
         doc_path = doc_path.with_name("index.md")
         full_doc_path = full_doc_path.with_name("index.md")
     elif parts[-1] in ["__main__", "__version__"]:
+        continue
+
+    if any(skip_name in path.stem for skip_name in skip_names):
         continue
 
     if path.name == "api.py":

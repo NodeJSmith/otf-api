@@ -2,8 +2,7 @@ from datetime import date, datetime, time
 
 import pytest
 
-from otf_api.filters import ClassFilter
-from otf_api.models import ClassType, DoW
+from otf_api.models.bookings import ClassFilter, ClassType, DoW
 
 
 def test_class_filter_string_to_date():
