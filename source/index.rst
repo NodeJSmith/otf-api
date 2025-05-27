@@ -30,7 +30,3 @@ You can also export the environment variables ``OTF_EMAIL`` and ``OTF_PASSWORD``
    from otf_api import Otf, OtfUser
 
    otf = Otf(user=OtfUser(<email_address>, <password>))
-
-
-**Disclaimer:**
-This project is not affiliated with, endorsed by, or supported by Orangetheory Fitness. It is an independent, unofficial client for interacting with Orangetheory's services. Use at your own risk.
