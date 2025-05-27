@@ -20,7 +20,6 @@ release = "0.13.0"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.autosummary",
@@ -31,7 +30,6 @@ extensions = [
 
 source_suffix = {
     ".rst": "restructuredtext",
-    ".md": "markdown",
 }
 
 templates_path = ["_templates"]
@@ -102,3 +100,4 @@ autodoc_pydantic_model_show_validator_members = False
 autodoc_pydantic_model_show_field_summary = False
 autodoc_pydantic_model_show_json = False
 toc_object_entries_show_parents = "hide"  # Hide parent classes in the table of contents
+master_doc = "index"
