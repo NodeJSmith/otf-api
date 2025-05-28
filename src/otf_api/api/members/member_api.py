@@ -134,7 +134,7 @@ class MemberApi:
 
         res = self.client.put_member_name(first_name, last_name)
 
-        return models.MemberDetail.create(**res, api=self)
+        return models.MemberDetail.create(**res, api=self.otf)
 
     def get_member_detail(self) -> models.MemberDetail:
         """Get the member details.
@@ -148,7 +148,7 @@ class MemberApi:
         home_studio_uuid = data["homeStudio"]["studioUUId"]
         data["home_studio"] = self.otf.studios.get_studio_detail(home_studio_uuid)
 
-        return models.MemberDetail.create(**data, api=self)
+        return models.MemberDetail.create(**data, api=self.otf)
 
     def get_member_membership(self) -> models.MemberMembership:
         """Get the member's membership details.

@@ -80,7 +80,7 @@ class BookingApi:
             ends_before=end_date, starts_after=start_date, include_canceled=include_canceled, expand=expand
         )
 
-        results = [models.BookingV2.create(**b, api=self) for b in bookings_resp]
+        results = [models.BookingV2.create(**b, api=self.otf) for b in bookings_resp]
 
         if not remove_duplicates:
             return results
@@ -228,7 +228,7 @@ class BookingApi:
             raise ValueError("booking_uuid is required")
 
         data = self.client.get_booking(booking_uuid)
-        return models.Booking.create(**data, api=self)
+        return models.Booking.create(**data, api=self.otf)
 
     def get_booking_from_class(self, otf_class: str | models.OtfClass) -> models.Booking:
         """Get a specific booking by class_uuid or OtfClass object.
@@ -337,7 +337,7 @@ class BookingApi:
 
         resp = self.client.post_class_new(body)
 
-        new_booking = models.BookingV2.create(**resp, api=self)
+        new_booking = models.BookingV2.create(**resp, api=self.otf)
 
         return new_booking
 
@@ -443,7 +443,7 @@ class BookingApi:
             b["class"]["studio"] = studios[b["class"]["studio"]["studioUUId"]]
             b["is_home_studio"] = b["class"]["studio"].studio_uuid == self.otf.home_studio_uuid
 
-        bookings = [models.Booking.create(**b, api=self) for b in resp]
+        bookings = [models.Booking.create(**b, api=self.otf) for b in resp]
         bookings = sorted(bookings, key=lambda x: x.otf_class.starts_at)
 
         if exclude_cancelled:

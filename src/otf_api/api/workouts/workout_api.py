@@ -237,7 +237,7 @@ class WorkoutApi:
 
         perf_summary = self.client.get_performance_summary(booking.workout.performance_summary_id)
         telemetry = self.get_telemetry(booking.workout.performance_summary_id)
-        workout = models.Workout.create(**perf_summary, v2_booking=booking, telemetry=telemetry, api=self)
+        workout = models.Workout.create(**perf_summary, v2_booking=booking, telemetry=telemetry, api=self.otf)
 
         return workout
 
