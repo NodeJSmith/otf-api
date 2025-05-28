@@ -36,7 +36,7 @@ def _setup_logging() -> None:
 
 _setup_logging()
 
-__version__ = "0.13.0"
+__version__ = "0.13.1"
 
 
 __all__ = ["Otf", "OtfUser", "models"]
