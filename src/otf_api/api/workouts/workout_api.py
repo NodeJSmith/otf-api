@@ -275,7 +275,7 @@ class WorkoutApi:
                 v2_booking=bookings_dict[perf_id],
                 telemetry=telemetry_dict.get(perf_id),
                 class_uuid=perf_summary_to_class_uuid_map.get(perf_id),
-                api=self,
+                api=self.otf,
             )
             workouts.append(workout)
 

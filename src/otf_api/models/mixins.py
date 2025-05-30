@@ -22,9 +22,8 @@ class ApiMixin:
         self._api = api
 
     @classmethod
-    def create(cls, **kwargs) -> typing.Self:
+    def create(cls, api: "Otf", **kwargs) -> typing.Self:
         """Creates a new instance of the model with the given keyword arguments."""
-        api = kwargs.pop("api", None)
         instance = cls(**kwargs)
         if api is not None:
             instance.set_api(api)

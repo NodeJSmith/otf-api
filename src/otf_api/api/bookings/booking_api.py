@@ -188,7 +188,7 @@ class BookingApi:
         for c in classes_resp:
             c["studio"] = studio_dict[c["studio"]["id"]]  # the one (?) place where ID actually means UUID
             c["is_home_studio"] = c["studio"].studio_uuid == self.otf.home_studio_uuid
-            classes.append(models.OtfClass(**c))
+            classes.append(models.OtfClass.create(**c, api=self.otf))
 
         # additional data filtering and enrichment
 
