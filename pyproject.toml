@@ -1,6 +1,6 @@
 [project]
 name = "otf-api"
-version = "0.13.2"
+version = "0.13.3"
 description = "Python OrangeTheory Fitness API Client"
 authors = [{ name = "Jessica Smith", email = "j.smith.git1@gmail.com" }]
 requires-python = ">=3.11"
