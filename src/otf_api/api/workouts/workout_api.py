@@ -242,13 +242,14 @@ class WorkoutApi:
         return workout
 
     def get_workouts(
-        self, start_date: date | str | None = None, end_date: date | str | None = None
+        self, start_date: date | str | None = None, end_date: date | str | None = None, max_data_points: int = 150
     ) -> list[models.Workout]:
         """Get the member's workouts, using the new bookings endpoint and the performance summary endpoint.
 
         Args:
             start_date (date | str | None): The start date for the workouts. If None, defaults to 30 days ago.
             end_date (date | str | None): The end date for the workouts. If None, defaults to today.
+            max_data_points (int): The maximum number of data points to return for the telemetry. Default is 150.
 
         Returns:
             list[Workout]: The member's workouts.
@@ -265,7 +266,7 @@ class WorkoutApi:
         bookings_dict = {b.workout.id: b for b in bookings if b.workout}
 
         perf_summaries_dict = self.client.get_perf_summaries_threaded(list(bookings_dict.keys()))
-        telemetry_dict = self.client.get_telemetry_threaded(list(perf_summaries_dict.keys()))
+        telemetry_dict = self.client.get_telemetry_threaded(list(perf_summaries_dict.keys()), max_data_points)
         perf_summary_to_class_uuid_map = self.client.get_perf_summary_to_class_uuid_mapping()
 
         workouts: list[models.Workout] = []
