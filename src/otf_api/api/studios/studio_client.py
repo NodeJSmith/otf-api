@@ -15,7 +15,7 @@ class StudioClient:
         self.client = client
         self.member_uuid = client.member_uuid
 
-    @CACHE.memoize(expire=600, tag="studio_detail", ignore=(0,))
+    @CACHE.memoize(expire=600, tag="studio_detail")
     def get_studio_detail(self, studio_uuid: str) -> dict:
         """Retrieve raw studio details."""
         return self.client.default_request("GET", f"/mobile/v1/studios/{studio_uuid}")["data"]

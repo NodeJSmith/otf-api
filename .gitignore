@@ -167,3 +167,4 @@ cython_debug/
 model_generator.py
 scratch*.py
 docs/reference/
+.vscode

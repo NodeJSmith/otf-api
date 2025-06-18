@@ -14,7 +14,7 @@ class MemberClient:
         self.client = client
         self.member_uuid = client.member_uuid
 
-    @CACHE.memoize(expire=600, tag="member_detail", ignore=(0,))
+    @CACHE.memoize(expire=600, tag="member_detail")
     def get_member_detail(self) -> dict:
         """Retrieve raw member details."""
         return self.client.default_request(

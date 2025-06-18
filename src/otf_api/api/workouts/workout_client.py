@@ -43,7 +43,7 @@ class WorkoutClient:
         params = {"limit": limit} if limit else {}
         return self.performance_summary_request("GET", "/v1/performance-summaries", params=params)
 
-    @CACHE.memoize(expire=600, tag="performance_summary", ignore=(0,))
+    @CACHE.memoize(expire=600, tag="performance_summary")
     def get_performance_summary(self, performance_summary_id: str) -> dict:
         """Retrieve raw performance summary data."""
         return self.performance_summary_request("GET", f"/v1/performance-summaries/{performance_summary_id}")
@@ -54,7 +54,7 @@ class WorkoutClient:
             "history"
         ]
 
-    @CACHE.memoize(expire=600, tag="telemetry", ignore=(0,))
+    @CACHE.memoize(expire=600, tag="telemetry")
     def get_telemetry(self, performance_summary_id: str, max_data_points: int = 150) -> dict:
         """Retrieve raw telemetry data."""
         return self.telemetry_request(
