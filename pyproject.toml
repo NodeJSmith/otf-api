@@ -39,7 +39,6 @@ Documentation = "https://otf-api.readthedocs.io/en/stable/"
 dev = [
     "build==1.2.1",
     "bump-my-version>=0.23.0,<0.24",
-    "mypy==1.10.0",
     "mypy-boto3-cognito-identity>=1.38.0",
     "mypy-boto3-cognito-idp>=1.35.93,<2",
     "pre-commit==3.7.1",
@@ -51,7 +50,7 @@ dev = [
 docs = [
     "autodoc-pydantic>=2.2.0",
     "furo>=2024.8.6",
-    "sphinx==8.3.0",
+    "sphinx>=8.3.0",
     "sphinx-autobuild==2024.10.3",
     "sphinx-autodoc-typehints==3.2.0",
     "sphinx-autodoc2==0.5.0",
@@ -72,5 +71,5 @@ default-groups = ["dev"]
 pythonpath = ["src"]
 
 [build-system]
-requires = ["setuptools >= 61.0"]
+requires = ["setuptools >= 80.0"]
 build-backend = "setuptools.build_meta"
