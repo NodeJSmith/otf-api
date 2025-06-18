@@ -340,6 +340,20 @@ class OtfCognito(Cognito):
         self.device_group_key = device_metadata.get("DeviceGroupKey", self.device_group_key)
         CACHE.write_device_data_to_cache(self.device_metadata)
 
+    def __getstate__(self):
+        """Get the state of the object for pickling."""
+        state = self.__dict__.copy()
+        del state["idp_client"]
+        del state["id_client"]
+        return state
+
+    def __setstate__(self, state):  # noqa
+        """Set the state of the object from a pickled state."""
+        self.__dict__.update(state)
+        self.idp_client = Session().client("cognito-idp", config=BOTO_CONFIG, region_name=REGION)  # type: ignore
+
+        self.id_client = Session().client("cognito-identity", config=BOTO_CONFIG, region_name=REGION)  # type: ignore
+
 
 class HttpxCognitoAuth(httpx.Auth):
     http_header: str = "Authorization"

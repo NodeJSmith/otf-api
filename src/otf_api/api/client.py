@@ -49,6 +49,21 @@ class OtfClient:
         )
         atexit.register(self.session.close)
 
+    def __getstate__(self):
+        """Get the state of the OtfClient instance for serialization."""
+        state = self.__dict__.copy()
+        # Remove circular references
+        state.pop("session", None)
+        return state
+
+    def __setstate__(self, state):  # noqa
+        """Set the state of the OtfClient instance from serialized data."""
+        self.__dict__.update(state)
+        self.session = httpx.Client(
+            headers=HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
+        )
+        atexit.register(self.session.close)
+
     def _build_request(
         self,
         method: str,
