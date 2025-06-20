@@ -130,3 +130,13 @@ def get_cache() -> OtfCache:
         LOGGER.debug("Using cache directory: %s", cache_dir)
         _CACHE = OtfCache(cache_dir)
     return _CACHE
+
+
+def clear_cache() -> None:
+    """Clears the cache."""
+    try:
+        cache = get_cache()
+        cache.clear_device_data()
+        cache.clear_tokens()
+    except Exception:
+        LOGGER.exception("Failed to clear cache")

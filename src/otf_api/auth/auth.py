@@ -3,6 +3,7 @@ import platform
 import typing
 from collections.abc import Generator
 from datetime import datetime
+from functools import lru_cache
 from logging import getLogger
 from time import sleep
 from typing import Any, ClassVar
@@ -119,15 +120,21 @@ class OtfCognito(Cognito):
         self.mfa_tokens: dict[str, Any] = {}
         self.pool_domain_url: str | None = None
 
-        self.idp_client: CognitoIdentityProviderClient = Session().client(
-            "cognito-idp", config=BOTO_CONFIG, region_name=REGION
-        )  # type: ignore
-
-        self.id_client: CognitoIdentityClient = Session().client(
-            "cognito-identity", config=BOTO_CONFIG, region_name=REGION
-        )  # type: ignore
-
         self.handle_login(password)
+
+    @property
+    @lru_cache(maxsize=1)
+    def idp_client(self) -> "CognitoIdentityProviderClient":
+        """Returns the Cognito Identity Provider client."""
+        LOGGER.debug("Creating Cognito Identity Provider client")
+        return Session().client("cognito-idp", config=BOTO_CONFIG, region_name=REGION)  # type: ignore
+
+    @property
+    @lru_cache(maxsize=1)
+    def id_client(self) -> "CognitoIdentityClient":
+        """Returns the Cognito Identity client."""
+        LOGGER.debug("Creating Cognito Identity client")
+        return Session().client("cognito-identity", config=BOTO_CONFIG, region_name=REGION)  # type: ignore
 
     def handle_login(self, password: str | None = None) -> None:
         """Handles the login process for the user.
@@ -339,20 +346,6 @@ class OtfCognito(Cognito):
         self.device_key = device_metadata.get("DeviceKey", self.device_key)
         self.device_group_key = device_metadata.get("DeviceGroupKey", self.device_group_key)
         CACHE.write_device_data_to_cache(self.device_metadata)
-
-    def __getstate__(self):
-        """Get the state of the object for pickling."""
-        state = self.__dict__.copy()
-        del state["idp_client"]
-        del state["id_client"]
-        return state
-
-    def __setstate__(self, state):  # noqa
-        """Set the state of the object from a pickled state."""
-        self.__dict__.update(state)
-        self.idp_client = Session().client("cognito-idp", config=BOTO_CONFIG, region_name=REGION)  # type: ignore
-
-        self.id_client = Session().client("cognito-identity", config=BOTO_CONFIG, region_name=REGION)  # type: ignore
 
 
 class HttpxCognitoAuth(httpx.Auth):
