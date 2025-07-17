@@ -51,7 +51,7 @@ class BookingClient:
         Raises:
             AlreadyBookedError: If the class is already booked.
             OutsideSchedulingWindowError: If the class is outside the scheduling window.
-            OtfException: If there is an error booking the class.
+            OtfError: If there is an error booking the class.
         """
         return self.client.default_request("PUT", f"/member/members/{self.member_uuid}/bookings", json=body)["data"]
 

@@ -388,7 +388,7 @@ class BookingApi:
             AlreadyBookedError: If the class is already booked.
             OutsideSchedulingWindowError: If the class is outside the scheduling window.
             ValueError: If class_uuid is None or empty string.
-            OtfException: If there is an error booking the class.
+            OtfError: If there is an error booking the class.
         """
         class_uuid = utils.get_class_uuid(otf_class)
 
@@ -429,7 +429,7 @@ class BookingApi:
             BookingV2: The booking.
 
         Raises:
-            OtfException: If there is an error booking the class.
+            OtfError: If there is an error booking the class.
             TypeError: If the input is not a string or BookingV2Class.
         """
         class_id = utils.get_class_id(class_id)

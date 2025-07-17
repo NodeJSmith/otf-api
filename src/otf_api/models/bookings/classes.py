@@ -90,7 +90,7 @@ class OtfClass(ApiMixin, OtfItemBase):
             AlreadyBookedError: If the class is already booked.
             OutsideSchedulingWindowError: If the class is outside the scheduling window.
             ValueError: If class_uuid is None or empty string.
-            OtfException: If there is an error booking the class.
+            OtfError: If there is an error booking the class.
         """
         self.raise_if_api_not_set()
         new_booking = self._api.bookings.book_class(self.class_uuid)
