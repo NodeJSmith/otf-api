@@ -56,7 +56,15 @@ class StudioApi:
 
         new_faves = resp.get("studios", [])
 
-        return [models.StudioDetail.create(**studio, api=self.otf) for studio in new_faves]
+        studios: list[models.StudioDetail] = []
+        for studio in new_faves:
+            try:
+                studios.append(models.StudioDetail.create(**studio, api=self.otf))
+            except ValueError as e:
+                LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
+                continue
+
+        return studios
 
     def remove_favorite_studio(self, studio_uuids: list[str] | str) -> None:
         """Remove a studio from the member's favorite studios.
@@ -141,7 +149,16 @@ class StudioApi:
         longitude = longitude or self.otf.home_studio.location.longitude
 
         results = self.client.get_studios_by_geo(latitude, longitude, distance)
-        return [models.StudioDetail.create(**studio, api=self.otf) for studio in results]
+
+        studios: list[models.StudioDetail] = []
+        for studio in results:
+            try:
+                studios.append(models.StudioDetail.create(**studio, api=self.otf))
+            except ValueError as e:
+                LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
+                continue
+
+        return studios
 
     def _get_all_studios(self) -> list[models.StudioDetail]:
         """Gets all studios. Marked as private to avoid random users calling it.
@@ -153,7 +170,16 @@ class StudioApi:
         """
         # long/lat being None will cause the endpoint to return all studios
         results = self.client.get_studios_by_geo(None, None)
-        return [models.StudioDetail.create(**studio, api=self.otf) for studio in results]
+
+        studios: list[models.StudioDetail] = []
+        for studio in results:
+            try:
+                studios.append(models.StudioDetail.create(**studio, api=self.otf))
+            except ValueError as e:
+                LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
+                continue
+
+        return studios
 
     def _get_studio_detail_threaded(self, studio_uuids: list[str]) -> dict[str, models.StudioDetail]:
         """Get detailed information about multiple studios in a threaded manner.
@@ -168,7 +194,13 @@ class StudioApi:
             dict[str, StudioDetail]: A dictionary mapping studio UUIDs to their detailed information.
         """
         studio_dicts = self.client.get_studio_detail_threaded(studio_uuids)
-        return {
-            studio_uuid: models.StudioDetail.create(**studio, api=self.otf)
-            for studio_uuid, studio in studio_dicts.items()
-        }
+
+        studios: dict[str, models.StudioDetail] = {}
+        for studio_uuid, studio in studio_dicts.items():
+            try:
+                studios[studio_uuid] = models.StudioDetail.create(**studio, api=self.otf)
+            except ValueError as e:
+                LOGGER.error(f"Failed to create StudioDetail for studio {studio_uuid}: {e}")
+                continue
+
+        return studios

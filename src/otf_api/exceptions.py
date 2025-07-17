@@ -4,11 +4,11 @@ if typing.TYPE_CHECKING:
     from httpx import Request, Response
 
 
-class OtfException(Exception):
+class OtfError(Exception):
     """Base class for all exceptions in this package."""
 
 
-class OtfRequestError(OtfException):
+class OtfRequestError(OtfError):
     """Raised when an error occurs while making a request to the OTF API."""
 
     original_exception: Exception | None
@@ -29,7 +29,7 @@ class RetryableOtfRequestError(OtfRequestError):
     """
 
 
-class BookingError(OtfException):
+class BookingError(OtfError):
     """Base class for booking-related errors, with an optional booking UUID attribute."""
 
     booking_uuid: str | None
@@ -53,21 +53,17 @@ class BookingAlreadyCancelledError(BookingError):
     """Raised when attempting to cancel a booking that is already cancelled."""
 
 
-class OutsideSchedulingWindowError(OtfException):
+class OutsideSchedulingWindowError(OtfError):
     """Raised when attempting to book a class outside the scheduling window."""
 
 
-class BookingNotFoundError(OtfException):
-    """Raised when a booking is not found."""
-
-
-class ResourceNotFoundError(OtfException):
+class ResourceNotFoundError(OtfError):
     """Raised when a resource is not found."""
 
 
-class AlreadyRatedError(OtfException):
+class AlreadyRatedError(OtfError):
     """Raised when attempting to rate a class that is already rated."""
 
 
-class ClassNotRatableError(OtfException):
+class ClassNotRatableError(OtfError):
     """Raised when attempting to rate a class that is not ratable."""

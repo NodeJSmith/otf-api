@@ -152,7 +152,7 @@ class OtfClient:
 
         if re.match(r"^/member/members/.*?/bookings", path):
             if code == "NOT_AUTHORIZED" and error_msg.startswith("This class booking has been cancelled"):
-                raise exc.BookingNotFoundError("Booking was already cancelled")
+                raise exc.ResourceNotFoundError("Booking was already cancelled")
             if error_code == "603":
                 raise exc.AlreadyBookedError("Class is already booked")
             if error_code == "602":

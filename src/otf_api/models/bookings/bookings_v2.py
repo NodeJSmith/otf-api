@@ -93,7 +93,7 @@ class BookingV2Class(ApiMixin, OtfItemBase):
         """Returns a BookingV2 instance for this class.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
             ValueError: If class_uuid is None or empty string or if the API instance is not set.
         """
         self.raise_if_api_not_set()
@@ -107,7 +107,7 @@ class BookingV2Class(ApiMixin, OtfItemBase):
         """Cancels the booking by calling the proper API method.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
             ValueError: If class_uuid is None or empty string or if the API instance is not set.
         """
         self.raise_if_api_not_set()
@@ -161,7 +161,7 @@ class BookingV2(ApiMixin, OtfItemBase):
         repr=False,
     )
     updated_at: datetime = Field(
-        ..., description="Date the booking was updated, not when the booking was made", exclude=True, repr=False
+        description="Date the booking was updated, not when the booking was made", exclude=True, repr=False
     )
 
     @property

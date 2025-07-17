@@ -18,7 +18,7 @@ class OtfClass(ApiMixin, OtfItemBase):
     class_uuid: str = Field(validation_alias="ot_base_class_uuid", description="The OTF class UUID")
     class_id: str | None = Field(None, validation_alias="id", description="Matches new booking endpoint class id")
 
-    name: str | None = Field(None, description="The name of the class")
+    name: str = Field(..., description="The name of the class")
     class_type: ClassType = Field(validation_alias="type")
     coach: str | None = Field(None, validation_alias=AliasPath("coach", "first_name"))
     ends_at: datetime = Field(
@@ -90,7 +90,7 @@ class OtfClass(ApiMixin, OtfItemBase):
             AlreadyBookedError: If the class is already booked.
             OutsideSchedulingWindowError: If the class is outside the scheduling window.
             ValueError: If class_uuid is None or empty string.
-            OtfException: If there is an error booking the class.
+            OtfError: If there is an error booking the class.
         """
         self.raise_if_api_not_set()
         new_booking = self._api.bookings.book_class(self.class_uuid)
@@ -101,7 +101,7 @@ class OtfClass(ApiMixin, OtfItemBase):
         """Cancels the class booking.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
             ValueError: If booking_uuid is None or empty string or the API is not set.
         """
         self.raise_if_api_not_set()
@@ -114,11 +114,11 @@ class OtfClass(ApiMixin, OtfItemBase):
             Booking | BookingV2: The booking associated with this class.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
             ValueError: If the API is not set.
         """
         self.raise_if_api_not_set()
         try:
             return self._api.bookings.get_booking_from_class(self)
-        except exc.BookingNotFoundError:
+        except exc.ResourceNotFoundError:
             return self._api.bookings.get_booking_from_class_new(self)

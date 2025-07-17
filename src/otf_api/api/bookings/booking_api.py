@@ -80,11 +80,37 @@ class BookingApi:
             ends_before=end_date, starts_after=start_date, include_canceled=include_canceled, expand=expand
         )
 
-        results = [models.BookingV2.create(**b, api=self.otf) for b in bookings_resp]
+        # filter out bookings with ids that start with "no-booking-id"
+        # no idea what these are, but I am praying for the poor sap stuck with maintaining OTF's data model
+        results: list[models.BookingV2] = []
+
+        for b in bookings_resp:
+            if not b.get("id", "").startswith("no-booking-id"):
+                try:
+                    results.append(models.BookingV2.create(**b, api=self.otf))
+                except ValueError as e:
+                    LOGGER.warning(f"Failed to create BookingV2 from response: {e}. Booking data:\n{b}")
+                    continue
 
         if not remove_duplicates:
             return results
 
+        results = self._deduplicate_bookings(results, exclude_cancelled=exclude_cancelled)
+
+        return results
+
+    def _deduplicate_bookings(
+        self, results: list[models.BookingV2], exclude_cancelled: bool = True
+    ) -> list[models.BookingV2]:
+        """Deduplicate bookings by class_id, keeping the most recent booking.
+
+        Args:
+            results (list[BookingV2]): The list of bookings to deduplicate.
+            exclude_cancelled (bool): If True, will not include cancelled bookings in the results.
+
+        Returns:
+            list[BookingV2]: The deduplicated list of bookings.
+        """
         # remove duplicates by class_id, keeping the one with the most recent updated_at timestamp
         seen_classes: dict[str, models.BookingV2] = {}
 
@@ -188,7 +214,11 @@ class BookingApi:
         for c in classes_resp:
             c["studio"] = studio_dict[c["studio"]["id"]]  # the one (?) place where ID actually means UUID
             c["is_home_studio"] = c["studio"].studio_uuid == self.otf.home_studio_uuid
-            classes.append(models.OtfClass.create(**c, api=self.otf))
+            try:
+                classes.append(models.OtfClass.create(**c, api=self.otf))
+            except ValueError as e:
+                LOGGER.warning(f"Failed to create OtfClass from response: {e}. Class data:\n{c}")
+                continue
 
         # additional data filtering and enrichment
 
@@ -240,7 +270,7 @@ class BookingApi:
             Booking: The booking.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
             ValueError: If class_uuid is None or empty string.
         """
         class_uuid = utils.get_class_uuid(otf_class)
@@ -250,7 +280,7 @@ class BookingApi:
         if booking := next((b for b in all_bookings if b.class_uuid == class_uuid), None):
             return booking
 
-        raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
+        raise exc.ResourceNotFoundError(f"Booking for class {class_uuid} not found.")
 
     def get_booking_from_class_new(self, otf_class: str | models.OtfClass | models.BookingV2Class) -> models.BookingV2:
         """Get a specific booking by class_uuid or OtfClass object.
@@ -262,7 +292,7 @@ class BookingApi:
             BookingV2: The booking.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
             ValueError: If class_uuid is None or empty string.
         """
         class_uuid = utils.get_class_uuid(otf_class)
@@ -272,7 +302,78 @@ class BookingApi:
         if booking := next((b for b in all_bookings if b.class_uuid == class_uuid), None):
             return booking
 
-        raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
+        raise exc.ResourceNotFoundError(f"Booking for class {class_uuid} not found.")
+
+    def get_class_from_booking(self, booking: models.Booking | models.BookingV2) -> models.OtfClass:
+        """Get the class details from a Booking or BookingV2 object.
+
+        Args:
+            booking (Booking | BookingV2): The booking to get the class details from.
+
+        Returns:
+            OtfClass: The class details.
+
+        Raises:
+            ValueError: If the booking does not have a class_id.
+        """
+        if isinstance(booking, models.BookingV2):
+            return self.get_class_from_booking_new(booking)
+
+        if not booking.otf_class.class_uuid:
+            raise ValueError("Booking does not have a class_uuid")
+
+        if not booking.otf_class.studio:
+            LOGGER.warning("Booking does not have a studio, will attempt to use the home studio to get class details.")
+            studio_uuid = self.otf.home_studio_uuid
+        else:
+            studio_uuid = booking.otf_class.studio.studio_uuid
+
+        classes = self.otf.bookings.get_classes(
+            start_date=booking.starts_at.date(),
+            end_date=booking.starts_at.date(),
+            studio_uuids=[studio_uuid],
+        )
+        if classes:
+            otf_class = next((c for c in classes if c.class_uuid == booking.otf_class.class_uuid), None)
+            if otf_class:
+                return otf_class
+
+        raise exc.ResourceNotFoundError(
+            f"Class for booking {booking.otf_class.name} ({booking.booking_uuid}) not found."
+        )
+
+    def get_class_from_booking_new(self, booking: models.BookingV2) -> models.OtfClass:
+        """Get the class details from a BookingV2 object.
+
+        Args:
+            booking (BookingV2): The booking to get the class details from.
+
+        Returns:
+            OtfClass: The class details.
+
+        Raises:
+            ValueError: If the booking does not have a class_id.
+        """
+        if not booking.otf_class.class_id:
+            raise ValueError("Booking does not have a class_id")
+
+        if not booking.otf_class.studio:
+            LOGGER.warning("Booking does not have a studio, will attempt to use the home studio to get class details.")
+            studio_uuid = self.otf.home_studio_uuid
+        else:
+            studio_uuid = booking.otf_class.studio.studio_uuid
+
+        classes = self.otf.bookings.get_classes(
+            start_date=booking.starts_at.date(),
+            end_date=booking.starts_at.date(),
+            studio_uuids=[studio_uuid],
+        )
+        if classes:
+            otf_class = next((c for c in classes if c.class_id == booking.otf_class.class_id), None)
+            if otf_class:
+                return otf_class
+
+        raise exc.ResourceNotFoundError(f"Class for booking {booking.otf_class.name} ({booking.booking_id}) not found.")
 
     def book_class(self, otf_class: str | models.OtfClass) -> models.Booking:
         """Book a class by providing either the class_uuid or the OtfClass object.
@@ -287,7 +388,7 @@ class BookingApi:
             AlreadyBookedError: If the class is already booked.
             OutsideSchedulingWindowError: If the class is outside the scheduling window.
             ValueError: If class_uuid is None or empty string.
-            OtfException: If there is an error booking the class.
+            OtfError: If there is an error booking the class.
         """
         class_uuid = utils.get_class_uuid(otf_class)
 
@@ -297,7 +398,7 @@ class BookingApi:
                 raise exc.AlreadyBookedError(
                     f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.booking_uuid
                 )
-        except exc.BookingNotFoundError:
+        except exc.ResourceNotFoundError:
             pass
 
         if isinstance(otf_class, models.OtfClass):
@@ -328,7 +429,7 @@ class BookingApi:
             BookingV2: The booking.
 
         Raises:
-            OtfException: If there is an error booking the class.
+            OtfError: If there is an error booking the class.
             TypeError: If the input is not a string or BookingV2Class.
         """
         class_id = utils.get_class_id(class_id)
@@ -349,7 +450,7 @@ class BookingApi:
 
         Raises:
             ValueError: If booking_uuid is None or empty string
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
         """
         if isinstance(booking, models.BookingV2):
             LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
@@ -370,7 +471,7 @@ class BookingApi:
 
         Raises:
             ValueError: If booking_id is None or empty string
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
         """
         if isinstance(booking, models.Booking):
             LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
@@ -443,7 +544,15 @@ class BookingApi:
             b["class"]["studio"] = studios[b["class"]["studio"]["studioUUId"]]
             b["is_home_studio"] = b["class"]["studio"].studio_uuid == self.otf.home_studio_uuid
 
-        bookings = [models.Booking.create(**b, api=self.otf) for b in resp]
+        bookings: list[models.Booking] = []
+
+        for b in resp:
+            try:
+                bookings.append(models.Booking.create(**b, api=self.otf))
+            except ValueError as e:
+                LOGGER.warning(f"Failed to create Booking from response: {e}. Booking data:\n{b}")
+                continue
+
         bookings = sorted(bookings, key=lambda x: x.otf_class.starts_at)
 
         if exclude_cancelled:

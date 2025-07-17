@@ -221,7 +221,6 @@ class WorkoutApi:
             Workout: The member's workout.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
             ResourceNotFoundError: If the workout does not exist.
             TypeError: If the booking is an old Booking model, as these do not have the necessary fields.
         """
@@ -271,14 +270,18 @@ class WorkoutApi:
 
         workouts: list[models.Workout] = []
         for perf_id, perf_summary in perf_summaries_dict.items():
-            workout = models.Workout.create(
-                **perf_summary,
-                v2_booking=bookings_dict[perf_id],
-                telemetry=telemetry_dict.get(perf_id),
-                class_uuid=perf_summary_to_class_uuid_map.get(perf_id),
-                api=self.otf,
-            )
-            workouts.append(workout)
+            try:
+                workout = models.Workout.create(
+                    **perf_summary,
+                    v2_booking=bookings_dict[perf_id],
+                    telemetry=telemetry_dict.get(perf_id),
+                    class_uuid=perf_summary_to_class_uuid_map.get(perf_id),
+                    api=self.otf,
+                )
+                workouts.append(workout)
+            except ValueError as e:
+                LOGGER.error(f"Failed to create Workout for performance summary {perf_id}: {e}")
+                continue
 
         return workouts
 
