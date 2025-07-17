@@ -160,8 +160,8 @@ class BookingV2(ApiMixin, OtfItemBase):
         exclude=True,
         repr=False,
     )
-    updated_at: datetime | None = Field(
-        None, description="Date the booking was updated, not when the booking was made", exclude=True, repr=False
+    updated_at: datetime = Field(
+        description="Date the booking was updated, not when the booking was made", exclude=True, repr=False
     )
 
     @property

@@ -80,11 +80,37 @@ class BookingApi:
             ends_before=end_date, starts_after=start_date, include_canceled=include_canceled, expand=expand
         )
 
-        results = [models.BookingV2.create(**b, api=self.otf) for b in bookings_resp]
+        # filter out bookings with ids that start with "no-booking-id"
+        # no idea what these are, but I am praying for the poor sap stuck with maintaining OTF's data model
+        results: list[models.BookingV2] = []
+
+        for b in bookings_resp:
+            if not b.get("id", "").startswith("no-booking-id"):
+                try:
+                    results.append(models.BookingV2.create(**b, api=self.otf))
+                except (exc.OtfException, ValueError) as e:
+                    LOGGER.warning(f"Failed to create BookingV2 from response: {e}. Booking data:\n{b}")
+                    continue
 
         if not remove_duplicates:
             return results
 
+        results = self._deduplicate_bookings(results, exclude_cancelled=exclude_cancelled)
+
+        return results
+
+    def _deduplicate_bookings(
+        self, results: list[models.BookingV2], exclude_cancelled: bool = True
+    ) -> list[models.BookingV2]:
+        """Deduplicate bookings by class_id, keeping the most recent booking.
+
+        Args:
+            results (list[BookingV2]): The list of bookings to deduplicate.
+            exclude_cancelled (bool): If True, will not include cancelled bookings in the results.
+
+        Returns:
+            list[BookingV2]: The deduplicated list of bookings.
+        """
         # remove duplicates by class_id, keeping the one with the most recent updated_at timestamp
         seen_classes: dict[str, models.BookingV2] = {}
 
