@@ -88,7 +88,7 @@ class BookingApi:
             if not b.get("id", "").startswith("no-booking-id"):
                 try:
                     results.append(models.BookingV2.create(**b, api=self.otf))
-                except (exc.OtfException, ValueError) as e:
+                except ValueError as e:
                     LOGGER.warning(f"Failed to create BookingV2 from response: {e}. Booking data:\n{b}")
                     continue
 
@@ -216,7 +216,7 @@ class BookingApi:
             c["is_home_studio"] = c["studio"].studio_uuid == self.otf.home_studio_uuid
             try:
                 classes.append(models.OtfClass.create(**c, api=self.otf))
-            except (exc.OtfException, ValueError) as e:
+            except ValueError as e:
                 LOGGER.warning(f"Failed to create OtfClass from response: {e}. Class data:\n{c}")
                 continue
 
@@ -549,7 +549,7 @@ class BookingApi:
         for b in resp:
             try:
                 bookings.append(models.Booking.create(**b, api=self.otf))
-            except (exc.OtfException, ValueError) as e:
+            except ValueError as e:
                 LOGGER.warning(f"Failed to create Booking from response: {e}. Booking data:\n{b}")
                 continue
 
