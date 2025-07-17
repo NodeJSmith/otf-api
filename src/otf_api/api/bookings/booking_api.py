@@ -240,7 +240,7 @@ class BookingApi:
             Booking: The booking.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
             ValueError: If class_uuid is None or empty string.
         """
         class_uuid = utils.get_class_uuid(otf_class)
@@ -250,7 +250,7 @@ class BookingApi:
         if booking := next((b for b in all_bookings if b.class_uuid == class_uuid), None):
             return booking
 
-        raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
+        raise exc.ResourceNotFoundError(f"Booking for class {class_uuid} not found.")
 
     def get_booking_from_class_new(self, otf_class: str | models.OtfClass | models.BookingV2Class) -> models.BookingV2:
         """Get a specific booking by class_uuid or OtfClass object.
@@ -262,7 +262,7 @@ class BookingApi:
             BookingV2: The booking.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
             ValueError: If class_uuid is None or empty string.
         """
         class_uuid = utils.get_class_uuid(otf_class)
@@ -272,7 +272,7 @@ class BookingApi:
         if booking := next((b for b in all_bookings if b.class_uuid == class_uuid), None):
             return booking
 
-        raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
+        raise exc.ResourceNotFoundError(f"Booking for class {class_uuid} not found.")
 
     def get_class_from_booking(self, booking: models.Booking | models.BookingV2) -> models.OtfClass:
         """Get the class details from a Booking or BookingV2 object.
@@ -368,7 +368,7 @@ class BookingApi:
                 raise exc.AlreadyBookedError(
                     f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.booking_uuid
                 )
-        except exc.BookingNotFoundError:
+        except exc.ResourceNotFoundError:
             pass
 
         if isinstance(otf_class, models.OtfClass):
@@ -420,7 +420,7 @@ class BookingApi:
 
         Raises:
             ValueError: If booking_uuid is None or empty string
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
         """
         if isinstance(booking, models.BookingV2):
             LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
@@ -441,7 +441,7 @@ class BookingApi:
 
         Raises:
             ValueError: If booking_id is None or empty string
-            BookingNotFoundError: If the booking does not exist.
+            ResourceNotFoundError: If the booking does not exist.
         """
         if isinstance(booking, models.Booking):
             LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")

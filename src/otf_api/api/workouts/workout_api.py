@@ -221,7 +221,6 @@ class WorkoutApi:
             Workout: The member's workout.
 
         Raises:
-            BookingNotFoundError: If the booking does not exist.
             ResourceNotFoundError: If the workout does not exist.
             TypeError: If the booking is an old Booking model, as these do not have the necessary fields.
         """
