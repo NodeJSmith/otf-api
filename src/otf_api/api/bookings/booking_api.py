@@ -274,6 +274,77 @@ class BookingApi:
 
         raise exc.BookingNotFoundError(f"Booking for class {class_uuid} not found.")
 
+    def get_class_from_booking(self, booking: models.Booking | models.BookingV2) -> models.OtfClass:
+        """Get the class details from a Booking or BookingV2 object.
+
+        Args:
+            booking (Booking | BookingV2): The booking to get the class details from.
+
+        Returns:
+            OtfClass: The class details.
+
+        Raises:
+            ValueError: If the booking does not have a class_id.
+        """
+        if isinstance(booking, models.BookingV2):
+            return self.get_class_from_booking_new(booking)
+
+        if not booking.otf_class.class_uuid:
+            raise ValueError("Booking does not have a class_uuid")
+
+        if not booking.otf_class.studio:
+            LOGGER.warning("Booking does not have a studio, will attempt to use the home studio to get class details.")
+            studio_uuid = self.otf.home_studio_uuid
+        else:
+            studio_uuid = booking.otf_class.studio.studio_uuid
+
+        classes = self.otf.bookings.get_classes(
+            start_date=booking.starts_at.date(),
+            end_date=booking.starts_at.date(),
+            studio_uuids=[studio_uuid],
+        )
+        if classes:
+            otf_class = next((c for c in classes if c.class_uuid == booking.otf_class.class_uuid), None)
+            if otf_class:
+                return otf_class
+
+        raise exc.ResourceNotFoundError(
+            f"Class for booking {booking.otf_class.name} ({booking.booking_uuid}) not found."
+        )
+
+    def get_class_from_booking_new(self, booking: models.BookingV2) -> models.OtfClass:
+        """Get the class details from a BookingV2 object.
+
+        Args:
+            booking (BookingV2): The booking to get the class details from.
+
+        Returns:
+            OtfClass: The class details.
+
+        Raises:
+            ValueError: If the booking does not have a class_id.
+        """
+        if not booking.otf_class.class_id:
+            raise ValueError("Booking does not have a class_id")
+
+        if not booking.otf_class.studio:
+            LOGGER.warning("Booking does not have a studio, will attempt to use the home studio to get class details.")
+            studio_uuid = self.otf.home_studio_uuid
+        else:
+            studio_uuid = booking.otf_class.studio.studio_uuid
+
+        classes = self.otf.bookings.get_classes(
+            start_date=booking.starts_at.date(),
+            end_date=booking.starts_at.date(),
+            studio_uuids=[studio_uuid],
+        )
+        if classes:
+            otf_class = next((c for c in classes if c.class_id == booking.otf_class.class_id), None)
+            if otf_class:
+                return otf_class
+
+        raise exc.ResourceNotFoundError(f"Class for booking {booking.otf_class.name} ({booking.booking_id}) not found.")
+
     def book_class(self, otf_class: str | models.OtfClass) -> models.Booking:
         """Book a class by providing either the class_uuid or the OtfClass object.
 
