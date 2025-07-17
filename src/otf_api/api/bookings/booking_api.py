@@ -214,7 +214,11 @@ class BookingApi:
         for c in classes_resp:
             c["studio"] = studio_dict[c["studio"]["id"]]  # the one (?) place where ID actually means UUID
             c["is_home_studio"] = c["studio"].studio_uuid == self.otf.home_studio_uuid
-            classes.append(models.OtfClass.create(**c, api=self.otf))
+            try:
+                classes.append(models.OtfClass.create(**c, api=self.otf))
+            except (exc.OtfException, ValueError) as e:
+                LOGGER.warning(f"Failed to create OtfClass from response: {e}. Class data:\n{c}")
+                continue
 
         # additional data filtering and enrichment
 
@@ -540,7 +544,15 @@ class BookingApi:
             b["class"]["studio"] = studios[b["class"]["studio"]["studioUUId"]]
             b["is_home_studio"] = b["class"]["studio"].studio_uuid == self.otf.home_studio_uuid
 
-        bookings = [models.Booking.create(**b, api=self.otf) for b in resp]
+        bookings: list[models.Booking] = []
+
+        for b in resp:
+            try:
+                bookings.append(models.Booking.create(**b, api=self.otf))
+            except (exc.OtfException, ValueError) as e:
+                LOGGER.warning(f"Failed to create Booking from response: {e}. Booking data:\n{b}")
+                continue
+
         bookings = sorted(bookings, key=lambda x: x.otf_class.starts_at)
 
         if exclude_cancelled:
