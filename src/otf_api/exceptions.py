@@ -57,8 +57,6 @@ class OutsideSchedulingWindowError(OtfException):
     """Raised when attempting to book a class outside the scheduling window."""
 
 
-
-
 class ResourceNotFoundError(OtfException):
     """Raised when a resource is not found."""
 
