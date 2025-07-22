@@ -24,10 +24,31 @@ class OutStudioMixin:
 
 
 class InStudioMixin:
-    treadmill_distance: float | None = Field(None, validation_alias="treadmillDistance")
+    treadmill_distance: float | None = Field(
+        None, validation_alias="treadmillDistance", description="Distance covered on the treadmill in meters"
+    )
     treadmill_elevation_gained: float | None = Field(None, validation_alias="treadmillElevationGained")
-    rower_distance: float | None = Field(None, validation_alias="rowerDistance")
+    rower_distance: float | None = Field(
+        None, validation_alias="rowerDistance", description="Distance covered on the rower in meters"
+    )
     rower_watt: float | None = Field(None, validation_alias="rowerWatt")
+
+    @property
+    def treadmill_distance_miles(self) -> float | None:
+        """Get the treadmill distance in miles."""
+        return round(self.treadmill_distance / 1609.34, 2) if self.treadmill_distance is not None else None
+
+    @property
+    def rower_distance_miles(self) -> float | None:
+        """Get the rower distance in miles."""
+        return round(self.rower_distance / 1609.34, 2) if self.rower_distance is not None else None
+
+    @property
+    def treadmill_elevation_gained_feet(self) -> float | None:
+        """Get the treadmill elevation gained in feet."""
+        return (
+            round(self.treadmill_elevation_gained * 3.28084, 2) if self.treadmill_elevation_gained is not None else None
+        )
 
     @field_serializer("treadmill_distance", "treadmill_elevation_gained", "rower_distance", "rower_watt")
     @staticmethod
