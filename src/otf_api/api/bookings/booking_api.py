@@ -160,6 +160,9 @@ class BookingApi:
                     "this is unexpected behavior."
                 )
             if booking.updated_at > existing_booking.updated_at:
+                LOGGER.debug(
+                    "Replacing existing booking for class_id %s with more recent booking %s", class_id, booking
+                )
                 seen_classes[class_id] = booking
 
         results = list(seen_classes.values())
