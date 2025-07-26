@@ -122,7 +122,7 @@ class BookingApi:
                 try:
                     results.append(models.BookingV2.create(**b, api=self.otf))
                 except ValueError as e:
-                    LOGGER.warning(f"Failed to create BookingV2 from response: {e}. Booking data:\n{b}")
+                    LOGGER.error("Failed to create BookingV2 from response: %s. Booking data:\n%s", e, b)
                     continue
 
         if not remove_duplicates:
