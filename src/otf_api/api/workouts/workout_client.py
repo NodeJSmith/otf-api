@@ -1,8 +1,11 @@
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
+from logging import getLogger
 from typing import Any
 
 from otf_api.api.client import API_IO_BASE_URL, API_TELEMETRY_BASE_URL, CACHE, OtfClient
+
+LOGGER = getLogger(__name__)
 
 
 class WorkoutClient:
@@ -98,7 +101,12 @@ class WorkoutClient:
             dict[str, str | None]: A dictionary mapping performance summary IDs to class UUIDs.
         """
         perf_summaries = self.get_performance_summaries()["items"]
-        return {item["id"]: item["class"].get("ot_base_class_uuid") for item in perf_summaries}
+        LOGGER.debug("Retrieved %d performance summaries for mapping", len(perf_summaries))
+
+        perf_summary_dict = {item["id"]: item["class"].get("ot_base_class_uuid") for item in perf_summaries}
+
+        LOGGER.debug("Created performance summary to class UUID mapping with %d entries", len(perf_summary_dict))
+        return perf_summary_dict
 
     def get_perf_summaries_threaded(self, performance_summary_ids: list[str]) -> dict[str, dict[str, Any]]:
         """Get performance summaries in a ThreadPoolExecutor, to speed up the process.
@@ -112,7 +120,13 @@ class WorkoutClient:
         with ThreadPoolExecutor(max_workers=10) as pool:
             perf_summaries = pool.map(self.get_performance_summary, performance_summary_ids)
 
-        perf_summaries_dict = {perf_summary["id"]: perf_summary for perf_summary in perf_summaries}
+        perf_summaries_list = list(perf_summaries)
+        LOGGER.debug("Retrieved %d performance summaries in threaded mode", len(perf_summaries_list))
+
+        perf_summaries_dict = {perf_summary["id"]: perf_summary for perf_summary in perf_summaries_list}
+
+        LOGGER.debug("Returning %d performance summaries", len(perf_summaries_dict))
+
         return perf_summaries_dict
 
     def get_telemetry_threaded(
@@ -130,7 +144,15 @@ class WorkoutClient:
         partial_fn = partial(self.get_telemetry, max_data_points=max_data_points)
         with ThreadPoolExecutor(max_workers=10) as pool:
             telemetry = pool.map(partial_fn, performance_summary_ids)
-        telemetry_dict = {perf_summary["classHistoryUuid"]: perf_summary for perf_summary in telemetry}
+
+        telemetry_list = list(telemetry)
+
+        LOGGER.debug("Retrieved %d telemetry records in threaded mode", len(telemetry_list))
+
+        telemetry_dict = {perf_summary["classHistoryUuid"]: perf_summary for perf_summary in telemetry_list}
+
+        LOGGER.debug("Returning %d telemetry records", len(telemetry_dict))
+
         return telemetry_dict
 
     def get_aspire_data(self, datetime: str | None, unit: str | None) -> dict:

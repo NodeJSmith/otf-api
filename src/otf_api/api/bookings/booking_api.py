@@ -8,19 +8,19 @@ import pendulum
 from otf_api import exceptions as exc
 from otf_api import models
 from otf_api.api import utils
-from otf_api.api.client import OtfClient
 from otf_api.models.bookings import HISTORICAL_BOOKING_STATUSES, ClassFilter
 
 from .booking_client import BookingClient
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf
+    from otf_api.api.client import OtfClient
 
 LOGGER = getLogger(__name__)
 
 
 class BookingApi:
-    def __init__(self, otf: "Otf", otf_client: OtfClient):
+    def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Booking API client.
 
         Args:
@@ -29,6 +29,39 @@ class BookingApi:
         """
         self.otf = otf
         self.client = BookingClient(otf_client)
+
+    def _get_all_bookings_new(
+        self, exclude_cancelled: bool = True, remove_duplicates: bool = True
+    ) -> list[models.BookingV2]:
+        """Get bookings from the new endpoint with no date filters.
+
+        This is marked as private to avoid random users calling it.
+        Useful for testing and validating models.
+
+        Args:
+            exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
+            remove_duplicates (bool): Whether to remove duplicate bookings. Default is True.
+
+        Returns:
+            list[BookingV2]: List of bookings that match the search criteria.
+        """
+        start_date = pendulum.datetime(1970, 1, 1)
+        end_date = pendulum.today().start_of("day").add(days=45)
+        return self.get_bookings_new(start_date, end_date, exclude_cancelled, remove_duplicates)
+
+    def _get_all_bookings_new_by_date(self) -> dict[datetime, models.BookingV2]:
+        """Get all bookings from the new endpoint by date.
+
+        This is marked as private to avoid random users calling it.
+        Useful for testing and validating models.
+
+        Returns:
+            dict[datetime, BookingV2]: Dictionary of bookings by date.
+        """
+        start_date = pendulum.datetime(1970, 1, 1)
+        end_date = pendulum.today().start_of("day").add(days=45)
+        bookings = self.get_bookings_new_by_date(start_date, end_date)
+        return bookings
 
     def get_bookings_new(
         self,
@@ -79,6 +112,7 @@ class BookingApi:
         bookings_resp = self.client.get_bookings_new(
             ends_before=end_date, starts_after=start_date, include_canceled=include_canceled, expand=expand
         )
+        LOGGER.debug("Found %d bookings between %s and %s", len(bookings_resp), start_date, end_date)
 
         # filter out bookings with ids that start with "no-booking-id"
         # no idea what these are, but I am praying for the poor sap stuck with maintaining OTF's data model
@@ -89,7 +123,7 @@ class BookingApi:
                 try:
                     results.append(models.BookingV2.create(**b, api=self.otf))
                 except ValueError as e:
-                    LOGGER.warning(f"Failed to create BookingV2 from response: {e}. Booking data:\n{b}")
+                    LOGGER.error("Failed to create BookingV2 from response: %s. Booking data:\n%s", e, b)
                     continue
 
         if not remove_duplicates:
@@ -112,6 +146,9 @@ class BookingApi:
             list[BookingV2]: The deduplicated list of bookings.
         """
         # remove duplicates by class_id, keeping the one with the most recent updated_at timestamp
+
+        orig_count = len(results)
+
         seen_classes: dict[str, models.BookingV2] = {}
 
         for booking in results:
@@ -127,10 +164,19 @@ class BookingApi:
                     "this is unexpected behavior."
                 )
             if booking.updated_at > existing_booking.updated_at:
+                LOGGER.debug(
+                    "Replacing existing booking for class_id %s with more recent booking %s", class_id, booking
+                )
                 seen_classes[class_id] = booking
 
         results = list(seen_classes.values())
         results = sorted(results, key=lambda x: x.starts_at)
+
+        new_count = len(results)
+        diff = orig_count - new_count
+
+        if diff:
+            LOGGER.debug("Removed %d duplicate bookings, returning %d unique bookings", diff, new_count)
 
         return results
 
@@ -615,36 +661,3 @@ class BookingApi:
             if e.response.status_code == 403:
                 raise exc.AlreadyRatedError(f"Workout {performance_summary_id} is already rated.") from None
             raise
-
-    def _get_all_bookings_new(
-        self, exclude_cancelled: bool = True, remove_duplicates: bool = True
-    ) -> list[models.BookingV2]:
-        """Get bookings from the new endpoint with no date filters.
-
-        This is marked as private to avoid random users calling it.
-        Useful for testing and validating models.
-
-        Args:
-            exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
-            remove_duplicates (bool): Whether to remove duplicate bookings. Default is True.
-
-        Returns:
-            list[BookingV2]: List of bookings that match the search criteria.
-        """
-        start_date = pendulum.datetime(1970, 1, 1)
-        end_date = pendulum.today().start_of("day").add(days=45)
-        return self.get_bookings_new(start_date, end_date, exclude_cancelled, remove_duplicates)
-
-    def _get_all_bookings_new_by_date(self) -> dict[datetime, models.BookingV2]:
-        """Get all bookings from the new endpoint by date.
-
-        This is marked as private to avoid random users calling it.
-        Useful for testing and validating models.
-
-        Returns:
-            dict[datetime, BookingV2]: Dictionary of bookings by date.
-        """
-        start_date = pendulum.datetime(1970, 1, 1)
-        end_date = pendulum.today().start_of("day").add(days=45)
-        bookings = self.get_bookings_new_by_date(start_date, end_date)
-        return bookings

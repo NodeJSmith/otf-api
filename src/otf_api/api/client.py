@@ -1,4 +1,6 @@
 import atexit
+import json
+import os
 import re
 from json import JSONDecodeError
 from logging import getLogger
@@ -47,6 +49,7 @@ class OtfClient:
         self.session = httpx.Client(
             headers=HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
         )
+        self.log_raw_response = os.getenv("OTF_LOG_RAW_RESPONSE", "false").lower() == "true"
         atexit.register(self.session.close)
 
     def __getstate__(self):
@@ -110,7 +113,7 @@ class OtfClient:
         """
         full_url = str(URL.build(scheme="https", host=base_url, path=path))
         request = self._build_request(method, full_url, params, headers, **kwargs)
-        LOGGER.debug(f"Making {method!r} request to '{full_url}', params: {params}, headers: {headers}")
+        LOGGER.debug("Making %r request to '%s'", method, str(request.url))
 
         try:
             response = self.session.send(request)
@@ -158,10 +161,14 @@ class OtfClient:
             if error_code == "602":
                 raise exc.OutsideSchedulingWindowError("Class is outside scheduling window")
 
-        msg = f"HTTP error {error.response.status_code} for {request.method} {request.url}"
-        LOGGER.error(msg)
+        LOGGER.error("HTTP error %s for %s %s", response.status_code, request.method, request.url)
         error_cls = exc.RetryableOtfRequestError if response.status_code >= 500 else exc.OtfRequestError
-        raise error_cls(message=msg, original_exception=error, request=request, response=response)
+        raise error_cls(
+            message=f"HTTP error {response.status_code} for {request.method} {request.url}",
+            original_exception=error,
+            request=request,
+            response=response,
+        )
 
     def _handle_transport_error(self, error: Exception, request: httpx.Request) -> None:
         """Handle transport errors during API requests.
@@ -177,7 +184,7 @@ class OtfClient:
         url = request.url
 
         if not isinstance(error, httpx.HTTPStatusError):
-            LOGGER.exception(f"Unexpected error during {method!r} {url!r}: {type(error).__name__} - {error}")
+            LOGGER.exception("Unexpected error during %r %r: %s - %s", method, url, type(error).__name__, error)
             return
 
         json_data = get_json_from_response(error.response)
@@ -190,7 +197,7 @@ class OtfClient:
         data_status: int | None = data.get("Status") or data.get("status") or None
 
         if isinstance(data, dict) and isinstance(data_status, int) and not 200 <= data_status <= 299:
-            LOGGER.error(f"API returned error: {data}")
+            LOGGER.error("API returned error: %s", data)
             raise exc.OtfRequestError("Bad API response", None, response=response, request=request)
 
         raise exc.OtfRequestError(
@@ -202,17 +209,20 @@ class OtfClient:
             if method == "GET":
                 raise exc.OtfRequestError("Empty response", None, response=response, request=request)
 
-            LOGGER.debug(f"No content returned from {method} {response.url}")
+            LOGGER.debug("No content returned from %s %s", method, response.url)
             return None
 
         try:
             json_data = response.json()
         except JSONDecodeError as e:
-            LOGGER.error(f"Invalid JSON: {e}")
-            LOGGER.error(f"Response content: {response.text}")
+            LOGGER.error("Invalid JSON: %s", e)
+            LOGGER.error("Response content: %s", response.text)
             raise
 
         if is_error_response(json_data):
             self._map_logical_error(json_data, response, request)
+
+        if self.log_raw_response:
+            LOGGER.debug("Response from %s %s: %s", method, response.url, json.dumps(json_data, indent=4))
 
         return json_data

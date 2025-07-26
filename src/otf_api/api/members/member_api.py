@@ -3,18 +3,18 @@ from logging import getLogger
 from typing import Any
 
 from otf_api import models
-from otf_api.api.client import OtfClient
 
 from .member_client import MemberClient
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf
+    from otf_api.api.client import OtfClient
 
 LOGGER = getLogger(__name__)
 
 
 class MemberApi:
-    def __init__(self, otf: "Otf", otf_client: OtfClient):
+    def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Member API client.
 
         Args:

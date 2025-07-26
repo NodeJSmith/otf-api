@@ -4,18 +4,18 @@ from logging import getLogger
 from otf_api import exceptions as exc
 from otf_api import models
 from otf_api.api import utils
-from otf_api.api.client import OtfClient
 
 from .studio_client import StudioClient
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf
+    from otf_api.api.client import OtfClient
 
 LOGGER = getLogger(__name__)
 
 
 class StudioApi:
-    def __init__(self, otf: "Otf", otf_client: OtfClient):
+    def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Studio API client.
 
         Args:
@@ -24,6 +24,51 @@ class StudioApi:
         """
         self.otf = otf
         self.client = StudioClient(otf_client)
+
+    def _get_all_studios(self) -> list[models.StudioDetail]:
+        """Gets all studios. Marked as private to avoid random users calling it.
+
+        Useful for testing and validating models.
+
+        Returns:
+            list[StudioDetail]: List of studios that match the search criteria.
+        """
+        # long/lat being None will cause the endpoint to return all studios
+        results = self.client.get_studios_by_geo(None, None)
+
+        studios: list[models.StudioDetail] = []
+        for studio in results:
+            try:
+                studios.append(models.StudioDetail.create(**studio, api=self.otf))
+            except ValueError as e:
+                LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
+                continue
+
+        return studios
+
+    def _get_studio_detail_threaded(self, studio_uuids: list[str]) -> dict[str, models.StudioDetail]:
+        """Get detailed information about multiple studios in a threaded manner.
+
+        This is used to improve performance when fetching details for multiple studios at once.
+        This method is on the Otf class because StudioDetail is a model that requires the API instance.
+
+        Args:
+            studio_uuids (list[str]): List of studio UUIDs to get details for.
+
+        Returns:
+            dict[str, StudioDetail]: A dictionary mapping studio UUIDs to their detailed information.
+        """
+        studio_dicts = self.client.get_studio_detail_threaded(studio_uuids)
+
+        studios: dict[str, models.StudioDetail] = {}
+        for studio_uuid, studio in studio_dicts.items():
+            try:
+                studios[studio_uuid] = models.StudioDetail.create(**studio, api=self.otf)
+            except ValueError as e:
+                LOGGER.error(f"Failed to create StudioDetail for studio {studio_uuid}: {e}")
+                continue
+
+        return studios
 
     def get_favorite_studios(self) -> list[models.StudioDetail]:
         """Get the member's favorite studios.
@@ -156,51 +201,6 @@ class StudioApi:
                 studios.append(models.StudioDetail.create(**studio, api=self.otf))
             except ValueError as e:
                 LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
-                continue
-
-        return studios
-
-    def _get_all_studios(self) -> list[models.StudioDetail]:
-        """Gets all studios. Marked as private to avoid random users calling it.
-
-        Useful for testing and validating models.
-
-        Returns:
-            list[StudioDetail]: List of studios that match the search criteria.
-        """
-        # long/lat being None will cause the endpoint to return all studios
-        results = self.client.get_studios_by_geo(None, None)
-
-        studios: list[models.StudioDetail] = []
-        for studio in results:
-            try:
-                studios.append(models.StudioDetail.create(**studio, api=self.otf))
-            except ValueError as e:
-                LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
-                continue
-
-        return studios
-
-    def _get_studio_detail_threaded(self, studio_uuids: list[str]) -> dict[str, models.StudioDetail]:
-        """Get detailed information about multiple studios in a threaded manner.
-
-        This is used to improve performance when fetching details for multiple studios at once.
-        This method is on the Otf class because StudioDetail is a model that requires the API instance.
-
-        Args:
-            studio_uuids (list[str]): List of studio UUIDs to get details for.
-
-        Returns:
-            dict[str, StudioDetail]: A dictionary mapping studio UUIDs to their detailed information.
-        """
-        studio_dicts = self.client.get_studio_detail_threaded(studio_uuids)
-
-        studios: dict[str, models.StudioDetail] = {}
-        for studio_uuid, studio in studio_dicts.items():
-            try:
-                studios[studio_uuid] = models.StudioDetail.create(**studio, api=self.otf)
-            except ValueError as e:
-                LOGGER.error(f"Failed to create StudioDetail for studio {studio_uuid}: {e}")
                 continue
 
         return studios

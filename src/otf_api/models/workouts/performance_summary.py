@@ -1,8 +1,11 @@
-from datetime import time
+from logging import getLogger
+from typing import Any
 
-from pydantic import AliasPath, Field, field_validator
+from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
+
+LOGGER = getLogger(__name__)
 
 
 class ZoneTimeMinutes(OtfItemBase):
@@ -22,40 +25,16 @@ class HeartRate(OtfItemBase):
 
 
 class PerformanceMetric(OtfItemBase):
-    display_value: time | float | None
+    display_value: Any
     display_unit: str
-    metric_value: float
+    metric_value: float | int = Field(
+        coerce_numbers_to_str=True,
+        description="The raw value of the metric, as a float or int. When time this reflects seconds.",
+    )
 
     def __str__(self) -> str:
         """Return a string representation of the PerformanceMetric."""
         return f"{self.display_value} {self.display_unit}"
-
-    @field_validator("display_value", mode="before")
-    @classmethod
-    def convert_to_time_format(cls, value: str | None | float | int) -> time | float | None:
-        """Convert display_value to a time object if it is in the format of HH:MM:SS or MM:SS.
-
-        Args:
-            value (str | None | float | int): The value to convert.
-
-        Returns:
-            time | float: The converted value, or the original value if it is not in the expected format.
-        """
-        if not value:
-            return None
-
-        if isinstance(value, float | int):
-            return value
-
-        if isinstance(value, str) and ":" in value:
-            if value.count(":") == 1:
-                minutes, seconds = value.split(":")
-                return time(minute=int(minutes), second=int(seconds))
-            if value.count(":") == 2:
-                hours, minutes, seconds = value.split(":")
-                return time(hour=int(hours), minute=int(minutes), second=int(seconds))
-
-        return value  # type: ignore
 
 
 class BaseEquipment(OtfItemBase):

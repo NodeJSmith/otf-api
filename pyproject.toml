@@ -1,6 +1,6 @@
 [project]
 name = "otf-api"
-version = "0.15.1"
+version = "0.15.2"
 description = "Python OrangeTheory Fitness API Client"
 authors = [{ name = "Jessica Smith", email = "j.smith.git1@gmail.com" }]
 requires-python = ">=3.11"
@@ -30,6 +30,7 @@ dependencies = [
     "diskcache>=5.6.3",
     "platformdirs>=4.3.6",
     "packaging>=24.2",
+    "coloredlogs>=15.0.1",
 ]
 
 [project.urls]
