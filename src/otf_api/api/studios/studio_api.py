@@ -4,18 +4,18 @@ from logging import getLogger
 from otf_api import exceptions as exc
 from otf_api import models
 from otf_api.api import utils
-from otf_api.api.client import OtfClient
 
 from .studio_client import StudioClient
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf
+    from otf_api.api.client import OtfClient
 
 LOGGER = getLogger(__name__)
 
 
 class StudioApi:
-    def __init__(self, otf: "Otf", otf_client: OtfClient):
+    def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Studio API client.
 
         Args:

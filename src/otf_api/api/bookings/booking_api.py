@@ -8,19 +8,19 @@ import pendulum
 from otf_api import exceptions as exc
 from otf_api import models
 from otf_api.api import utils
-from otf_api.api.client import OtfClient
 from otf_api.models.bookings import HISTORICAL_BOOKING_STATUSES, ClassFilter
 
 from .booking_client import BookingClient
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf
+    from otf_api.api.client import OtfClient
 
 LOGGER = getLogger(__name__)
 
 
 class BookingApi:
-    def __init__(self, otf: "Otf", otf_client: OtfClient):
+    def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Booking API client.
 
         Args:
