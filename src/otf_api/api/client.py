@@ -113,7 +113,7 @@ class OtfClient:
         """
         full_url = str(URL.build(scheme="https", host=base_url, path=path))
         request = self._build_request(method, full_url, params, headers, **kwargs)
-        LOGGER.debug("Making %r request to '%s', params: %s, headers: %s", method, full_url, params, headers)
+        LOGGER.debug("Making %r request to '%s'", method, str(request.url))
 
         try:
             response = self.session.send(request)
