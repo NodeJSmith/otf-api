@@ -30,6 +30,39 @@ class BookingApi:
         self.otf = otf
         self.client = BookingClient(otf_client)
 
+    def _get_all_bookings_new(
+        self, exclude_cancelled: bool = True, remove_duplicates: bool = True
+    ) -> list[models.BookingV2]:
+        """Get bookings from the new endpoint with no date filters.
+
+        This is marked as private to avoid random users calling it.
+        Useful for testing and validating models.
+
+        Args:
+            exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
+            remove_duplicates (bool): Whether to remove duplicate bookings. Default is True.
+
+        Returns:
+            list[BookingV2]: List of bookings that match the search criteria.
+        """
+        start_date = pendulum.datetime(1970, 1, 1)
+        end_date = pendulum.today().start_of("day").add(days=45)
+        return self.get_bookings_new(start_date, end_date, exclude_cancelled, remove_duplicates)
+
+    def _get_all_bookings_new_by_date(self) -> dict[datetime, models.BookingV2]:
+        """Get all bookings from the new endpoint by date.
+
+        This is marked as private to avoid random users calling it.
+        Useful for testing and validating models.
+
+        Returns:
+            dict[datetime, BookingV2]: Dictionary of bookings by date.
+        """
+        start_date = pendulum.datetime(1970, 1, 1)
+        end_date = pendulum.today().start_of("day").add(days=45)
+        bookings = self.get_bookings_new_by_date(start_date, end_date)
+        return bookings
+
     def get_bookings_new(
         self,
         start_date: datetime | date | str | None = None,
@@ -615,36 +648,3 @@ class BookingApi:
             if e.response.status_code == 403:
                 raise exc.AlreadyRatedError(f"Workout {performance_summary_id} is already rated.") from None
             raise
-
-    def _get_all_bookings_new(
-        self, exclude_cancelled: bool = True, remove_duplicates: bool = True
-    ) -> list[models.BookingV2]:
-        """Get bookings from the new endpoint with no date filters.
-
-        This is marked as private to avoid random users calling it.
-        Useful for testing and validating models.
-
-        Args:
-            exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
-            remove_duplicates (bool): Whether to remove duplicate bookings. Default is True.
-
-        Returns:
-            list[BookingV2]: List of bookings that match the search criteria.
-        """
-        start_date = pendulum.datetime(1970, 1, 1)
-        end_date = pendulum.today().start_of("day").add(days=45)
-        return self.get_bookings_new(start_date, end_date, exclude_cancelled, remove_duplicates)
-
-    def _get_all_bookings_new_by_date(self) -> dict[datetime, models.BookingV2]:
-        """Get all bookings from the new endpoint by date.
-
-        This is marked as private to avoid random users calling it.
-        Useful for testing and validating models.
-
-        Returns:
-            dict[datetime, BookingV2]: Dictionary of bookings by date.
-        """
-        start_date = pendulum.datetime(1970, 1, 1)
-        end_date = pendulum.today().start_of("day").add(days=45)
-        bookings = self.get_bookings_new_by_date(start_date, end_date)
-        return bookings
