@@ -1,5 +1,6 @@
 import atexit
 import json
+import os
 import re
 from json import JSONDecodeError
 from logging import getLogger
@@ -48,6 +49,7 @@ class OtfClient:
         self.session = httpx.Client(
             headers=HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
         )
+        self.log_raw_response = os.getenv("OTF_LOG_RAW_RESPONSE", "false").lower() == "true"
         atexit.register(self.session.close)
 
     def __getstate__(self):
@@ -220,6 +222,7 @@ class OtfClient:
         if is_error_response(json_data):
             self._map_logical_error(json_data, response, request)
 
-        LOGGER.debug("Response from %s %s: %s", method, response.url, json.dumps(json_data, indent=4))
+        if self.log_raw_response:
+            LOGGER.debug("Response from %s %s: %s", method, response.url, json.dumps(json_data, indent=4))
 
         return json_data
