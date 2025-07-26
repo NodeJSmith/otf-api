@@ -80,7 +80,7 @@ class BookingClient:
         starts_after: datetime,
         include_canceled: bool = True,
         expand: bool = False,
-    ) -> dict:
+    ) -> list[dict]:
         """Retrieve raw bookings data."""
         params: dict[str, bool | str] = {
             "ends_before": pendulum.instance(ends_before).strftime("%Y-%m-%dT%H:%M:%SZ"),
