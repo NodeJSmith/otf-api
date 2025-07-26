@@ -30,6 +30,7 @@ dependencies = [
     "diskcache>=5.6.3",
     "platformdirs>=4.3.6",
     "packaging>=24.2",
+    "coloredlogs>=15.0.1",
 ]
 
 [project.urls]
