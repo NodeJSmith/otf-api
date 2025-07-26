@@ -112,6 +112,7 @@ class BookingApi:
         bookings_resp = self.client.get_bookings_new(
             ends_before=end_date, starts_after=start_date, include_canceled=include_canceled, expand=expand
         )
+        LOGGER.debug("Found %d bookings between %s and %s", len(bookings_resp), start_date, end_date)
 
         # filter out bookings with ids that start with "no-booking-id"
         # no idea what these are, but I am praying for the poor sap stuck with maintaining OTF's data model
@@ -145,6 +146,9 @@ class BookingApi:
             list[BookingV2]: The deduplicated list of bookings.
         """
         # remove duplicates by class_id, keeping the one with the most recent updated_at timestamp
+
+        orig_count = len(results)
+
         seen_classes: dict[str, models.BookingV2] = {}
 
         for booking in results:
@@ -167,6 +171,12 @@ class BookingApi:
 
         results = list(seen_classes.values())
         results = sorted(results, key=lambda x: x.starts_at)
+
+        new_count = len(results)
+        diff = orig_count - new_count
+
+        if diff:
+            LOGGER.debug("Removed %d duplicate bookings, returning %d unique bookings", diff, new_count)
 
         return results
 
