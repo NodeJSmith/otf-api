@@ -59,16 +59,17 @@ class Telemetry(OtfItemBase):
     )
     class_start_time: datetime | None = Field(None, validation_alias="classStartTime")
     max_hr: int | None = Field(None, validation_alias="maxHr")
-    zones: Zones
+    zones: Zones | None = Field(default=None, description="The zones associated with the telemetry.")
     window_size: int | None = Field(None, validation_alias="windowSize")
     telemetry: list[TelemetryItem] = Field(default_factory=list)
 
     def __init__(self, **data: dict[str, Any]):
         super().__init__(**data)
-        for telem in self.telemetry:
-            if self.class_start_time is None:
-                continue
 
+        if self.class_start_time is None:
+            return
+
+        for telem in self.telemetry:
             telem.timestamp = self.class_start_time + timedelta(seconds=telem.relative_timestamp)
 
     @field_serializer("telemetry", when_used="json")
