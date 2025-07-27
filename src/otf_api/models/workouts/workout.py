@@ -3,7 +3,7 @@ from typing import Any, Literal
 from pydantic import AliasPath, Field
 
 from otf_api.models.base import OtfItemBase
-from otf_api.models.bookings import BookingV2, BookingV2Class, BookingV2Studio, BookingV2Workout, Rating
+from otf_api.models.bookings import BookingV2, BookingV2Class, BookingV2Studio, Rating
 from otf_api.models.mixins import ApiMixin
 from otf_api.models.workouts import HeartRate, Rower, Telemetry, Treadmill, ZoneTimeMinutes
 
@@ -18,9 +18,11 @@ class Workout(ApiMixin, OtfItemBase):
     """
 
     performance_summary_id: str = Field(
-        ..., validation_alias="id", description="Unique identifier for this performance summary"
+        default="unknown", validation_alias="id", description="Unique identifier for this performance summary"
     )
-    class_history_uuid: str = Field(..., validation_alias="id", description="Same as performance_summary_id")
+    class_history_uuid: str = Field(
+        default="unknown", validation_alias="id", description="Same as performance_summary_id"
+    )
     booking_id: str = Field(..., description="The booking id for the new bookings endpoint.")
     class_uuid: str | None = Field(
         None, description="Used by the ratings endpoint - seems to fall off after a few months"
@@ -56,7 +58,6 @@ class Workout(ApiMixin, OtfItemBase):
         otf_class = v2_booking.otf_class
         v2_workout = v2_booking.workout
         assert isinstance(otf_class, BookingV2Class), "otf_class must be an instance of BookingV2Class"
-        assert isinstance(v2_workout, BookingV2Workout), "v2_workout must be an instance of BookingV2Workout"
 
         data["otf_class"] = otf_class
         data["studio"] = otf_class.studio
@@ -64,9 +65,11 @@ class Workout(ApiMixin, OtfItemBase):
         data["ratable"] = v2_booking.ratable  # this seems to be more accurate
 
         data["booking_id"] = v2_booking.booking_id
-        data["active_time_seconds"] = v2_workout.active_time_seconds
         data["class_rating"] = v2_booking.class_rating
         data["coach_rating"] = v2_booking.coach_rating
+
+        if v2_workout:
+            data["active_time_seconds"] = v2_workout.active_time_seconds
 
         telemetry: dict[str, Any] | None = data.get("telemetry")
         if telemetry and "maxHr" in telemetry:
