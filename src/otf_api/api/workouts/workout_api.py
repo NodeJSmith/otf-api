@@ -262,7 +262,7 @@ class WorkoutApi:
         bookings = self.otf.bookings.get_bookings_new(
             start_dtme, end_dtme, exclude_cancelled=True, remove_duplicates=True
         )
-        filtered_bookings = self._filter_bookings_for_workouts(bookings)
+        filtered_bookings = [b for b in bookings if not (b.starts_at and b.starts_at > pendulum.now().naive())]
         bookings_list = [(b, b.workout.id if b.workout else None) for b in filtered_bookings]
 
         workout_ids = [b.workout.id for b in filtered_bookings if b.workout]
@@ -286,36 +286,6 @@ class WorkoutApi:
         LOGGER.debug("Returning %d workouts", len(workouts))
 
         return workouts
-
-    def _filter_bookings_for_workouts(self, bookings: list[models.BookingV2]) -> list[models.BookingV2]:
-        """Filter bookings to only those that have a workout and are not in the future.
-
-        This is being pulled out of `get_workouts` to add more robust logging and error handling.
-
-        Args:
-            bookings (list[BookingV2]): The list of bookings to filter.
-
-        Returns:
-            dict[str, BookingV2]: A dictionary mapping workout IDs to bookings that have workouts.
-        """
-        future_bookings = [b for b in bookings if b.starts_at and b.starts_at > pendulum.now().naive()]
-        # missing_workouts = [b for b in bookings if not b.workout and b not in future_bookings]
-        LOGGER.debug("Found %d future bookings", len(future_bookings))
-
-        if future_bookings:
-            for booking in future_bookings:
-                LOGGER.warning(
-                    "Booking %s for class '%s' (class_uuid=%s) is in the future, filtering out.",
-                    booking.booking_id,
-                    booking.otf_class,
-                    booking.class_uuid or "Unknown",
-                )
-
-        filtered_bookings = [b for b in bookings if b not in future_bookings]
-
-        LOGGER.debug("Filtered bookings to %d valid bookings for workouts mapping", len(filtered_bookings))
-
-        return filtered_bookings
 
     def get_lifetime_workouts(self) -> list[models.Workout]:
         """Get the member's lifetime workouts.
