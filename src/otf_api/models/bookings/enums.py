@@ -17,6 +17,25 @@ class BookingStatus(StrEnum):
     CancelCheckinPending = "Cancel Checkin Pending"
     CancelCheckinRequested = "Cancel Checkin Requested"
 
+    def priority(self) -> int:
+        """Returns the priority of the booking status for sorting purposes."""
+        priorities = {
+            BookingStatus.Booked: 0,
+            BookingStatus.Confirmed: 1,
+            BookingStatus.Waitlisted: 2,
+            BookingStatus.Pending: 3,
+            BookingStatus.Requested: 4,
+            BookingStatus.CheckedIn: 5,
+            BookingStatus.CheckinPending: 6,
+            BookingStatus.CheckinRequested: 7,
+            BookingStatus.CheckinCancelled: 8,
+            BookingStatus.Cancelled: 9,
+            BookingStatus.LateCancelled: 10,
+            BookingStatus.CancelCheckinPending: 11,
+            BookingStatus.CancelCheckinRequested: 12,
+        }
+        return priorities.get(self, 999)
+
 
 HISTORICAL_BOOKING_STATUSES = [
     BookingStatus.CheckedIn,
