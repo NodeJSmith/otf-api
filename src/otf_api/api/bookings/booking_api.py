@@ -1,4 +1,5 @@
 import typing
+from collections import defaultdict
 from datetime import date, datetime, time, timedelta
 from logging import getLogger
 from typing import Literal
@@ -114,62 +115,45 @@ class BookingApi:
         )
         LOGGER.debug("Found %d bookings between %s and %s", len(bookings_resp), start_date, end_date)
 
-        # filter out bookings with ids that start with "no-booking-id"
-        # no idea what these are, but I am praying for the poor sap stuck with maintaining OTF's data model
         results: list[models.BookingV2] = []
-
         for b in bookings_resp:
-            if not b.get("id", "").startswith("no-booking-id"):
-                try:
-                    results.append(models.BookingV2.create(**b, api=self.otf))
-                except ValueError as e:
-                    LOGGER.error("Failed to create BookingV2 from response: %s. Booking data:\n%s", e, b)
-                    continue
+            try:
+                results.append(models.BookingV2.create(**b, api=self.otf))
+            except Exception as e:
+                LOGGER.error(
+                    "Failed to create BookingV2 from response: %s - %s. Booking data:\n%s", type(e).__name__, e, b
+                )
+                continue
 
         if not remove_duplicates:
             return results
 
-        results = self._deduplicate_bookings(results, exclude_cancelled=exclude_cancelled)
+        results = self._deduplicate_bookings(results)
 
         return results
 
-    def _deduplicate_bookings(
-        self, results: list[models.BookingV2], exclude_cancelled: bool = True
-    ) -> list[models.BookingV2]:
+    def _deduplicate_bookings(self, results: list[models.BookingV2]) -> list[models.BookingV2]:
         """Deduplicate bookings by class_id, keeping the most recent booking.
 
         Args:
             results (list[BookingV2]): The list of bookings to deduplicate.
-            exclude_cancelled (bool): If True, will not include cancelled bookings in the results.
 
         Returns:
             list[BookingV2]: The deduplicated list of bookings.
         """
-        # remove duplicates by class_id, keeping the one with the most recent updated_at timestamp
-
         orig_count = len(results)
 
-        seen_classes: dict[str, models.BookingV2] = {}
+        classes_by_id: defaultdict[str, list[models.BookingV2]] = defaultdict(list)
+        keep_classes: list[models.BookingV2] = []
 
         for booking in results:
-            class_id = booking.otf_class.class_id
-            if class_id not in seen_classes:
-                seen_classes[class_id] = booking
-                continue
+            classes_by_id[booking.otf_class.class_id].append(booking)
 
-            existing_booking = seen_classes[class_id]
-            if exclude_cancelled:
-                LOGGER.warning(
-                    f"Duplicate class_id {class_id} found when `exclude_cancelled` is True, "
-                    "this is unexpected behavior."
-                )
-            if booking.updated_at > existing_booking.updated_at:
-                LOGGER.debug(
-                    "Replacing existing booking for class_id %s with more recent booking %s", class_id, booking
-                )
-                seen_classes[class_id] = booking
+        for bookings in classes_by_id.values():
+            top_booking = min(bookings, key=lambda b: b.get_sort_key())
+            keep_classes.append(top_booking)
 
-        results = list(seen_classes.values())
+        results = list(keep_classes)
         results = sorted(results, key=lambda x: x.starts_at)
 
         new_count = len(results)
