@@ -155,13 +155,16 @@ class BookingV2(ApiMixin, OtfItemBase):
     person_id: str
 
     created_at: datetime | None = Field(
-        None,
-        description="Date the booking was created in the system, not when the booking was made",
+        default=None,
+        description="Date the booking was created in the system",
         exclude=True,
         repr=False,
     )
-    updated_at: datetime = Field(
-        description="Date the booking was updated, not when the booking was made", exclude=True, repr=False
+    updated_at: datetime | None = Field(
+        default=None,
+        description="Date the booking was updated in the system",
+        exclude=True,
+        repr=False,
     )
 
     @property
@@ -230,3 +233,17 @@ class BookingV2(ApiMixin, OtfItemBase):
         self.raise_if_api_not_set()
 
         self._api.bookings.cancel_booking_new(self)
+
+    def get_sort_key(self) -> tuple:
+        """Returns a tuple for sorting bookings, used when attempting to remove duplicates."""
+        # Use negative timestamps to favor later ones (a more recent updated_at is better)
+        updated_at = self.updated_at or datetime.min  # noqa DTZ901
+        created_at = self.created_at or datetime.min  # noqa DTZ901
+
+        status_priority = self.status.priority()
+
+        return (self.starts_at, -_safe_ts(updated_at), -_safe_ts(created_at), status_priority)
+
+
+def _safe_ts(dt: datetime | None) -> float:
+    return dt.timestamp() if (isinstance(dt, datetime) and dt != datetime.min) else float("inf")  # noqa DTZ901
