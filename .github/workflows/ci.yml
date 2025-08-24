@@ -1,0 +1,192 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test-python:
+    runs-on: ubuntu-latest
+    name: Test Python Library
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+    
+    - name: Set up Python
+      run: uv python install 3.11
+      
+    - name: Install Python dependencies
+      run: |
+        cd python
+        uv sync
+    
+    - name: Lint Python code
+      run: |
+        cd python
+        uv run ruff check --output-format=github
+        uv run ruff format --check
+    
+    - name: Test Python library
+      run: |
+        cd python
+        uv run pytest -v
+
+  generate-and-test-schema:
+    runs-on: ubuntu-latest
+    name: Test Schema Generation
+    needs: test-python
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+    
+    - name: Set up Python
+      run: uv python install 3.11
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install Python dependencies
+      run: |
+        cd python
+        uv sync
+    
+    - name: Install TypeScript dependencies
+      run: |
+        cd typescript
+        npm ci
+    
+    - name: Generate OpenAPI schema from Python models
+      run: |
+        cd python
+        uv run python ../scripts/generate_openapi.py
+    
+    - name: Test schema generation
+      run: |
+        cd python
+        uv run pytest tests/test_schema_generation.py -v
+    
+    - name: Generate TypeScript types from schema
+      run: |
+        cd typescript
+        npm run generate-types
+    
+    - name: Test TypeScript generation
+      run: |
+        cd typescript
+        npm run test -- schema-generation.test.ts
+    
+    - name: Upload schema artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: generated-schema
+        path: |
+          schema/openapi.yaml
+          schema/openapi.json
+          typescript/src/generated/types.ts
+        retention-days: 7
+
+  test-typescript:
+    runs-on: ubuntu-latest
+    name: Test TypeScript Library
+    needs: generate-and-test-schema
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install uv (for schema generation)
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+    
+    - name: Set up Python (for schema generation)
+      run: uv python install 3.11
+      
+    - name: Install Python dependencies (for schema generation)
+      run: |
+        cd python
+        uv sync
+        
+    - name: Install TypeScript dependencies
+      run: |
+        cd typescript
+        npm ci
+    
+    - name: Generate schema and types (needed for tests)
+      run: npm run sync
+    
+    - name: Lint TypeScript code
+      run: |
+        cd typescript
+        npm run lint
+    
+    - name: Type check TypeScript code
+      run: |
+        cd typescript
+        npm run type-check
+    
+    - name: Test TypeScript library
+      run: |
+        cd typescript
+        npm test
+    
+    - name: Build TypeScript library
+      run: |
+        cd typescript
+        npm run build
+
+  integration-test:
+    runs-on: ubuntu-latest
+    name: Integration Tests
+    needs: [test-python, generate-and-test-schema, test-typescript]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+    
+    - name: Set up Python
+      run: uv python install 3.11
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install all dependencies
+      run: |
+        npm run install:python
+        npm run install:typescript
+    
+    - name: Run full validation pipeline
+      run: npm run validate
+    
+    - name: Build both libraries
+      run: npm run build
+    
+    - name: Run all tests
+      run: npm test

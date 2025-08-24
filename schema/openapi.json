@@ -1,0 +1,6347 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OrangeTheory Fitness API",
+    "description": "Unofficial API specification for OrangeTheory Fitness services. Generated from Python Pydantic models.",
+    "version": "0.15.4",
+    "contact": {
+      "name": "OTF API",
+      "url": "https://github.com/NodeJSmith/otf-api"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.orangetheory.co",
+      "description": "Main API server"
+    },
+    {
+      "url": "https://api.orangetheory.io",
+      "description": "New API server"
+    },
+    {
+      "url": "https://api.yuzu.orangetheory.com",
+      "description": "Telemetry API server"
+    }
+  ],
+  "security": [
+    {
+      "CognitoAuth": []
+    },
+    {
+      "SigV4Auth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "CognitoAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "AWS Cognito JWT token"
+      },
+      "SigV4Auth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "AWS SigV4 signature"
+      }
+    },
+    "schemas": {
+      "BodyCompositionData": {
+        "properties": {
+          "member_uuid": {
+            "title": "Member Uuid",
+            "type": "string"
+          },
+          "member_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Member Id"
+          },
+          "scan_result_uuid": {
+            "title": "Scan Result Uuid",
+            "type": "string"
+          },
+          "inbody_id": {
+            "description": "InBody ID, same as email address",
+            "title": "Inbody Id",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "height": {
+            "description": "Height in cm",
+            "title": "Height",
+            "type": "string"
+          },
+          "gender": {
+            "enum": [
+              "M",
+              "F"
+            ],
+            "title": "Gender",
+            "type": "string"
+          },
+          "age": {
+            "title": "Age",
+            "type": "integer"
+          },
+          "scan_datetime": {
+            "format": "date-time",
+            "title": "Scan Datetime",
+            "type": "string"
+          },
+          "provided_weight": {
+            "description": "Weight in pounds, provided by member at time of scan",
+            "title": "Provided Weight",
+            "type": "number"
+          },
+          "lean_body_mass_details": {
+            "$ref": "#/components/schemas/LeanBodyMass"
+          },
+          "lean_body_mass_percent_details": {
+            "$ref": "#/components/schemas/LeanBodyMassPercent"
+          },
+          "total_body_weight": {
+            "description": "Total body weight in pounds, based on scan results",
+            "title": "Total Body Weight",
+            "type": "number"
+          },
+          "dry_lean_mass": {
+            "title": "Dry Lean Mass",
+            "type": "number"
+          },
+          "body_fat_mass": {
+            "title": "Body Fat Mass",
+            "type": "number"
+          },
+          "lean_body_mass": {
+            "title": "Lean Body Mass",
+            "type": "number"
+          },
+          "skeletal_muscle_mass": {
+            "title": "Skeletal Muscle Mass",
+            "type": "number"
+          },
+          "body_mass_index": {
+            "title": "Body Mass Index",
+            "type": "number"
+          },
+          "percent_body_fat": {
+            "title": "Percent Body Fat",
+            "type": "number"
+          },
+          "basal_metabolic_rate": {
+            "title": "Basal Metabolic Rate",
+            "type": "number"
+          },
+          "in_body_type": {
+            "title": "In Body Type",
+            "type": "string"
+          },
+          "body_fat_mass_dividers": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Body Fat Mass Dividers",
+            "type": "array"
+          },
+          "body_fat_mass_plot_point": {
+            "title": "Body Fat Mass Plot Point",
+            "type": "number"
+          },
+          "skeletal_muscle_mass_dividers": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Skeletal Muscle Mass Dividers",
+            "type": "array"
+          },
+          "skeletal_muscle_mass_plot_point": {
+            "title": "Skeletal Muscle Mass Plot Point",
+            "type": "number"
+          },
+          "weight_dividers": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Weight Dividers",
+            "type": "array"
+          },
+          "weight_plot_point": {
+            "title": "Weight Plot Point",
+            "type": "number"
+          },
+          "body_fat_mass_details": {
+            "$ref": "#/components/schemas/BodyFatMass"
+          },
+          "body_fat_mass_percent_details": {
+            "$ref": "#/components/schemas/BodyFatMassPercent"
+          },
+          "total_body_weight_details": {
+            "$ref": "#/components/schemas/TotalBodyWeight"
+          },
+          "intra_cellular_water_details": {
+            "$ref": "#/components/schemas/IntraCellularWater"
+          },
+          "extra_cellular_water_details": {
+            "$ref": "#/components/schemas/ExtraCellularWater"
+          },
+          "extra_cellular_water_over_total_body_water_details": {
+            "$ref": "#/components/schemas/ExtraCellularWaterOverTotalBodyWater"
+          },
+          "visceral_fat_level": {
+            "title": "Visceral Fat Level",
+            "type": "number"
+          },
+          "visceral_fat_area": {
+            "title": "Visceral Fat Area",
+            "type": "number"
+          },
+          "body_comp_measurement": {
+            "title": "Body Comp Measurement",
+            "type": "number"
+          },
+          "total_body_weight_over_lean_body_mass": {
+            "title": "Total Body Weight Over Lean Body Mass",
+            "type": "number"
+          },
+          "intracellular_water": {
+            "title": "Intracellular Water",
+            "type": "number"
+          },
+          "extracellular_water": {
+            "title": "Extracellular Water",
+            "type": "number"
+          },
+          "lean_body_mass_control": {
+            "title": "Lean Body Mass Control",
+            "type": "number"
+          }
+        },
+        "required": [
+          "member_uuid",
+          "member_id",
+          "scan_result_uuid",
+          "inbody_id",
+          "email",
+          "height",
+          "gender",
+          "age",
+          "scan_datetime",
+          "provided_weight",
+          "lean_body_mass_details",
+          "lean_body_mass_percent_details",
+          "total_body_weight",
+          "dry_lean_mass",
+          "body_fat_mass",
+          "lean_body_mass",
+          "skeletal_muscle_mass",
+          "body_mass_index",
+          "percent_body_fat",
+          "basal_metabolic_rate",
+          "in_body_type",
+          "body_fat_mass_dividers",
+          "body_fat_mass_plot_point",
+          "skeletal_muscle_mass_dividers",
+          "skeletal_muscle_mass_plot_point",
+          "weight_dividers",
+          "weight_plot_point",
+          "body_fat_mass_details",
+          "body_fat_mass_percent_details",
+          "total_body_weight_details",
+          "intra_cellular_water_details",
+          "extra_cellular_water_details",
+          "extra_cellular_water_over_total_body_water_details",
+          "visceral_fat_level",
+          "visceral_fat_area",
+          "body_comp_measurement",
+          "total_body_weight_over_lean_body_mass",
+          "intracellular_water",
+          "extracellular_water",
+          "lean_body_mass_control"
+        ],
+        "title": "BodyCompositionData",
+        "type": "object"
+      },
+      "Booking": {
+        "properties": {
+          "booking_uuid": {
+            "description": "ID used to cancel the booking",
+            "title": "Booking Uuid",
+            "type": "string"
+          },
+          "is_intro": {
+            "title": "Is Intro",
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BookingStatus"
+          },
+          "booked_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Booked Date"
+          },
+          "checked_in_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Checked In Date"
+          },
+          "cancelled_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cancelled Date"
+          },
+          "created_date": {
+            "format": "date-time",
+            "title": "Created Date",
+            "type": "string"
+          },
+          "updated_date": {
+            "format": "date-time",
+            "title": "Updated Date",
+            "type": "string"
+          },
+          "is_deleted": {
+            "title": "Is Deleted",
+            "type": "boolean"
+          },
+          "waitlist_position": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Waitlist Position"
+          },
+          "otf_class": {
+            "$ref": "#/components/schemas/OtfClass"
+          },
+          "is_home_studio": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Custom helper field to determine if at home studio",
+            "title": "Is Home Studio"
+          },
+          "class_booking_id": {
+            "description": "Not used by API",
+            "title": "Class Booking Id",
+            "type": "integer"
+          },
+          "class_id": {
+            "description": "Not used by API",
+            "title": "Class Id",
+            "type": "integer"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "mbo_class_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Class Id"
+          },
+          "mbo_member_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Member Id"
+          },
+          "mbo_sync_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Sync Message"
+          },
+          "mbo_visit_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Visit Id"
+          },
+          "mbo_waitlist_entry_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mbo Waitlist Entry Id"
+          },
+          "member_id": {
+            "description": "Not used by API",
+            "title": "Member Id",
+            "type": "integer"
+          },
+          "studio_id": {
+            "description": "Not used by API",
+            "title": "Studio Id",
+            "type": "integer"
+          },
+          "updated_by": {
+            "title": "Updated By",
+            "type": "string"
+          }
+        },
+        "required": [
+          "booking_uuid",
+          "is_intro",
+          "status",
+          "created_date",
+          "updated_date",
+          "is_deleted",
+          "otf_class",
+          "class_booking_id",
+          "class_id",
+          "created_by",
+          "member_id",
+          "studio_id",
+          "updated_by"
+        ],
+        "title": "Booking",
+        "type": "object"
+      },
+      "BookingV2": {
+        "properties": {
+          "booking_id": {
+            "description": "The booking ID used to cancel the booking - must be canceled through new endpoint",
+            "title": "Booking Id",
+            "type": "string"
+          },
+          "member_uuid": {
+            "title": "Member Uuid",
+            "type": "string"
+          },
+          "service_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Represents tier of member",
+            "title": "Service Name"
+          },
+          "cross_regional": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cross Regional"
+          },
+          "intro": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Intro"
+          },
+          "checked_in": {
+            "title": "Checked In",
+            "type": "boolean"
+          },
+          "canceled": {
+            "title": "Canceled",
+            "type": "boolean"
+          },
+          "late_canceled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Late Canceled"
+          },
+          "canceled_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Canceled At"
+          },
+          "ratable": {
+            "title": "Ratable",
+            "type": "boolean"
+          },
+          "otf_class": {
+            "$ref": "#/components/schemas/BookingV2Class"
+          },
+          "workout": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BookingV2Workout"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "coach_rating": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rating"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "class_rating": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rating"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "paying_studio_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Paying Studio Id"
+          },
+          "mbo_booking_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mbo Booking Id"
+          },
+          "mbo_unique_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mbo Unique Id"
+          },
+          "mbo_paying_unique_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mbo Paying Unique Id"
+          },
+          "person_id": {
+            "title": "Person Id",
+            "type": "string"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Date the booking was created in the system",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Date the booking was updated in the system",
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "booking_id",
+          "member_uuid",
+          "checked_in",
+          "canceled",
+          "ratable",
+          "otf_class",
+          "person_id"
+        ],
+        "title": "BookingV2",
+        "type": "object"
+      },
+      "BookingV2Class": {
+        "properties": {
+          "class_id": {
+            "description": "Matches the `class_id` attribute of the OtfClass model",
+            "title": "Class Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "class_type": {
+            "$ref": "#/components/schemas/ClassType"
+          },
+          "starts_at": {
+            "description": "The start time of the class. Reflects local time, but the object does not have a timezone.",
+            "format": "date-time",
+            "title": "Starts At",
+            "type": "string"
+          },
+          "studio": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BookingV2Studio"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "coach": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Coach"
+          },
+          "class_uuid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Only present when class is ratable",
+            "title": "Class Uuid"
+          },
+          "starts_at_utc": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Starts At Utc"
+          }
+        },
+        "required": [
+          "class_id",
+          "name",
+          "class_type",
+          "starts_at"
+        ],
+        "title": "BookingV2Class",
+        "type": "object"
+      },
+      "ChallengeTracker": {
+        "properties": {
+          "programs": {
+            "items": {
+              "$ref": "#/components/schemas/Program"
+            },
+            "title": "Programs",
+            "type": "array"
+          },
+          "challenges": {
+            "items": {
+              "$ref": "#/components/schemas/Challenge"
+            },
+            "title": "Challenges",
+            "type": "array"
+          },
+          "benchmarks": {
+            "items": {
+              "$ref": "#/components/schemas/Benchmark"
+            },
+            "title": "Benchmarks",
+            "type": "array"
+          }
+        },
+        "title": "ChallengeTracker",
+        "type": "object"
+      },
+      "EmailNotificationSettings": {
+        "properties": {
+          "is_system_email_opt_in": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is System Email Opt In"
+          },
+          "is_promotional_email_opt_in": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Promotional Email Opt In"
+          },
+          "is_transactional_email_opt_in": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Transactional Email Opt In"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Email"
+          }
+        },
+        "title": "EmailNotificationSettings",
+        "type": "object"
+      },
+      "FitnessBenchmark": {
+        "properties": {
+          "challenge_category_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Category Id"
+          },
+          "challenge_sub_category_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Sub Category Id"
+          },
+          "equipment_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EquipmentType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "equipment_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Equipment Name"
+          },
+          "metric_entry": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetricEntry"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "challenge_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Name"
+          },
+          "best_record": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Best Record"
+          },
+          "last_record": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Last Record"
+          },
+          "previous_record": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Previous Record"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Unit"
+          },
+          "goals": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Goal"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "challenge_histories": {
+            "items": {
+              "$ref": "#/components/schemas/ChallengeHistory"
+            },
+            "title": "Challenge Histories",
+            "type": "array"
+          }
+        },
+        "title": "FitnessBenchmark",
+        "type": "object"
+      },
+      "InStudioStatsData": {
+        "properties": {
+          "calories": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Calories"
+          },
+          "splat_point": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Splat Point"
+          },
+          "total_black_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Black Zone"
+          },
+          "total_blue_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Blue Zone"
+          },
+          "total_green_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Green Zone"
+          },
+          "total_orange_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Orange Zone"
+          },
+          "total_red_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Red Zone"
+          },
+          "workout_duration": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Workout Duration"
+          },
+          "step_count": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Step Count"
+          },
+          "treadmill_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Treadmill Distance"
+          },
+          "treadmill_elevation_gained": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Treadmill Elevation Gained"
+          },
+          "rower_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Rower Distance"
+          },
+          "rower_watt": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Rower Watt"
+          }
+        },
+        "title": "InStudioStatsData",
+        "type": "object"
+      },
+      "MemberDetail": {
+        "properties": {
+          "member_uuid": {
+            "title": "Member Uuid",
+            "type": "string"
+          },
+          "cognito_id": {
+            "description": "Cognito user ID, not necessary for end users. Also on OtfUser object.",
+            "title": "Cognito Id",
+            "type": "string"
+          },
+          "home_studio": {
+            "$ref": "#/components/schemas/StudioDetail"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/MemberProfile"
+          },
+          "class_summary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MemberClassSummary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "addresses": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Address"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Addresses"
+          },
+          "studio_display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The value that is displayed on tread/rower tablets and OTBeat screens",
+            "title": "Studio Display Name"
+          },
+          "first_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Last Name"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Email"
+          },
+          "phone_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Phone Number"
+          },
+          "birth_day": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Birth Day"
+          },
+          "gender": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Gender"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Locale"
+          },
+          "weight": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Weight"
+          },
+          "weight_units": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Weight Units"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Height"
+          },
+          "height_units": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Height Units"
+          },
+          "mbo_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Id"
+          },
+          "mbo_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Status"
+          },
+          "mbo_studio_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Studio Id"
+          },
+          "mbo_unique_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Unique Id"
+          },
+          "created_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Created By"
+          },
+          "home_studio_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Not used by API",
+            "title": "Home Studio Id"
+          },
+          "member_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Not used by API",
+            "title": "Member Id"
+          },
+          "otf_acs_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Otf Acs Id"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Updated By"
+          },
+          "created_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Created Date"
+          },
+          "updated_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Updated Date"
+          },
+          "address_line1": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Address Line1"
+          },
+          "address_line2": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Address Line2"
+          },
+          "alternate_emails": {
+            "default": null,
+            "title": "Alternate Emails",
+            "type": "null"
+          },
+          "cc_last4": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cc Last4"
+          },
+          "cc_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cc Type"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "City"
+          },
+          "home_phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Home Phone"
+          },
+          "intro_neccessary": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Intro Neccessary"
+          },
+          "is_deleted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Deleted"
+          },
+          "is_member_verified": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Member Verified"
+          },
+          "lead_prospect": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lead Prospect"
+          },
+          "max_hr": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Also found in member_profile",
+            "title": "Max Hr"
+          },
+          "online_signup": {
+            "default": null,
+            "title": "Online Signup",
+            "type": "null"
+          },
+          "phone_type": {
+            "default": null,
+            "title": "Phone Type",
+            "type": "null"
+          },
+          "postal_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Postal Code"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "State"
+          },
+          "work_phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Work Phone"
+          },
+          "year_imported": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Year Imported"
+          }
+        },
+        "required": [
+          "member_uuid",
+          "cognito_id",
+          "home_studio",
+          "profile"
+        ],
+        "title": "MemberDetail",
+        "type": "object"
+      },
+      "MemberMembership": {
+        "properties": {
+          "payment_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Payment Date"
+          },
+          "active_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Active Date"
+          },
+          "expiration_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Expiration Date"
+          },
+          "current": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Current"
+          },
+          "count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Count"
+          },
+          "remaining": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Remaining"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Name"
+          },
+          "updated_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Updated Date"
+          },
+          "created_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Created Date"
+          },
+          "is_deleted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Deleted"
+          },
+          "member_membership_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Member Membership Id"
+          },
+          "member_membership_uuid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Member Membership Uuid"
+          },
+          "membership_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Membership Id"
+          },
+          "member_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Member Id"
+          },
+          "mbo_description_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mbo Description Id"
+          },
+          "created_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Created By"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Updated By"
+          }
+        },
+        "title": "MemberMembership",
+        "type": "object"
+      },
+      "MemberPurchase": {
+        "properties": {
+          "purchase_uuid": {
+            "title": "Purchase Uuid",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Name"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Price"
+          },
+          "purchase_date_time": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Purchase Date Time"
+          },
+          "purchase_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Purchase Type"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Quantity"
+          },
+          "studio": {
+            "$ref": "#/components/schemas/StudioDetail"
+          },
+          "member_fee_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Member Fee Id"
+          },
+          "member_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Member Id"
+          },
+          "member_membership_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Member Membership Id"
+          },
+          "member_purchase_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Member Purchase Id"
+          },
+          "member_service_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Member Service Id"
+          },
+          "pos_contract_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pos Contract Id"
+          },
+          "pos_description_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pos Description Id"
+          },
+          "pos_pmt_ref_no": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pos Pmt Ref No"
+          },
+          "pos_product_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pos Product Id"
+          },
+          "pos_sale_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pos Sale Id"
+          },
+          "studio_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Studio Id"
+          }
+        },
+        "required": [
+          "purchase_uuid",
+          "studio",
+          "member_id",
+          "member_purchase_id",
+          "pos_product_id",
+          "pos_sale_id",
+          "studio_id"
+        ],
+        "title": "MemberPurchase",
+        "type": "object"
+      },
+      "OtfClass": {
+        "properties": {
+          "class_uuid": {
+            "description": "The OTF class UUID",
+            "title": "Class Uuid",
+            "type": "string"
+          },
+          "class_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Matches new booking endpoint class id",
+            "title": "Class Id"
+          },
+          "name": {
+            "description": "The name of the class",
+            "title": "Name",
+            "type": "string"
+          },
+          "class_type": {
+            "$ref": "#/components/schemas/ClassType"
+          },
+          "coach": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Coach"
+          },
+          "ends_at": {
+            "description": "The end time of the class. Reflects local time, but the object does not have a timezone.",
+            "format": "date-time",
+            "title": "Ends At",
+            "type": "string"
+          },
+          "starts_at": {
+            "description": "The start time of the class. Reflects local time, but the object does not have a timezone.",
+            "format": "date-time",
+            "title": "Starts At",
+            "type": "string"
+          },
+          "studio": {
+            "$ref": "#/components/schemas/StudioDetail"
+          },
+          "booking_capacity": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Booking Capacity"
+          },
+          "full": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Full"
+          },
+          "max_capacity": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Capacity"
+          },
+          "waitlist_available": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Waitlist Available"
+          },
+          "waitlist_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The number of people on the waitlist",
+            "title": "Waitlist Size"
+          },
+          "is_booked": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Custom helper field to determine if class is already booked",
+            "title": "Is Booked"
+          },
+          "is_cancelled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Cancelled"
+          },
+          "is_home_studio": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Custom helper field to determine if at home studio",
+            "title": "Is Home Studio"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Created At"
+          },
+          "ends_at_utc": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ends At Utc"
+          },
+          "mbo_class_description_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Class Description Id"
+          },
+          "mbo_class_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Class Id"
+          },
+          "mbo_class_schedule_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Class Schedule Id"
+          },
+          "starts_at_utc": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Starts At Utc"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "class_uuid",
+          "name",
+          "class_type",
+          "ends_at",
+          "starts_at",
+          "studio"
+        ],
+        "title": "OtfClass",
+        "type": "object"
+      },
+      "OutOfStudioWorkoutHistory": {
+        "properties": {
+          "member_uuid": {
+            "title": "Member Uuid",
+            "type": "string"
+          },
+          "workout_uuid": {
+            "title": "Workout Uuid",
+            "type": "string"
+          },
+          "workout_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Workout Date"
+          },
+          "start_time": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Start Time"
+          },
+          "end_time": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "End Time"
+          },
+          "duration": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Duration"
+          },
+          "duration_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Duration Unit"
+          },
+          "total_calories": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Calories"
+          },
+          "hr_percent_max": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Hr Percent Max"
+          },
+          "distance_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Distance Unit"
+          },
+          "total_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Distance"
+          },
+          "splat_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Splat Points"
+          },
+          "target_heart_rate": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Target Heart Rate"
+          },
+          "total_steps": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Steps"
+          },
+          "has_detailed_data": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Has Detailed Data"
+          },
+          "avg_heartrate": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Avg Heartrate"
+          },
+          "max_heartrate": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Heartrate"
+          },
+          "workout_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Workout Type"
+          },
+          "red_zone_seconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Red Zone Seconds"
+          },
+          "orange_zone_seconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Orange Zone Seconds"
+          },
+          "green_zone_seconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Green Zone Seconds"
+          },
+          "blue_zone_seconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Blue Zone Seconds"
+          },
+          "grey_zone_seconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Grey Zone Seconds"
+          }
+        },
+        "required": [
+          "member_uuid",
+          "workout_uuid"
+        ],
+        "title": "OutOfStudioWorkoutHistory",
+        "type": "object"
+      },
+      "OutStudioStatsData": {
+        "properties": {
+          "calories": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Calories"
+          },
+          "splat_point": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Splat Point"
+          },
+          "total_black_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Black Zone"
+          },
+          "total_blue_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Blue Zone"
+          },
+          "total_green_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Green Zone"
+          },
+          "total_orange_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Orange Zone"
+          },
+          "total_red_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Red Zone"
+          },
+          "workout_duration": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Workout Duration"
+          },
+          "step_count": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Step Count"
+          },
+          "walking_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Walking Distance"
+          },
+          "running_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Running Distance"
+          },
+          "cycling_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cycling Distance"
+          }
+        },
+        "title": "OutStudioStatsData",
+        "type": "object"
+      },
+      "PerformanceSummary": {
+        "description": "Represents a workout performance summary - much of the same data as in the app, but not all.\n\nYou likely want to use the `Workout` model and `get_workouts` method instead.",
+        "properties": {
+          "performance_summary_id": {
+            "description": "Unique identifier for this performance summary",
+            "title": "Performance Summary Id",
+            "type": "string"
+          },
+          "class_history_uuid": {
+            "description": "Same as performance_summary_id",
+            "title": "Class History Uuid",
+            "type": "string"
+          },
+          "ratable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ratable"
+          },
+          "calories_burned": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Calories Burned"
+          },
+          "splat_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Splat Points"
+          },
+          "step_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Step Count"
+          },
+          "zone_time_minutes": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ZoneTimeMinutes"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "heart_rate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HeartRate"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "rower_data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rower"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "treadmill_data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Treadmill"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "performance_summary_id",
+          "class_history_uuid"
+        ],
+        "title": "PerformanceSummary",
+        "type": "object"
+      },
+      "SmsNotificationSettings": {
+        "properties": {
+          "is_promotional_sms_opt_in": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Promotional Sms Opt In"
+          },
+          "is_transactional_sms_opt_in": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Transactional Sms Opt In"
+          },
+          "is_promotional_phone_opt_in": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Promotional Phone Opt In"
+          },
+          "is_transactional_phone_opt_in": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Transactional Phone Opt In"
+          }
+        },
+        "title": "SmsNotificationSettings",
+        "type": "object"
+      },
+      "StatsResponse": {
+        "properties": {
+          "all_stats": {
+            "$ref": "#/components/schemas/TimeStats_AllStatsData_"
+          },
+          "in_studio": {
+            "$ref": "#/components/schemas/TimeStats_InStudioStatsData_"
+          },
+          "out_studio": {
+            "$ref": "#/components/schemas/TimeStats_OutStudioStatsData_"
+          }
+        },
+        "required": [
+          "all_stats",
+          "in_studio",
+          "out_studio"
+        ],
+        "title": "StatsResponse",
+        "type": "object"
+      },
+      "StudioDetail": {
+        "properties": {
+          "studio_uuid": {
+            "description": "The OTF studio UUID",
+            "title": "Studio Uuid",
+            "type": "string"
+          },
+          "contact_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Contact Email"
+          },
+          "distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Distance from latitude and longitude provided to `search_studios_by_geo` method,              NULL if that method was not used",
+            "title": "Distance"
+          },
+          "location": {
+            "$ref": "#/components/schemas/StudioLocation"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Name"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StudioStatus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Active, Temporarily Closed, Coming Soon"
+          },
+          "time_zone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Time Zone"
+          },
+          "accepts_ach": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Accepts Ach"
+          },
+          "accepts_american_express": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Accepts American Express"
+          },
+          "accepts_discover": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Accepts Discover"
+          },
+          "accepts_visa_master_card": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Accepts Visa Master Card"
+          },
+          "allows_cr_waitlist": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Allows Cr Waitlist"
+          },
+          "allows_dashboard_access": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Allows Dashboard Access"
+          },
+          "is_crm": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Crm"
+          },
+          "is_integrated": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Always 'True'",
+            "title": "Is Integrated"
+          },
+          "is_mobile": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Mobile"
+          },
+          "is_otbeat": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Otbeat"
+          },
+          "is_web": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Web"
+          },
+          "sms_package_enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Sms Package Enabled"
+          },
+          "studio_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Not used by API",
+            "title": "Studio Id"
+          },
+          "mbo_studio_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Studio Id"
+          },
+          "open_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Open Date"
+          },
+          "pricing_level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Pro, Legacy, Accelerate, or empty",
+            "title": "Pricing Level"
+          },
+          "re_open_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Re Open Date"
+          },
+          "studio_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Studio Number"
+          },
+          "studio_physical_location_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Studio Physical Location Id"
+          },
+          "studio_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Studio Token"
+          },
+          "studio_type_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Studio Type Id"
+          }
+        },
+        "required": [
+          "studio_uuid"
+        ],
+        "title": "StudioDetail",
+        "type": "object"
+      },
+      "StudioService": {
+        "properties": {
+          "studio": {
+            "$ref": "#/components/schemas/StudioDetail"
+          },
+          "service_uuid": {
+            "title": "Service Uuid",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Name"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Price"
+          },
+          "qty": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Qty"
+          },
+          "online_price": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Online Price"
+          },
+          "tax_rate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tax Rate"
+          },
+          "current": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Current"
+          },
+          "is_deleted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Deleted"
+          },
+          "created_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Created Date"
+          },
+          "updated_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Updated Date"
+          },
+          "mbo_program_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mbo Program Id"
+          },
+          "mbo_description_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mbo Description Id"
+          },
+          "mbo_product_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mbo Product Id"
+          },
+          "service_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Service Id"
+          },
+          "studio_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Studio Id"
+          },
+          "created_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Created By"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Updated By"
+          },
+          "is_web": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Web"
+          },
+          "is_crm": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Crm"
+          },
+          "is_mobile": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Mobile"
+          }
+        },
+        "required": [
+          "studio",
+          "service_uuid"
+        ],
+        "title": "StudioService",
+        "type": "object"
+      },
+      "Telemetry": {
+        "properties": {
+          "member_uuid": {
+            "title": "Member Uuid",
+            "type": "string"
+          },
+          "performance_summary_id": {
+            "description": "The ID of the performance summary this telemetry item belongs to.",
+            "title": "Performance Summary Id",
+            "type": "string"
+          },
+          "class_history_uuid": {
+            "description": "The same as performance_summary_id.",
+            "title": "Class History Uuid",
+            "type": "string"
+          },
+          "class_start_time": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Class Start Time"
+          },
+          "max_hr": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Hr"
+          },
+          "zones": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Zones"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The zones associated with the telemetry."
+          },
+          "window_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Window Size"
+          },
+          "telemetry": {
+            "items": {
+              "$ref": "#/components/schemas/TelemetryItem"
+            },
+            "title": "Telemetry",
+            "type": "array"
+          }
+        },
+        "required": [
+          "member_uuid",
+          "performance_summary_id",
+          "class_history_uuid"
+        ],
+        "title": "Telemetry",
+        "type": "object"
+      },
+      "TelemetryHistoryItem": {
+        "properties": {
+          "max_hr_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Hr Type"
+          },
+          "max_hr_value": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Hr Value"
+          },
+          "zones": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Zones"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "change_from_previous": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Change From Previous"
+          },
+          "change_bucket": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Change Bucket"
+          },
+          "assigned_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Assigned At"
+          }
+        },
+        "title": "TelemetryHistoryItem",
+        "type": "object"
+      },
+      "TimeStats": {
+        "properties": {
+          "last_year": {
+            "$ref": "#/components/schemas/OtfItemBase"
+          },
+          "this_year": {
+            "$ref": "#/components/schemas/OtfItemBase"
+          },
+          "last_month": {
+            "$ref": "#/components/schemas/OtfItemBase"
+          },
+          "this_month": {
+            "$ref": "#/components/schemas/OtfItemBase"
+          },
+          "last_week": {
+            "$ref": "#/components/schemas/OtfItemBase"
+          },
+          "this_week": {
+            "$ref": "#/components/schemas/OtfItemBase"
+          },
+          "all_time": {
+            "$ref": "#/components/schemas/OtfItemBase"
+          }
+        },
+        "required": [
+          "last_year",
+          "this_year",
+          "last_month",
+          "this_month",
+          "last_week",
+          "this_week",
+          "all_time"
+        ],
+        "title": "TimeStats",
+        "type": "object"
+      },
+      "Workout": {
+        "description": "Represents a workout - combines the performance summary, data from the new bookings endpoint, and telemetry data.\n\nThe final product contains all the performance summary data, the detailed data over time, as well as the class,\ncoach, studio, and rating data from the new endpoint.\n\nThis should match the data that is shown in the OTF app after a workout.",
+        "properties": {
+          "performance_summary_id": {
+            "default": "unknown",
+            "description": "Unique identifier for this performance summary",
+            "title": "Performance Summary Id",
+            "type": "string"
+          },
+          "class_history_uuid": {
+            "default": "unknown",
+            "description": "Same as performance_summary_id",
+            "title": "Class History Uuid",
+            "type": "string"
+          },
+          "booking_id": {
+            "description": "The booking id for the new bookings endpoint.",
+            "title": "Booking Id",
+            "type": "string"
+          },
+          "class_uuid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Used by the ratings endpoint - seems to fall off after a few months",
+            "title": "Class Uuid"
+          },
+          "coach": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "First name of the coach",
+            "title": "Coach"
+          },
+          "ratable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ratable"
+          },
+          "calories_burned": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Calories Burned"
+          },
+          "splat_points": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Splat Points"
+          },
+          "step_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Step Count"
+          },
+          "zone_time_minutes": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ZoneTimeMinutes"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "heart_rate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HeartRate"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "active_time_seconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Active Time Seconds"
+          },
+          "rower_data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rower"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "treadmill_data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Treadmill"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "class_rating": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rating"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "coach_rating": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Rating"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "otf_class": {
+            "$ref": "#/components/schemas/BookingV2Class"
+          },
+          "studio": {
+            "$ref": "#/components/schemas/BookingV2Studio"
+          },
+          "telemetry": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Telemetry"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "booking_id",
+          "otf_class",
+          "studio"
+        ],
+        "title": "Workout",
+        "type": "object"
+      },
+      "BodyFatMass": {
+        "properties": {
+          "control": {
+            "title": "Control",
+            "type": "number"
+          },
+          "left_arm": {
+            "title": "Left Arm",
+            "type": "number"
+          },
+          "left_leg": {
+            "title": "Left Leg",
+            "type": "number"
+          },
+          "right_arm": {
+            "title": "Right Arm",
+            "type": "number"
+          },
+          "right_leg": {
+            "title": "Right Leg",
+            "type": "number"
+          },
+          "trunk": {
+            "title": "Trunk",
+            "type": "number"
+          }
+        },
+        "required": [
+          "control",
+          "left_arm",
+          "left_leg",
+          "right_arm",
+          "right_leg",
+          "trunk"
+        ],
+        "title": "BodyFatMass",
+        "type": "object"
+      },
+      "BodyFatMassPercent": {
+        "properties": {
+          "left_arm": {
+            "title": "Left Arm",
+            "type": "number"
+          },
+          "left_leg": {
+            "title": "Left Leg",
+            "type": "number"
+          },
+          "right_arm": {
+            "title": "Right Arm",
+            "type": "number"
+          },
+          "right_leg": {
+            "title": "Right Leg",
+            "type": "number"
+          },
+          "trunk": {
+            "title": "Trunk",
+            "type": "number"
+          }
+        },
+        "required": [
+          "left_arm",
+          "left_leg",
+          "right_arm",
+          "right_leg",
+          "trunk"
+        ],
+        "title": "BodyFatMassPercent",
+        "type": "object"
+      },
+      "ExtraCellularWater": {
+        "properties": {
+          "right_arm": {
+            "title": "Right Arm",
+            "type": "number"
+          },
+          "left_arm": {
+            "title": "Left Arm",
+            "type": "number"
+          },
+          "trunk": {
+            "title": "Trunk",
+            "type": "number"
+          },
+          "right_leg": {
+            "title": "Right Leg",
+            "type": "number"
+          },
+          "left_leg": {
+            "title": "Left Leg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "right_arm",
+          "left_arm",
+          "trunk",
+          "right_leg",
+          "left_leg"
+        ],
+        "title": "ExtraCellularWater",
+        "type": "object"
+      },
+      "ExtraCellularWaterOverTotalBodyWater": {
+        "properties": {
+          "right_arm": {
+            "title": "Right Arm",
+            "type": "number"
+          },
+          "left_arm": {
+            "title": "Left Arm",
+            "type": "number"
+          },
+          "trunk": {
+            "title": "Trunk",
+            "type": "number"
+          },
+          "right_leg": {
+            "title": "Right Leg",
+            "type": "number"
+          },
+          "left_leg": {
+            "title": "Left Leg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "right_arm",
+          "left_arm",
+          "trunk",
+          "right_leg",
+          "left_leg"
+        ],
+        "title": "ExtraCellularWaterOverTotalBodyWater",
+        "type": "object"
+      },
+      "IntraCellularWater": {
+        "properties": {
+          "right_arm": {
+            "title": "Right Arm",
+            "type": "number"
+          },
+          "left_arm": {
+            "title": "Left Arm",
+            "type": "number"
+          },
+          "trunk": {
+            "title": "Trunk",
+            "type": "number"
+          },
+          "right_leg": {
+            "title": "Right Leg",
+            "type": "number"
+          },
+          "left_leg": {
+            "title": "Left Leg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "right_arm",
+          "left_arm",
+          "trunk",
+          "right_leg",
+          "left_leg"
+        ],
+        "title": "IntraCellularWater",
+        "type": "object"
+      },
+      "LeanBodyMass": {
+        "properties": {
+          "left_arm": {
+            "title": "Left Arm",
+            "type": "number"
+          },
+          "left_leg": {
+            "title": "Left Leg",
+            "type": "number"
+          },
+          "right_arm": {
+            "title": "Right Arm",
+            "type": "number"
+          },
+          "right_leg": {
+            "title": "Right Leg",
+            "type": "number"
+          },
+          "trunk": {
+            "title": "Trunk",
+            "type": "number"
+          }
+        },
+        "required": [
+          "left_arm",
+          "left_leg",
+          "right_arm",
+          "right_leg",
+          "trunk"
+        ],
+        "title": "LeanBodyMass",
+        "type": "object"
+      },
+      "LeanBodyMassPercent": {
+        "properties": {
+          "left_arm": {
+            "title": "Left Arm",
+            "type": "number"
+          },
+          "left_leg": {
+            "title": "Left Leg",
+            "type": "number"
+          },
+          "right_arm": {
+            "title": "Right Arm",
+            "type": "number"
+          },
+          "right_leg": {
+            "title": "Right Leg",
+            "type": "number"
+          },
+          "trunk": {
+            "title": "Trunk",
+            "type": "number"
+          }
+        },
+        "required": [
+          "left_arm",
+          "left_leg",
+          "right_arm",
+          "right_leg",
+          "trunk"
+        ],
+        "title": "LeanBodyMassPercent",
+        "type": "object"
+      },
+      "TotalBodyWeight": {
+        "properties": {
+          "right_arm": {
+            "title": "Right Arm",
+            "type": "number"
+          },
+          "left_arm": {
+            "title": "Left Arm",
+            "type": "number"
+          },
+          "trunk": {
+            "title": "Trunk",
+            "type": "number"
+          },
+          "right_leg": {
+            "title": "Right Leg",
+            "type": "number"
+          },
+          "left_leg": {
+            "title": "Left Leg",
+            "type": "number"
+          }
+        },
+        "required": [
+          "right_arm",
+          "left_arm",
+          "trunk",
+          "right_leg",
+          "left_leg"
+        ],
+        "title": "TotalBodyWeight",
+        "type": "object"
+      },
+      "BookingStatus": {
+        "enum": [
+          "Pending",
+          "Requested",
+          "Booked",
+          "Cancelled",
+          "Late Cancelled",
+          "Waitlisted",
+          "Checked In",
+          "Checkin Pending",
+          "Checkin Requested",
+          "Confirmed",
+          "Checkin Cancelled",
+          "Cancel Checkin Pending",
+          "Cancel Checkin Requested"
+        ],
+        "title": "BookingStatus",
+        "type": "string"
+      },
+      "Coach": {
+        "properties": {
+          "coach_uuid": {
+            "title": "Coach Uuid",
+            "type": "string"
+          },
+          "first_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Last Name"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "coach_uuid",
+          "name"
+        ],
+        "title": "Coach",
+        "type": "object"
+      },
+      "StudioLocation": {
+        "properties": {
+          "address_line1": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Address Line1"
+          },
+          "address_line2": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Address Line2"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "City"
+          },
+          "postal_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Postal Code"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "State"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Country"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Region"
+          },
+          "country_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Country Id"
+          },
+          "phone_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Phone Number"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Latitude"
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Longitude"
+          },
+          "physical_region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Physical Region"
+          },
+          "physical_country_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Physical Country Id"
+          }
+        },
+        "title": "StudioLocation",
+        "type": "object"
+      },
+      "StudioStatus": {
+        "enum": [
+          "OTHER",
+          "Active",
+          "Inactive",
+          "Coming Soon",
+          "Temporarily Closed",
+          "Permanently Closed",
+          "Unknown"
+        ],
+        "title": "StudioStatus",
+        "type": "string"
+      },
+      "Address": {
+        "properties": {
+          "address_line1": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Address Line1"
+          },
+          "address_line2": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Address Line2"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "City"
+          },
+          "postal_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Postal Code"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "State"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Country"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Region"
+          },
+          "country_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Country Id"
+          }
+        },
+        "title": "Address",
+        "type": "object"
+      },
+      "BookingV2Studio": {
+        "properties": {
+          "phone_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Phone Number"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Latitude"
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Longitude"
+          },
+          "studio_uuid": {
+            "title": "Studio Uuid",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Name"
+          },
+          "time_zone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Time Zone"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Email"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "currency_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Currency Code"
+          },
+          "mbo_studio_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "MindBody attr",
+            "title": "Mbo Studio Id"
+          }
+        },
+        "required": [
+          "studio_uuid"
+        ],
+        "title": "BookingV2Studio",
+        "type": "object"
+      },
+      "BookingV2Workout": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "performance_summary_id": {
+            "description": "Alias to id, to simplify the API",
+            "title": "Performance Summary Id",
+            "type": "string"
+          },
+          "calories_burned": {
+            "title": "Calories Burned",
+            "type": "integer"
+          },
+          "splat_points": {
+            "title": "Splat Points",
+            "type": "integer"
+          },
+          "step_count": {
+            "title": "Step Count",
+            "type": "integer"
+          },
+          "active_time_seconds": {
+            "title": "Active Time Seconds",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "performance_summary_id",
+          "calories_burned",
+          "splat_points",
+          "step_count",
+          "active_time_seconds"
+        ],
+        "title": "BookingV2Workout",
+        "type": "object"
+      },
+      "ClassType": {
+        "enum": [
+          "ORANGE_60",
+          "ORANGE_90",
+          "OTHER",
+          "STRENGTH_50",
+          "TREAD_50"
+        ],
+        "title": "ClassType",
+        "type": "string"
+      },
+      "Rating": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "description",
+          "value"
+        ],
+        "title": "Rating",
+        "type": "object"
+      },
+      "Benchmark": {
+        "description": "A benchmark represents a specific workout that members can participate in.",
+        "properties": {
+          "equipment_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EquipmentType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "equipment_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Equipment Name"
+          },
+          "years": {
+            "items": {
+              "$ref": "#/components/schemas/Year"
+            },
+            "title": "Years",
+            "type": "array"
+          }
+        },
+        "title": "Benchmark",
+        "type": "object"
+      },
+      "Challenge": {
+        "description": "A challenge represents a single day or event that members can participate in.",
+        "properties": {
+          "challenge_category_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Category Id"
+          },
+          "challenge_sub_category_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Sub Category Id"
+          },
+          "challenge_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Name"
+          },
+          "years": {
+            "items": {
+              "$ref": "#/components/schemas/Year"
+            },
+            "title": "Years",
+            "type": "array"
+          }
+        },
+        "title": "Challenge",
+        "type": "object"
+      },
+      "EquipmentType": {
+        "description": "Enum representing the type of equipment used in workouts.",
+        "enum": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "title": "EquipmentType",
+        "type": "integer"
+      },
+      "Program": {
+        "description": "A program represents multi-day/week challenges that members can participate in.",
+        "properties": {
+          "challenge_category_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Category Id"
+          },
+          "challenge_sub_category_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Sub Category Id"
+          },
+          "challenge_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Name"
+          },
+          "years": {
+            "items": {
+              "$ref": "#/components/schemas/Year"
+            },
+            "title": "Years",
+            "type": "array"
+          }
+        },
+        "title": "Program",
+        "type": "object"
+      },
+      "Year": {
+        "properties": {
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Year"
+          },
+          "is_participated": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Participated"
+          },
+          "in_progress": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "In Progress"
+          }
+        },
+        "title": "Year",
+        "type": "object"
+      },
+      "BenchmarkHistory": {
+        "properties": {
+          "studio_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Studio Name"
+          },
+          "equipment_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EquipmentType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "class_time": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Class Time"
+          },
+          "challenge_sub_category_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Challenge Sub Category Id"
+          },
+          "weight_lbs": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Weight Lbs"
+          },
+          "class_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Class Name"
+          },
+          "coach_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Coach Name"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Result"
+          },
+          "workout_type_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Workout Type Id"
+          },
+          "workout_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Workout Id"
+          },
+          "linked_challenges": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Linked Challenges"
+          },
+          "date_created": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "When the entry was created in database, not useful to users",
+            "title": "Date Created"
+          },
+          "date_updated": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "When the entry was updated in database, not useful to users",
+            "title": "Date Updated"
+          },
+          "class_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Not used by API",
+            "title": "Class Id"
+          },
+          "substitute_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Not used by API, also always seems to be 0",
+            "title": "Substitute Id"
+          }
+        },
+        "title": "BenchmarkHistory",
+        "type": "object"
+      },
+      "ChallengeHistory": {
+        "properties": {
+          "studio_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Studio Name"
+          },
+          "start_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Start Date"
+          },
+          "end_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "End Date"
+          },
+          "total_result": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Result"
+          },
+          "is_finished": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Is Finished"
+          },
+          "benchmark_histories": {
+            "items": {
+              "$ref": "#/components/schemas/BenchmarkHistory"
+            },
+            "title": "Benchmark Histories",
+            "type": "array"
+          },
+          "challenge_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Not used by API",
+            "title": "Challenge Id"
+          },
+          "studio_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Not used by API",
+            "title": "Studio Id"
+          },
+          "challenge_objective": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Always the string 'None'",
+            "title": "Challenge Objective"
+          }
+        },
+        "title": "ChallengeHistory",
+        "type": "object"
+      },
+      "Goal": {
+        "properties": {
+          "goal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Goal"
+          },
+          "goal_period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Goal Period"
+          },
+          "overall_goal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Overall Goal"
+          },
+          "overall_goal_period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Overall Goal Period"
+          },
+          "min_overall": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Min Overall"
+          },
+          "min_overall_period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Min Overall Period"
+          }
+        },
+        "title": "Goal",
+        "type": "object"
+      },
+      "MetricEntry": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Title"
+          },
+          "equipment_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EquipmentType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "entry_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Entry Type"
+          },
+          "metric_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Metric Key"
+          },
+          "min_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Min Value"
+          },
+          "max_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Value"
+          }
+        },
+        "title": "MetricEntry",
+        "type": "object"
+      },
+      "MemberClassSummary": {
+        "properties": {
+          "total_classes_booked": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Classes Booked"
+          },
+          "total_classes_attended": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Classes Attended"
+          },
+          "total_intro_classes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Intro Classes"
+          },
+          "total_ot_live_classes_booked": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Ot Live Classes Booked"
+          },
+          "total_ot_live_classes_attended": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Ot Live Classes Attended"
+          },
+          "total_classes_used_hrm": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Classes Used Hrm"
+          },
+          "total_studios_visited": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Studios Visited"
+          },
+          "first_visit_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "First Visit Date"
+          },
+          "last_class_visited_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Last Class Visited Date"
+          },
+          "last_class_booked_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Last Class Booked Date"
+          },
+          "last_class_studio_visited": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Last Class Studio Visited"
+          }
+        },
+        "title": "MemberClassSummary",
+        "type": "object"
+      },
+      "MemberProfile": {
+        "properties": {
+          "unit_of_measure": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Unit Of Measure"
+          },
+          "max_hr_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Hr Type"
+          },
+          "manual_max_hr": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Manual Max Hr"
+          },
+          "formula_max_hr": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Formula Max Hr"
+          },
+          "automated_hr": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Automated Hr"
+          },
+          "member_profile_uuid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Member Profile Uuid"
+          },
+          "member_optin_flow_type_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Member Optin Flow Type Id"
+          }
+        },
+        "title": "MemberProfile",
+        "type": "object"
+      },
+      "HeartRate": {
+        "properties": {
+          "max_hr": {
+            "title": "Max Hr",
+            "type": "integer"
+          },
+          "peak_hr": {
+            "title": "Peak Hr",
+            "type": "integer"
+          },
+          "peak_hr_percent": {
+            "title": "Peak Hr Percent",
+            "type": "integer"
+          },
+          "avg_hr": {
+            "title": "Avg Hr",
+            "type": "integer"
+          },
+          "avg_hr_percent": {
+            "title": "Avg Hr Percent",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "max_hr",
+          "peak_hr",
+          "peak_hr_percent",
+          "avg_hr",
+          "avg_hr_percent"
+        ],
+        "title": "HeartRate",
+        "type": "object"
+      },
+      "PerformanceMetric": {
+        "properties": {
+          "display_value": {
+            "title": "Display Value"
+          },
+          "display_unit": {
+            "title": "Display Unit",
+            "type": "string"
+          },
+          "metric_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "description": "The raw value of the metric, as a float or int. When time this reflects seconds.",
+            "title": "Metric Value"
+          }
+        },
+        "required": [
+          "display_value",
+          "display_unit",
+          "metric_value"
+        ],
+        "title": "PerformanceMetric",
+        "type": "object"
+      },
+      "Rower": {
+        "properties": {
+          "avg_pace": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "avg_speed": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "max_pace": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "max_speed": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "moving_time": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "total_distance": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "avg_cadence": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "avg_power": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "max_cadence": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          }
+        },
+        "required": [
+          "avg_pace",
+          "avg_speed",
+          "max_pace",
+          "max_speed",
+          "moving_time",
+          "total_distance",
+          "avg_cadence",
+          "avg_power",
+          "max_cadence"
+        ],
+        "title": "Rower",
+        "type": "object"
+      },
+      "Treadmill": {
+        "properties": {
+          "avg_pace": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "avg_speed": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "max_pace": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "max_speed": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "moving_time": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "total_distance": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "avg_incline": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "elevation_gained": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          },
+          "max_incline": {
+            "$ref": "#/components/schemas/PerformanceMetric"
+          }
+        },
+        "required": [
+          "avg_pace",
+          "avg_speed",
+          "max_pace",
+          "max_speed",
+          "moving_time",
+          "total_distance",
+          "avg_incline",
+          "elevation_gained",
+          "max_incline"
+        ],
+        "title": "Treadmill",
+        "type": "object"
+      },
+      "ZoneTimeMinutes": {
+        "properties": {
+          "gray": {
+            "title": "Gray",
+            "type": "integer"
+          },
+          "blue": {
+            "title": "Blue",
+            "type": "integer"
+          },
+          "green": {
+            "title": "Green",
+            "type": "integer"
+          },
+          "orange": {
+            "title": "Orange",
+            "type": "integer"
+          },
+          "red": {
+            "title": "Red",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "gray",
+          "blue",
+          "green",
+          "orange",
+          "red"
+        ],
+        "title": "ZoneTimeMinutes",
+        "type": "object"
+      },
+      "AllStatsData": {
+        "properties": {
+          "calories": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Calories"
+          },
+          "splat_point": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Splat Point"
+          },
+          "total_black_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Black Zone"
+          },
+          "total_blue_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Blue Zone"
+          },
+          "total_green_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Green Zone"
+          },
+          "total_orange_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Orange Zone"
+          },
+          "total_red_zone": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Total Red Zone"
+          },
+          "workout_duration": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Workout Duration"
+          },
+          "step_count": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Step Count"
+          },
+          "treadmill_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Treadmill Distance"
+          },
+          "treadmill_elevation_gained": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Treadmill Elevation Gained"
+          },
+          "rower_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Rower Distance"
+          },
+          "rower_watt": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Rower Watt"
+          },
+          "walking_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Walking Distance"
+          },
+          "running_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Running Distance"
+          },
+          "cycling_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cycling Distance"
+          }
+        },
+        "title": "AllStatsData",
+        "type": "object"
+      },
+      "TimeStats_AllStatsData_": {
+        "properties": {
+          "last_year": {
+            "$ref": "#/components/schemas/AllStatsData"
+          },
+          "this_year": {
+            "$ref": "#/components/schemas/AllStatsData"
+          },
+          "last_month": {
+            "$ref": "#/components/schemas/AllStatsData"
+          },
+          "this_month": {
+            "$ref": "#/components/schemas/AllStatsData"
+          },
+          "last_week": {
+            "$ref": "#/components/schemas/AllStatsData"
+          },
+          "this_week": {
+            "$ref": "#/components/schemas/AllStatsData"
+          },
+          "all_time": {
+            "$ref": "#/components/schemas/AllStatsData"
+          }
+        },
+        "required": [
+          "last_year",
+          "this_year",
+          "last_month",
+          "this_month",
+          "last_week",
+          "this_week",
+          "all_time"
+        ],
+        "title": "TimeStats[AllStatsData]",
+        "type": "object"
+      },
+      "TimeStats_InStudioStatsData_": {
+        "properties": {
+          "last_year": {
+            "$ref": "#/components/schemas/InStudioStatsData"
+          },
+          "this_year": {
+            "$ref": "#/components/schemas/InStudioStatsData"
+          },
+          "last_month": {
+            "$ref": "#/components/schemas/InStudioStatsData"
+          },
+          "this_month": {
+            "$ref": "#/components/schemas/InStudioStatsData"
+          },
+          "last_week": {
+            "$ref": "#/components/schemas/InStudioStatsData"
+          },
+          "this_week": {
+            "$ref": "#/components/schemas/InStudioStatsData"
+          },
+          "all_time": {
+            "$ref": "#/components/schemas/InStudioStatsData"
+          }
+        },
+        "required": [
+          "last_year",
+          "this_year",
+          "last_month",
+          "this_month",
+          "last_week",
+          "this_week",
+          "all_time"
+        ],
+        "title": "TimeStats[InStudioStatsData]",
+        "type": "object"
+      },
+      "TimeStats_OutStudioStatsData_": {
+        "properties": {
+          "last_year": {
+            "$ref": "#/components/schemas/OutStudioStatsData"
+          },
+          "this_year": {
+            "$ref": "#/components/schemas/OutStudioStatsData"
+          },
+          "last_month": {
+            "$ref": "#/components/schemas/OutStudioStatsData"
+          },
+          "this_month": {
+            "$ref": "#/components/schemas/OutStudioStatsData"
+          },
+          "last_week": {
+            "$ref": "#/components/schemas/OutStudioStatsData"
+          },
+          "this_week": {
+            "$ref": "#/components/schemas/OutStudioStatsData"
+          },
+          "all_time": {
+            "$ref": "#/components/schemas/OutStudioStatsData"
+          }
+        },
+        "required": [
+          "last_year",
+          "this_year",
+          "last_month",
+          "this_month",
+          "last_week",
+          "this_week",
+          "all_time"
+        ],
+        "title": "TimeStats[OutStudioStatsData]",
+        "type": "object"
+      },
+      "RowData": {
+        "properties": {
+          "row_speed": {
+            "title": "Row Speed",
+            "type": "number"
+          },
+          "row_pps": {
+            "title": "Row Pps",
+            "type": "number"
+          },
+          "row_spm": {
+            "title": "Row Spm",
+            "type": "number"
+          },
+          "agg_row_distance": {
+            "title": "Agg Row Distance",
+            "type": "integer"
+          },
+          "row_pace": {
+            "title": "Row Pace",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "row_speed",
+          "row_pps",
+          "row_spm",
+          "agg_row_distance",
+          "row_pace"
+        ],
+        "title": "RowData",
+        "type": "object"
+      },
+      "TelemetryItem": {
+        "properties": {
+          "relative_timestamp": {
+            "title": "Relative Timestamp",
+            "type": "integer"
+          },
+          "hr": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Hr"
+          },
+          "agg_splats": {
+            "title": "Agg Splats",
+            "type": "integer"
+          },
+          "agg_calories": {
+            "title": "Agg Calories",
+            "type": "integer"
+          },
+          "timestamp": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The timestamp of the telemetry item, calculated from the class start time and relative timestamp.",
+            "title": "Timestamp"
+          },
+          "tread_data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TreadData"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "row_data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RowData"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "relative_timestamp",
+          "agg_splats",
+          "agg_calories"
+        ],
+        "title": "TelemetryItem",
+        "type": "object"
+      },
+      "TreadData": {
+        "properties": {
+          "tread_speed": {
+            "title": "Tread Speed",
+            "type": "number"
+          },
+          "tread_incline": {
+            "title": "Tread Incline",
+            "type": "number"
+          },
+          "agg_tread_distance": {
+            "title": "Agg Tread Distance",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "tread_speed",
+          "tread_incline",
+          "agg_tread_distance"
+        ],
+        "title": "TreadData",
+        "type": "object"
+      },
+      "Zone": {
+        "properties": {
+          "start_bpm": {
+            "title": "Start Bpm",
+            "type": "integer"
+          },
+          "end_bpm": {
+            "title": "End Bpm",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "start_bpm",
+          "end_bpm"
+        ],
+        "title": "Zone",
+        "type": "object"
+      },
+      "Zones": {
+        "properties": {
+          "gray": {
+            "$ref": "#/components/schemas/Zone"
+          },
+          "blue": {
+            "$ref": "#/components/schemas/Zone"
+          },
+          "green": {
+            "$ref": "#/components/schemas/Zone"
+          },
+          "orange": {
+            "$ref": "#/components/schemas/Zone"
+          },
+          "red": {
+            "$ref": "#/components/schemas/Zone"
+          }
+        },
+        "required": [
+          "gray",
+          "blue",
+          "green",
+          "orange",
+          "red"
+        ],
+        "title": "Zones",
+        "type": "object"
+      },
+      "OtfItemBase": {
+        "properties": {},
+        "title": "OtfItemBase",
+        "type": "object"
+      }
+    }
+  }
+}
