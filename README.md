@@ -1,30 +1,113 @@
-Simple API client for interacting with the OrangeTheory Fitness APIs.
+# OTF API - Monorepo
 
-Review the [documentation](https://otf-api.readthedocs.io/en/stable/).
-
-
-This library allows access to the OrangeTheory API to retrieve workouts and performance data, class schedules, studio information, and bookings.
-
-## Installation
-```bash
-pip install otf-api
-```
+This repository contains both Python and TypeScript libraries for accessing the OrangeTheory Fitness API.
 
 ## Overview
 
-To use the API, you need to create an instance of the `Otf` class. This will authenticate you with the API and allow you to make requests. When the `Otf` object is created it automatically grabs your member details and home studio, to simplify the process of making requests.
+- **Python Library** (`python/`): Source of truth with comprehensive Pydantic models
+- **TypeScript Library** (`typescript/`): Auto-generated client with custom improvements
+- **Shared Schema** (`schema/`): OpenAPI specification generated from Python models
 
-You can either pass an `OtfUser` object to the `OtfClass` or you can pass nothing and allow it to prompt you for your username and password.
+## Quick Start
 
-You can also export environment variables `OTF_EMAIL` and `OTF_PASSWORD` to get these from the environment.
-
-```python
-from otf_api import Otf, OtfUser
-
-otf = Otf()
-
-# OR
-
-otf = Otf(user=OtfUser(<email_address>,<password>))
-
+### Python Library
+```bash
+cd python
+uv sync
+uv run python -c "from otf_api import Otf; print('Python library ready!')"
 ```
+
+### TypeScript Library  
+```bash
+cd typescript
+npm install
+npm run build
+```
+
+## Development
+
+### Setup
+```bash
+# Install Python dependencies
+npm run install:python
+
+# Install TypeScript dependencies  
+npm run install:typescript
+```
+
+### Building
+```bash
+# Build both libraries
+npm run build
+
+# Build individual libraries
+npm run build:python
+npm run build:typescript
+```
+
+### Testing
+```bash
+# Test both libraries
+npm run test
+
+# Test individual libraries
+npm run test:python
+npm run test:typescript
+```
+
+### Schema Generation & Sync
+```bash
+# Generate OpenAPI schema from Python models
+npm run generate-schema
+
+# Generate TypeScript types from schema
+npm run generate-ts
+
+# Full sync: schema -> types
+npm run sync
+```
+
+### Linting
+```bash
+# Lint both codebases
+npm run lint
+
+# Lint individual codebases
+npm run lint:python
+npm run lint:typescript
+```
+
+## Structure
+
+- `python/`: Python library (source of truth)
+  - `src/otf_api/`: Main library code
+  - `tests/`: Python tests
+  - `examples/`: Usage examples
+- `typescript/`: TypeScript library
+  - `src/`: TypeScript source code
+  - `src/generated/`: Auto-generated types
+  - `test/`: TypeScript tests
+- `schema/`: OpenAPI specifications
+- `scripts/`: Build and generation scripts
+- `docs/`: Documentation
+
+## Releases
+
+Both libraries maintain synchronized versions. Python is the source of truth for version numbers.
+
+## Contributing
+
+1. Make changes to Python models (source of truth)
+2. Run `npm run sync` to update TypeScript types
+3. Update TypeScript client code if needed
+4. Test both libraries
+5. Create PR
+
+## Authentication
+
+Both libraries support multiple authentication methods:
+- Environment variables: `OTF_EMAIL` and `OTF_PASSWORD`
+- Direct credentials
+- Interactive prompts
+
+See individual library READMEs for detailed usage instructions.

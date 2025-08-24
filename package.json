@@ -1,0 +1,46 @@
+{
+  "name": "otf-api-monorepo",
+  "version": "0.15.4",
+  "description": "OrangeTheory Fitness API - Python and TypeScript libraries",
+  "private": true,
+  "workspaces": [
+    "typescript"
+  ],
+  "scripts": {
+    "build": "npm run sync && npm run build:python && npm run build:typescript",
+    "build:python": "cd python && uv run python -m build",
+    "build:typescript": "cd typescript && npm run build",
+    "test": "npm run test:generation && npm run test:python && npm run test:typescript", 
+    "test:python": "cd python && uv run pytest",
+    "test:typescript": "cd typescript && npm test",
+    "test:generation": "npm run test:schema-generation && npm run test:ts-generation",
+    "test:schema-generation": "cd python && uv run pytest tests/test_schema_generation.py -v",
+    "test:ts-generation": "cd typescript && npm run test -- schema-generation.test.ts",
+    "lint": "npm run lint:python && npm run lint:typescript",
+    "lint:python": "cd python && uv run ruff check --fix && uv run ruff format",
+    "lint:typescript": "cd typescript && npm run lint:fix",
+    "generate-schema": "cd python && uv run python ../scripts/generate_openapi.py",
+    "generate-ts": "cd typescript && npm run generate-types",
+    "sync": "npm run generate-schema && npm run generate-ts",
+    "validate": "npm run sync && npm run test:generation",
+    "install:python": "cd python && uv sync",
+    "install:typescript": "cd typescript && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NodeJSmith/otf-api.git"
+  },
+  "keywords": [
+    "orangetheory", 
+    "fitness",
+    "api",
+    "python",
+    "typescript",
+    "monorepo"
+  ],
+  "author": "Jessica Smith <j.smith.git1@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

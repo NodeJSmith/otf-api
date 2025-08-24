@@ -1,0 +1,28 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "name": "OTF API TypeScript",
+  "theme": "default",
+  "includeVersion": true,
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "sort": ["source-order"],
+  "categorizeByGroup": true,
+  "groupOrder": [
+    "Classes",
+    "Interfaces", 
+    "Types",
+    "Functions",
+    "Variables"
+  ],
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": true
+  },
+  "excludeInternal": true,
+  "gitRevision": "main",
+  "readme": "README.md",
+  "tsconfig": "tsconfig.json"
+}
