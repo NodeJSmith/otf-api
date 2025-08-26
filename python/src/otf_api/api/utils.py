@@ -305,3 +305,260 @@ def get_json_from_response(response: httpx.Response) -> dict[str, Any]:
         return response.json()
     except JSONDecodeError:
         return {"raw": response.text}
+
+
+def validate_email_format(email: str) -> bool:
+    """Validate if email format is correct.
+
+    Args:
+        email: Email string to validate
+
+    Returns:
+        True if email format is valid
+    """
+    import re
+
+    if not email or not isinstance(email, str):
+        return False
+
+    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    return bool(re.match(pattern, email))
+
+
+def generate_uuid_string() -> str:
+    """Generate a UUID4 string.
+
+    Returns:
+        UUID4 string
+    """
+    import uuid
+
+    return str(uuid.uuid4())
+
+
+def calculate_percentage(part: float, total: float) -> float:
+    """Calculate percentage safely.
+
+    Args:
+        part: Part value
+        total: Total value
+
+    Returns:
+        Percentage value, 0.0 if total is zero
+    """
+    if total == 0:
+        return 0.0
+    return (part / total) * 100.0
+
+
+def flatten_dict(nested_dict: dict[str, Any], separator: str = ".") -> dict[str, Any]:
+    """Flatten a nested dictionary.
+
+    Args:
+        nested_dict: Dictionary to flatten
+        separator: Separator for nested keys
+
+    Returns:
+        Flattened dictionary
+    """
+    result = {}
+
+    def _flatten(obj: dict[str, Any] | Any, parent_key: str = "") -> None:  # noqa: ANN401
+        if isinstance(obj, dict):
+            for key, value in obj.items():
+                new_key = f"{parent_key}{separator}{key}" if parent_key else key
+                _flatten(value, new_key)
+        else:
+            result[parent_key] = obj
+
+    _flatten(nested_dict)
+    return result
+
+
+def convert_seconds_to_time_string(seconds: int) -> str:
+    """Convert seconds to readable time string.
+
+    Args:
+        seconds: Number of seconds
+
+    Returns:
+        Time string in format "HH:MM:SS"
+    """
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    remaining_seconds = seconds % 60
+
+    return f"{hours:02d}:{minutes:02d}:{remaining_seconds:02d}"
+
+
+def retry_on_exception(max_retries: int = 3, delay: float = 1.0) -> Any:  # noqa: ANN401
+    """Decorator to retry function on exception.
+
+    Args:
+        max_retries: Maximum number of retries
+        delay: Delay between retries in seconds
+
+    Returns:
+        Decorated function
+    """
+    import time
+    from functools import wraps
+
+    def decorator(func: Any) -> Any:  # noqa: ANN401
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+            for attempt in range(max_retries + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    if attempt == max_retries:
+                        raise e
+                    time.sleep(delay * (attempt + 1))
+            return None
+
+        return wrapper
+
+    return decorator
+
+
+def create_temp_file_path(prefix: str = "otf_temp", suffix: str = ".tmp") -> str:
+    """Create a temporary file path.
+
+    Args:
+        prefix: File prefix
+        suffix: File suffix
+
+    Returns:
+        Temporary file path
+    """
+    import tempfile
+
+    with tempfile.NamedTemporaryFile(prefix=prefix, suffix=suffix, delete=False) as tmp:
+        return tmp.name
+
+
+def hash_string(text: str, algorithm: str = "sha256") -> str:
+    """Hash a string using specified algorithm.
+
+    Args:
+        text: String to hash
+        algorithm: Hashing algorithm
+
+    Returns:
+        Hexadecimal hash string
+    """
+    import hashlib
+
+    if algorithm not in hashlib.algorithms_available:
+        algorithm = "sha256"
+
+    hash_obj = hashlib.new(algorithm)
+    hash_obj.update(text.encode("utf-8"))
+    return hash_obj.hexdigest()
+
+
+def is_valid_uuid(uuid_string: str) -> bool:
+    """Check if string is a valid UUID.
+
+    Args:
+        uuid_string: String to validate
+
+    Returns:
+        True if valid UUID
+    """
+    import uuid
+
+    try:
+        uuid.UUID(uuid_string)
+        return True
+    except (ValueError, TypeError):
+        return False
+
+
+def get_file_size_human_readable(size_bytes: int) -> str:
+    """Convert file size to human readable format.
+
+    Args:
+        size_bytes: Size in bytes
+
+    Returns:
+        Human readable size string
+    """
+    if size_bytes == 0:
+        return "0 B"
+
+    size_names = ["B", "KB", "MB", "GB", "TB"]
+    size_index = 0
+
+    while size_bytes >= 1024.0 and size_index < len(size_names) - 1:
+        size_bytes /= 1024.0
+        size_index += 1
+
+    return f"{size_bytes:.1f} {size_names[size_index]}"
+
+
+def clean_filename(filename: str) -> str:
+    """Clean filename by removing invalid characters.
+
+    Args:
+        filename: Original filename
+
+    Returns:
+        Cleaned filename
+    """
+    import re
+
+    # Remove invalid characters
+    cleaned = re.sub(r'[<>:"/\\|?*]', "", filename)
+    # Replace spaces with underscores
+    cleaned = cleaned.replace(" ", "_")
+    # Remove multiple consecutive underscores
+    cleaned = re.sub(r"_{2,}", "_", cleaned)
+    # Remove leading/trailing underscores
+    cleaned = cleaned.strip("_")
+
+    return cleaned or "untitled"
+
+
+def merge_lists_unique(*lists: list[Any]) -> list[Any]:
+    """Merge multiple lists while preserving order and uniqueness.
+
+    Args:
+        *lists: Lists to merge
+
+    Returns:
+        Merged list with unique items
+    """
+    seen = set()
+    result = []
+
+    for lst in lists:
+        if lst:
+            for item in lst:
+                if item not in seen:
+                    seen.add(item)
+                    result.append(item)
+
+    return result
+
+
+def get_nested_dict_value(data: dict[str, Any], path: str, default: str | int | float | None = None) -> Any:  # noqa: ANN401
+    """Get value from nested dictionary using dot notation.
+
+    Args:
+        data: Dictionary to search
+        path: Dot-separated path to value
+        default: Default value if path not found
+
+    Returns:
+        Value at path or default
+    """
+    keys = path.split(".")
+    current = data
+
+    try:
+        for key in keys:
+            current = current[key]
+        return current
+    except (KeyError, TypeError):
+        return default
