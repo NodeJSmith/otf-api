@@ -5,11 +5,12 @@ on:
     workflows: ["CI"]
     types: [completed]
     branches: [main, develop]
+  workflow_dispatch:  # Allow manual triggering for testing
 
 jobs:
   ai-generate-typescript:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
+    if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
     name: Generate TypeScript Updates with AI
     
     steps:
@@ -17,6 +18,15 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         fetch-depth: 2
+        
+    - name: Debug workflow trigger
+      run: |
+        echo "🔍 Debug: Workflow trigger information"
+        echo "Event name: ${{ github.event_name }}"
+        echo "Workflow run conclusion: ${{ github.event.workflow_run.conclusion }}"
+        echo "Workflow run status: ${{ github.event.workflow_run.status }}"
+        echo "Head branch: ${{ github.event.workflow_run.head_branch }}"
+        echo "Head commit: ${{ github.event.workflow_run.head_commit.message }}"
         
     - name: Download change detection results
       uses: actions/download-artifact@v4
