@@ -103,7 +103,8 @@ jobs:
   test-typescript:
     runs-on: ubuntu-latest
     name: Test TypeScript Library
-    needs: generate-and-test-schema
+    needs: [generate-and-test-schema, ai-sync-typescript]
+    if: always() && needs.generate-and-test-schema.result == 'success'
     
     steps:
     - uses: actions/checkout@v4
@@ -238,6 +239,55 @@ jobs:
         name: change-detection-results
         path: change-detection-results/results.txt
         retention-days: 1
+
+  ai-sync-typescript:
+    runs-on: ubuntu-latest
+    name: AI Sync TypeScript (if significant changes)
+    needs: [check-python-changes, generate-and-test-schema]
+    if: needs.check-python-changes.outputs.changes_significant == 'true'
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 2
+        
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: AI Generate TypeScript Updates
+      env:
+        CLAUDE_API_KEY: ${{ secrets.CLAUDE_AUTO_SYNC_KEY }}
+        AI_SYNC_ENABLED: ${{ secrets.AI_SYNC_ENABLED || 'true' }}
+      run: |
+        if [[ "$AI_SYNC_ENABLED" != "true" ]]; then
+          echo "🚫 AI sync disabled via AI_SYNC_ENABLED secret"
+          exit 0
+        fi
+        
+        if [[ -z "$CLAUDE_API_KEY" ]]; then
+          echo "❌ CLAUDE_AUTO_SYNC_KEY not found - skipping AI generation"
+          echo "💡 Add Claude API key as CLAUDE_AUTO_SYNC_KEY secret to enable"
+          exit 0
+        fi
+        
+        echo "🤖 Running AI TypeScript generation..."
+        pip install httpx
+        python scripts/ai_generate_typescript.py
+        
+    - name: Commit AI updates
+      run: |
+        if [[ -n $(git status --porcelain) ]]; then
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action AI"
+          git add typescript/src/
+          git commit -m "🤖 AI auto-sync: Update TypeScript implementation - ${{ needs.check-python-changes.outputs.files_changed }} files, ${{ needs.check-python-changes.outputs.lines_changed }} lines changed"
+          echo "✅ AI updates committed"
+        else
+          echo "ℹ️ No TypeScript changes generated"
+        fi
 
   integration-test:
     runs-on: ubuntu-latest
