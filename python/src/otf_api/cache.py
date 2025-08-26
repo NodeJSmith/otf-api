@@ -17,8 +17,6 @@ class OtfCache(Cache):
 
     This class provides methods to write and read device data and token data to/from the cache.
     It also provides methods to clear the cache and specific tags.
-
-    THIS IS A SMALL DOCUMENTATION CHANGE FOR TESTING PURPOSES.
     """
 
     def write_device_data_to_cache(self, device_data: dict[str, str]) -> None:
