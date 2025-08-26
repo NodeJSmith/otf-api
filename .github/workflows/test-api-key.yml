@@ -1,0 +1,96 @@
+name: Test Claude API Key Setup
+
+on:
+  push:
+    branches: [develop]
+    paths: 
+      - 'scripts/test_api_key.py'
+      - '.github/workflows/test-api-key.yml'
+  workflow_dispatch:  # Allow manual trigger
+    inputs:
+      verbose:
+        description: 'Enable verbose output'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  test-api-key:
+    runs-on: ubuntu-latest
+    name: Validate Claude API Key
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+    
+    - name: Set up Python
+      run: uv python install 3.11
+      
+    - name: Install Python dependencies
+      run: |
+        cd python
+        uv sync
+    
+    - name: Test API Key Setup
+      id: api_test
+      run: |
+        cd python
+        uv run python ../scripts/test_api_key.py
+      env:
+        CLAUDE_AUTO_SYNC_KEY: ${{ secrets.CLAUDE_AUTO_SYNC_KEY }}
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: api-test-results
+        path: api_test_results.json
+        retention-days: 7
+    
+    - name: Create setup summary
+      if: always()
+      run: |
+        echo "## 🧪 Claude API Key Test Results" >> $GITHUB_STEP_SUMMARY
+        
+        if [[ -f "api_test_results.json" ]]; then
+          api_available=$(jq -r '.api_key_available' api_test_results.json)
+          api_works=$(jq -r '.api_connectivity' api_test_results.json)
+          ready=$(jq -r '.ready_for_auto_sync' api_test_results.json)
+          message=$(jq -r '.message' api_test_results.json)
+          
+          echo "| Test | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| API Key Available | $([ "$api_available" = "true" ] && echo "✅" || echo "❌") |" >> $GITHUB_STEP_SUMMARY
+          echo "| API Connectivity | $([ "$api_works" = "true" ] && echo "✅" || echo "❌") |" >> $GITHUB_STEP_SUMMARY
+          echo "| Auto-sync Ready | $([ "$ready" = "true" ] && echo "✅" || echo "❌") |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: $message" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "$ready" = "true" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "🚀 **Next Steps**: Your repository is ready for AI-powered auto-sync!" >> $GITHUB_STEP_SUMMARY
+            echo "- The main auto-sync workflow will now work when Python models change" >> $GITHUB_STEP_SUMMARY
+            echo "- Monitor usage in repository Actions tab" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ **Setup Required**: " >> $GITHUB_STEP_SUMMARY
+            if [ "$api_available" = "false" ]; then
+              echo "- Add \`CLAUDE_AUTO_SYNC_KEY\` to repository secrets" >> $GITHUB_STEP_SUMMARY
+              echo "- Get your API key from https://console.anthropic.com/" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- Check API key validity and account status" >> $GITHUB_STEP_SUMMARY
+              echo "- Ensure API key has sufficient credits/permissions" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+        else
+          echo "❌ Test results not found" >> $GITHUB_STEP_SUMMARY
+        fi
+    
+    - name: Set workflow status
+      if: failure()
+      run: |
+        echo "::notice title=API Key Test Failed::Check the Claude API key setup in repository secrets"
