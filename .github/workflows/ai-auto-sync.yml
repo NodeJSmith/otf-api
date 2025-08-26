@@ -360,19 +360,11 @@ jobs:
           
           ### 📋 AI Analysis
           
-          Claude analyzed the following Python changes:
-          
-          ```
-          $(cat python_changes.md 2>/dev/null || echo "Change summary not available")
-          ```
+          Claude analyzed the Python changes and generated corresponding TypeScript updates.
           
           ### 🧠 AI Summary
           
-          $(cat ai_updates.json 2>/dev/null | jq -r '.summary // "AI summary not available"')
-          
-          **Files updated:** $(cat ai_updates.json 2>/dev/null | jq '.files | length // 0')
-          
-          **Breaking changes:** $(cat ai_updates.json 2>/dev/null | jq -r '.breaking_changes // [] | join(", ") // "None identified"')
+          Check the AI-generated changes in the files modified by this PR.
           
           ### ⚠️ Review Required
           
@@ -389,8 +381,6 @@ jobs:
           ---
           
           🤖 *Generated automatically by GitHub Actions with Claude AI*
-          
-          **Additional Notes:** $(cat ai_updates.json 2>/dev/null | jq -r '.notes // ""')
         branch: ai-auto-sync-${{ github.run_number }}
         delete-branch: true
         labels: |
