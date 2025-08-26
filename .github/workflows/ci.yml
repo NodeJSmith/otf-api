@@ -223,6 +223,21 @@ jobs:
         echo "- Lines changed: $lines_changed" >> $GITHUB_STEP_SUMMARY
         echo "- Thresholds: $FILES_THRESHOLD files OR $LINES_THRESHOLD lines" >> $GITHUB_STEP_SUMMARY
         echo "- Significant for AI generation: $([ $files_changed -ge $FILES_THRESHOLD ] || [ $lines_changed -ge $LINES_THRESHOLD ] && echo 'YES' || echo 'NO')" >> $GITHUB_STEP_SUMMARY
+        
+    - name: Save change detection results for AI workflow
+      run: |
+        mkdir -p change-detection-results
+        echo "python_changed=${{ steps.check_changes.outputs.python_changed }}" > change-detection-results/results.txt
+        echo "changes_significant=${{ steps.check_changes.outputs.changes_significant }}" >> change-detection-results/results.txt
+        echo "files_changed=${{ steps.check_changes.outputs.files_changed }}" >> change-detection-results/results.txt
+        echo "lines_changed=${{ steps.check_changes.outputs.lines_changed }}" >> change-detection-results/results.txt
+        
+    - name: Upload change detection results
+      uses: actions/upload-artifact@v4
+      with:
+        name: change-detection-results
+        path: change-detection-results/results.txt
+        retention-days: 1
 
   integration-test:
     runs-on: ubuntu-latest
