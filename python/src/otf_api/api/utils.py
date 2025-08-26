@@ -305,3 +305,68 @@ def get_json_from_response(response: httpx.Response) -> dict[str, Any]:
         return response.json()
     except JSONDecodeError:
         return {"raw": response.text}
+
+
+def format_duration_minutes(minutes: int | float) -> str:
+    """Format duration in minutes to human-readable string.
+
+    Args:
+        minutes: Duration in minutes
+
+    Returns:
+        Formatted duration string (e.g., "1h 30m", "45m")
+    """
+    if not isinstance(minutes, int | float) or minutes < 0:
+        return "0m"
+
+    hours = int(minutes // 60)
+    remaining_minutes = int(minutes % 60)
+
+    if hours > 0:
+        return f"{hours}h {remaining_minutes}m" if remaining_minutes > 0 else f"{hours}h"
+    return f"{remaining_minutes}m"
+
+
+def safe_int_conversion(value: str | int | float, default: int = 0) -> int:
+    """Safely convert value to integer with fallback.
+
+    Args:
+        value: Value to convert
+        default: Default value if conversion fails
+
+    Returns:
+        Integer value or default
+    """
+    try:
+        if isinstance(value, str):
+            # Handle common string representations
+            value = value.strip().replace(",", "")
+            if value.lower() in ("none", "null", ""):
+                return default
+
+        return int(float(value))  # Handle string floats like "42.0"
+    except (ValueError, TypeError, AttributeError):
+        return default
+
+
+def chunk_list(items: list[Any], chunk_size: int) -> list[list[Any]]:
+    """Split a list into chunks of specified size.
+
+    Args:
+        items: List to chunk
+        chunk_size: Maximum size of each chunk
+
+    Returns:
+        List of chunks
+
+    Raises:
+        ValueError: If chunk_size is not positive
+    """
+    if chunk_size <= 0:
+        raise ValueError("Chunk size must be positive")
+
+    chunks = []
+    for i in range(0, len(items), chunk_size):
+        chunks.append(items[i : i + chunk_size])
+
+    return chunks
