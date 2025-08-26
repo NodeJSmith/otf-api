@@ -240,8 +240,13 @@ def apply_typescript_updates(ai_response: Dict[str, Any]) -> None:
     ts_src = Path('typescript/src')
     files_updated = 0
     
+    print(f"🔍 AI response files: {list(ai_response.get('files', {}).keys())}")
+    
     for file_path, update_info in ai_response.get('files', {}).items():
-        if update_info.get('action') == 'update':
+        action = update_info.get('action', 'unknown')
+        print(f"📝 Processing {file_path} (action: {action})")
+        
+        if action in ('update', 'create'):
             full_path = ts_src / file_path
             
             # Create directory if needed
@@ -249,13 +254,33 @@ def apply_typescript_updates(ai_response: Dict[str, Any]) -> None:
             
             # Write updated content
             try:
-                full_path.write_text(update_info['content'])
-                print(f"✅ Updated {file_path}")
+                content = update_info.get('content', '')
+                if not content:
+                    print(f"⚠️ No content provided for {file_path}")
+                    continue
+                    
+                full_path.write_text(content)
+                print(f"✅ {action.title()}d {file_path} ({len(content)} chars)")
                 files_updated += 1
             except Exception as e:
-                print(f"❌ Failed to update {file_path}: {e}")
+                print(f"❌ Failed to {action} {file_path}: {e}")
+        else:
+            print(f"⚠️ Unknown action '{action}' for {file_path}")
     
     print(f"📊 Total files updated: {files_updated}")
+    
+    # List actual changes made
+    import subprocess
+    try:
+        result = subprocess.run(['git', 'status', '--porcelain', 'typescript/src/'], 
+                               capture_output=True, text=True, check=True)
+        if result.stdout.strip():
+            print(f"📋 Git changes detected:")
+            print(result.stdout)
+        else:
+            print("📋 No git changes detected in typescript/src/")
+    except Exception as e:
+        print(f"⚠️ Could not check git status: {e}")
 
 
 if __name__ == "__main__":

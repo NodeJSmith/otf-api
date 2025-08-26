@@ -272,45 +272,56 @@ jobs:
           echo "💡 Add Claude API key as CLAUDE_AUTO_SYNC_KEY secret to enable"
           exit 0
         fi
-        
+
         echo "🤖 Running AI TypeScript generation..."
         pip install httpx
         python scripts/ai_generate_typescript.py
-        
+
     - name: Commit AI updates
       run: |
-        if [[ -n $(git status --porcelain) ]]; then
+        # Check if TypeScript files were actually modified
+        if [[ -n $(git status --porcelain typescript/src/) ]]; then
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action AI"
           git add typescript/src/
           git commit -m "🤖 AI auto-sync: Update TypeScript implementation - ${{ needs.check-python-changes.outputs.files_changed }} files, ${{ needs.check-python-changes.outputs.lines_changed }} lines changed"
           echo "✅ AI updates committed"
         else
-          echo "ℹ️ No TypeScript changes generated"
+          echo "ℹ️ No TypeScript files were modified by AI generation"
+          # Clean up temporary files if they exist
+          if [[ -f ai_updates.json ]] || [[ -f python_changes.md ]]; then
+            git add ai_updates.json python_changes.md 2>/dev/null || true
+            if git commit -m "🤖 AI analysis completed (no TypeScript changes needed)" 2>/dev/null; then
+              echo "✅ Temporary files committed for record keeping"
+            else
+              echo "ℹ️ No changes to commit"
+            fi
+          else
+            echo "ℹ️ No temporary files to clean up"
+          fi
         fi
 
   integration-test:
     runs-on: ubuntu-latest
     name: Integration Tests
     needs: [test-python, generate-and-test-schema, test-typescript, check-python-changes]
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Install uv
       uses: astral-sh/setup-uv@v3
       with:
         version: "latest"
-    
+
     - name: Set up Python
       run: uv python install 3.11
-      
+
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
-        
     - name: Install all dependencies
       run: |
         npm run install:python
