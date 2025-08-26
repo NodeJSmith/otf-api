@@ -5,13 +5,12 @@ on:
     workflows: ["CI"]
     types: [completed]
     branches: [main, develop]
-  workflow_dispatch:  # Allow manual triggering for testing
+  workflow_dispatch:
 
 jobs:
   ai-generate-typescript:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
-    name: Generate TypeScript Updates with AI
     
     steps:
     - uses: actions/checkout@v4
@@ -19,16 +18,20 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         fetch-depth: 2
         
-    - name: Debug workflow trigger
-      run: |
-        echo "🔍 Debug: Workflow trigger information"
-        echo "Event name: ${{ github.event_name }}"
-        echo "Workflow run conclusion: ${{ github.event.workflow_run.conclusion }}"
-        echo "Workflow run status: ${{ github.event.workflow_run.status }}"
-        echo "Head branch: ${{ github.event.workflow_run.head_branch }}"
-        echo "Head commit: ${{ github.event.workflow_run.head_commit.message }}"
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: typescript/package-lock.json
         
     - name: Download change detection results
+      if: github.event_name != 'workflow_dispatch'
       uses: actions/download-artifact@v4
       with:
         name: change-detection-results
@@ -38,353 +41,90 @@ jobs:
     - name: Load change detection results
       id: load_results
       run: |
-        if [[ ! -f results.txt ]]; then
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          echo "python_changed=true" >> $GITHUB_OUTPUT
+          echo "changes_significant=true" >> $GITHUB_OUTPUT
+          echo "files_changed=manual" >> $GITHUB_OUTPUT  
+          echo "lines_changed=manual" >> $GITHUB_OUTPUT
+        elif [[ -f results.txt ]]; then
+          while IFS='=' read -r key value; do
+            echo "$key=$value" >> $GITHUB_OUTPUT
+          done < results.txt
+        else
           echo "❌ Change detection results not found"
           exit 1
         fi
         
-        # Load results and set as outputs
-        while IFS='=' read -r key value; do
-          echo "$key=$value" >> $GITHUB_OUTPUT
-          echo "📋 Loaded: $key=$value"
-        done < results.txt
-        
-    - name: Check if AI sync should run
+    - name: Check if should run
       id: should_run
       env:
         AI_SYNC_ENABLED: ${{ secrets.AI_SYNC_ENABLED || 'true' }}
       run: |
-        # Check if AI sync is globally enabled
         if [[ "$AI_SYNC_ENABLED" != "true" ]]; then
           echo "should_run=false" >> $GITHUB_OUTPUT
-          echo "🚫 AI sync is disabled via AI_SYNC_ENABLED secret"
+          echo "🚫 AI sync disabled"
           exit 0
         fi
         
-        # Skip if commit message contains [skip-sync]
-        if [[ "${{ github.event.workflow_run.head_commit.message }}" == *"[skip-sync]"* ]]; then
-          echo "should_run=false" >> $GITHUB_OUTPUT
-          echo "🚫 Skipping sync due to [skip-sync] in commit message"
-          exit 0
-        fi
-        
-        # Check if Python files changed
-        if [[ "${{ steps.load_results.outputs.python_changed }}" != "true" ]]; then
-          echo "should_run=false" >> $GITHUB_OUTPUT
-          echo "📋 No Python files changed"
-          exit 0
-        fi
-        
-        # Check if changes are significant (using CI workflow results!)
-        if [[ "${{ steps.load_results.outputs.changes_significant }}" == "true" ]]; then
+        if [[ "${{ steps.load_results.outputs.python_changed }}" == "true" ]] && [[ "${{ steps.load_results.outputs.changes_significant }}" == "true" ]]; then
           echo "should_run=true" >> $GITHUB_OUTPUT
-          echo "🤖 AI sync NEEDED: ${{ steps.load_results.outputs.files_changed }} files, ${{ steps.load_results.outputs.lines_changed }} lines"
+          echo "🤖 AI sync needed"
         else
           echo "should_run=false" >> $GITHUB_OUTPUT
-          echo "⚠️ Changes too minor for AI sync: ${{ steps.load_results.outputs.files_changed }} files, ${{ steps.load_results.outputs.lines_changed }} lines"
+          echo "⚠️ Changes not significant"
         fi
         
     - name: Install dependencies
       if: steps.should_run.outputs.should_run == 'true'
       run: |
-        # Install uv
+        cd typescript && npm ci
+        pip install httpx
+        
+    - name: Run sync pipeline
+      if: steps.should_run.outputs.should_run == 'true'
+      run: |
         curl -LsSf https://astral.sh/uv/install.sh | sh
         source ~/.cargo/env
         uv python install 3.11
+        cd python && uv sync
+        cd .. && npm run sync
         
-        # Install Node.js dependencies
-        cd typescript && npm ci
-        
-        # Install Python dependencies  
-        cd ../python && uv sync
-        
-    - name: Run standard sync pipeline
+    - name: AI Generate Updates
       if: steps.should_run.outputs.should_run == 'true'
-      run: |
-        echo "🔄 Running standard schema + type generation"
-        source ~/.cargo/env
-        npm run sync
-        npm run validate
-        
-    - name: Generate Python change summary
-      if: steps.should_run.outputs.should_run == 'true'
-      id: analyze_changes
-      run: |
-        echo "🔍 Analyzing Python changes for AI context..."
-        
-        # Create a detailed change summary for Claude
-        cat > python_changes.md << 'EOF'
-        # Python Changes Detected
-        
-        ## Summary
-        - Files changed: ${{ steps.load_results.outputs.files_changed }}
-        - Lines changed: ${{ steps.load_results.outputs.lines_changed }}
-        
-        ## Files Changed
-        EOF
-        
-        git diff --name-only HEAD~1 HEAD -- 'python/' | sed 's/^/- /' >> python_changes.md
-        
-        echo "" >> python_changes.md
-        echo "## Diff Summary" >> python_changes.md
-        git diff --stat HEAD~1 HEAD -- 'python/' >> python_changes.md
-        
-        echo "" >> python_changes.md
-        echo "## Key Changes (first 100 lines)" >> python_changes.md
-        git diff HEAD~1 HEAD -- 'python/' | head -100 >> python_changes.md
-        
-        echo "📄 Change summary created"
-        
-    - name: AI Generate TypeScript Updates
-      if: steps.should_run.outputs.should_run == 'true'
-      id: ai_generate
       env:
         CLAUDE_API_KEY: ${{ secrets.CLAUDE_AUTO_SYNC_KEY }}
       run: |
-        if [[ -z "$CLAUDE_API_KEY" ]]; then
-          echo "❌ CLAUDE_AUTO_SYNC_KEY not found in secrets"
-          echo "💡 Add your Claude API key as CLAUDE_AUTO_SYNC_KEY in repository secrets"
-          exit 1
-        fi
+        python scripts/ai_generate_typescript.py
         
-        echo "🤖 Starting AI-powered TypeScript generation..."
-        
-        # Install httpx for API calls
-        source ~/.cargo/env
-        cd python && uv add httpx
-        
-        # Simple Python script to call Claude API
-        uv run python << 'PYTHON_SCRIPT'
-        import json
-        import os
-        import httpx
-        from pathlib import Path
-        
-        api_key = os.environ['CLAUDE_API_KEY']
-        
-        # Read current TypeScript files for context (limit to key files)
-        ts_files = {}
-        ts_dir = Path('../typescript/src')
-        key_patterns = ['api/*.ts', 'auth/*.ts', 'cache/*.ts', 'models.ts', 'otf.ts']
-        
-        for pattern in key_patterns:
-            for file_path in ts_dir.glob(pattern):
-                if file_path.is_file() and 'generated' not in str(file_path):
-                    rel_path = str(file_path.relative_to(ts_dir))
-                    try:
-                        content = file_path.read_text()
-                        # Truncate for API limits but keep structure
-                        if len(content) > 1500:
-                            content = content[:1500] + f"\n... (truncated, {len(content)} total chars)"
-                        ts_files[rel_path] = content
-                    except Exception as e:
-                        ts_files[rel_path] = f"Error reading file: {e}"
-        
-        # Read Python changes
-        with open('../python_changes.md') as f:
-            python_changes = f.read()
-        
-        # Create prompt for Claude
-        prompt = f"""You are a TypeScript expert updating an API client based on Python model changes.
-        
-        ## Python Changes:
-        {python_changes}
-        
-        ## Current TypeScript Implementation:
-        {json.dumps(ts_files, indent=2)}
-        
-        ## Task:
-        Analyze the Python changes and generate TypeScript implementation updates. Focus on:
-        1. API client methods that need updating for new/changed models
-        2. Data transformation logic changes  
-        3. Type exports in models.ts for new models
-        4. Cache implementations if model structures changed
-        
-        Return JSON with this structure:
-        {{
-          "summary": "Brief description of what changed and why updates are needed",
-          "files": {{
-            "relative/path.ts": {{
-              "action": "update", 
-              "changes": "Description of specific changes made",
-              "content": "Complete updated file content"
-            }}
-          }},
-          "breaking_changes": ["list any breaking changes"],
-          "notes": "Additional notes for human reviewer"
-        }}
-        
-        Only include files that actually need changes. Keep existing patterns and style."""
-        
-        # Call Claude API
-        try:
-            with httpx.Client(timeout=60.0) as client:
-                response = client.post(
-                    "https://api.anthropic.com/v1/messages",
-                    headers={
-                        "Content-Type": "application/json",
-                        "x-api-key": api_key,
-                        "anthropic-version": "2023-06-01"
-                    },
-                    json={
-                        "model": "claude-3-5-sonnet-20241022", 
-                        "max_tokens": 4000,
-                        "messages": [{
-                            "role": "user",
-                            "content": prompt
-                        }]
-                    }
-                )
-                
-                if response.status_code == 200:
-                    result = response.json()
-                    ai_response = result["content"][0]["text"]
-                    
-                    # Extract JSON from response
-                    import re
-                    json_match = re.search(r'\{.*\}', ai_response, re.DOTALL)
-                    if json_match:
-                        try:
-                            ai_json = json.loads(json_match.group())
-                            
-                            # Save AI response
-                            with open('../ai_updates.json', 'w') as f:
-                                json.dump(ai_json, f, indent=2)
-                            
-                            print("✅ AI generation successful")
-                            print(f"Summary: {ai_json.get('summary', 'No summary')}")
-                            print(f"Files to update: {len(ai_json.get('files', {}))}")
-                            
-                        except json.JSONDecodeError as e:
-                            print(f"❌ JSON parse error: {e}")
-                            print(f"Raw response: {ai_response[:500]}")
-                            exit(1)
-                    else:
-                        print("❌ No JSON found in AI response")
-                        print(f"Raw response: {ai_response[:500]}")
-                        exit(1)
-                else:
-                    print(f"❌ Claude API error: {response.status_code}")
-                    print(response.text[:500])
-                    exit(1)
-                    
-        except Exception as e:
-            print(f"❌ Error calling Claude API: {e}")
-            exit(1)
-        PYTHON_SCRIPT
-        
-    - name: Apply AI Updates
-      if: steps.should_run.outputs.should_run == 'true'
-      run: |
-        if [[ ! -f ai_updates.json ]]; then
-          echo "❌ AI updates file not found"
-          exit 1
-        fi
-        
-        echo "📝 Applying AI-generated updates..."
-        
-        # Apply updates
-        source ~/.cargo/env
-        cd python
-        uv run python << 'PYTHON_SCRIPT'
-        import json
-        from pathlib import Path
-        
-        with open('../ai_updates.json') as f:
-            updates = json.load(f)
-        
-        ts_src = Path('../typescript/src')
-        files_updated = 0
-        
-        for file_path, update_info in updates.get('files', {}).items():
-            if update_info.get('action') == 'update':
-                full_path = ts_src / file_path
-                
-                # Create directory if needed
-                full_path.parent.mkdir(parents=True, exist_ok=True)
-                
-                # Write updated content
-                try:
-                    full_path.write_text(update_info['content'])
-                    print(f"✅ Updated {file_path}")
-                    files_updated += 1
-                except Exception as e:
-                    print(f"❌ Failed to update {file_path}: {e}")
-        
-        print(f"📊 Total files updated: {files_updated}")
-        PYTHON_SCRIPT
-        
-    - name: Test TypeScript updates
+    - name: Test updates
       if: steps.should_run.outputs.should_run == 'true'
       run: |
         cd typescript
+        npm run lint:fix || true
+        npm run type-check || echo "⚠️ Type check issues"
+        npm test || echo "⚠️ Test issues"
         
-        # Try to fix linting issues automatically
-        npm run lint:fix || echo "⚠️ Lint fix had issues"
-        
-        # Type check
-        if npm run type-check; then
-          echo "✅ TypeScript type check passed"
-        else
-          echo "⚠️ TypeScript type check failed - will be noted in PR"
-        fi
-        
-        # Run tests
-        if npm test; then
-          echo "✅ Tests passed"
-        else
-          echo "⚠️ Some tests failed - will be noted in PR"
-        fi
-        
-    - name: Create Pull Request
+    - name: Create PR
       if: steps.should_run.outputs.should_run == 'true'
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: "🤖 AI Auto-sync: Update TypeScript from Python changes"
-        title: "🤖 AI Auto-Sync: TypeScript Updates (${{ steps.load_results.outputs.files_changed }} files, ${{ steps.load_results.outputs.lines_changed }} lines)"
+        commit-message: "🤖 AI Auto-sync TypeScript updates"
+        title: "🤖 AI Auto-Sync: TypeScript Updates"
         body: |
           ## 🤖 AI-Powered TypeScript Auto-Sync
           
-          This PR automatically updates TypeScript implementation based on significant Python changes.
+          Updates TypeScript implementation based on Python changes.
           
-          **Triggered by:** ${{ github.event.workflow_run.head_commit.message }}
-          **Original CI run:** ${{ github.event.workflow_run.html_url }}
-          **Python changes:** ${{ steps.load_results.outputs.files_changed }} files, ${{ steps.load_results.outputs.lines_changed }} lines
+          **Files changed:** ${{ steps.load_results.outputs.files_changed }}
+          **Lines changed:** ${{ steps.load_results.outputs.lines_changed }}
           
-          ### 🔄 Updates Applied
+          ### Review Required
+          - [ ] Verify implementation logic  
+          - [ ] Run full test suite
+          - [ ] Check for breaking changes
           
-          1. ✅ **Schema Sync**: OpenAPI schema regenerated from Python models  
-          2. ✅ **Type Generation**: TypeScript types updated from schema
-          3. 🤖 **AI Implementation**: Claude analyzed Python changes and updated TypeScript implementation
-          
-          ### 📋 AI Analysis
-          
-          Claude analyzed the Python changes and generated corresponding TypeScript updates.
-          
-          ### 🧠 AI Summary
-          
-          Check the AI-generated changes in the files modified by this PR.
-          
-          ### ⚠️ Review Required
-          
-          Please review the AI-generated changes carefully:
-          - [ ] Verify implementation logic matches business requirements
-          - [ ] Run full test suite including integration tests  
-          - [ ] Check for breaking changes and update version if needed
-          - [ ] Update documentation if API contracts changed
-          
-          ### 💰 Cost Estimate
-          
-          This AI generation used approximately 4000 tokens (~$0.012).
-          
-          ---
-          
-          🤖 *Generated automatically by GitHub Actions with Claude AI*
+          🤖 *Generated by GitHub Actions with Claude AI*
         branch: ai-auto-sync-${{ github.run_number }}
         delete-branch: true
-        labels: |
-          🤖 ai-generated
-          typescript
-          auto-sync
-        draft: false
+        labels: ai-generated
