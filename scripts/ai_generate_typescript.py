@@ -136,21 +136,25 @@ Analyze the Python changes and generate TypeScript implementation updates. Focus
 3. Type exports in models.ts for new models
 4. Cache implementations if model structures changed
 
-Return JSON with this structure:
+Return ONLY a valid JSON object with this exact structure:
 {{
   "summary": "Brief description of what changed and why updates are needed",
   "files": {{
     "relative/path.ts": {{
       "action": "update", 
       "changes": "Description of specific changes made",
-      "content": "Complete updated file content"
+      "content": "Complete updated file content as a single string"
     }}
   }},
   "breaking_changes": ["list any breaking changes"],
   "notes": "Additional notes for human reviewer"
 }}
 
-Only include files that actually need changes. Keep existing patterns and style."""
+IMPORTANT: 
+- Return ONLY the JSON object, no markdown formatting
+- The "content" field must be a single escaped string, not template literals
+- Use \\n for newlines in the content field
+- Only include files that actually need changes"""
     
     try:
         with httpx.Client(timeout=60.0) as client:
@@ -175,25 +179,47 @@ Only include files that actually need changes. Keep existing patterns and style.
                 result = response.json()
                 ai_response = result["content"][0]["text"]
                 
-                # Extract JSON from response
+                # Extract JSON from response - handle markdown code blocks
                 import re
-                json_match = re.search(r'\{.*\}', ai_response, re.DOTALL)
-                if json_match:
+                
+                # First try to find JSON in markdown code blocks
+                code_block_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', ai_response, re.DOTALL)
+                if code_block_match:
+                    json_content = code_block_match.group(1)
+                else:
+                    # Fallback to finding raw JSON
+                    json_match = re.search(r'\{.*\}', ai_response, re.DOTALL)
+                    if json_match:
+                        json_content = json_match.group()
+                    else:
+                        print("❌ No JSON found in AI response")
+                        print(f"Raw response: {ai_response[:500]}")
+                        return {}
+                
+                try:
+                    ai_json = json.loads(json_content)
+                    print(f"✅ AI generation successful")
+                    print(f"Summary: {ai_json.get('summary', 'No summary')}")
+                    print(f"Files to update: {len(ai_json.get('files', {}))}")
+                    return ai_json
+                    
+                except json.JSONDecodeError as e:
+                    print(f"❌ JSON parse error: {e}")
+                    print(f"Trying to clean JSON content...")
+                    
+                    # Try to clean up common JSON issues
                     try:
-                        ai_json = json.loads(json_match.group())
-                        print(f"✅ AI generation successful")
+                        # Remove any trailing commas and fix common issues
+                        cleaned = re.sub(r',\s*}', '}', json_content)
+                        cleaned = re.sub(r',\s*]', ']', cleaned)
+                        ai_json = json.loads(cleaned)
+                        print(f"✅ AI generation successful (after cleanup)")
                         print(f"Summary: {ai_json.get('summary', 'No summary')}")
                         print(f"Files to update: {len(ai_json.get('files', {}))}")
                         return ai_json
-                        
-                    except json.JSONDecodeError as e:
-                        print(f"❌ JSON parse error: {e}")
-                        print(f"Raw response: {ai_response[:500]}")
+                    except json.JSONDecodeError:
+                        print(f"Raw response: {ai_response[:1000]}")
                         return {}
-                else:
-                    print("❌ No JSON found in AI response")
-                    print(f"Raw response: {ai_response[:500]}")
-                    return {}
             else:
                 print(f"❌ Claude API error: {response.status_code}")
                 print(response.text[:500])
