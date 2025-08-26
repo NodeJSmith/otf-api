@@ -57,6 +57,11 @@ export class OtfHttpClient {
   }
 
   async request<T = any>(options: RequestOptions): Promise<T> {
+    // Validate required fields
+    if (!options.method || !options.path) {
+      throw new Error('Request options must include method and path');
+    }
+    
     return this.retryRequest(options, 0);
   }
 

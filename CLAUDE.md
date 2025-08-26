@@ -75,6 +75,15 @@ This is **otf-api**, an unofficial Python API client for OrangeTheory Fitness AP
 1. **Python Models** → `scripts/generate_openapi.py` → **OpenAPI YAML**
 2. **OpenAPI YAML** → `openapi-typescript` → **TypeScript Types**
 3. **Tests validate** each step of the pipeline for consistency
+4. **Sync validation** ensures Python models remain source of truth
+
+### Sync Validation Requirements
+- **Python models are the ONLY source of truth** - never use OrangeTheory API field names as source
+- **Field name consistency**: Python field names (`member_uuid`) must be preserved through the entire pipeline
+- **Automated validation**: Run `uv run python scripts/validate_ts_sync.py` to check sync status
+- **Pre-commit validation**: Schema generation and sync validation should be part of CI/CD
+- **TypeScript transformation**: All API transformation code must match generated types exactly
+- **No type casting workarounds**: TypeScript code should not use `as any` - fix type mismatches instead
 
 ### API Organization
 The API is organized into 4 main domains:

@@ -1,4 +1,6 @@
-import { BookingV2 } from 'otf-api-models';
+import { components } from '../generated/types';
+
+type BookingV2 = components['schemas']['BookingV2'];
 import { OtfHttpClient } from '../client/http-client';
 
 /**
@@ -50,9 +52,10 @@ export class BookingsApi {
       apiType: 'performance',
       path: '/v1/bookings/me',
       params: {
-        'starts-after': startDate.toISOString(),
-        'ends-before': endDate.toISOString(),
-        'exclude-cancelled': excludeCancelled.toString(),
+        'starts_after': startDate.toISOString(),
+        'ends_before': endDate.toISOString(),
+        'include_canceled': (!excludeCancelled).toString(),
+        'expand': 'false',
       },
     });
 
@@ -75,55 +78,77 @@ export class BookingsApi {
   }
 
   private transformBookingData(data: any): BookingV2 {
-    // Transform camelCase API response to snake_case model fields
-    // This matches the Python BookingV2 model structure
-    return {
-      id: data.bookingId || data.id,
-      class_uuid: data.classUuid || data.class?.classUuid || '',
-      member_uuid: this.memberUuid,
-      studio_uuid: data.studioUuid || data.class?.studio?.studioUuid || '',
-      checkin_time: data.checkinTime,
-      is_intro: data.isIntro || false,
-      is_waitlisted: data.isWaitlisted || false,
-      waitlist_position: data.waitlistPosition,
+    // Transform API response to match exact Python BookingV2 model structure
+    const transformedData: BookingV2 = {
+      // Required fields matching Python model exactly - updated for actual API response format
+      booking_id: data.bookingId || data.id || '',
+      member_uuid: data.member_id || this.memberUuid, 
+      person_id: data.person_id || this.memberUuid,
+      service_name: data.service_name || null,
+      cross_regional: data.cross_regional || null,
+      intro: data.intro || null,
+      checked_in: Boolean(data.checked_in),
+      canceled: Boolean(data.canceled),
+      late_canceled: data.late_canceled || null,
+      canceled_at: data.canceled_at || null,
+      ratable: Boolean(data.ratable),
       
-      // Nested objects
-      otf_class: data.class ? {
-        class_uuid: data.class.classUuid,
-        name: data.class.name,
-        starts_at: data.class.startsAt,
-        ends_at: data.class.endsAt,
-        coach: data.class.coach ? {
-          first_name: data.class.coach.firstName,
-          last_name: data.class.coach.lastName,
+      // OTF Class - must match BookingV2Class exactly - updated for actual API response format
+      otf_class: {
+        class_uuid: data.class?.classUuid || data.class?.id || '',
+        name: data.class?.name || '',
+        starts_at: data.class?.startsAt || data.class?.starts_at || '',
+        coach: data.class?.coach ? `${data.class.coach.firstName} ${data.class.coach.lastName}` : null,
+        studio: data.class?.studio ? {
+          studio_uuid: data.class.studio.studioUuid || data.class.studio.id || '',
+          name: data.class.studio.name || null,
+          phone_number: data.class.studio.phone_number || null,
+          latitude: data.class.studio.latitude || null,
+          longitude: data.class.studio.longitude || null,
+          time_zone: data.class.studio.time_zone || null,
+          email: data.class.studio.email || null,
+          address: data.class.studio.address ? {
+            address_line1: data.class.studio.address.line1 || null,
+            address_line2: data.class.studio.address.line2 || null,
+            city: data.class.studio.address.city || null,
+            postal_code: data.class.studio.address.postal_code || null,
+            state: data.class.studio.address.state || null,
+            country: data.class.studio.address.country || null,
+            region: null,
+            country_id: null,
+          } : null,
+          currency_code: data.class.studio.currency_code || null,
+          mbo_studio_id: data.class.studio.mbo_studio_id || null,
         } : null,
-        studio: data.class.studio ? {
-          studio_uuid: data.class.studio.studioUuid,
-          studio_name: data.class.studio.studioName,
-        } : null,
-      } : {
-        class_uuid: '',
-        name: '',
-        starts_at: '',
-        ends_at: '',
-        coach: null,
-        studio: null,
+        class_id: data.class?.id || null,
+        class_type: data.class?.type || null,
+        starts_at_utc: data.class?.starts_at || null,
       },
       
+      // Workout - should now be included with correct API parameters
       workout: data.workout ? {
-        id: data.workout.id,
-        performance_summary_id: data.workout.performanceSummaryId,
-        active_time_seconds: data.workout.activeTimeSeconds,
-      } : undefined,
+        id: data.workout.performanceSummaryId || data.workout.id || '',
+        performance_summary_id: data.workout.performanceSummaryId || data.workout.id || '',
+        calories_burned: data.workout.caloriesBurned || data.workout.calories_burned || 0,
+        splat_points: data.workout.splatPoints || data.workout.splat_points || 0,
+        step_count: data.workout.stepCount || data.workout.step_count || 0,
+        active_time_seconds: data.workout.activeTimeSeconds || data.workout.active_time_seconds || 0,
+      } : null,
+      
+      // Rating fields
+      coach_rating: null,
+      class_rating: null,
       
       // Additional fields from Python model
-      starts_at: data.startsAt,
-      ends_at: data.endsAt,
-      status: data.status,
-      ratable: data.ratable,
-      class_rating: data.classRating,
-      coach_rating: data.coachRating,
-    } as any;
+      paying_studio_id: null,
+      mbo_booking_id: data.mboBookingId || null,
+      mbo_unique_id: data.mboUniqueId || null,
+      mbo_paying_unique_id: data.mboPayingUniqueId || null,
+      created_at: data.createdAt || null,
+      updated_at: data.updatedAt || null,
+    };
+    
+    return transformedData;
   }
 
   /**

@@ -1,4 +1,6 @@
-import { Member } from 'otf-api-models';
+import { components } from './generated/types';
+
+type MemberDetail = components['schemas']['MemberDetail'];
 import { OtfHttpClient } from './client/http-client';
 import { OtfCognito, CognitoConfig } from './auth/cognito';
 import { MembersApi } from './api/members';
@@ -59,7 +61,7 @@ export class Otf {
   private client: OtfHttpClient;
   private cognito: OtfCognito;
   private cache: Cache;
-  private _member: Member | null = null;
+  private _member: MemberDetail | null = null;
 
   /**
    * Creates a new OTF API client instance
@@ -126,7 +128,7 @@ export class Otf {
    * 
    * @returns Promise resolving to member profile with home studio and membership details
    */
-  get member(): Promise<Member> {
+  get member(): Promise<MemberDetail> {
     return this.getMember();
   }
 
@@ -135,7 +137,7 @@ export class Otf {
    * 
    * @returns Promise resolving to member profile with home studio and membership details
    */
-  async getMember(): Promise<Member> {
+  async getMember(): Promise<MemberDetail> {
     if (!this._member) {
       this._member = await this.members.getMemberDetail();
     }
@@ -147,7 +149,7 @@ export class Otf {
    * 
    * @returns Promise resolving to updated member profile
    */
-  async refreshMember(): Promise<Member> {
+  async refreshMember(): Promise<MemberDetail> {
     this._member = await this.members.getMemberDetail();
     return this._member;
   }

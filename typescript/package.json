@@ -8,9 +8,9 @@
     "generate-types": "openapi-typescript ../schema/openapi.yaml -o src/generated/types.ts",
     "build": "npm run generate-types && tsc",
     "dev": "npm run generate-types && tsc --watch",
-    "test": "vitest",
+    "test": "vitest run",
     "test:watch": "vitest --watch",
-    "test:coverage": "vitest --coverage",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "type-check": "tsc --noEmit",
@@ -34,6 +34,7 @@
     "cognito-srp-helper": "^2.3.4"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
@@ -41,7 +42,6 @@
     "dotenv": "^17.2.1",
     "eslint": "^8.0.0",
     "js-yaml": "^4.1.0",
-    "@types/js-yaml": "^4.0.9",
     "openapi-typescript": "^7.0.0",
     "swagger-parser": "^10.0.0",
     "typedoc": "^0.28.10",

@@ -42,7 +42,12 @@ export class LocalStorageCache implements Cache {
       // Handle quota exceeded errors
       console.warn('LocalStorage quota exceeded, clearing cache', error);
       await this.clear();
-      localStorage.setItem(this.getKey(key), JSON.stringify(entry));
+      try {
+        localStorage.setItem(this.getKey(key), JSON.stringify(entry));
+      } catch (retryError) {
+        // If the second attempt also fails, throw the original error
+        throw error;
+      }
     }
   }
 
@@ -60,7 +65,14 @@ export class LocalStorageCache implements Cache {
       }
     }
 
-    keys.forEach(key => localStorage.removeItem(key));
+    keys.forEach(key => {
+      try {
+        localStorage.removeItem(key);
+      } catch (error) {
+        // Ignore errors during cache clearing
+        console.warn('Failed to remove cache item:', key, error);
+      }
+    });
   }
 
   async has(key: string): Promise<boolean> {

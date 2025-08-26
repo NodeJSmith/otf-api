@@ -77,8 +77,11 @@ describe('WorkoutsApi', () => {
       expect(mockClient.workoutRequest).toHaveBeenCalledWith({
         method: 'GET',
         apiType: 'telemetry',
-        path: '/telemetry/test-summary-id',
-        params: { maxDataPoints: 100 }
+        path: '/v1/performance/summary',
+        params: { 
+          classHistoryUuid: 'test-summary-id',
+          maxDataPoints: 100 
+        }
       });
     });
   });

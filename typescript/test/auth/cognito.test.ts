@@ -2,6 +2,27 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OtfCognito, CognitoConfig } from '../../src/auth/cognito';
 import { MemoryCache } from '../../src/cache/memory-cache';
 
+// Mock the AWS SDK
+vi.mock('@aws-sdk/client-cognito-identity-provider', () => ({
+  CognitoIdentityProviderClient: vi.fn().mockImplementation(() => ({
+    send: vi.fn().mockResolvedValue({
+      ChallengeName: 'PASSWORD_VERIFIER',
+      ChallengeParameters: {
+        SRP_B: 'test-srp-b',
+        SALT: 'test-salt',
+        SECRET_BLOCK: 'test-secret-block'
+      },
+      AuthenticationResult: {
+        AccessToken: 'test-access-token',
+        IdToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidGVzdC11dWlkIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIn0.test-signature',
+        RefreshToken: 'test-refresh-token'
+      }
+    })
+  })),
+  InitiateAuthCommand: vi.fn().mockImplementation((params) => params),
+  RespondToAuthChallengeCommand: vi.fn().mockImplementation((params) => params),
+}));
+
 // Mock the cognito-srp-helper module
 vi.mock('cognito-srp-helper', () => ({
   createSrpSession: vi.fn().mockReturnValue({
@@ -24,9 +45,27 @@ vi.mock('cognito-srp-helper', () => ({
   createSecretHash: vi.fn().mockReturnValue('test-secret-hash'),
   createDeviceVerifier: vi.fn().mockReturnValue({
     DeviceRandomPassword: 'test-device-password',
-    DeviceSecretVerifierConfig: {
-      PasswordVerifier: 'test-verifier',
-      Salt: 'test-salt'
+    DeviceKey: 'test-device-key'
+  }),
+  signSrpSession: vi.fn().mockReturnValue('test-signed-session'),
+  wrapInitiateAuth: vi.fn().mockReturnValue({
+    ClientId: 'test-client-id',
+    AuthFlow: 'USER_SRP_AUTH',
+    AuthParameters: {
+      USERNAME: 'test@example.com',
+      SRP_A: 'test-srp-a',
+      SECRET_HASH: 'test-secret-hash'
+    }
+  }),
+  wrapAuthChallenge: vi.fn().mockReturnValue({
+    ClientId: 'test-client-id',
+    ChallengeName: 'PASSWORD_VERIFIER',
+    ChallengeResponses: {
+      USERNAME: 'test@example.com',
+      PASSWORD_CLAIM_SIGNATURE: 'test-signature',
+      PASSWORD_CLAIM_SIGNATURE_SIGNATURE_ALGORITHM: 'HmacSHA256',
+      TIMESTAMP: '2024-01-01T00:00:00.000Z',
+      SECRET_HASH: 'test-secret-hash'
     }
   })
 }));
@@ -37,7 +76,7 @@ describe('OtfCognito', () => {
   
   const testConfig: CognitoConfig = {
     userPoolId: 'us-east-1_test',
-    clientId: 'test-client-id',
+    clientId: 'testclientid', // Changed to valid format
     identityPoolId: 'us-east-1:test-identity-pool',
     region: 'us-east-1'
   };

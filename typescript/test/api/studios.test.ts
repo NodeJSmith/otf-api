@@ -41,22 +41,47 @@ describe('StudiosApi', () => {
 
       expect(result).toEqual({
         studio_uuid: 'test-studio-uuid',
-        studio_name: 'Test Studio',
+        name: 'Test Studio',
         studio_number: '123',
         time_zone: 'America/New_York',
         contact_email: 'studio@example.com',
-        studio_phone_number: '+1234567890',
-        studio_physical_location_id: undefined,
-        studio_location: {
-          address: '123 Studio St',
+        location: {
+          address_line1: '123 Studio St',
           city: 'Test City',
           state: 'NY',
           postal_code: '12345',
           latitude: 40.7128,
           longitude: -74.0060,
-          address_line_2: undefined,
-          country: undefined
-        }
+          phone_number: '+1234567890',
+          address_line2: null,
+          country: null,
+          region: null,
+          country_id: null,
+          physical_country_id: null,
+          physical_region: null,
+        },
+        distance: null,
+        status: null,
+        accepts_ach: null,
+        accepts_american_express: null,
+        accepts_discover: null,
+        accepts_visa_master_card: null,
+        allows_cr_waitlist: null,
+        allows_dashboard_access: null,
+        is_crm: null,
+        is_integrated: null,
+        is_mobile: null,
+        is_otbeat: null,
+        is_web: null,
+        sms_package_enabled: null,
+        studio_id: null,
+        studio_physical_location_id: null,
+        studio_type_id: null,
+        mbo_studio_id: null,
+        open_date: null,
+        pricing_level: null,
+        re_open_date: null,
+        studio_token: null,
       });
     });
 
@@ -67,13 +92,33 @@ describe('StudiosApi', () => {
 
       expect(result).toEqual({
         studio_uuid: 'invalid-uuid',
-        studio_name: '',
-        studio_number: '',
-        time_zone: '',
-        contact_email: undefined,
-        studio_phone_number: undefined,
-        studio_physical_location_id: undefined,
-        studio_location: undefined
+        name: null,
+        studio_number: null,
+        time_zone: null,
+        contact_email: null,
+        location: undefined,
+        distance: null,
+        status: null,
+        accepts_ach: null,
+        accepts_american_express: null,
+        accepts_discover: null,
+        accepts_visa_master_card: null,
+        allows_cr_waitlist: null,
+        allows_dashboard_access: null,
+        is_crm: null,
+        is_integrated: null,
+        is_mobile: null,
+        is_otbeat: null,
+        is_web: null,
+        sms_package_enabled: null,
+        studio_id: null,
+        studio_physical_location_id: null,
+        studio_type_id: null,
+        mbo_studio_id: null,
+        open_date: null,
+        pricing_level: null,
+        re_open_date: null,
+        studio_token: null,
       });
     });
   });
@@ -137,7 +182,7 @@ describe('StudiosApi', () => {
 
       expect(result).toHaveLength(1);
       expect(result[0].studio_uuid).toBe('nearby-studio-uuid');
-      expect(result[0].studio_name).toBe('Nearby Studio');
+      expect(result[0].name).toBe('Nearby Studio');
     });
   });
 });

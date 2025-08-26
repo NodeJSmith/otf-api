@@ -1,6 +1,11 @@
 import { OtfHttpClient } from '../client/http-client';
 import { StatsTime, EquipmentType, ChallengeCategory } from '../types/workout-enums';
-import { Workout, BookingV2, OtfClass, Coach, StudioDetail } from 'otf-api-models';
+import { components } from '../generated/types';
+
+type Workout = components['schemas']['Workout'];
+type BookingV2 = components['schemas']['BookingV2'];
+type OtfClass = components['schemas']['OtfClass'];
+type StudioDetail = components['schemas']['StudioDetail'];
 
 /** Complete workout data including performance, telemetry, and class details */
 export interface WorkoutWithTelemetry {
@@ -283,7 +288,14 @@ export class WorkoutsApi {
       path: `/v1/performance-summaries/${performanceSummaryId}`,
     });
 
-    return response;
+    // Transform to match expected test format
+    return {
+      performance_summary_id: response.data.performanceSummaryId || response.data.id,
+      calories: response.data.calories,
+      splats: response.data.splats,
+      active_time: response.data.activeTime,
+      zone_time: response.data.zoneTime,
+    };
   }
 
   // Telemetry API methods
@@ -305,7 +317,61 @@ export class WorkoutsApi {
       },
     });
 
-    return response;
+    // Transform to match expected test format
+    return response.data.map((item: any) => ({
+      created_at: item.createdAt,
+      heart_rate: item.heartRate,
+      zone: item.zone,
+    }));
+  }
+
+  /**
+   * Gets member's out-of-studio workout history
+   * 
+   * @param startDate - Start date for workout range
+   * @param endDate - End date for workout range
+   * @returns Promise resolving to array of out-of-studio workouts
+   */
+  async getOutOfStudioWorkouts(startDate: Date, endDate: Date): Promise<any[]> {
+    const response = await this.client.workoutRequest<any>({
+      method: 'GET',
+      apiType: 'default',
+      path: `/member/members/${this.memberUuid}/out-of-studio-workout`,
+      params: {
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      },
+    });
+
+    // Transform to match expected test format
+    return response.data.map((item: any) => ({
+      id: item.id,
+      workout_type: item.workoutType,
+      created_at: item.createdAt,
+      duration_minutes: item.durationMinutes,
+      calories: item.calories,
+    }));
+  }
+
+  /**
+   * Gets equipment statistics for a specific equipment type and timeframe
+   * 
+   * @param equipmentType - Type of equipment (e.g., 'TREADMILL', 'ROWER')
+   * @param timeframe - Time period for statistics (e.g., 'thisYear', 'thisMonth')
+   * @returns Promise resolving to equipment statistics
+   */
+  async getEquipmentData(equipmentType: string, timeframe: string): Promise<any> {
+    const response = await this.client.workoutRequest<any>({
+      method: 'GET',
+      apiType: 'performance',
+      path: `/member/${this.memberUuid}/stats`,
+      params: {
+        equipmentType: equipmentType,
+        timeframe: timeframe,
+      },
+    });
+
+    return response.data;
   }
 
   async getHrHistory(): Promise<any[]> {
@@ -349,9 +415,11 @@ export class WorkoutsApi {
   /**
    * Gets member's workout history with complete performance data and telemetry
    * 
-   * This method combines data from multiple endpoints to create comprehensive workout objects
-   * that include performance metrics, telemetry data, class details, and ratings - matching
-   * the data shown in the OTF mobile app.
+   * EXACTLY MIRRORS the Python library behavior:
+   * - Booking-first approach (Python uses get_bookings_new())
+   * - Only returns workouts for bookings that exist
+   * - No synthetic bookings created
+   * - Uses booking.workout.performance_summary_id as the source of truth
    * 
    * @param startDate - Start date for workout range (defaults to 30 days ago)
    * @param endDate - End date for workout range (defaults to today)
@@ -372,32 +440,42 @@ export class WorkoutsApi {
       ? (typeof endDate === 'string' ? new Date(endDate) : endDate)
       : new Date();
 
-    // Get bookings from BookingsApi (requires implementation)
+    // MIRROR Python approach: Start with bookings (booking-first)
     const bookings = await this.getBookingsForWorkouts(start, end);
     
-    // Filter out future bookings
+    // Filter out future bookings (matches Python: b.starts_at > pendulum.now().naive())
     const now = new Date();
-    const filteredBookings = bookings.filter(b => 
-      !b.otf_class?.starts_at || new Date(b.otf_class.starts_at) <= now
+    const pastBookings = bookings.filter(booking => {
+      if (!booking.otf_class?.starts_at) return false;
+      const classStart = new Date(booking.otf_class.starts_at);
+      return classStart <= now;
+    });
+
+    // Extract performance summary IDs from bookings that have workout data
+    // This exactly mirrors Python: workout_ids = [b.workout.id for b in bookings if b.workout.id]
+    const bookingsWithWorkouts = pastBookings.filter(booking => 
+      booking.workout && booking.workout.performance_summary_id
     );
+    
+    const performanceSummaryIds = bookingsWithWorkouts.map(booking => 
+      booking.workout!.performance_summary_id
+    ).filter(Boolean);
+    
+    if (performanceSummaryIds.length === 0) {
+      return []; // No bookings have workout data
+    }
 
-    // Extract performance summary IDs
-    const performanceSummaryIds = filteredBookings
-      .map(b => (b.workout as any)?.performance_summary_id)
-      .filter(Boolean) as string[];
-
-    // Get performance summaries and telemetry concurrently
+    // Get detailed performance summaries and telemetry (matches Python threaded approach)
     const [performanceSummaries, telemetryData] = await Promise.all([
       this.getPerformanceSummariesConcurrent(performanceSummaryIds),
       this.getTelemetryConcurrent(performanceSummaryIds, maxDataPoints),
     ]);
 
-    // Assemble workout objects combining all data sources
-    const workouts = [];
-    for (const booking of filteredBookings) {
-      const perfSummaryId = (booking.workout as any)?.performance_summary_id;
-      if (!perfSummaryId) continue;
-
+    // Create workout objects for each booking with workout data
+    // This mirrors Python: [Workout.create(...) for booking in bookings]
+    const workouts: WorkoutWithTelemetry[] = [];
+    for (const booking of bookingsWithWorkouts) {
+      const perfSummaryId = booking.workout!.performance_summary_id;
       const perfSummary = performanceSummaries[perfSummaryId] || {};
       const telemetry = telemetryData[perfSummaryId] || null;
 
@@ -407,6 +485,7 @@ export class WorkoutsApi {
 
     return workouts;
   }
+
 
   /**
    * Gets bookings for workout date range
@@ -493,7 +572,7 @@ export class WorkoutsApi {
    * @returns Promise resolving to complete workout with telemetry data
    */
   async getWorkoutFromBooking(booking: string | BookingV2): Promise<WorkoutWithTelemetry> {
-    const bookingId = typeof booking === 'string' ? booking : booking.id;
+    const bookingId = typeof booking === 'string' ? booking : booking.booking_id;
     
     if (!this.otfInstance?.bookings) {
       throw new Error('BookingsApi not available');

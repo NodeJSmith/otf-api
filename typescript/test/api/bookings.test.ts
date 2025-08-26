@@ -17,25 +17,29 @@ describe('BookingsApi', () => {
   describe('getBookingNew', () => {
     it('should fetch and transform booking data correctly', async () => {
       const mockResponse = {
-        data: {
-          bookingId: 'test-booking-id',
+        bookingId: 'test-booking-id',
+        checked_in: true,
+        canceled: false,
+        ratable: true,
+        class: {
           classUuid: 'test-class-uuid',
-          status: 'booked',
-          checkedIn: true,
-          class: {
-            className: 'Orange 60 3G',
-            startDateTime: '2024-01-01T10:00:00Z',
-            endDateTime: '2024-01-01T11:00:00Z',
-            studio: {
-              studioUUId: 'studio-uuid',
-              studioName: 'Test Studio'
-            }
+          name: 'Orange 60 3G',
+          startsAt: '2024-01-01T10:00:00Z',
+          coach: {
+            firstName: 'John',
+            lastName: 'Doe'
           },
-          performanceSummary: {
-            performanceSummaryId: 'performance-id',
-            calories: 500,
-            splats: 15
+          studio: {
+            studioUuid: 'studio-uuid',
+            name: 'Test Studio'
           }
+        },
+        workout: {
+          performanceSummaryId: 'performance-id',
+          caloriesBurned: 500,
+          splatPoints: 15,
+          stepCount: 5000,
+          activeTimeSeconds: 3600
         }
       };
 
@@ -44,50 +48,77 @@ describe('BookingsApi', () => {
       const result = await bookingsApi.getBookingNew('test-booking-id');
 
       expect(result).toEqual({
-        id: 'test-booking-id',
-        class_uuid: 'test-class-uuid',
+        booking_id: 'test-booking-id',
         member_uuid: 'test-member-uuid',
-        status: 'booked',
+        person_id: 'test-member-uuid',
+        service_name: null,
+        cross_regional: null,
+        intro: null,
         checked_in: true,
-        class: {
-          class_name: 'Orange 60 3G',
-          start_date_time: '2024-01-01T10:00:00Z',
-          end_date_time: '2024-01-01T11:00:00Z',
+        canceled: false,
+        late_canceled: null,
+        canceled_at: null,
+        ratable: true,
+        otf_class: {
+          class_uuid: 'test-class-uuid',
+          name: 'Orange 60 3G',
+          starts_at: '2024-01-01T10:00:00Z',
+          coach: 'John Doe',
           studio: {
             studio_uuid: 'studio-uuid',
-            studio_name: 'Test Studio'
-          }
+            name: 'Test Studio',
+            phone_number: null,
+            latitude: null,
+            longitude: null,
+            time_zone: null,
+            email: null,
+            address: null,
+            currency_code: null,
+            mbo_studio_id: null,
+          },
+          class_id: null,
+          class_type: null,
+          starts_at_utc: null,
         },
-        performance_summary: {
+        workout: {
+          id: 'performance-id',
           performance_summary_id: 'performance-id',
-          calories: 500,
-          splats: 15
-        }
+          calories_burned: 500,
+          splat_points: 15,
+          step_count: 5000,
+          active_time_seconds: 3600,
+        },
+        coach_rating: null,
+        class_rating: null,
+        paying_studio_id: null,
+        mbo_booking_id: null,
+        mbo_unique_id: null,
+        mbo_paying_unique_id: null,
+        created_at: null,
+        updated_at: null,
       });
 
       expect(mockClient.workoutRequest).toHaveBeenCalledWith({
         method: 'GET',
         apiType: 'performance',
-        path: '/member/bookings/test-booking-id'
+        path: '/v1/bookings/test-booking-id'
       });
     });
 
     it('should handle missing performance summary', async () => {
       const mockResponse = {
-        data: {
-          bookingId: 'test-booking-id',
-          classUuid: 'test-class-uuid',
-          status: 'booked',
-          checkedIn: false
-        }
+        bookingId: 'test-booking-id',
+        checked_in: false,
+        canceled: false,
+        ratable: false
       };
 
       mockClient.workoutRequest.mockResolvedValue(mockResponse);
 
       const result = await bookingsApi.getBookingNew('test-booking-id');
 
-      expect(result.id).toBe('test-booking-id');
-      expect(result.performance_summary).toBeUndefined();
+      expect(result.booking_id).toBe('test-booking-id');
+      expect(result.workout).toBe(null);
       expect(result.checked_in).toBe(false);
     });
   });

@@ -13,6 +13,9 @@ describe('OtfHttpClient', () => {
     mockCognito = {
       getAccessToken: vi.fn().mockResolvedValue('test-access-token'),
       authenticate: vi.fn().mockResolvedValue(undefined),
+      getAuthHeaders: vi.fn().mockReturnValue({
+        'Authorization': 'Bearer test-access-token'
+      }),
     } as any;
 
     client = new OtfHttpClient(mockCognito, {
@@ -51,10 +54,8 @@ describe('OtfHttpClient', () => {
   });
 
   describe('request options validation', () => {
-    it('should require method and path', () => {
-      expect(() => {
-        client.request({} as any);
-      }).toThrow();
+    it('should require method and path', async () => {
+      await expect(client.request({} as any)).rejects.toThrow('Request options must include method and path');
     });
 
     it('should accept valid request options', async () => {
@@ -62,6 +63,7 @@ describe('OtfHttpClient', () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
         status: 200,
+        text: vi.fn().mockResolvedValue('{"data": "test"}'),
         json: vi.fn().mockResolvedValue({ data: 'test' })
       } as any);
 
