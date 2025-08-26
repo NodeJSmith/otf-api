@@ -155,10 +155,79 @@ jobs:
         cd typescript
         npm run build
 
+  check-python-changes:
+    runs-on: ubuntu-latest
+    name: Check Python Changes Significance
+    outputs:
+      python_changed: ${{ steps.check_changes.outputs.python_changed }}
+      changes_significant: ${{ steps.check_changes.outputs.changes_significant }}
+      files_changed: ${{ steps.check_changes.outputs.files_changed }}
+      lines_changed: ${{ steps.check_changes.outputs.lines_changed }}
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 2  # Need previous commit for comparison
+        
+    - name: Check Python changes
+      id: check_changes
+      env:
+        FILES_THRESHOLD: ${{ secrets.AI_FILES_THRESHOLD || '3' }}
+        LINES_THRESHOLD: ${{ secrets.AI_LINES_THRESHOLD || '50' }}
+      run: |
+        # Check if any Python files changed
+        python_files=$(git diff --name-only HEAD~1 HEAD -- 'python/' | wc -l)
+        
+        if [[ $python_files -eq 0 ]]; then
+          echo "python_changed=false" >> $GITHUB_OUTPUT
+          echo "changes_significant=false" >> $GITHUB_OUTPUT
+          echo "files_changed=0" >> $GITHUB_OUTPUT
+          echo "lines_changed=0" >> $GITHUB_OUTPUT
+          echo "📋 No Python files changed"
+          exit 0
+        fi
+        
+        echo "python_changed=true" >> $GITHUB_OUTPUT
+        
+        # Count files and lines changed in entire python/ directory
+        files_changed=$(git diff --name-only HEAD~1 HEAD -- 'python/' | wc -l)
+        
+        # Get total lines changed (insertions + deletions)
+        diff_stat=$(git diff --stat HEAD~1 HEAD -- 'python/' | tail -1)
+        lines_changed=0
+        
+        if [[ $diff_stat =~ ([0-9]+)\ insertion ]]; then
+          insertions=${BASH_REMATCH[1]}
+          lines_changed=$((lines_changed + insertions))
+        fi
+        
+        if [[ $diff_stat =~ ([0-9]+)\ deletion ]]; then
+          deletions=${BASH_REMATCH[1]}
+          lines_changed=$((lines_changed + deletions))
+        fi
+        
+        echo "files_changed=$files_changed" >> $GITHUB_OUTPUT
+        echo "lines_changed=$lines_changed" >> $GITHUB_OUTPUT
+        
+        # Determine if changes are significant using configurable thresholds
+        if [[ $files_changed -ge $FILES_THRESHOLD ]] || [[ $lines_changed -ge $LINES_THRESHOLD ]]; then
+          echo "changes_significant=true" >> $GITHUB_OUTPUT
+          echo "✅ Changes are SIGNIFICANT: $files_changed files, $lines_changed lines (threshold: $FILES_THRESHOLD files OR $LINES_THRESHOLD lines)"
+        else
+          echo "changes_significant=false" >> $GITHUB_OUTPUT
+          echo "⚠️ Changes are minor: $files_changed files, $lines_changed lines (threshold: $FILES_THRESHOLD files OR $LINES_THRESHOLD lines)"
+        fi
+        
+        echo "📊 Python change summary:" >> $GITHUB_STEP_SUMMARY
+        echo "- Files changed: $files_changed" >> $GITHUB_STEP_SUMMARY
+        echo "- Lines changed: $lines_changed" >> $GITHUB_STEP_SUMMARY
+        echo "- Thresholds: $FILES_THRESHOLD files OR $LINES_THRESHOLD lines" >> $GITHUB_STEP_SUMMARY
+        echo "- Significant for AI generation: $([ $files_changed -ge $FILES_THRESHOLD ] || [ $lines_changed -ge $LINES_THRESHOLD ] && echo 'YES' || echo 'NO')" >> $GITHUB_STEP_SUMMARY
+
   integration-test:
     runs-on: ubuntu-latest
     name: Integration Tests
-    needs: [test-python, generate-and-test-schema, test-typescript]
+    needs: [test-python, generate-and-test-schema, test-typescript, check-python-changes]
     
     steps:
     - uses: actions/checkout@v4
