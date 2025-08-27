@@ -308,29 +308,28 @@ jobs:
           git push origin "$BRANCH_NAME"
           
           # Create pull request using gh CLI
-          gh pr create \
-            --title "🤖 AI Auto-sync: TypeScript Updates (${{ needs.check-python-changes.outputs.files_changed }} files, ${{ needs.check-python-changes.outputs.lines_changed }} lines)" \
-            --body "$(cat <<'EOF'
-          ## 🤖 Automated TypeScript Sync
-          
+          PR_BODY="## 🤖 Automated TypeScript Sync
+
           This PR contains AI-generated TypeScript implementation updates based on recent Python model changes.
-          
+
           ### Python Changes Summary
           - **Files changed:** ${{ needs.check-python-changes.outputs.files_changed }}
           - **Lines modified:** ${{ needs.check-python-changes.outputs.lines_changed }}
-          
+
           ### AI Analysis
-          See attached `ai_updates.json` and `python_changes.md` for detailed analysis.
-          
+          See attached \`ai_updates.json\` and \`python_changes.md\` for detailed analysis.
+
           ### Review Instructions
           1. Verify TypeScript changes align with Python model updates
           2. Test the generated TypeScript client functionality  
           3. Check for any breaking changes in the API
           4. Ensure all tests pass before merging
+
+          🤖 Generated with [Claude AI](https://claude.ai/code) auto-sync workflow"
           
-          🤖 Generated with [Claude AI](https://claude.ai/code) auto-sync workflow
-          EOF
-          )" \
+          gh pr create \
+            --title "🤖 AI Auto-sync: TypeScript Updates (${{ needs.check-python-changes.outputs.files_changed }} files, ${{ needs.check-python-changes.outputs.lines_changed }} lines)" \
+            --body "$PR_BODY" \
             --head "$BRANCH_NAME" \
             --base develop
           
