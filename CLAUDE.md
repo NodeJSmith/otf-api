@@ -127,6 +127,40 @@ Each API domain follows this pattern:
 - **Type hints**: Required (enforced by ruff ANN rules)
 - Uses ruff for linting with extensive rule set (see `ruff.toml`)
 
+## CRITICAL: Code Quality Requirements
+**ALWAYS validate code matches CI exactly by running:**
+```bash
+cd python
+uv run ruff check --output-format=github
+uv run ruff format --check
+```
+
+**To fix issues before validation:**
+```bash
+cd python
+uv run ruff check --fix
+uv run ruff format
+```
+
+**CI Requirements (MUST PASS):**
+- `uv run ruff check --output-format=github` - Must show no errors
+- `uv run ruff format --check` - Must show "X files already formatted" (no "would reformat")
+
+**Common errors to avoid:**
+- **NO blank lines with whitespace** - Use completely empty lines
+- **NO unused noqa directives** - Only use `noqa` when actually needed  
+- **NO trailing whitespace** - Ruff will catch and fix these
+- **ALL functions must have type annotations** - Required by ANN rules
+- **ALL functions must have docstrings** - Google format required
+
+**Workflow for adding code:**
+1. Write the code
+2. Fix issues: `uv run ruff check --fix && uv run ruff format`  
+3. Validate against CI: `uv run ruff check --output-format=github && uv run ruff format --check`
+4. Both commands must pass with no errors or "would reformat" messages
+
+**Never commit code that fails CI validation commands**
+
 ## Environment Variables
 - `OTF_EMAIL`: OrangeTheory email for authentication
 - `OTF_PASSWORD`: OrangeTheory password for authentication  

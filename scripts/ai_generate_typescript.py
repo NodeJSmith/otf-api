@@ -107,9 +107,9 @@ def read_typescript_context() -> Dict[str, str]:
                 rel_path = str(file_path.relative_to(ts_dir))
                 try:
                     content = file_path.read_text()
-                    # Truncate for API limits
-                    if len(content) > 1500:
-                        content = content[:1500] + f"\n... (truncated, {len(content)} total chars)"
+                    # Truncate for API limits - increased from 1500 to 3000 for better context
+                    if len(content) > 3000:
+                        content = content[:3000] + f"\n... (truncated, {len(content)} total chars)"
                     ts_files[rel_path] = content
                 except Exception as e:
                     ts_files[rel_path] = f"Error reading file: {e}"
@@ -121,7 +121,7 @@ def call_claude_api(api_key: str, change_summary: str, ts_context: Dict[str, str
     """Call Claude API to generate TypeScript updates."""
     import httpx
     
-    prompt = f"""You are a TypeScript expert updating an API client based on Python model changes.
+    prompt = f"""You are a TypeScript expert analyzing Python API changes for potential TypeScript updates.
 
 ## Python Changes:
 {change_summary}
@@ -129,32 +129,48 @@ def call_claude_api(api_key: str, change_summary: str, ts_context: Dict[str, str
 ## Current TypeScript Implementation:
 {json.dumps(ts_context, indent=2)}
 
-## Task:
-Analyze the Python changes and generate TypeScript implementation updates. Focus on:
-1. API client methods that need updating for new/changed models
-2. Data transformation logic changes  
-3. Type exports in models.ts for new models
-4. Cache implementations if model structures changed
+## CRITICAL INSTRUCTIONS:
+1. **BE EXTREMELY CONSERVATIVE** - Only suggest changes if absolutely necessary
+2. **NEVER replace entire files** - Only make minimal, targeted updates
+3. **IGNORE duplicate/test functions** - Don't generate changes for obvious test code
+4. **REQUIRE clear justification** - Only change TypeScript if Python models/APIs actually changed
 
-Return ONLY a valid JSON object with this exact structure:
+## Analysis Task:
+Carefully analyze if the Python changes require ANY TypeScript updates:
+
+- **New Pydantic models** → May need new TypeScript types
+- **Changed model fields** → May need type updates  
+- **New API endpoints** → May need new client methods
+- **Changed response formats** → May need parsing updates
+
+**IGNORE:**
+- Duplicate utility functions (likely test code)
+- Code formatting changes
+- Internal implementation details that don't affect the API
+
+Return ONLY a valid JSON object:
 {{
-  "summary": "Brief description of what changed and why updates are needed",
+  "summary": "Analysis of whether changes are needed",
   "files": {{
     "relative/path.ts": {{
-      "action": "update", 
-      "changes": "Description of specific changes made",
-      "content": "Complete updated file content as a single string"
+      "action": "update|skip", 
+      "changes": "SPECIFIC changes needed and WHY",
+      "content": "Complete file content ONLY if absolutely necessary"
     }}
   }},
   "breaking_changes": ["list any breaking changes"],
-  "notes": "Additional notes for human reviewer"
+  "notes": "Detailed justification for any changes"
 }}
 
-IMPORTANT: 
-- Return ONLY the JSON object, no markdown formatting
-- The "content" field must be a single escaped string, not template literals
-- Use \\n for newlines in the content field
-- Only include files that actually need changes"""
+**DEFAULT RESPONSE** if no meaningful changes needed:
+{{
+  "summary": "No TypeScript changes required - Python changes are internal/test code",
+  "files": {{}},
+  "breaking_changes": [],
+  "notes": "Python changes do not affect TypeScript API client interface"
+}}
+
+IMPORTANT: Return ONLY JSON, no markdown formatting."""
     
     try:
         with httpx.Client(timeout=60.0) as client:

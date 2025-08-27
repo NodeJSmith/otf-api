@@ -282,19 +282,20 @@ jobs:
 
     - name: Create PR for AI updates
       run: |
+        # Always create PR for significant Python changes to document AI analysis
+        BRANCH_NAME="ai-sync-$(date +%Y%m%d-%H%M%S)"
+        git checkout -b "$BRANCH_NAME"
+        
+        # Configure git
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action AI"
+        
         # Check if TypeScript files were actually modified
         if [[ -n $(git status --porcelain typescript/src/) ]]; then
-          # Create a new branch for the AI changes
-          BRANCH_NAME="ai-sync-$(date +%Y%m%d-%H%M%S)"
-          git checkout -b "$BRANCH_NAME"
-          
-          # Configure git
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action AI"
-          
-          # Add and commit changes
+          # Add TypeScript changes and analysis files
           git add typescript/src/ ai_updates.json python_changes.md 2>/dev/null || true
-          git commit -m "🤖 AI auto-sync: Update TypeScript implementation
+          
+          COMMIT_MSG="🤖 AI auto-sync: Update TypeScript implementation
 
           Python changes detected:
           - ${{ needs.check-python-changes.outputs.files_changed }} files changed
@@ -304,10 +305,8 @@ jobs:
           
           🤖 Generated with Claude AI"
           
-          # Push the new branch
-          git push origin "$BRANCH_NAME"
+          PR_TITLE="🤖 AI Auto-sync: TypeScript Updates (${{ needs.check-python-changes.outputs.files_changed }} files, ${{ needs.check-python-changes.outputs.lines_changed }} lines)"
           
-          # Create pull request using gh CLI
           PR_BODY="## 🤖 Automated TypeScript Sync
 
           This PR contains AI-generated TypeScript implementation updates based on recent Python model changes.
@@ -327,30 +326,56 @@ jobs:
 
           🤖 Generated with [Claude AI](https://claude.ai/code) auto-sync workflow"
           
-          gh pr create \
-            --title "🤖 AI Auto-sync: TypeScript Updates (${{ needs.check-python-changes.outputs.files_changed }} files, ${{ needs.check-python-changes.outputs.lines_changed }} lines)" \
-            --body "$PR_BODY" \
-            --head "$BRANCH_NAME" \
-            --base develop
-          
-          echo "✅ Created PR for AI-generated TypeScript updates"
         else
-          echo "ℹ️ No TypeScript files were modified by AI generation"
-          # Still commit analysis files to current branch for record keeping
-          if [[ -f ai_updates.json ]] || [[ -f python_changes.md ]]; then
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action AI"
-            git add ai_updates.json python_changes.md 2>/dev/null || true
-            if git commit -m "🤖 AI analysis completed (no TypeScript changes needed)" 2>/dev/null; then
-              git push origin develop
-              echo "✅ Analysis files committed to develop branch"
-            else
-              echo "ℹ️ No changes to commit"
-            fi
-          else
-            echo "ℹ️ No analysis files generated"
-          fi
+          # Add only analysis files - no TypeScript changes needed
+          git add ai_updates.json python_changes.md 2>/dev/null || true
+          
+          COMMIT_MSG="🤖 AI analysis: No TypeScript changes needed
+
+          Python changes detected:
+          - ${{ needs.check-python-changes.outputs.files_changed }} files changed
+          - ${{ needs.check-python-changes.outputs.lines_changed }} lines modified
+          
+          AI determined these changes do not affect TypeScript client interface.
+          
+          🤖 Analysis completed with Claude AI"
+          
+          PR_TITLE="🤖 AI Analysis: No TypeScript Changes Needed (${{ needs.check-python-changes.outputs.files_changed }} files, ${{ needs.check-python-changes.outputs.lines_changed }} lines)"
+          
+          PR_BODY="## 🤖 AI Analysis Report
+
+          This PR documents AI analysis of recent Python changes.
+
+          ### Python Changes Summary
+          - **Files changed:** ${{ needs.check-python-changes.outputs.files_changed }}
+          - **Lines modified:** ${{ needs.check-python-changes.outputs.lines_changed }}
+
+          ### AI Decision
+          **No TypeScript changes required** - Python changes are internal/utility code that don't affect the TypeScript API client interface.
+
+          ### Analysis Details
+          See attached \`ai_updates.json\` and \`python_changes.md\` for complete analysis and reasoning.
+
+          ### Action Required
+          Review the analysis and close this PR if you agree with the AI assessment.
+
+          🤖 Generated with [Claude AI](https://claude.ai/code) auto-sync workflow"
         fi
+        
+        # Commit the changes
+        git commit -m "$COMMIT_MSG"
+        
+        # Push the new branch
+        git push origin "$BRANCH_NAME"
+        
+        # Create pull request using gh CLI
+        gh pr create \
+          --title "$PR_TITLE" \
+          --body "$PR_BODY" \
+          --head "$BRANCH_NAME" \
+          --base develop
+        
+        echo "✅ Created PR for AI analysis: $PR_TITLE"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
