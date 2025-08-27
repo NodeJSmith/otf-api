@@ -245,6 +245,9 @@ jobs:
     name: AI Sync TypeScript (if significant changes)
     needs: [check-python-changes, generate-and-test-schema]
     if: needs.check-python-changes.outputs.changes_significant == 'true'
+    permissions:
+      contents: write
+      pull-requests: write
     
     steps:
     - uses: actions/checkout@v4
@@ -277,29 +280,80 @@ jobs:
         pip install httpx
         python scripts/ai_generate_typescript.py
 
-    - name: Commit AI updates
+    - name: Create PR for AI updates
       run: |
         # Check if TypeScript files were actually modified
         if [[ -n $(git status --porcelain typescript/src/) ]]; then
+          # Create a new branch for the AI changes
+          BRANCH_NAME="ai-sync-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH_NAME"
+          
+          # Configure git
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action AI"
-          git add typescript/src/
-          git commit -m "🤖 AI auto-sync: Update TypeScript implementation - ${{ needs.check-python-changes.outputs.files_changed }} files, ${{ needs.check-python-changes.outputs.lines_changed }} lines changed"
-          echo "✅ AI updates committed"
+          
+          # Add and commit changes
+          git add typescript/src/ ai_updates.json python_changes.md 2>/dev/null || true
+          git commit -m "🤖 AI auto-sync: Update TypeScript implementation
+
+          Python changes detected:
+          - ${{ needs.check-python-changes.outputs.files_changed }} files changed
+          - ${{ needs.check-python-changes.outputs.lines_changed }} lines modified
+          
+          Generated TypeScript updates to maintain API compatibility.
+          
+          🤖 Generated with Claude AI"
+          
+          # Push the new branch
+          git push origin "$BRANCH_NAME"
+          
+          # Create pull request using gh CLI
+          gh pr create \
+            --title "🤖 AI Auto-sync: TypeScript Updates (${{ needs.check-python-changes.outputs.files_changed }} files, ${{ needs.check-python-changes.outputs.lines_changed }} lines)" \
+            --body "$(cat <<'EOF'
+          ## 🤖 Automated TypeScript Sync
+          
+          This PR contains AI-generated TypeScript implementation updates based on recent Python model changes.
+          
+          ### Python Changes Summary
+          - **Files changed:** ${{ needs.check-python-changes.outputs.files_changed }}
+          - **Lines modified:** ${{ needs.check-python-changes.outputs.lines_changed }}
+          
+          ### AI Analysis
+          See attached `ai_updates.json` and `python_changes.md` for detailed analysis.
+          
+          ### Review Instructions
+          1. Verify TypeScript changes align with Python model updates
+          2. Test the generated TypeScript client functionality  
+          3. Check for any breaking changes in the API
+          4. Ensure all tests pass before merging
+          
+          🤖 Generated with [Claude AI](https://claude.ai/code) auto-sync workflow
+          EOF
+          )" \
+            --head "$BRANCH_NAME" \
+            --base develop
+          
+          echo "✅ Created PR for AI-generated TypeScript updates"
         else
           echo "ℹ️ No TypeScript files were modified by AI generation"
-          # Clean up temporary files if they exist
+          # Still commit analysis files to current branch for record keeping
           if [[ -f ai_updates.json ]] || [[ -f python_changes.md ]]; then
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action AI"
             git add ai_updates.json python_changes.md 2>/dev/null || true
             if git commit -m "🤖 AI analysis completed (no TypeScript changes needed)" 2>/dev/null; then
-              echo "✅ Temporary files committed for record keeping"
+              git push origin develop
+              echo "✅ Analysis files committed to develop branch"
             else
               echo "ℹ️ No changes to commit"
             fi
           else
-            echo "ℹ️ No temporary files to clean up"
+            echo "ℹ️ No analysis files generated"
           fi
         fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   integration-test:
     runs-on: ubuntu-latest
