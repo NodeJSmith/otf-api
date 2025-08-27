@@ -6,6 +6,7 @@ from .bookings import BookingApi
 from .client import OtfClient
 from .members import MemberApi
 from .studios import StudioApi
+from .test_rewards import TestRewardsApi
 from .workouts import WorkoutApi
 
 # TODO: clean up docs and turn on autodoc when we get rig of _LegacyCompatMixin
@@ -27,6 +28,7 @@ class Otf(_LegacyCompatMixin):
     members: MemberApi
     workouts: WorkoutApi
     studios: StudioApi
+    test_rewards: TestRewardsApi
 
     def __init__(self, user: OtfUser | None = None):
         """Initialize the OTF API client.
@@ -40,6 +42,7 @@ class Otf(_LegacyCompatMixin):
         self.members = MemberApi(self, client)
         self.workouts = WorkoutApi(self, client)
         self.studios = StudioApi(self, client)
+        self.test_rewards = TestRewardsApi(self, client)
 
         self._member: models.MemberDetail | None = None
 

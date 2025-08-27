@@ -13,6 +13,7 @@ from .bookings import (
 from .members import MemberDetail, MemberMembership, MemberPurchase
 from .members.notifications import EmailNotificationSettings, SmsNotificationSettings
 from .studios import StudioDetail, StudioService, StudioStatus
+from .test_rewards import RewardStatus, RewardType, TestReward, TestRewardRedemption
 from .workouts import (
     BodyCompositionData,
     ChallengeCategory,
@@ -53,6 +54,8 @@ __all__ = [
     "OutOfStudioWorkoutHistory",
     "OutStudioStatsData",
     "PerformanceSummary",
+    "RewardStatus",
+    "RewardType",
     "SmsNotificationSettings",
     "StatsResponse",
     "StatsTime",
@@ -61,6 +64,8 @@ __all__ = [
     "StudioStatus",
     "Telemetry",
     "TelemetryHistoryItem",
+    "TestReward",
+    "TestRewardRedemption",
     "TimeStats",
     "Workout",
     "get_class_rating_value",

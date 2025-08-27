@@ -142,6 +142,8 @@ Carefully analyze if the Python changes require ANY TypeScript updates:
 - **Changed model fields** → May need type updates  
 - **New API endpoints** → May need new client methods
 - **Changed response formats** → May need parsing updates
+- **Newly introduced tests** → May need to add/edit/remove tests
+- **Newly changed logic** → May need to mirror these changes in TypeScript
 
 **IGNORE:**
 - Duplicate utility functions (likely test code)
