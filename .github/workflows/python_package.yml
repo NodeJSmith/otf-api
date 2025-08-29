@@ -39,11 +39,20 @@ jobs:
       - name: Build a binary wheel and a source tarball
         run: uv build
 
+      - name: Generate OpenAPI schema
+        run: uv run python scripts/generate_openapi.py
+
       - name: Publish build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: pypi-dists
           path: "./dist"
+
+      - name: Publish schema artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-schema
+          path: "./schema"
 
   publish-pypi-dists:
     name: Publish to PyPI
