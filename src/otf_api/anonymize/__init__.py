@@ -4,6 +4,7 @@ Public API for the anonymization engine.
 """
 
 from otf_api.anonymize.anonymizer import AnonymizeConfig, Anonymizer, ReplacementMap
+from otf_api.anonymize.batch import BatchResult, anonymize_batch
 from otf_api.anonymize.validator import LeakReport, PiiValidator, ValidationResult, collect_real_values
 
 
@@ -32,10 +33,12 @@ def validate_anonymized(
 __all__ = [
     "AnonymizeConfig",
     "Anonymizer",
+    "BatchResult",
     "LeakReport",
     "PiiValidator",
     "ReplacementMap",
     "ValidationResult",
+    "anonymize_batch",
     "collect_real_values",
     "validate_anonymized",
 ]

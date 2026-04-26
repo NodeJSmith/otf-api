@@ -143,6 +143,14 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "createdBy",
             "updatedBy",
             "studioAcsId",
+            # v1 API camelCase UUID fields
+            "classUUId",
+            # yuzu API (api.yuzu.orangetheory.com) UUID fields
+            "memberUuid",
+            "classHistoryUuid",
+            # v2 API (api.orangetheory.io) snake_case variants
+            "member_id",
+            "ot_base_class_uuid",
         ),
         category="identity_uuid",
         strategy=_strategy_uuid,
@@ -159,6 +167,7 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "mbo_paying_unique_id",
             "studioId",
             "mboStudioId",
+            "mbo_studio_id",
             "homeStudioId",
             "mboMemberId",
             "mboVisitId",
@@ -194,6 +203,12 @@ FIELD_MAPPINGS: list[FieldMapping] = [
         json_keys=(
             "email",
             "contactEmail",
+            # body-composition endpoint (api.orangetheory.co) stores the member's
+            # email address in a top-level "id" field — unusual but confirmed in
+            # fixtures.  Short sequential IDs that also use "id" (e.g. social media
+            # link IDs like "5", "6") are excluded from filename substitution via
+            # the _MIN_SUBSTITUTE_LEN guard in _substitute_from_map.
+            "id",
         ),
         category="email",
         strategy=_strategy_email,
@@ -237,6 +252,10 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "physicalPostalCode",
             "country",
             "physicalCountry",
+            # v2 API (api.orangetheory.io) snake_case variants
+            "line1",
+            "line2",
+            "postal_code",
         ),
         category="address",
         strategy=_strategy_address,
@@ -267,7 +286,10 @@ FIELD_MAPPINGS: list[FieldMapping] = [
         referential=False,
     ),
     FieldMapping(
-        json_keys=("price",),
+        json_keys=(
+            "price",
+            "onlinePrice",
+        ),
         category="financial_price",
         strategy=_strategy_price,
         referential=False,

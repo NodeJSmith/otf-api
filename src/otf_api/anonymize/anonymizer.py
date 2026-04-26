@@ -12,6 +12,7 @@ import threading
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any, Literal
+from urllib.parse import quote
 
 from otf_api.anonymize.generators import FakeDataGenerators
 from otf_api.anonymize.mappings import KNOWN_SAFE_FIELDS, FieldMapping
@@ -98,6 +99,9 @@ class ReplacementMap:
     def get_or_create(self, real_value: str, generator: Callable[[], str]) -> str:
         """Return the existing fake for *real_value*, or generate and store a new one.
 
+        Empty strings are never stored in the map — they are returned as-is
+        to avoid substring substitution explosions in anonymize_url/anonymize_filename.
+
         Args:
             real_value: The original PII value to look up or map.
             generator: Zero-argument callable that produces a fake replacement string.
@@ -105,6 +109,10 @@ class ReplacementMap:
         Returns:
             The fake replacement for *real_value* (consistent across calls).
         """
+        # Never map empty strings — would cause infinite substitution loops
+        if not real_value:
+            return generator()
+
         with self._lock:
             if real_value in self._map:
                 return self._map[real_value]
@@ -412,7 +420,7 @@ class Anonymizer:
             result.append(anon_item)
         return result
 
-    def _recalculate_zones(self, anon_max_hr: float, zones: dict[str, Any]) -> dict[str, Any]:
+    def _recalculate_zones(self, anon_max_hr: Any, zones: dict[str, Any]) -> dict[str, Any]:  # noqa: ANN401
         """Recalculate heart-rate zone boundaries from the anonymized maxHr.
 
         OTF zones are defined as fixed percentages of maxHr.  After maxHr is
@@ -421,7 +429,17 @@ class Anonymizer:
 
         Only zones whose names match the known OTF zone names are recalculated.
         Unknown zone names are passed through unchanged.
+
+        If *anon_max_hr* is not a numeric type (e.g. the generator produced a
+        sentinel string), zone data is passed through unchanged.
         """
+        # Guard against generator-failure sentinels or unexpected types
+        try:
+            max_hr_float = float(anon_max_hr)
+        except (TypeError, ValueError):
+            logger.debug("Cannot recalculate zones: maxHr=%r is not numeric", anon_max_hr)
+            return dict(zones)
+
         result: dict[str, Any] = {}
         for zone_name, zone_data in zones.items():
             if zone_name not in _OTF_ZONE_PERCENTAGES or not isinstance(zone_data, dict):
@@ -430,9 +448,9 @@ class Anonymizer:
             lo_pct, hi_pct = _OTF_ZONE_PERCENTAGES[zone_name]
             new_zone = dict(zone_data)
             if "startBpm" in new_zone:
-                new_zone["startBpm"] = round(anon_max_hr * lo_pct)
+                new_zone["startBpm"] = round(max_hr_float * lo_pct)
             if "endBpm" in new_zone:
-                new_zone["endBpm"] = round(anon_max_hr * hi_pct)
+                new_zone["endBpm"] = round(max_hr_float * hi_pct)
             result[zone_name] = new_zone
         return result
 
@@ -471,10 +489,16 @@ class Anonymizer:
         if mapping.referential:
             # For referential fields, convert to string for map keying
             real_str = str(value)
-            return self._replacement_map.get_or_create(
+            fake = self._replacement_map.get_or_create(
                 real_str,
                 lambda: self._generate_for_category(category, key, value),
             )
+            # Coerce the fake value to match the original value's type.
+            # The replacement map may have been seeded by a different key with
+            # the same numeric ID but a different Python type (e.g. int vs str).
+            if category == "identity_numeric" and isinstance(value, str) and not isinstance(fake, str):
+                return str(fake)
+            return fake
         return self._generate_for_category(category, key, value)
 
     def _generate_for_category(self, category: str, key: str, value: Any) -> Any:  # noqa: ANN401
@@ -503,7 +527,11 @@ class Anonymizer:
         if category == "identity_uuid":
             return g.fake_uuid()
         if category == "identity_numeric":
-            return g.fake_numeric_id()
+            fake_id = g.fake_numeric_id()
+            # Preserve the original type: if the real value was a string, return a string
+            if isinstance(value, str):
+                return str(fake_id)
+            return fake_id
         if category == "name":
             return g.fake_name()
         if category == "email":
@@ -522,17 +550,36 @@ class Anonymizer:
         if category == "financial_cc_type":
             return g.fake_cc_type()
         if category == "financial_price":
-            return g.fake_price()
+            fake_price = g.fake_price()
+            # Preserve original type: some models store price as str
+            if isinstance(value, str):
+                return str(fake_price)
+            return fake_price
         if category == "gender":
             return g.fake_gender()
         if category == "biometric_scalar":
-            orig = float(value) if value is not None else 0.0
-            return g.fake_biometric_scalar(key, orig)
+            try:
+                orig = float(value) if value is not None else 0.0
+            except (TypeError, ValueError):
+                orig = 0.0
+            fake_scalar = g.fake_biometric_scalar(key, orig)
+            # Preserve original type: models may expect int or str for biometric fields
+            if isinstance(value, int) and not isinstance(value, bool):
+                return round(fake_scalar)
+            if isinstance(value, str):
+                return str(round(fake_scalar))
+            return fake_scalar
         if category == "biometric_body_comp":
-            orig = float(value) if value is not None else 0.0
+            try:
+                orig = float(value) if value is not None else 0.0
+            except (TypeError, ValueError):
+                orig = 0.0
             return round(orig * g.fake_body_comp_factor(), 4)
         if category == "biometric_telemetry":
-            orig = int(value) if value is not None else 0
+            try:
+                orig = int(value) if value is not None else 0
+            except (TypeError, ValueError):
+                orig = 0
             return orig + g.fake_hr_delta()
         if category == "auth_token":
             return "REDACTED"
@@ -558,15 +605,42 @@ class Anonymizer:
     # Internal: string substitution from replacement map
     # ------------------------------------------------------------------
 
+    # Minimum key length for filename/URL substitution.  Short keys (e.g. single
+    # digits like '5', '6') appear as substrings of UUIDs, timestamps, and other
+    # safe identifiers, so substituting them in filenames would corrupt the path.
+    # 8 chars is sufficient to be unambiguous in URL/filename context; full UUIDs
+    # (36 chars) are the primary target.
+    _MIN_SUBSTITUTE_LEN: int = 8
+
     def _substitute_from_map(self, text: str) -> str:
         """Replace all known real→fake mappings in *text*.
 
         Iterates over all current replacement map entries and performs
-        substring replacement.
+        substring replacement.  Also substitutes URL-encoded forms of each
+        real value so that filenames containing percent-encoded PII (e.g.
+        ``email=foo%40bar.com``) are correctly anonymized.
+
+        Empty-string keys and short keys (< 8 chars) are skipped to prevent
+        substitution explosions in filenames/URLs.
         """
         current_map = self._replacement_map.to_json()
         result = text
-        for real_value, fake_value in current_map.items():
+        # Sort by key length descending so longer (more specific) patterns are
+        # replaced before shorter ones, avoiding partial double-replacement.
+        for real_value, fake_value in sorted(current_map.items(), key=lambda kv: -len(kv[0])):
+            # Skip empty-string keys — replacing "" inserts the fake value
+            # between every single character.
+            if not real_value:
+                continue
+            # Skip short keys — they match too broadly in filenames/URLs and
+            # would corrupt UUID strings already written into the path.
+            if len(real_value) < self._MIN_SUBSTITUTE_LEN:
+                continue
             if real_value in result:
                 result = result.replace(real_value, str(fake_value))
+            # Also handle URL-encoded form (e.g. "@" → "%40" in email addresses
+            # embedded in query-string filenames).
+            url_encoded = quote(real_value, safe="")
+            if url_encoded != real_value and url_encoded in result:
+                result = result.replace(url_encoded, quote(str(fake_value), safe=""))
         return result

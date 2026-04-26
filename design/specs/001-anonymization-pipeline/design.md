@@ -1,7 +1,7 @@
 # Design: Data Anonymization Pipeline
 
 **Date:** 2026-04-26
-**Status:** approved
+**Status:** archived
 **Research:** /tmp/claude-mine-define-research-Fpttnn/brief.md
 
 ## Problem

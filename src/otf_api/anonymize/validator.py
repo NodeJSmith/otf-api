@@ -274,7 +274,11 @@ def _extract_payload(fixture: dict[str, Any], extraction_key: str | None) -> Any
 # ---------------------------------------------------------------------------
 
 
-def collect_real_values(data: dict[str, Any], mappings: list[FieldMapping]) -> set[str]:
+def collect_real_values(
+    data: dict[str, Any],
+    mappings: list[FieldMapping],
+    exclude_categories: frozenset[str] | None = None,
+) -> set[str]:
     """Walk a raw dict and extract all values from mapped PII fields into a set.
 
     Includes URL-encoded variants (e.g. both ``%40`` and ``@`` forms of email).
@@ -283,12 +287,17 @@ def collect_real_values(data: dict[str, Any], mappings: list[FieldMapping]) -> s
     Args:
         data: The raw (pre-anonymization) dict to scan.
         mappings: List of FieldMapping entries identifying which keys are PII.
+        exclude_categories: Optional set of category names to exclude.
+            For example, pass ``frozenset({"timestamp"})`` to skip timestamp
+            fields (which pass through unchanged by design).
 
     Returns:
         A set of all real PII value strings found (with URL-encoded and case variants).
     """
     all_keys: set[str] = set()
     for mapping in mappings:
+        if exclude_categories and mapping.category in exclude_categories:
+            continue
         all_keys.update(mapping.json_keys)
 
     values: set[str] = set()
@@ -337,6 +346,27 @@ def _add_with_variants(value: str, values: set[str]) -> None:
 # PiiValidator
 # ---------------------------------------------------------------------------
 
+# Regex that matches the ", input_value=..." portion of a Pydantic ValidationError
+# string.  Stripping this makes error normalization data-independent so that the same
+# structural error on the raw vs. anonymized fixture compares as equal.
+_PYDANTIC_INPUT_VALUE_RE = re.compile(r",\s*input_value=.*", re.DOTALL)
+
+
+def _normalize_model_error(error: str) -> str:
+    """Strip the data-specific ``input_value=…`` portion from a Pydantic error string.
+
+    Pydantic's ValidationError string includes the actual field values, which differ
+    between original and anonymized data.  This function strips everything after
+    ``input_value=`` so two equivalent structural errors compare as equal.
+
+    Args:
+        error: Raw model-parse error string from ``_check_model_parsing``.
+
+    Returns:
+        A normalized string suitable for set membership testing.
+    """
+    return _PYDANTIC_INPUT_VALUE_RE.sub("", error)
+
 
 class PiiValidator:
     """Validates anonymized fixture output for PII leaks and structural integrity.
@@ -354,7 +384,13 @@ class PiiValidator:
             if isinstance(v, str) and v:
                 self._lower_to_real[v.lower()] = v
 
-    def validate_file(self, original: dict, anonymized: dict, filename: str) -> ValidationResult:
+    def validate_file(
+        self,
+        original: dict,
+        anonymized: dict,
+        filename: str,
+        model_hint: str | None = None,
+    ) -> ValidationResult:
         """Validate one anonymized fixture file.
 
         Performs four checks:
@@ -366,7 +402,13 @@ class PiiValidator:
         Args:
             original: The original (pre-anonymization) fixture dict.
             anonymized: The anonymized fixture dict to validate.
-            filename: The filename (used for leak scanning and model lookup).
+            filename: The filename (used for leak scanning and ``LeakReport.file``).
+                Should be the *anonymized* filename so the filename leak check
+                accurately reflects what was actually written.
+            model_hint: Optional alternative path used only for the Pydantic model
+                pattern lookup (step 4).  Pass the *original* filename here when
+                filenames have been anonymized — the anonymized name won't match
+                endpoint patterns.  If None, *filename* is used for model lookup.
 
         Returns:
             A ValidationResult summarising all findings.
@@ -394,7 +436,20 @@ class PiiValidator:
         structural_errors.extend(self._check_structural_integrity(original, anonymized))
 
         # 4. Attempt model parsing (best-effort)
-        model_parse_errors.extend(self._check_model_parsing(anonymized, filename))
+        # Use model_hint (original path) for pattern matching when filenames are anonymized.
+        endpoint_path = model_hint if model_hint is not None else filename
+        anon_errors = self._check_model_parsing(anonymized, endpoint_path)
+
+        # Only report model errors that are NOT pre-existing in the original data.
+        # Some fixtures have missing required fields in the raw data (e.g. incomplete
+        # sub-objects returned by the API).  These are not regressions introduced by
+        # anonymization.  Pydantic error strings include input_value which differs
+        # between original and anonymized data, so we normalize to just the error
+        # type and field path before comparing.
+        orig_errors_normalized = {_normalize_model_error(e) for e in self._check_model_parsing(original, endpoint_path)}
+        for err in anon_errors:
+            if _normalize_model_error(err) not in orig_errors_normalized:
+                model_parse_errors.append(err)
 
         passed = not leaks and not structural_errors
 
