@@ -49,6 +49,8 @@ _OTF_ZONE_PERCENTAGES: dict[str, tuple[float, float]] = {
 # Placeholder returned when a generator raises.  Must never equal a real PII value.
 _GENERATOR_FAILURE_SENTINEL = "__ANONYMIZE_ERROR__"
 
+_MAX_RECURSION_DEPTH = 50
+
 
 # ---------------------------------------------------------------------------
 # AnonymizeConfig
@@ -136,7 +138,13 @@ class ReplacementMap:
 
     @classmethod
     def from_json(cls, data: dict[str, str]) -> "ReplacementMap":
-        """Restore a ReplacementMap from a previously serialized dict."""
+        """Restore a ReplacementMap from a previously serialized ``to_json()`` dict.
+
+        WARNING: This expects the ``{real_value: fake_value}`` format produced by
+        ``to_json()``.  The on-disk ``_anonymization_map.json`` written by
+        ``anonymize_batch`` uses an inverted ``{fake_value: position_hint}`` format
+        to avoid persisting real PII — it is NOT compatible with this method.
+        """
         instance = cls()
         with instance._lock:
             instance._map.update(data)
@@ -208,8 +216,11 @@ class Anonymizer:
 
         Returns:
             A new dict with PII fields replaced.
+
+        Raises:
+            ValueError: If JSON nesting exceeds the maximum recursion depth.
         """
-        return self._walk_dict(data, context)
+        return self._walk_dict(data, context, depth=0)
 
     def anonymize_value(self, key: str, value: Any) -> Any:  # noqa: ANN401
         """Apply the appropriate anonymization strategy for *key*/*value*.
@@ -272,14 +283,17 @@ class Anonymizer:
 
         Returns:
             A new list with PII fields replaced in nested dicts.
+
+        Raises:
+            ValueError: If JSON nesting exceeds the maximum recursion depth.
         """
-        return self._walk_list(data, context)
+        return self._walk_list(data, context, depth=0)
 
     # ------------------------------------------------------------------
     # Internal: recursive walk helpers
     # ------------------------------------------------------------------
 
-    def _walk_dict(self, data: dict[str, Any], context: str) -> dict[str, Any]:
+    def _walk_dict(self, data: dict[str, Any], context: str, depth: int = 0) -> dict[str, Any]:
         """Recursively walk a dict, returning a new dict with PII replaced.
 
         Before the per-field loop, domain-specific structure detection runs:
@@ -295,6 +309,9 @@ class Anonymizer:
            fields in this dict are correlated to one fake address via the
            replacement map.
         """
+        if depth >= _MAX_RECURSION_DEPTH:
+            raise ValueError(f"JSON nesting depth exceeds limit (max {_MAX_RECURSION_DEPTH})")
+
         dict_keys = set(data.keys())
 
         # ------------------------------------------------------------------
@@ -331,13 +348,13 @@ class Anonymizer:
                 result[key] = value
             elif isinstance(value, dict):
                 # Unknown key but dict value: recurse
-                result[key] = self._walk_dict(value, context)
+                result[key] = self._walk_dict(value, context, depth + 1)
             elif isinstance(value, list):
                 # Unknown key but list value: check for telemetry structure
                 if self._is_telemetry_list(value):
                     result[key] = self._anonymize_telemetry_list(value)
                 else:
-                    result[key] = self._walk_list(value, context)
+                    result[key] = self._walk_list(value, context, depth + 1)
             else:
                 if self._config.strictness == "drop":
                     continue
@@ -355,14 +372,17 @@ class Anonymizer:
 
         return result
 
-    def _walk_list(self, items: list[Any], context: str) -> list[Any]:
+    def _walk_list(self, items: list[Any], context: str, depth: int = 0) -> list[Any]:
         """Recursively walk a list, processing any dict/list elements."""
+        if depth >= _MAX_RECURSION_DEPTH:
+            raise ValueError(f"JSON nesting depth exceeds limit (max {_MAX_RECURSION_DEPTH})")
+
         result: list[Any] = []
         for item in items:
             if isinstance(item, dict):
-                result.append(self._walk_dict(item, context))
+                result.append(self._walk_dict(item, context, depth + 1))
             elif isinstance(item, list):
-                result.append(self._walk_list(item, context))
+                result.append(self._walk_list(item, context, depth + 1))
             else:
                 result.append(item)
         return result

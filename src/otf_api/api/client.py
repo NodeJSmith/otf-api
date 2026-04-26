@@ -55,7 +55,10 @@ class OtfClient:
         atexit.register(self.session.close)
 
         if os.getenv("OTF_ANONYMIZE_RESPONSES", "false").lower() == "true":
-            seed = hash(self.member_uuid) & 0x7FFFFFFF if self.member_uuid else None
+            try:
+                seed = int(self.member_uuid.replace("-", ""), 16) % (2**32) if self.member_uuid else None
+            except ValueError:
+                seed = None
             config = AnonymizeConfig(seed=seed)
             self._anonymize_hook = create_capture_hook(config=config)
             self.session.event_hooks["response"].append(self._anonymize_hook)

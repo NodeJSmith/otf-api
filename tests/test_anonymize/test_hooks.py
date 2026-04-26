@@ -241,3 +241,27 @@ def test_create_capture_hook_uses_provided_config(tmp_path: Path) -> None:
     assert hook.anonymizer._config.seed == 777
     assert hook.anonymizer._config.strictness == "drop"
     assert hook.output_dir == tmp_path
+
+
+# ---------------------------------------------------------------------------
+# test_hook_anonymizes_uuids_in_output_filenames
+# ---------------------------------------------------------------------------
+
+
+def test_hook_anonymizes_uuids_in_output_filenames(tmp_path: Path) -> None:
+    """Real UUIDs in URL paths must not appear in output filenames on disk."""
+    real_uuid = "7b1cf060-fd27-45ab-b820-fdcdefa4ee23"
+    anonymizer = _make_anonymizer(seed=10)
+    hook = AnonymizedCaptureHook(anonymizer=anonymizer, output_dir=tmp_path)
+
+    body = {"memberUUId": real_uuid, "firstName": "Alice"}
+    url = f"https://api.orangetheory.co/challenges/v3/member/{real_uuid}/benchmarks"
+    response = _make_json_response(body, url=url)
+    hook(response)
+
+    host_dir = tmp_path / "api.orangetheory.co"
+    output_files = list(host_dir.glob("*.json"))
+    assert len(output_files) == 1
+
+    filename = output_files[0].name
+    assert real_uuid not in filename, f"Real UUID leaked into output filename: {filename}"

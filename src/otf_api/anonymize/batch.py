@@ -8,7 +8,6 @@ Public API:
     - ``anonymize_batch`` — process an entire fixture corpus
 """
 
-import contextlib
 import dataclasses
 import json
 import logging
@@ -17,6 +16,7 @@ import shutil
 from pathlib import Path
 from urllib.parse import unquote
 
+from otf_api.anonymize._io import atomic_write as _atomic_write
 from otf_api.anonymize.anonymizer import AnonymizeConfig, Anonymizer
 from otf_api.anonymize.generators import FakeDataGenerators
 from otf_api.anonymize.mappings import FIELD_MAPPINGS
@@ -314,63 +314,118 @@ def anonymize_batch(
     n_preseeded = _preseed_uuids_from_filenames(input_dir, anonymizer)
     logger.info("Pre-seeded replacement map with %d filename UUIDs", n_preseeded)
 
-    # ------------------------------------------------------------------
-    # Step 4: Create output directory
-    # ------------------------------------------------------------------
-    try:
-        output_dir.mkdir(parents=True, exist_ok=True)
-    except OSError as exc:
-        raise OSError(f"Failed to create output directory {output_dir}: {exc}") from exc
-
     files_processed = 0
     files_skipped = 0
 
+    # ------------------------------------------------------------------
+    # Step 5: Anonymize and validate all files in memory before writing
+    # ------------------------------------------------------------------
+    all_json_files = sorted(input_dir.rglob("*.json"))
+    data_files = [f for f in all_json_files if not f.name.startswith("_")]
+
+    # Tuples of (anon_output_path, anon_json_str, orig_path_str, anon_path_str, orig_dict, anon_dict)
+    # Accumulated in memory so no PII hits disk until validation passes.
+    pending_writes: list[tuple[Path, str, str, str, dict, dict]] = []
+
+    for json_file in data_files:
+        relative_path = json_file.relative_to(input_dir)
+
+        # Read and parse
+        try:
+            raw_text = json_file.read_text(encoding="utf-8")
+            data = json.loads(raw_text)
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            logger.warning("Skipping malformed JSON file %s: %s", json_file, exc)
+            files_skipped += 1
+            continue
+
+        # Anonymize the body
+        context = str(relative_path)
+        anon_data = anonymizer.anonymize_dict(data, context=context)
+
+        # Anonymize the filename using the now-populated replacement map
+        anon_relative_str = anonymizer.anonymize_filename(str(relative_path))
+        anon_output_path = output_dir / anon_relative_str
+
+        anon_json_str = json.dumps(anon_data, indent=2, ensure_ascii=False)
+        pending_writes.append((anon_output_path, anon_json_str, str(relative_path), anon_relative_str, data, anon_data))
+        files_processed += 1
+        logger.debug("Anonymized %s -> %s", relative_path, anon_relative_str)
+
+    # ------------------------------------------------------------------
+    # Step 6: Validate all anonymized data in memory (before any disk writes)
+    # ------------------------------------------------------------------
+    validator = PiiValidator(known_real_values=all_real_values)
+    all_leaks: list[LeakReport] = []
+    all_structural: list[str] = []
+    all_parse: list[str] = []
+
+    for _anon_path, _anon_json, orig_path_str, anon_path_str, original_data, anon_data in pending_writes:
+        pair_result = validator.validate_file(
+            original_data,
+            anon_data,
+            filename=anon_path_str,
+            model_hint=orig_path_str,
+        )
+        all_leaks.extend(pair_result.leaks)
+        all_structural.extend(pair_result.structural_errors)
+        all_parse.extend(pair_result.model_parse_errors)
+
+    # Also check anonymized filenames for PII leaks
+    lower_to_real: dict[str, str] = {}
+    for v in all_real_values:
+        if isinstance(v, str) and v:
+            lower_to_real[v.lower()] = v
+            decoded = unquote(v)
+            if decoded != v:
+                lower_to_real[decoded.lower()] = decoded
+
+    for _anon_path, _anon_json, _orig_path_str, anon_path_str, _orig, _anon in pending_writes:
+        lower_filename = anon_path_str.lower()
+        for lower_val, real_val in lower_to_real.items():
+            if lower_val in lower_filename:
+                all_leaks.append(
+                    LeakReport(
+                        file=anon_path_str,
+                        field_path="<filename>",
+                        real_value=real_val,
+                        category="filename",
+                    )
+                )
+
+    validation_result = ValidationResult(
+        passed=not all_leaks and not all_structural,
+        leaks=all_leaks,
+        structural_errors=all_structural,
+        model_parse_errors=all_parse,
+    )
+
+    if not validation_result.passed:
+        logger.error(
+            "Validation failed: %d leaks, %d structural errors — no files written to disk",
+            len(validation_result.leaks),
+            len(validation_result.structural_errors),
+        )
+        return BatchResult(
+            files_processed=files_processed,
+            files_skipped=files_skipped,
+            output_dir=output_dir,
+            replacement_map_path=output_dir / "_anonymization_map.json",
+            validation=validation_result,
+        )
+
+    # ------------------------------------------------------------------
+    # Step 7: Write all validated files to disk
+    # ------------------------------------------------------------------
+    output_dir_existed = output_dir.exists()
     try:
-        # ------------------------------------------------------------------
-        # Step 5: Process all fixture JSON files (non-meta)
-        # ------------------------------------------------------------------
-        all_json_files = sorted(input_dir.rglob("*.json"))
-        data_files = [f for f in all_json_files if not f.name.startswith("_")]
+        output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Tuples of (orig_path_str, anon_path_str, orig_dict, anon_dict)
-        # for post-processing validation.  Separate original and anonymized paths
-        # so the validator can check the correct filename for leaks.
-        validation_pairs: list[tuple[str, str, dict, dict]] = []
-
-        for json_file in data_files:
-            relative_path = json_file.relative_to(input_dir)
-
-            # Read and parse
-            try:
-                raw_text = json_file.read_text(encoding="utf-8")
-                data = json.loads(raw_text)
-            except (json.JSONDecodeError, UnicodeDecodeError) as exc:
-                logger.warning("Skipping malformed JSON file %s: %s", json_file, exc)
-                files_skipped += 1
-                continue
-
-            # Anonymize the body
-            context = str(relative_path)
-            anon_data = anonymizer.anonymize_dict(data, context=context)
-
-            # Anonymize the filename using the now-populated replacement map
-            anon_relative_str = anonymizer.anonymize_filename(str(relative_path))
-            anon_output_path = output_dir / anon_relative_str
-
-            # Track for validation: use original path for model lookup, anonymized for filename check
-            validation_pairs.append((str(relative_path), anon_relative_str, data, anon_data))
-
-            # Write output
-            anon_output_path.parent.mkdir(parents=True, exist_ok=True)
-            anon_output_path.write_text(
-                json.dumps(anon_data, indent=2, ensure_ascii=False),
-                encoding="utf-8",
-            )
-            files_processed += 1
-            logger.debug("Processed %s -> %s", relative_path, anon_relative_str)
+        for anon_output_path, anon_json_str, *_ in pending_writes:
+            _atomic_write(anon_output_path, anon_json_str)
 
         # ------------------------------------------------------------------
-        # Step 6: Anonymize and write _meta.json if it exists
+        # Step 8: Anonymize and write _meta.json if it exists
         # ------------------------------------------------------------------
         meta_src = input_dir / "_meta.json"
         if meta_src.exists():
@@ -379,10 +434,7 @@ def anonymize_batch(
                     meta = json.load(f)
                 anon_meta = _anonymize_meta(meta, anonymizer)
                 meta_dest = output_dir / "_meta.json"
-                meta_dest.write_text(
-                    json.dumps(anon_meta, indent=2, ensure_ascii=False),
-                    encoding="utf-8",
-                )
+                _atomic_write(meta_dest, json.dumps(anon_meta, indent=2, ensure_ascii=False))
                 logger.debug("Anonymized _meta.json")
             except OSError:
                 raise
@@ -390,73 +442,41 @@ def anonymize_batch(
                 logger.warning("Failed to anonymize _meta.json: %s", exc)
 
         # ------------------------------------------------------------------
-        # Step 7: Write replacement map
+        # Step 9: Write replacement map
         # ------------------------------------------------------------------
         replacement_map_path = output_dir / "_anonymization_map.json"
         raw_map = anonymizer.replacement_map.to_json()
-        # The map stores real→fake internally; we serialize it as
-        # fake→position_hint (not fake→real) so the output file doesn't
-        # contain real PII values.
+        # Invert to {fake: position_hint} to avoid writing real PII to disk.
+        # NOTE: this format is NOT compatible with ReplacementMap.from_json().
         safe_map: dict[str, str] = {}
         for idx, (real_val, fake_val) in enumerate(raw_map.items()):
-            # Key: fake value, Value: a positional hint (not the real value)
             safe_map[fake_val] = f"position:{idx}"
-        replacement_map_path.write_text(
-            json.dumps(safe_map, indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
+        _atomic_write(replacement_map_path, json.dumps(safe_map, indent=2, ensure_ascii=False))
         logger.info("Wrote replacement map with %d entries to %s", len(safe_map), replacement_map_path)
 
-        # ------------------------------------------------------------------
-        # Step 8: Run PII validator on all processed file pairs
-        # ------------------------------------------------------------------
-        # Validate each (original, anonymized) pair using the original file path
-        # as the filename hint for model lookup.  We cannot use validate_batch()
-        # here because the anonymized filenames differ from the originals.
-        validator = PiiValidator(known_real_values=all_real_values)
-        all_leaks: list = []
-        all_structural: list[str] = []
-        all_parse: list[str] = []
-
-        for orig_path_str, anon_path_str, original_data, anon_data in validation_pairs:
-            # filename = anonymized path (for accurate filename leak check)
-            # model_hint = original path (so model pattern lookup works)
-            pair_result = validator.validate_file(
-                original_data,
-                anon_data,
-                filename=anon_path_str,
-                model_hint=orig_path_str,
+    except (OSError, RecursionError, ValueError) as exc:
+        if output_dir_existed:
+            logger.error(
+                "Write failure at %s: %s — pre-existing output directory preserved",
+                output_dir,
+                exc,
             )
-            all_leaks.extend(pair_result.leaks)
-            all_structural.extend(pair_result.structural_errors)
-            all_parse.extend(pair_result.model_parse_errors)
-
-        # Additionally check all output filenames for PII leaks
-        filename_leaks = _check_output_filenames(output_dir, all_real_values)
-        all_leaks = all_leaks + filename_leaks
-
-        validation_result = ValidationResult(
-            passed=not all_leaks and not all_structural,
-            leaks=all_leaks,
-            structural_errors=all_structural,
-            model_parse_errors=all_parse,
-        )
-
-        logger.info(
-            "Batch complete: %d processed, %d skipped, %d leaks, %d structural errors, %d model errors",
-            files_processed,
-            files_skipped,
-            len(validation_result.leaks),
-            len(validation_result.structural_errors),
-            len(validation_result.model_parse_errors),
-        )
-
-    except OSError as exc:
-        # Write failure: clean up partial output
+            raise OSError(f"Batch anonymization failed (pre-existing output dir preserved): {exc}") from exc
         logger.error("Write failure, cleaning up partial output at %s: %s", output_dir, exc)
-        with contextlib.suppress(Exception):
-            shutil.rmtree(output_dir, ignore_errors=True)
+        try:
+            shutil.rmtree(output_dir)
+        except Exception as cleanup_exc:
+            logger.warning("Cleanup failed: %s; partial output may remain at %s", cleanup_exc, output_dir)
         raise OSError(f"Batch anonymization failed (partial output cleaned up): {exc}") from exc
+
+    logger.info(
+        "Batch complete: %d processed, %d skipped, %d leaks, %d structural errors, %d model errors",
+        files_processed,
+        files_skipped,
+        len(validation_result.leaks),
+        len(validation_result.structural_errors),
+        len(validation_result.model_parse_errors),
+    )
 
     return BatchResult(
         files_processed=files_processed,
@@ -465,41 +485,3 @@ def anonymize_batch(
         replacement_map_path=replacement_map_path,
         validation=validation_result,
     )
-
-
-def _check_output_filenames(
-    output_dir: Path,
-    real_values: set[str],
-) -> list[LeakReport]:
-    """Scan all output filenames for leaked real PII values.
-
-    Args:
-        output_dir: The output directory to scan.
-        real_values: Set of real PII values to check against.
-
-    Returns:
-        List of LeakReports for any filenames containing known real values.
-    """
-    leaks: list[LeakReport] = []
-    lower_to_real: dict[str, str] = {}
-    for v in real_values:
-        if isinstance(v, str) and v:
-            lower_to_real[v.lower()] = v
-            decoded = unquote(v)
-            if decoded != v:
-                lower_to_real[decoded.lower()] = decoded
-
-    for output_file in sorted(output_dir.rglob("*.json")):
-        filename = str(output_file.relative_to(output_dir))
-        lower_filename = filename.lower()
-        for lower_val, real_val in lower_to_real.items():
-            if lower_val in lower_filename:
-                leaks.append(
-                    LeakReport(
-                        file=filename,
-                        field_path="<filename>",
-                        real_value=real_val,
-                        category="filename",
-                    )
-                )
-    return leaks

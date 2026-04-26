@@ -460,15 +460,29 @@ class PiiValidator:
             model_parse_errors=model_parse_errors,
         )
 
-    def validate_batch(self, original_dir: Path, anonymized_dir: Path) -> ValidationResult:
+    def validate_batch(
+        self,
+        original_dir: Path,
+        anonymized_dir: Path,
+        name_mapping: dict[str, str] | None = None,
+    ) -> ValidationResult:
         """Validate all JSON files in a batch directory pair.
 
         For each file in *anonymized_dir*, finds the matching file in *original_dir*
         and runs ``validate_file``.
 
+        When filenames have been anonymized (the normal case), pass *name_mapping*
+        to map anonymized relative paths back to original relative paths.  Without
+        this mapping, every file will report "no matching original file found"
+        because the anonymized filenames differ from the originals.
+
         Args:
             original_dir: Directory containing original (pre-anonymization) fixtures.
             anonymized_dir: Directory containing anonymized fixtures.
+            name_mapping: Optional dict mapping anonymized relative path strings
+                to original relative path strings.  When provided, the original
+                file is looked up via the mapping instead of assuming identical
+                filenames.
 
         Returns:
             A combined ValidationResult for all files in the batch.
@@ -478,11 +492,20 @@ class PiiValidator:
         all_parse: list[str] = []
 
         for anon_file in sorted(anonymized_dir.glob("**/*.json")):
-            relative = anon_file.relative_to(anonymized_dir)
-            orig_file = original_dir / relative
+            anon_relative = str(anon_file.relative_to(anonymized_dir))
+
+            if name_mapping is not None:
+                orig_relative = name_mapping.get(anon_relative)
+                if orig_relative is None:
+                    all_structural.append(f"{anon_relative}: no mapping to original file found")
+                    continue
+                orig_file = original_dir / orig_relative
+            else:
+                orig_relative = anon_relative
+                orig_file = original_dir / anon_relative
 
             if not orig_file.exists():
-                all_structural.append(f"{relative}: no matching original file found")
+                all_structural.append(f"{anon_relative}: no matching original file found")
                 continue
 
             try:
@@ -491,10 +514,15 @@ class PiiValidator:
                 with anon_file.open() as f:
                     anonymized = json.load(f)
             except Exception as exc:
-                all_structural.append(f"{relative}: failed to load JSON: {exc}")
+                all_structural.append(f"{anon_relative}: failed to load JSON: {exc}")
                 continue
 
-            result = self.validate_file(original, anonymized, str(relative))
+            result = self.validate_file(
+                original,
+                anonymized,
+                filename=anon_relative,
+                model_hint=orig_relative,
+            )
             all_leaks.extend(result.leaks)
             all_structural.extend(result.structural_errors)
             all_parse.extend(result.model_parse_errors)

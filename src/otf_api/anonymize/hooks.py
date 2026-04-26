@@ -17,6 +17,7 @@ from pathlib import Path
 import httpx
 import platformdirs
 
+from otf_api.anonymize._io import atomic_write as _atomic_write
 from otf_api.anonymize.anonymizer import AnonymizeConfig, Anonymizer
 from otf_api.anonymize.generators import FakeDataGenerators
 from otf_api.anonymize.mappings import FIELD_MAPPINGS
@@ -71,6 +72,7 @@ class AnonymizedCaptureHook:
         self._anonymizer = anonymizer
         self._output_dir = output_dir
         self._first_call_done = False
+        self._seen_slugs: dict[str, int] = {}
 
     @property
     def anonymizer(self) -> Anonymizer:
@@ -110,6 +112,15 @@ class AnonymizedCaptureHook:
             self._first_call_done = True
 
         response.read()
+
+        if response.status_code >= 400:
+            logger.debug(
+                "AnonymizedCaptureHook: skipping %d response from %s %s",
+                response.status_code,
+                response.request.method,
+                response.request.url,
+            )
+            return
 
         content_type = response.headers.get("content-type", "")
         if "application/json" not in content_type and "json" not in content_type:
@@ -152,7 +163,22 @@ class AnonymizedCaptureHook:
         anonymized_url = self._anonymizer.anonymize_url(str(url))
 
         # Build output path: output_dir/<host>/<slugified-path>.json
-        slug = _slugify_path(path)
+        # Include query params in the slug to differentiate same-path requests.
+        # Anonymize the slug AFTER body processing so the replacement map
+        # already contains any UUIDs found in the response body.
+        query = str(url.params) if url.params else ""
+        raw_slug = _slugify_path(path)
+        if query:
+            raw_slug = f"{raw_slug}___{_slugify_path(query)}"
+        slug = self._anonymizer.anonymize_filename(raw_slug)
+
+        # Collision counter: append ___N for repeated slugs
+        slug_key = slug
+        count = self._seen_slugs.get(slug_key, 0) + 1
+        self._seen_slugs[slug_key] = count
+        if count > 1:
+            slug = f"{slug}___{count}"
+
         host_dir = self._output_dir / host
         host_dir.mkdir(parents=True, exist_ok=True)
         output_file = host_dir / f"{slug}.json"
@@ -164,7 +190,7 @@ class AnonymizedCaptureHook:
             "body": anonymized_body,
         }
 
-        output_file.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
+        _atomic_write(output_file, json.dumps(payload, indent=2, default=str))
         logger.debug("AnonymizedCaptureHook: wrote capture to %s", output_file)
 
     def _write_capture_start(self) -> None:
@@ -177,7 +203,7 @@ class AnonymizedCaptureHook:
             "strictness": self._anonymizer.config.strictness,
             "seed": self._anonymizer.config.seed,
         }
-        sentinel_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        _atomic_write(sentinel_path, json.dumps(payload, indent=2))
         logger.debug("AnonymizedCaptureHook: wrote capture start sentinel to %s", sentinel_path)
 
 

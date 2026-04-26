@@ -15,7 +15,7 @@ from unittest.mock import patch
 
 import pytest
 
-from otf_api.anonymize import anonymize_batch
+from otf_api.anonymize import anonymize_batch, batch
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -362,19 +362,19 @@ def test_disk_full_cleanup(tmp_path: Path) -> None:
     (input_dir / "file1.json").write_text('{"firstName": "Alice", "memberUUId": "abc"}')
     (input_dir / "file2.json").write_text('{"firstName": "Bob", "memberUUId": "def"}')
 
-    # Patch Path.write_text to raise OSError on second call
+    # Patch _atomic_write to raise OSError on second call
     call_count = 0
-    original_write_text = Path.write_text
+    original_atomic_write = batch._atomic_write
 
-    def patched_write_text(self: Path, content: str, *args: object, **kwargs: object) -> None:
+    def patched_atomic_write(path: Path, content: str) -> None:
         nonlocal call_count
         call_count += 1
         if call_count >= 2:
             raise OSError("No space left on device")
-        return original_write_text(self, content, *args, **kwargs)
+        return original_atomic_write(path, content)
 
     with (
-        patch.object(Path, "write_text", patched_write_text),
+        patch.object(batch, "_atomic_write", patched_atomic_write),
         pytest.raises(OSError, match="Batch anonymization failed"),
     ):
         anonymize_batch(input_dir, output_dir, seed=42)
