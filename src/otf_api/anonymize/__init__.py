@@ -1,9 +1,8 @@
 """Anonymization pipeline for OTF API fixtures.
 
-Public API — implementations are filled in by WP02-WP04.
+Public API for the anonymization engine.
 """
 
-# Stub exports — replaced by real implementations in later work packages.
-Anonymizer = None
-AnonymizeConfig = None
-validate_anonymized = None
+from otf_api.anonymize.anonymizer import AnonymizeConfig, Anonymizer, ReplacementMap
+
+__all__ = ["AnonymizeConfig", "Anonymizer", "ReplacementMap"]
