@@ -186,6 +186,11 @@ class Anonymizer:
         self._address_cache_lock = threading.Lock()
 
     @property
+    def config(self) -> AnonymizeConfig:
+        """The configuration for this anonymizer instance."""
+        return self._config
+
+    @property
     def replacement_map(self) -> ReplacementMap:
         """The underlying ReplacementMap for this anonymizer instance."""
         return self._replacement_map
@@ -257,6 +262,18 @@ class Anonymizer:
             Filename with known PII values replaced.
         """
         return self._substitute_from_map(filename)
+
+    def anonymize_list(self, data: list[Any], context: str = "") -> list[Any]:
+        """Anonymize a JSON-compatible list recursively.
+
+        Args:
+            data: The raw list to anonymize.
+            context: Optional endpoint path for logging/debugging.
+
+        Returns:
+            A new list with PII fields replaced in nested dicts.
+        """
+        return self._walk_list(data, context)
 
     # ------------------------------------------------------------------
     # Internal: recursive walk helpers

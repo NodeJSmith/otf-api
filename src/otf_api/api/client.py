@@ -11,6 +11,8 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from yarl import URL
 
 from otf_api import exceptions as exc
+from otf_api.anonymize.anonymizer import AnonymizeConfig
+from otf_api.anonymize.hooks import create_capture_hook
 from otf_api.api.utils import get_json_from_response, is_error_response
 from otf_api.auth import OtfUser
 from otf_api.cache import get_cache
@@ -51,6 +53,12 @@ class OtfClient:
         )
         self.log_raw_response = os.getenv("OTF_LOG_RAW_RESPONSE", "false").lower() == "true"
         atexit.register(self.session.close)
+
+        if os.getenv("OTF_ANONYMIZE_RESPONSES", "false").lower() == "true":
+            seed = hash(self.member_uuid) & 0x7FFFFFFF if self.member_uuid else None
+            config = AnonymizeConfig(seed=seed)
+            self._anonymize_hook = create_capture_hook(config=config)
+            self.session.event_hooks["response"].append(self._anonymize_hook)
 
     def __getstate__(self):
         """Get the state of the OtfClient instance for serialization."""

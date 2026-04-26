@@ -10,6 +10,7 @@ import os
 import coloredlogs
 
 from otf_api import models
+from otf_api.anonymize.anonymizer import AnonymizeConfig, Anonymizer
 from otf_api.api import Otf
 from otf_api.auth import OtfUser
 
@@ -50,4 +51,4 @@ _setup_logging()
 __version__ = "0.15.4"
 
 
-__all__ = ["Otf", "OtfUser", "models"]
+__all__ = ["AnonymizeConfig", "Anonymizer", "Otf", "OtfUser", "models"]
