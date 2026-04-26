@@ -2,6 +2,9 @@
 results.json
 .vscode/launch.json
 
+# Raw API responses contain PII — never commit
+fixtures/raw_responses/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
