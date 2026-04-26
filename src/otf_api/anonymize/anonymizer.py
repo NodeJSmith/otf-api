@@ -394,7 +394,10 @@ class Anonymizer:
 
         result: dict[str, Any] = {}
         for key, value in data.items():
-            if key in self._key_index and self._key_index[key].category == "biometric_body_comp":
+            if key == "id":
+                # Body-comp "id" field contains the member's email address
+                result[key] = self._apply_mapping(key, value, self._key_index["email"]) if value is not None else None
+            elif key in self._key_index and self._key_index[key].category == "biometric_body_comp":
                 if value is None:
                     result[key] = None
                 else:
@@ -613,8 +616,8 @@ class Anonymizer:
         if category == "timestamp":
             # Timestamps are passed through unchanged; offset logic is deferred.
             return str(value)
-        logger.warning("Unknown category %r for key=%r; returning original", category, key)
-        return value
+        logger.warning("Unknown category %r for key=%r; using fallback placeholder", category, key)
+        return f"{_GENERATOR_FAILURE_SENTINEL}[{key}]"
 
     def _handle_unknown_field(self, _key: str, value: Any) -> Any:  # noqa: ANN401
         """Handle a field that is not in any FieldMapping per config.strictness."""

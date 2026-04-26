@@ -431,15 +431,16 @@ def anonymize_batch(
             all_structural.extend(pair_result.structural_errors)
             all_parse.extend(pair_result.model_parse_errors)
 
+        # Additionally check all output filenames for PII leaks
+        filename_leaks = _check_output_filenames(output_dir, all_real_values)
+        all_leaks = all_leaks + filename_leaks
+
         validation_result = ValidationResult(
             passed=not all_leaks and not all_structural,
             leaks=all_leaks,
             structural_errors=all_structural,
             model_parse_errors=all_parse,
         )
-
-        # Additionally check all output filenames for PII leaks
-        _check_output_filenames(output_dir, all_real_values, validation_result)
 
         logger.info(
             "Batch complete: %d processed, %d skipped, %d leaks, %d structural errors, %d model errors",
@@ -469,23 +470,21 @@ def anonymize_batch(
 def _check_output_filenames(
     output_dir: Path,
     real_values: set[str],
-    result: ValidationResult,
-) -> None:
+) -> list[LeakReport]:
     """Scan all output filenames for leaked real PII values.
-
-    Appends LeakReport entries to result.leaks if any filename contains
-    a known real value.
 
     Args:
         output_dir: The output directory to scan.
         real_values: Set of real PII values to check against.
-        result: ValidationResult to append leaks to (mutated in place).
+
+    Returns:
+        List of LeakReports for any filenames containing known real values.
     """
+    leaks: list[LeakReport] = []
     lower_to_real: dict[str, str] = {}
     for v in real_values:
         if isinstance(v, str) and v:
             lower_to_real[v.lower()] = v
-            # Also check URL-decoded variant
             decoded = unquote(v)
             if decoded != v:
                 lower_to_real[decoded.lower()] = decoded
@@ -495,7 +494,7 @@ def _check_output_filenames(
         lower_filename = filename.lower()
         for lower_val, real_val in lower_to_real.items():
             if lower_val in lower_filename:
-                result.leaks.append(
+                leaks.append(
                     LeakReport(
                         file=filename,
                         field_path="<filename>",
@@ -503,3 +502,4 @@ def _check_output_filenames(
                         category="filename",
                     )
                 )
+    return leaks

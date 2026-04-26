@@ -1,14 +1,12 @@
 """PII field classifications for the OTF API anonymization pipeline.
 
 Each FieldMapping covers one logical PII category and lists all known JSON key
-aliases that belong to it.  The ``strategy`` callable is used by the Anonymizer
-(implemented in WP02) to produce a replacement value.  ``referential=True``
-means the same real value must always map to the same fake value within a
-batch.
+aliases that belong to it.  The Anonymizer dispatches to the correct generator
+method based on the ``category`` string.  ``referential=True`` means the same
+real value must always map to the same fake value within a batch.
 """
 
 import dataclasses
-from collections.abc import Callable
 
 
 @dataclasses.dataclass(frozen=True)
@@ -18,92 +16,14 @@ class FieldMapping:
     Attributes:
         json_keys: All known alias forms of this field name across fixtures.
         category: Human-readable category label (e.g. "identity_uuid").
-        strategy: Callable that accepts ``(generators, original_value)`` and
-            returns the replacement value.  Populated at module level once
-            ``generators`` is importable; the Anonymizer resolves it at runtime.
+            The Anonymizer dispatches to the correct generator based on this.
         referential: When True the Anonymizer must return the same fake value
             every time it encounters the same real value.
     """
 
     json_keys: tuple[str, ...]
     category: str
-    strategy: Callable[..., object]
     referential: bool
-
-
-# ---------------------------------------------------------------------------
-# Sentinel strategy callables — lightweight placeholders used by the mapping
-# definitions.  The real Anonymizer wires these to generator methods at call
-# time (WP02).  They are *not* called directly during mapping definition.
-# ---------------------------------------------------------------------------
-
-
-def _strategy_uuid(*_: object) -> str:
-    return ""
-
-
-def _strategy_numeric_id(*_: object) -> int:
-    return 0
-
-
-def _strategy_name(*_: object) -> str:
-    return ""
-
-
-def _strategy_email(*_: object) -> str:
-    return ""
-
-
-def _strategy_phone(*_: object) -> str:
-    return ""
-
-
-def _strategy_address(*_: object) -> dict[str, str]:
-    return {}
-
-
-def _strategy_birthday(*_: object) -> str:
-    return ""
-
-
-def _strategy_cc_last4(*_: object) -> str:
-    return ""
-
-
-def _strategy_cc_type(*_: object) -> str:
-    return ""
-
-
-def _strategy_price(*_: object) -> float:
-    return 0.0
-
-
-def _strategy_gender(*_: object) -> str:
-    return ""
-
-
-def _strategy_biometric_scalar(*_: object) -> float:
-    return 0.0
-
-
-def _strategy_body_comp(*_: object) -> float:
-    return 0.0
-
-
-def _strategy_telemetry_hr(*_: object) -> int:
-    return 0
-
-
-def _strategy_redacted(*_: object) -> str:
-    return "REDACTED"
-
-
-def _strategy_image_url(*_: object) -> str:
-    return ""
-
-
-def _strategy_timestamp(*_: object) -> str:
-    return ""
 
 
 # ---------------------------------------------------------------------------
@@ -151,9 +71,12 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             # v2 API (api.orangetheory.io) snake_case variants
             "member_id",
             "ot_base_class_uuid",
+            # Generic "id" — usually a UUID across most endpoints.  The one
+            # exception is body-composition where "id" holds an email; that
+            # case is handled in _anonymize_body_comp_scan directly.
+            "id",
         ),
         category="identity_uuid",
-        strategy=_strategy_uuid,
         referential=True,
     ),
     # ------------------------------------------------------------------
@@ -177,7 +100,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "mbo_booking_id",
         ),
         category="identity_numeric",
-        strategy=_strategy_numeric_id,
         referential=True,
     ),
     # ------------------------------------------------------------------
@@ -193,7 +115,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "CoachName",
         ),
         category="name",
-        strategy=_strategy_name,
         referential=True,
     ),
     # ------------------------------------------------------------------
@@ -203,15 +124,8 @@ FIELD_MAPPINGS: list[FieldMapping] = [
         json_keys=(
             "email",
             "contactEmail",
-            # body-composition endpoint (api.orangetheory.co) stores the member's
-            # email address in a top-level "id" field — unusual but confirmed in
-            # fixtures.  Short sequential IDs that also use "id" (e.g. social media
-            # link IDs like "5", "6") are excluded from filename substitution via
-            # the _MIN_SUBSTITUTE_LEN guard in _substitute_from_map.
-            "id",
         ),
         category="email",
-        strategy=_strategy_email,
         referential=True,
     ),
     # ------------------------------------------------------------------
@@ -226,7 +140,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "phone",
         ),
         category="phone",
-        strategy=_strategy_phone,
         referential=True,
     ),
     # ------------------------------------------------------------------
@@ -257,7 +170,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "postal_code",
         ),
         category="address",
-        strategy=_strategy_address,
         referential=True,
     ),
     # ------------------------------------------------------------------
@@ -266,7 +178,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
     FieldMapping(
         json_keys=("birthDay",),
         category="birthday",
-        strategy=_strategy_birthday,
         referential=False,
     ),
     # ------------------------------------------------------------------
@@ -275,13 +186,11 @@ FIELD_MAPPINGS: list[FieldMapping] = [
     FieldMapping(
         json_keys=("ccLast4",),
         category="financial_cc_last4",
-        strategy=_strategy_cc_last4,
         referential=False,
     ),
     FieldMapping(
         json_keys=("ccType",),
         category="financial_cc_type",
-        strategy=_strategy_cc_type,
         referential=False,
     ),
     FieldMapping(
@@ -290,7 +199,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "onlinePrice",
         ),
         category="financial_price",
-        strategy=_strategy_price,
         referential=False,
     ),
     # ------------------------------------------------------------------
@@ -299,7 +207,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
     FieldMapping(
         json_keys=("gender",),
         category="gender",
-        strategy=_strategy_gender,
         referential=False,
     ),
     # ------------------------------------------------------------------
@@ -316,7 +223,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "age",
         ),
         category="biometric_scalar",
-        strategy=_strategy_biometric_scalar,
         referential=False,
     ),
     # ------------------------------------------------------------------
@@ -375,7 +281,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "pfatnew",
         ),
         category="biometric_body_comp",
-        strategy=_strategy_body_comp,
         referential=False,
     ),
     # ------------------------------------------------------------------
@@ -384,7 +289,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
     FieldMapping(
         json_keys=("hr", "startBpm", "endBpm"),
         category="biometric_telemetry",
-        strategy=_strategy_telemetry_hr,
         referential=False,
     ),
     # ------------------------------------------------------------------
@@ -395,7 +299,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
     FieldMapping(
         json_keys=("studioToken",),
         category="auth_token",
-        strategy=_strategy_redacted,
         referential=False,
     ),
     # ------------------------------------------------------------------
@@ -410,7 +313,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "CoachImageUrl",
         ),
         category="image_url",
-        strategy=_strategy_image_url,
         referential=False,
     ),
     # ------------------------------------------------------------------
@@ -437,7 +339,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "assignedAt",
         ),
         category="timestamp",
-        strategy=_strategy_timestamp,
         referential=False,
     ),
 ]

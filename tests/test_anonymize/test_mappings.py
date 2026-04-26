@@ -187,7 +187,7 @@ def test_field_mapping_is_dataclass() -> None:
     fm = FIELD_MAPPINGS[0]
     assert hasattr(fm, "json_keys")
     assert hasattr(fm, "category")
-    assert hasattr(fm, "strategy")
+
     assert hasattr(fm, "referential")
 
 
