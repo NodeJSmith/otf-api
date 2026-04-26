@@ -15,6 +15,8 @@ import logging
 import sys
 from pathlib import Path
 
+from otf_api.anonymize import anonymize_batch
+
 # ---------------------------------------------------------------------------
 # Logging setup
 # ---------------------------------------------------------------------------
@@ -69,8 +71,6 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     """Entry point — returns 0 on success, 1 on failure."""
-    from otf_api.anonymize import anonymize_batch
-
     parser = build_parser()
     args = parser.parse_args()
 

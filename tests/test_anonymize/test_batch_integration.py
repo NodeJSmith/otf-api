@@ -10,15 +10,12 @@ Run with:
 """
 
 import json
-import os
-import shutil
-import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 
-from otf_api.anonymize import AnonymizeConfig, anonymize_batch
+from otf_api.anonymize import anonymize_batch
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -41,28 +38,13 @@ _REAL_PHONE = "3166808339"
 
 
 # ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-
-def _run_batch(tmp_output: Path, seed: int = 42) -> "BatchResult":  # noqa: F821
-    """Run a full batch anonymization with a fixed seed."""
-    from otf_api.anonymize import anonymize_batch
-
-    return anonymize_batch(_RAW_FIXTURES_DIR, tmp_output, seed=seed)
-
-
-# ---------------------------------------------------------------------------
 # Tests requiring real fixtures
 # ---------------------------------------------------------------------------
 
 
 @pytest.fixture(scope="module")
-def batch_result(tmp_path_factory):
-    """Module-scoped fixture: run the batch once, return (output_dir, BatchResult).
-
-    Shared across tests so the expensive batch run happens only once.
-    """
+def batch_result(tmp_path_factory: pytest.TempPathFactory) -> tuple[Path, object]:
+    """Module-scoped fixture: run the batch once, return (output_dir, BatchResult)."""
     if not _FIXTURES_PRESENT:
         pytest.skip("Real fixture files not present")
 
@@ -72,14 +54,14 @@ def batch_result(tmp_path_factory):
 
 
 @pytest.fixture(scope="module")
-def batch_output_dir(batch_result):
+def batch_output_dir(batch_result: tuple[Path, object]) -> Path:
     """Return only the output directory from the module-scoped batch run."""
     out, _ = batch_result
     return out
 
 
 @_SKIP_WITHOUT_FIXTURES
-def test_full_batch_zero_leaks(batch_result) -> None:
+def test_full_batch_zero_leaks(batch_result: tuple[Path, object]) -> None:
     """Run the anonymizer on all fixture files and assert zero PII leaks.
 
     Uses the built-in validation result from the batch run, which validates
@@ -97,7 +79,7 @@ def test_full_batch_zero_leaks(batch_result) -> None:
 
 
 @_SKIP_WITHOUT_FIXTURES
-def test_full_batch_models_parse(batch_result) -> None:
+def test_full_batch_models_parse(batch_result: tuple[Path, object]) -> None:
     """All anonymized files should parse through their corresponding Pydantic models.
 
     Uses the built-in validation result from the batch run (validated inline
@@ -114,7 +96,7 @@ def test_full_batch_models_parse(batch_result) -> None:
     ]
 
     assert not parse_errors, (
-        f"Model parse errors found:\n"
+        "Model parse errors found:\n"
         + "\n".join(f"  {e}" for e in parse_errors[:20])
     )
 
@@ -122,33 +104,6 @@ def test_full_batch_models_parse(batch_result) -> None:
 @_SKIP_WITHOUT_FIXTURES
 def test_full_batch_referential_integrity(batch_output_dir: Path) -> None:
     """The member UUID should appear in the same number of output files and as the same fake UUID."""
-    # Count how many input files contain the real member UUID in their filename
-    input_files_with_uuid = [
-        f for f in sorted(_RAW_FIXTURES_DIR.rglob("*.json"))
-        if _REAL_MEMBER_UUID in str(f.relative_to(_RAW_FIXTURES_DIR))
-    ]
-
-    # Count how many output files contain the fake UUID in their filename
-    # The fake UUID should be the same across all files
-    fake_uuids_in_filenames: set[str] = set()
-    output_files_with_any_uuid = 0
-
-    # Find what fake UUID the real one maps to by checking a body file
-    fake_member_uuid = None
-    for json_file in sorted(batch_output_dir.rglob("*.json")):
-        try:
-            with json_file.open() as f:
-                data = json.load(f)
-            uuid_val = _find_uuid_in_body(data)
-            if uuid_val and uuid_val != _REAL_MEMBER_UUID:
-                # Found a UUID in the body that is not the real one
-                # Check if the corresponding input file had the real UUID
-                rel = json_file.relative_to(batch_output_dir)
-                # We'll use a different approach below
-                break
-        except Exception:
-            continue
-
     # Verify the real UUID does NOT appear in any output filenames
     output_files_with_real_uuid = [
         f for f in sorted(batch_output_dir.rglob("*.json"))
@@ -169,22 +124,6 @@ def test_full_batch_referential_integrity(batch_output_dir: Path) -> None:
         f"Expected {expected_output} output files (input={input_json_count} + 1 for map) but found {output_json_count}"
     )
 
-
-def _find_uuid_in_body(data: object) -> str | None:
-    """Find the first memberUUId value in a nested data structure."""
-    if isinstance(data, dict):
-        if "memberUUId" in data and isinstance(data["memberUUId"], str):
-            return data["memberUUId"]
-        for v in data.values():
-            result = _find_uuid_in_body(v)
-            if result:
-                return result
-    elif isinstance(data, list):
-        for item in data:
-            result = _find_uuid_in_body(item)
-            if result:
-                return result
-    return None
 
 
 @_SKIP_WITHOUT_FIXTURES
@@ -427,16 +366,18 @@ def test_disk_full_cleanup(tmp_path: Path) -> None:
     call_count = 0
     original_write_text = Path.write_text
 
-    def patched_write_text(self, content, *args, **kwargs):
+    def patched_write_text(self: Path, content: str, *args: object, **kwargs: object) -> None:
         nonlocal call_count
         call_count += 1
         if call_count >= 2:
             raise OSError("No space left on device")
         return original_write_text(self, content, *args, **kwargs)
 
-    with patch.object(Path, "write_text", patched_write_text):
-        with pytest.raises(OSError, match="Batch anonymization failed"):
-            anonymize_batch(input_dir, output_dir, seed=42)
+    with (
+        patch.object(Path, "write_text", patched_write_text),
+        pytest.raises(OSError, match="Batch anonymization failed"),
+    ):
+        anonymize_batch(input_dir, output_dir, seed=42)
 
     # After the failure, the output directory should be cleaned up (not exist or empty)
     if output_dir.exists():

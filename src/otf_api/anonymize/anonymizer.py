@@ -185,6 +185,11 @@ class Anonymizer:
         self._address_component_cache: dict[str, dict[str, str]] = {}
         self._address_cache_lock = threading.Lock()
 
+    @property
+    def replacement_map(self) -> ReplacementMap:
+        """The underlying ReplacementMap for this anonymizer instance."""
+        return self._replacement_map
+
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------

@@ -384,6 +384,8 @@ def anonymize_batch(
                     encoding="utf-8",
                 )
                 logger.debug("Anonymized _meta.json")
+            except OSError:
+                raise
             except Exception as exc:
                 logger.warning("Failed to anonymize _meta.json: %s", exc)
 
@@ -391,7 +393,7 @@ def anonymize_batch(
         # Step 7: Write replacement map
         # ------------------------------------------------------------------
         replacement_map_path = output_dir / "_anonymization_map.json"
-        raw_map = anonymizer._replacement_map.to_json()
+        raw_map = anonymizer.replacement_map.to_json()
         # The map stores real→fake internally; we serialize it as
         # fake→position_hint (not fake→real) so the output file doesn't
         # contain real PII values.
