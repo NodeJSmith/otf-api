@@ -580,12 +580,15 @@ class Anonymizer:
         if category == "gender":
             return g.fake_gender()
         if category == "biometric_scalar":
+            if isinstance(value, dict) and "value" in value:
+                inner = value["value"]
+                fake_inner = g.fake_biometric_scalar(key, float(inner) if inner is not None else 0.0)
+                return {**value, "value": round(fake_inner) if isinstance(inner, int) else fake_inner}
             try:
                 orig = float(value) if value is not None else 0.0
             except (TypeError, ValueError):
                 orig = 0.0
             fake_scalar = g.fake_biometric_scalar(key, orig)
-            # Preserve original type: models may expect int or str for biometric fields
             if isinstance(value, int) and not isinstance(value, bool):
                 return round(fake_scalar)
             if isinstance(value, str):

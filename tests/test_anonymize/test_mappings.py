@@ -77,7 +77,6 @@ ALL_KNOWN_PII_FIELDS = {
     "territory",
     "postalCode",
     "physicalPostalCode",
-    "country",
     "physicalCountry",
     # Birthday
     "birthDay",

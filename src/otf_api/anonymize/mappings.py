@@ -250,7 +250,6 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "territory",
             "postalCode",
             "physicalPostalCode",
-            "country",
             "physicalCountry",
             # v2 API (api.orangetheory.io) snake_case variants
             "line1",
@@ -479,6 +478,8 @@ KNOWN_SAFE_FIELDS: frozenset[str] = frozenset(
         "locale",
         "currency",
         "currencyAlpha",
+        # Country metadata (studioLocation.country is a currency dict, not PII)
+        "country",
         # Studio descriptive metadata
         "studioName",
         "studioStatus",
