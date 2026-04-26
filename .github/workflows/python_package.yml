@@ -50,33 +50,13 @@ jobs:
           name: pypi-dists
           path: "./dist"
 
-      - name: Create release and upload schema
+      - name: Upload schema to release
         run: |
-          echo "Checking for release: ${{ github.ref_name }}"
+          echo "Uploading schema files to release ${{ github.ref_name }}..."
 
-          # Check if release exists with better error handling
-          if gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} >/dev/null 2>&1; then
-            echo "Release exists, getting details..."
-            RELEASE_INFO=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }})
-            echo "Release info: $RELEASE_INFO"
-          else
-            echo "Release not found via API, but it might exist. Creating anyway..."
-            gh api --method POST repos/${{ github.repository }}/releases \
-              --field tag_name=${{ github.ref_name }} \
-              --field name="${{ github.ref_name }}" \
-              --field body="Release for ${{ github.ref_name }}"
-          fi
-
-          # Get the release upload URL
-          echo "Getting release upload URL..."
           RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq '.id')
-          echo "Release ID: $RELEASE_ID"
           UPLOAD_URL=$(gh api repos/${{ github.repository }}/releases/$RELEASE_ID --jq '.upload_url' | sed 's/{?name,label}//')
-          echo "Upload URL: $UPLOAD_URL"
 
-          echo "Uploading schema files to release..."
-
-          # Upload both files
           gh api --method POST "$UPLOAD_URL?name=openapi.yaml" \
             --header "Content-Type: application/x-yaml" \
             --input ./schema/openapi.yaml

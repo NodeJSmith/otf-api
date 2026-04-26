@@ -48,7 +48,4 @@ def _setup_logging() -> None:
 
 _setup_logging()
 
-__version__ = "0.15.4"
-
-
 __all__ = ["AnonymizeConfig", "Anonymizer", "Otf", "OtfUser", "models"]
