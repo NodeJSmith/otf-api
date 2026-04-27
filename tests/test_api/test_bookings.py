@@ -1,8 +1,20 @@
 """Tests for BookingApi read-only methods."""
 
-from datetime import date
+from datetime import date, datetime
+
+import httpx
+import respx
+from conftest import load_fixture
 
 from otf_api.models.bookings import Booking, BookingV2, OtfClass
+
+_BOOKINGS_NEW_DATE_PARAMS = "2026-03-27"
+_BOOKINGS_NEW_URL = (
+    "https://api.orangetheory.io/v1/bookings/me"
+    "?ends_before=2026-04-26T23%3A59%3A59Z"
+    "&starts_after=2026-03-27T00%3A00%3A00Z"
+    "&include_canceled=true&expand=true"
+)
 
 
 def test_get_bookings(mock_otf) -> None:
@@ -35,9 +47,25 @@ def test_get_bookings_new(mock_otf) -> None:
     assert first.booking_id != ""
 
 
-# get_bookings_new_by_date cannot be tested: it hardcodes exclude_cancelled=False
-# (include_canceled=true in the HTTP request), but all captured fixtures used
-# include_canceled=false. A fixture with include_canceled=true would be needed.
+def test_get_bookings_new_by_date(mock_otf, mock_router) -> None:
+    # get_bookings_new_by_date sends include_canceled=true, but captured fixtures
+    # only have include_canceled=false. Register the true variant with the same data.
+    fixture_data = load_fixture(f"bookings/get_bookings_new__{_BOOKINGS_NEW_DATE_PARAMS}")
+    mock_router.request("GET", _BOOKINGS_NEW_URL).mock(
+        return_value=httpx.Response(200, json=fixture_data)
+    )
+
+    result = mock_otf.bookings.get_bookings_new_by_date(
+        start_date=date(2026, 3, 27),
+        end_date=date(2026, 4, 26),
+    )
+
+    assert isinstance(result, dict)
+    assert len(result) > 0
+
+    first_key = next(iter(result))
+    assert isinstance(first_key, datetime)
+    assert isinstance(result[first_key], BookingV2)
 
 
 def test_get_classes(mock_otf) -> None:

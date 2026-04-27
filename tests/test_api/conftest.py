@@ -69,7 +69,17 @@ _MEMOIZED_METHODS: list[tuple[type, str]] = [
 
 
 @pytest.fixture()
-def mock_otf():
+def mock_router():
+    """Yield a started respx MockRouter with all fixture routes registered."""
+    router = respx.MockRouter(assert_all_called=False, assert_all_mocked=True)
+    _register_routes(router)
+    router.start()
+    yield router
+    router.stop()
+
+
+@pytest.fixture()
+def mock_otf(mock_router):
     """Yield a fully wired Otf instance with auth bypassed and HTTP intercepted.
 
     - OtfUser is replaced with a MagicMock (no Cognito calls)
@@ -79,15 +89,10 @@ def mock_otf():
     """
     mock_user = _make_mock_user()
 
-    # Build list of patches to bypass the memoize decorator
     memoize_patches = [
         patch.object(cls, method_name, cls.__dict__[method_name].__wrapped__)
         for cls, method_name in _MEMOIZED_METHODS
     ]
-
-    router = respx.MockRouter(assert_all_called=False, assert_all_mocked=True)
-    _register_routes(router)
-    router.start()
 
     with patch("otf_api.api.client.OtfUser", return_value=mock_user):
         for p in memoize_patches:
@@ -99,4 +104,3 @@ def mock_otf():
         finally:
             for p in memoize_patches:
                 p.stop()
-            router.stop()
