@@ -8,6 +8,7 @@ Provides:
 
 import dataclasses
 import logging
+import re
 import threading
 from collections.abc import Callable
 from pathlib import Path
@@ -88,7 +89,9 @@ class AnonymizeConfig:
         seed: Optional integer seed for reproducible fake data generation.
         strictness: Controls how unknown fields (not in any FieldMapping) are handled:
             - "permissive": pass the value through unchanged
-            - "mask": replace the value with the mask sentinel string
+            - "mask": replace unknown string values with the mask sentinel;
+              non-string types (int, bool, float, None) and ISO 8601 datetime
+              strings pass through unchanged
             - "drop": remove the key entirely from the output
         output_dir: Optional directory for fixture output files.  Defined here for
             forward-compatibility; consumed by WP05/WP06 (not used in this WP).
@@ -104,6 +107,7 @@ class AnonymizeConfig:
 # ---------------------------------------------------------------------------
 
 _UNKNOWN_FIELD_MASK = "__MASKED__"
+_ISO8601_RE = re.compile(r"^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$")
 
 
 class ReplacementMap:
@@ -696,6 +700,8 @@ class Anonymizer:
         if strictness == "permissive":
             return value
         if strictness == "mask":
+            if not isinstance(value, str) or _ISO8601_RE.match(value):
+                return value
             return _UNKNOWN_FIELD_MASK
         # "drop" — caller (_walk_dict) handles removal; return mask as fallback
         return _UNKNOWN_FIELD_MASK

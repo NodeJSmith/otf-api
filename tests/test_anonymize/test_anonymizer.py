@@ -82,6 +82,34 @@ def test_masks_unknown_field_strict(config_mask: AnonymizeConfig, generators: Fa
     assert isinstance(result["unknownField"], str)
 
 
+def test_mask_mode_passes_through_int(config_mask: AnonymizeConfig, generators: FakeDataGenerators) -> None:
+    """Unknown int fields pass through unchanged in mask mode."""
+    anon = Anonymizer(config=config_mask, generators=generators, mappings=FIELD_MAPPINGS)
+    result = anon.anonymize_dict({"classId": 42})
+    assert result["classId"] == 42
+
+
+def test_mask_mode_passes_through_float(config_mask: AnonymizeConfig, generators: FakeDataGenerators) -> None:
+    """Unknown float fields pass through unchanged in mask mode."""
+    anon = Anonymizer(config=config_mask, generators=generators, mappings=FIELD_MAPPINGS)
+    result = anon.anonymize_dict({"distanceMiles": 3.14})
+    assert result["distanceMiles"] == 3.14
+
+
+def test_mask_mode_passes_through_bool(config_mask: AnonymizeConfig, generators: FakeDataGenerators) -> None:
+    """Unknown bool fields pass through unchanged in mask mode."""
+    anon = Anonymizer(config=config_mask, generators=generators, mappings=FIELD_MAPPINGS)
+    result = anon.anonymize_dict({"isFinished": False})
+    assert result["isFinished"] is False
+
+
+def test_mask_mode_passes_through_datetime_string(config_mask: AnonymizeConfig, generators: FakeDataGenerators) -> None:
+    """Unknown ISO 8601 datetime strings pass through unchanged in mask mode."""
+    anon = Anonymizer(config=config_mask, generators=generators, mappings=FIELD_MAPPINGS)
+    result = anon.anonymize_dict({"dateCreated": "2024-01-15T10:30:00Z"})
+    assert result["dateCreated"] == "2024-01-15T10:30:00Z"
+
+
 def test_drops_unknown_field_strict(config_drop: AnonymizeConfig, generators: FakeDataGenerators) -> None:
     """Unknown fields are removed from the output in 'drop' strictness mode."""
     anon = Anonymizer(config=config_drop, generators=generators, mappings=FIELD_MAPPINGS)
