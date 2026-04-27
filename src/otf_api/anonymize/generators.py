@@ -173,6 +173,23 @@ class FakeDataGenerators:
             return self._rng.randint(-365 * 24 * 3600, 365 * 24 * 3600)
 
     # ------------------------------------------------------------------
+    # Studio / Geo
+    # ------------------------------------------------------------------
+
+    def fake_studio_name(self) -> str:
+        """Return a fake studio name in OTF's 'City - Direction, ST' format."""
+        with self._lock:
+            city = self._faker.city()
+            direction = self._rng.choice(("East", "West", "North", "South", "Central", "Downtown"))
+            state = self._faker.state_abbr()
+            return f"{city} - {direction}, {state}"
+
+    def fake_geo_coordinate(self, original: float) -> float:
+        """Return a fake coordinate offset from the original by a random amount."""
+        with self._lock:
+            return round(original + self._rng.uniform(-5.0, 5.0), 6)
+
+    # ------------------------------------------------------------------
     # Media
     # ------------------------------------------------------------------
 

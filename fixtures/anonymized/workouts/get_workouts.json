@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "id": "47378190-96da-4dac-b2ff-5d2a386ecbe0",
+      "id": "495b29ea-ab57-4865-a71e-7753fcfdf01a",
       "details": {
         "calories_burned": 409,
         "splat_points": 16,
@@ -17,23 +17,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "9b37a22b-6a8a-416f-83b2-90d08edddfcd",
+        "ot_base_class_uuid": "1447a72b-67ce-4d39-9774-9c25de200670",
         "starts_at_local": "2026-04-21T10:00:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/23840.jpg",
-          "first_name": "Angie Henderson"
+          "image_url": "https://placeholder.example.com/profile/148038.jpg",
+          "first_name": "Mark Waller"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "17fc695a-07a0-4a6e-8822-e8f36c031199",
+      "id": "74be9b1e-888b-41be-8f53-e7a28ac98e9d",
       "details": {
         "calories_burned": 122,
         "splat_points": 1,
@@ -49,23 +49,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "715629ee-e893-4e3d-b354-ea6f61607459",
+        "ot_base_class_uuid": "119af20b-cd71-4b6c-9f25-c2610d032da4",
         "starts_at_local": "2026-04-18T10:30:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/312857.jpg",
-          "first_name": "Allison Hill"
+          "image_url": "https://placeholder.example.com/profile/761193.jpg",
+          "first_name": "Elizabeth Martinez"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c241330b-01a9-471f-9e8a-774bcf36d58b",
+      "id": "6b1e200b-a2c4-4d7d-a03b-5a68e2578904",
       "details": {
         "calories_burned": 370,
         "splat_points": 2,
@@ -81,23 +81,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "9c10c572-0f6b-40d0-9efb-a58b9191b363",
+        "ot_base_class_uuid": "c41b6cf0-b339-49b1-bd7d-f8b85567ec79",
         "starts_at_local": "2026-04-11T10:30:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/485495.jpg",
-          "first_name": "Allison Hill"
+          "image_url": "https://placeholder.example.com/profile/995951.jpg",
+          "first_name": "Elizabeth Martinez"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "6b65a6a4-8b81-48f6-b38a-088ca65ed389",
+      "id": "d0a88132-b11d-494f-be0c-f56850c4608f",
       "details": {
         "calories_burned": 415,
         "splat_points": 14,
@@ -113,23 +113,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "8d4f5d27-2c7f-4b79-bd67-cde92834e4c0",
+        "ot_base_class_uuid": "f5a18fb2-3616-4800-9e55-45d47fc06fa2",
         "starts_at_local": "2026-04-07T10:00:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/706216.jpg",
-          "first_name": "Angie Henderson"
+          "image_url": "https://placeholder.example.com/profile/917648.jpg",
+          "first_name": "Mark Waller"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b74d0fb1-32e7-4629-8fad-c1a606cb0fb3",
+      "id": "c8e8e450-c66f-40c2-88a2-6d99b54cc1f6",
       "details": {
         "calories_burned": 297,
         "splat_points": 0,
@@ -145,23 +145,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "085b15fb-4a8f-4810-b84c-2f29980402a2",
+        "ot_base_class_uuid": "b52abe11-5320-4c12-ab4c-6da54a1d63a1",
         "starts_at_local": "2026-04-04T10:30:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/754025.jpg",
-          "first_name": "Allison Hill"
+          "image_url": "https://placeholder.example.com/profile/715633.jpg",
+          "first_name": "Elizabeth Martinez"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "9a1de644-815e-46d1-bb8f-aa1837f8a88b",
+      "id": "f875f38c-394f-4d11-a35f-5db1b26f258d",
       "details": {
         "calories_burned": 416,
         "splat_points": 14,
@@ -177,23 +177,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "ca8f3653-c9af-48f8-83b9-da13ec856f37",
+        "ot_base_class_uuid": "f0107299-024e-4715-8aee-cb088bd12c12",
         "starts_at_local": "2026-04-02T10:00:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/570893.jpg",
-          "first_name": "Connie Lawrence"
+          "image_url": "https://placeholder.example.com/profile/622371.jpg",
+          "first_name": "Jason Robinson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "6c307511-b2b9-437a-a8df-6ec4ce4a2bbd",
+      "id": "85205ffa-7236-4b42-b872-0ff40c4850c4",
       "details": {
         "calories_burned": 382,
         "splat_points": 4,
@@ -209,23 +209,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "5c9d927d-84b8-41bb-b005-68d20de051a6",
+        "ot_base_class_uuid": "25e30ea7-23a4-4f2f-a4b8-3917cc1cbc1c",
         "starts_at_local": "2026-03-26T10:00:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/444731.jpg",
-          "first_name": "Connie Lawrence"
+          "image_url": "https://placeholder.example.com/profile/83336.jpg",
+          "first_name": "Jason Robinson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3acb43a3-d2c7-4ffb-a118-433b882ccd1e",
+      "id": "9e29c2e8-2d75-4dc8-8ded-e5311a78efd6",
       "details": {
         "calories_burned": 249,
         "splat_points": 0,
@@ -245,17 +245,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Connie Lawrence"
+          "first_name": "Jason Robinson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "27b608dc-589d-4cb0-b5eb-89c23f5cf2f3",
+      "id": "753105b4-d1d6-4231-b317-d0616298c79f",
       "details": {
         "calories_burned": 326,
         "splat_points": 0,
@@ -275,17 +275,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Angie Henderson"
+          "first_name": "Mark Waller"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "e00da49d-effa-4002-b040-413c4690fb15",
+      "id": "43ad2420-2a23-4750-b53a-2bb6a11bfb4e",
       "details": {
         "calories_burned": 254,
         "splat_points": 0,
@@ -305,17 +305,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Connie Lawrence"
+          "first_name": "Jason Robinson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "083f64c3-1ce3-42f8-83f7-25feb99b2b5a",
+      "id": "41dd1924-fe72-4fbd-b988-784099f19abd",
       "details": {
         "calories_burned": 440,
         "splat_points": 26,
@@ -335,17 +335,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Angie Henderson"
+          "first_name": "Mark Waller"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "9d6b9b62-6b53-4a19-a902-b73fcf39f648",
+      "id": "480397b6-ffd1-49de-a3c0-70a33a3b396f",
       "details": {
         "calories_burned": 271,
         "splat_points": 0,
@@ -365,17 +365,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Connie Lawrence"
+          "first_name": "Jason Robinson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "e39836bb-e23d-4faa-afad-49e9c41c147e",
+      "id": "0d57ddfe-f6ee-4d27-8dd9-4e3e64c166b8",
       "details": {
         "calories_burned": 389,
         "splat_points": 6,
@@ -395,17 +395,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Allison Hill"
+          "first_name": "Elizabeth Martinez"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "1139fa12-34c1-43ea-bd9c-4e6404015ced",
+      "id": "9ec1e6a6-b4c9-4673-b50e-d80b02aacf1d",
       "details": {
         "calories_burned": 256,
         "splat_points": 0,
@@ -425,17 +425,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Connie Lawrence"
+          "first_name": "Jason Robinson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "7249f62c-0898-4462-980c-b95c19d45deb",
+      "id": "f0d606d5-bbec-49b4-9e7e-22734bd90ea2",
       "details": {
         "calories_burned": 263,
         "splat_points": 0,
@@ -455,17 +455,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Allison Hill"
+          "first_name": "Elizabeth Martinez"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "df495037-b40a-4181-ac09-bdb799086e47",
+      "id": "ef6a3f2d-9a54-42f7-9cbb-c81347749f33",
       "details": {
         "calories_burned": 310,
         "splat_points": 0,
@@ -485,17 +485,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Connie Lawrence"
+          "first_name": "Jason Robinson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "0b531932-bd94-49aa-bea6-e5b20c760d28",
+      "id": "24baccbf-348a-4e0f-99a5-e6e3fab2b348",
       "details": {
         "calories_burned": 324,
         "splat_points": 0,
@@ -515,17 +515,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Allison Hill"
+          "first_name": "Elizabeth Martinez"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8a2db2e6-3bfd-48a6-b05f-ddf566fadca0",
+      "id": "75958daf-cfbe-45d0-a5ed-0aaa99a9b0b7",
       "details": {
         "calories_burned": 290,
         "splat_points": 0,
@@ -545,17 +545,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c6ac1b04-dd1d-4cd1-811f-6bf5379ef467",
+      "id": "37bd427b-a845-4ada-8b2b-0f16394b619c",
       "details": {
         "calories_burned": 269,
         "splat_points": 0,
@@ -575,17 +575,17 @@
         "name": "Strength 50 (Upper)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Shawn Arroyo"
+          "first_name": "Kevin Johnson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "fe54ee4b-80ff-4173-a3df-ecd70e731dd7",
+      "id": "aebc8b4f-0327-445a-a15c-173bae4c5bf7",
       "details": {
         "calories_burned": 334,
         "splat_points": 0,
@@ -605,17 +605,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ea98fef8-d0d7-4e37-bbf2-025f4a0d2b73",
+      "id": "fd75b757-72bc-4212-a4bf-3e6caf9885e2",
       "details": {
         "calories_burned": 236,
         "splat_points": 0,
@@ -635,17 +635,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "93d563ae-51a3-4c26-937b-f79bbb44badc",
+      "id": "47735f13-5dae-4094-923c-07753069ce74",
       "details": {
         "calories_burned": 338,
         "splat_points": 1,
@@ -665,17 +665,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "d18183d1-ac2b-4cfc-85c5-1060991121e7",
+      "id": "538e762d-601c-420a-bba3-afae0381fce9",
       "details": {
         "calories_burned": 431,
         "splat_points": 20,
@@ -695,17 +695,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "e0527739-4d40-4f1b-bca5-be2952171bf3",
+      "id": "a9432fbc-8519-4006-b9f7-c5c3c3dc0218",
       "details": {
         "calories_burned": 253,
         "splat_points": 0,
@@ -725,17 +725,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8570b59f-a903-4e67-bc56-8b5324acb722",
+      "id": "ab541ecf-814b-4b6c-8717-033b3057488e",
       "details": {
         "calories_burned": 360,
         "splat_points": 2,
@@ -755,17 +755,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Shawn Arroyo"
+          "first_name": "Kevin Johnson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "46707cd6-4ced-4164-a9df-14e9389641dd",
+      "id": "703154ea-a62a-4833-b500-bf3a50999020",
       "details": {
         "calories_burned": 399,
         "splat_points": 15,
@@ -785,17 +785,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "97777f10-f2d2-493f-8e85-140d0f9aeb70",
+      "id": "af1fc36e-1198-41e8-ba6f-8baf4e37b357",
       "details": {
         "calories_burned": 264,
         "splat_points": 0,
@@ -815,17 +815,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2cd58759-e95d-4761-bc36-dc59e134edfc",
+      "id": "6d69a93e-c42c-4ef9-a70c-47510be90dd6",
       "details": {
         "calories_burned": 426,
         "splat_points": 5,
@@ -845,17 +845,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Shawn Arroyo"
+          "first_name": "Kevin Johnson"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8e4c3ab5-6d5d-4477-adc2-9178a0411612",
+      "id": "1835e9ac-6b20-4c49-bfd0-614641337178",
       "details": {
         "calories_burned": 434,
         "splat_points": 17,
@@ -875,17 +875,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "582b91ee-f8e8-435b-8c00-988a7ee1011a",
+      "id": "d01432f1-0d4a-437b-b514-d7b8fd1e7681",
       "details": {
         "calories_burned": 288,
         "splat_points": 1,
@@ -905,17 +905,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "61935990-abdd-4a8f-a4b0-5c89f10bce9c",
+      "id": "5ac48a54-032b-49bb-b2de-d8bdb6d7fa23",
       "details": {
         "calories_burned": 444,
         "splat_points": 10,
@@ -935,17 +935,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b2414482-5198-44d8-8643-3603c92a7d7c",
+      "id": "c2608dcc-f541-4820-b083-876790bddccc",
       "details": {
         "calories_burned": 277,
         "splat_points": 0,
@@ -965,17 +965,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "4cc57e0d-2633-4018-a883-ac6e6a944054",
+      "id": "3b93bb56-091b-4a5b-a1b2-b5240be67ad4",
       "details": {
         "calories_burned": 460,
         "splat_points": 11,
@@ -995,17 +995,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "89b5aab0-c121-49db-af12-b150605fb1eb",
+      "id": "488964ef-5b41-4691-8793-a2e5bf89171b",
       "details": {
         "calories_burned": 406,
         "splat_points": 16,
@@ -1025,17 +1025,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "39b02e2a-d96e-484f-bdb0-174e7938878a",
+      "id": "08681803-2127-444a-936e-d7575dd85736",
       "details": {
         "calories_burned": 192,
         "splat_points": 0,
@@ -1055,17 +1055,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "24f43c62-b523-40de-9b87-d29c4cfd0fc1",
+      "id": "9b63f0b7-55bc-4097-a0e7-656cf2c833a0",
       "details": {
         "calories_burned": 404,
         "splat_points": 10,
@@ -1085,17 +1085,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "0ec0713d-ea2c-4a51-b688-d11fce4758be",
+      "id": "28e0a94b-1811-40b6-a232-f41ba9668d63",
       "details": {
         "calories_burned": 396,
         "splat_points": 4,
@@ -1115,17 +1115,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "6aa0426d-f7c0-45f7-a9a5-3b4f8ff8869d",
+      "id": "dffc7dc4-7478-4737-8651-4a4dc3621b32",
       "details": {
         "calories_burned": 240,
         "splat_points": 0,
@@ -1145,17 +1145,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "636f6e5c-2253-4706-87ad-8b268eaa5841",
+      "id": "09b8fd8e-cab0-496e-82f1-0ca30359208b",
       "details": {
         "calories_burned": 447,
         "splat_points": 9,
@@ -1175,17 +1175,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "548c1d84-340d-4049-8147-65063e2bf9c9",
+      "id": "33949572-7233-483a-a4dc-b1872336f7c1",
       "details": {
         "calories_burned": 420,
         "splat_points": 17,
@@ -1205,17 +1205,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "73253aa3-ec17-4298-943d-f5b3a58e83dd",
+      "id": "2dc17ab4-c53f-4c80-9463-df17a21ae3ea",
       "details": {
         "calories_burned": 219,
         "splat_points": 0,
@@ -1235,17 +1235,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "891f6912-17ab-4863-9efe-ef4fd8ddbbc0",
+      "id": "a7780cca-93ff-416c-8a1d-421162ea5933",
       "details": {
         "calories_burned": 439,
         "splat_points": 5,
@@ -1265,17 +1265,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "0d31812e-30c3-4756-9453-f867b97e6224",
+      "id": "17ab2972-8212-4477-ba7b-883987240fce",
       "details": {
         "calories_burned": 382,
         "splat_points": 9,
@@ -1295,17 +1295,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "9adf4709-ac75-4344-a08e-149e44b9e602",
+      "id": "c54f8b36-05e3-48ea-815f-df8bc3daf401",
       "details": {
         "calories_burned": 251,
         "splat_points": 0,
@@ -1325,17 +1325,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "12a1fe7d-dfa5-4722-8a1f-c9df9a591974",
+      "id": "6ef1c447-2399-47d2-8b3b-c74a038199f9",
       "details": {
         "calories_burned": 440,
         "splat_points": 7,
@@ -1355,17 +1355,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "966be275-c2fe-4954-8dfd-9531302b7831",
+      "id": "7aff7c22-9b2f-43b9-bfe7-3691e5ffd8c1",
       "details": {
         "calories_burned": 416,
         "splat_points": 10,
@@ -1385,17 +1385,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "378e6510-8f10-433e-abe4-2e7db96c1163",
+      "id": "848eacce-1a14-4c78-929f-75009ae35810",
       "details": {
         "calories_burned": 450,
         "splat_points": 8,
@@ -1415,17 +1415,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "e8334da5-de95-4695-b579-c1437ab99428",
+      "id": "0b4461d5-7ca2-4cd3-9f96-4ba50f417f43",
       "details": {
         "calories_burned": 284,
         "splat_points": 0,
@@ -1445,17 +1445,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "e8b3d763-f4ff-4f3a-8d9d-baeb553d2625",
+      "id": "4cac9226-181c-4d30-8c36-f8637c520bd6",
       "details": {
         "calories_burned": 467,
         "splat_points": 14,
@@ -1475,17 +1475,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Theresa Woods"
+          "first_name": "Thomas Hall"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "30a5648e-efe9-43d0-b639-08bf03ece8ff",
+      "id": "aad5c5db-16ff-4619-ae27-1191b0761e41",
       "details": {
         "calories_burned": 435,
         "splat_points": 20,
@@ -1505,17 +1505,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "bf337a15-1e08-4f20-bdd1-51b0f64ab6ec",
+      "id": "27cbb264-7710-4753-9615-5cb8c4944871",
       "details": {
         "calories_burned": 389,
         "splat_points": 2,
@@ -1535,17 +1535,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Theresa Woods"
+          "first_name": "Thomas Hall"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ea18d32c-7a9a-4ef5-811b-d1c4ffe3f366",
+      "id": "fbc5de0f-82aa-47a7-a879-6996a4b5a721",
       "details": {
         "calories_burned": 482,
         "splat_points": 10,
@@ -1565,17 +1565,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b42a2d93-9aba-4f15-b214-90623e1a963e",
+      "id": "b6a9e8a3-8bf7-4ba8-a76a-9e527717f62e",
       "details": {
         "calories_burned": 423,
         "splat_points": 9,
@@ -1595,17 +1595,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Theresa Woods"
+          "first_name": "Thomas Hall"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3d44cb2c-ea45-4a41-a589-ada1345af934",
+      "id": "e67c7316-5fac-4a01-8230-c1ba497dcd7e",
       "details": {
         "calories_burned": 425,
         "splat_points": 8,
@@ -1625,17 +1625,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "48769153-c688-43fe-9255-5c758d55119e",
+      "id": "3829671a-93c9-48c6-9ed7-312ca327fbfc",
       "details": {
         "calories_burned": 429,
         "splat_points": 2,
@@ -1655,17 +1655,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a6129a1c-889d-4b76-b75c-30b561730c48",
+      "id": "b71fc108-3d06-4a5e-9cc6-44782067d30e",
       "details": {
         "calories_burned": 268,
         "splat_points": 0,
@@ -1685,17 +1685,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "5c11ab6d-42f5-43f5-8ef4-c34d5bf86f3c",
+      "id": "3e5c1585-40d0-4acd-8021-65767a8b6cfa",
       "details": {
         "calories_burned": 398,
         "splat_points": 12,
@@ -1715,17 +1715,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "774c0afa-7f4d-408c-a1ff-f6c08347f1da",
+      "id": "53e11542-5715-42a9-9089-d2c3280b32ac",
       "details": {
         "calories_burned": 371,
         "splat_points": 1,
@@ -1745,17 +1745,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b8f0188e-fb37-4fae-8d85-63ca193e638d",
+      "id": "3275dbaf-510d-4280-8cd6-d657b332c75c",
       "details": {
         "calories_burned": 208,
         "splat_points": 0,
@@ -1775,17 +1775,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "51facefa-d6f8-4f7a-82fa-1da878308631",
+      "id": "35d0f4cf-6f71-4595-a394-fef83d0342bd",
       "details": {
         "calories_burned": 462,
         "splat_points": 9,
@@ -1805,17 +1805,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "501ba851-5ee6-4495-b400-29c3ea11905b",
+      "id": "50c42ec8-5285-4c76-87fe-43b205134293",
       "details": {
         "calories_burned": 399,
         "splat_points": 6,
@@ -1835,17 +1835,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "dd34aa18-9001-4ed4-8bb4-01e769f753f1",
+      "id": "d91b079a-c504-42af-bc18-849b2a28e140",
       "details": {
         "calories_burned": 389,
         "splat_points": 6,
@@ -1865,17 +1865,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "0426fcc9-255b-40e2-bdc2-b74b38a56b49",
+      "id": "88deb153-0f3b-4ca6-88b0-803fa86db98f",
       "details": {
         "calories_burned": 267,
         "splat_points": 0,
@@ -1895,17 +1895,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "95831d58-ef4c-4119-8da5-d39b42c21797",
+      "id": "e4a12d31-a9fa-4015-b3bf-852e5c311929",
       "details": {
         "calories_burned": 489,
         "splat_points": 12,
@@ -1925,17 +1925,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "4b91b8cb-6ae6-4582-b852-b3cd9442b5e6",
+      "id": "fb996707-2a32-46a0-9ce0-18f4e0ca6507",
       "details": {
         "calories_burned": 378,
         "splat_points": 7,
@@ -1955,17 +1955,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3ae28023-5472-4d2d-b239-9ffb27046f25",
+      "id": "aba3067f-90f7-42ff-bdd3-f80371e0256d",
       "details": {
         "calories_burned": 384,
         "splat_points": 8,
@@ -1985,17 +1985,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3ee82983-d557-4241-91dd-b9bf613d2de9",
+      "id": "15736bc9-1aa0-4f58-b98b-0fe4f31f0050",
       "details": {
         "calories_burned": 267,
         "splat_points": 0,
@@ -2015,17 +2015,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f186e47a-a794-4320-8cf6-e8b87fd238c3",
+      "id": "f55ba6a1-12c0-4ed9-8282-03de3a0039d7",
       "details": {
         "calories_burned": 382,
         "splat_points": 8,
@@ -2045,17 +2045,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Adam Brooks"
+          "first_name": "Christine Rodgers"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c36b9a0a-41e0-4a89-966a-9ce7af521b94",
+      "id": "12ceb99e-a4fc-4f74-981c-062a50479499",
       "details": {
         "calories_burned": 406,
         "splat_points": 9,
@@ -2075,17 +2075,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b93b17fb-f76d-45fd-bd16-45a0d253d966",
+      "id": "a066c718-c075-4ef6-8c33-3f60243f61e8",
       "details": {
         "calories_burned": 430,
         "splat_points": 10,
@@ -2105,17 +2105,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "75f8e3a8-7d97-4c0f-bd56-09c4a4461663",
+      "id": "a7f7075c-c754-4031-abc8-e06592d4fb74",
       "details": {
         "calories_burned": 249,
         "splat_points": 0,
@@ -2135,17 +2135,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "5a2837b2-cb83-43f2-bb96-f6022b115c36",
+      "id": "3fd524d8-b635-4cf3-bf29-75f7ec1f90c0",
       "details": {
         "calories_burned": 426,
         "splat_points": 13,
@@ -2165,17 +2165,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8bea75c1-b866-47aa-a3d4-526b2b54ff7a",
+      "id": "d79e1186-5ce2-4f9d-a24c-fc954c1cae71",
       "details": {
         "calories_burned": 401,
         "splat_points": 16,
@@ -2195,17 +2195,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "David Torres"
+          "first_name": "Shane Gaines"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "e3ad64d4-eab9-4b02-af1d-c1217d024c6d",
+      "id": "3ca69a7b-8876-4358-a7c4-15259d95869d",
       "details": {
         "calories_burned": 337,
         "splat_points": 0,
@@ -2225,17 +2225,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f50d7a37-a44d-4fec-bd85-d7fa8ac97b01",
+      "id": "05fce41b-b7dc-4d88-a489-4d947011eb5e",
       "details": {
         "calories_burned": 413,
         "splat_points": 15,
@@ -2255,17 +2255,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "d6cd3155-08a8-4c7f-8621-38ad0f09105c",
+      "id": "50946013-2bfa-4faa-99cc-510f0662ea14",
       "details": {
         "calories_burned": 429,
         "splat_points": 3,
@@ -2285,17 +2285,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "d1682e09-f1f7-4904-9307-5157d8c128e7",
+      "id": "0f2a0b67-b69a-40d4-b7a6-ac47d440de85",
       "details": {
         "calories_burned": 428,
         "splat_points": 13,
@@ -2315,17 +2315,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "01a25ed1-c3ab-45f1-8c6b-7074ab102c9b",
+      "id": "c4b31e33-a3a5-48cc-83c4-8c86c7cfa343",
       "details": {
         "calories_burned": 424,
         "splat_points": 5,
@@ -2345,17 +2345,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Justin Foster"
+          "first_name": "Brian Williams"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a175a9c3-d7b1-42a9-a332-a50e6992896e",
+      "id": "e9f232b9-449b-413e-8156-e0970b7e41c7",
       "details": {
         "calories_burned": 232,
         "splat_points": 0,
@@ -2375,17 +2375,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "26a9e100-b509-409b-9166-58ce3b3f3800",
+      "id": "f12799bc-dafc-4bc5-bde0-9fd475ec88b2",
       "details": {
         "calories_burned": 423,
         "splat_points": 19,
@@ -2405,17 +2405,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "74bd0c93-8177-4661-b7fe-032c02571851",
+      "id": "a6cc18d5-a09b-4ead-afc7-bbe7022a0932",
       "details": {
         "calories_burned": 383,
         "splat_points": 12,
@@ -2435,17 +2435,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a3422e50-9e2a-4324-8f79-a8a75f8a14bd",
+      "id": "8234848f-38db-4d44-b907-5260e6bf1313",
       "details": {
         "calories_burned": 396,
         "splat_points": 7,
@@ -2465,17 +2465,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "e9aa144b-9dd4-4675-af14-5064aab07015",
+      "id": "09712ca6-faed-4314-8622-cb9fb520e392",
       "details": {
         "calories_burned": 393,
         "splat_points": 10,
@@ -2495,17 +2495,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "0406ff44-7ce4-4679-a8c6-dbc07bb3447b",
+      "id": "0b30bbb3-9e21-457f-9820-d1c6b10c905a",
       "details": {
         "calories_burned": 434,
         "splat_points": 6,
@@ -2525,17 +2525,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "694d7b00-8d38-4327-883f-13c601b158e9",
+      "id": "ed6deb2e-d0c4-4f10-b949-9ad3b4cc4559",
       "details": {
         "calories_burned": 414,
         "splat_points": 11,
@@ -2555,17 +2555,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b8e19f56-8787-4a21-8448-2a220308aa5e",
+      "id": "bae633c0-ccda-48fe-bf0e-ecee50e8ae5f",
       "details": {
         "calories_burned": 393,
         "splat_points": 6,
@@ -2585,17 +2585,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "49646b96-fa3c-4628-8926-21df465568b7",
+      "id": "f455a994-891b-4306-ab1c-a976150d67a7",
       "details": {
         "calories_burned": 357,
         "splat_points": 3,
@@ -2615,17 +2615,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b2a6e468-d02b-4243-8091-3ac10463750e",
+      "id": "952434ad-5ab2-466a-88f3-f77195867c0f",
       "details": {
         "calories_burned": 434,
         "splat_points": 4,
@@ -2645,17 +2645,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f090f5a0-ce61-4199-ae3a-0ba8ac8d6c7d",
+      "id": "7faf572a-4d2e-4612-9ed6-8acddcf17b13",
       "details": {
         "calories_burned": 507,
         "splat_points": 7,
@@ -2675,17 +2675,17 @@
         "name": "Orange 90 Min 2G",
         "type": "ORANGE_90",
         "coach": {
-          "first_name": "Theresa Woods"
+          "first_name": "Thomas Hall"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "eb053fc4-1b65-4dab-ade4-6e91e8e6e840",
+      "id": "5a436749-680a-47f9-ad6b-31bfd7e2c550",
       "details": {
         "calories_burned": 415,
         "splat_points": 17,
@@ -2705,17 +2705,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3db02235-261e-4555-863e-1f2a18a806ef",
+      "id": "8eb183ed-4429-4867-a7af-e53c46658c2c",
       "details": {
         "calories_burned": 335,
         "splat_points": 2,
@@ -2735,17 +2735,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Theresa Woods"
+          "first_name": "Thomas Hall"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "409e7a80-86c5-41d6-9ea9-f50831227592",
+      "id": "de983060-b17f-44a3-951c-b4f1f5d56f4c",
       "details": {
         "calories_burned": 369,
         "splat_points": 3,
@@ -2765,17 +2765,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "cb80f288-446f-44dd-9abc-a6e5d0b1e3eb",
+      "id": "fafe294b-8a3a-4943-9a7b-c916f4671165",
       "details": {
         "calories_burned": 369,
         "splat_points": 1,
@@ -2795,17 +2795,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Theresa Woods"
+          "first_name": "Thomas Hall"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f5948a54-5f80-4eeb-943a-9aff659b0105",
+      "id": "3e6f63ec-fdd2-4275-88f9-15253d02d5c5",
       "details": {
         "calories_burned": 391,
         "splat_points": 14,
@@ -2825,17 +2825,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3e42df5b-90a3-4bbf-b580-e05067f1698c",
+      "id": "f1d298b2-664a-4640-9183-7976edd7b8b4",
       "details": {
         "calories_burned": 401,
         "splat_points": 4,
@@ -2855,17 +2855,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "4ccb2355-39d1-47ff-b27e-1442fd7fe973",
+      "id": "91a28ceb-24ea-4614-b793-727b86831a1d",
       "details": {
         "calories_burned": 376,
         "splat_points": 4,
@@ -2885,17 +2885,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "14a34f7f-d90d-419b-93fb-e043af1d5a1a",
+      "id": "6df0036b-39ca-45d3-834b-cb1e62d52495",
       "details": {
         "calories_burned": 424,
         "splat_points": 9,
@@ -2915,17 +2915,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a65f7b8a-dbb4-4021-bdde-64afa75b395a",
+      "id": "1ed514a5-4ec7-4822-aea1-3f6b23247336",
       "details": {
         "calories_burned": 427,
         "splat_points": 18,
@@ -2945,17 +2945,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "67c0518b-17ef-4621-881c-79d4c27437eb",
+      "id": "4076a938-2643-4786-af24-9d11d93474a8",
       "details": {
         "calories_burned": 483,
         "splat_points": 23,
@@ -2975,17 +2975,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "79db7862-8d7d-4772-a08e-2f5c61177270",
+      "id": "63f84569-5288-41da-af15-41af1a779e16",
       "details": {
         "calories_burned": 264,
         "splat_points": 0,
@@ -3005,17 +3005,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b3eda8f1-026b-4383-a301-ec030e5d8c6a",
+      "id": "55e3af3f-08b1-4572-90f8-7508b3cde0ad",
       "details": {
         "calories_burned": 450,
         "splat_points": 27,
@@ -3035,17 +3035,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "d867888b-7ff6-4824-952a-eaec2bdfcb41",
+      "id": "1bcea02c-bbc3-4e6b-a830-549933348e63",
       "details": {
         "calories_burned": 421,
         "splat_points": 6,
@@ -3065,17 +3065,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "54ce26be-c8cc-42c2-a518-a4186f14b3f6",
+      "id": "911db2cb-df01-4db0-9f4b-d9d2a5b0d117",
       "details": {
         "calories_burned": 390,
         "splat_points": 11,
@@ -3095,17 +3095,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f94d8fcb-dba3-496f-ba32-3f6990dbfad6",
+      "id": "3298cdf7-87ba-4fc9-a684-13a348a4a678",
       "details": {
         "calories_burned": 375,
         "splat_points": 2,
@@ -3125,17 +3125,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "eb4d8f42-8735-40a2-a511-09611869a217",
+      "id": "74b16529-393a-4a04-b864-fdb98ee6c4d8",
       "details": {
         "calories_burned": 379,
         "splat_points": 5,
@@ -3155,17 +3155,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "e6b9d31a-361f-4d90-bad1-fa330ae4ac11",
+      "id": "edd73930-38a0-449f-9153-001801fe3547",
       "details": {
         "calories_burned": 218,
         "splat_points": 0,
@@ -3185,17 +3185,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "David Torres"
+          "first_name": "Shane Gaines"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "9118c400-e336-4243-b139-c476de3ce88b",
+      "id": "afdc4aea-6199-4c13-9257-e07442d120ef",
       "details": {
         "calories_burned": 383,
         "splat_points": 0,
@@ -3215,17 +3215,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ec95b3ac-0beb-4c34-8566-7c4879ba630a",
+      "id": "e20be38d-4faa-4770-b97b-42035bc2401f",
       "details": {
         "calories_burned": 406,
         "splat_points": 5,
@@ -3245,17 +3245,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "47c68688-ecf3-4053-af36-b8cc13087974",
+      "id": "0f483f58-d6c5-490a-bf0d-c5b73d0f4903",
       "details": {
         "calories_burned": 424,
         "splat_points": 4,
@@ -3275,17 +3275,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a879d8f8-9042-4eb7-8b04-0f53e63949d4",
+      "id": "5c4e81ad-db76-4680-a836-ae738086f8ec",
       "details": {
         "calories_burned": 384,
         "splat_points": 6,
@@ -3305,17 +3305,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "d9b59f84-edc3-41c3-adea-2d2d086c405f",
+      "id": "a28a08d6-3781-433e-ba65-f14c7705d336",
       "details": {
         "calories_burned": 406,
         "splat_points": 12,
@@ -3335,17 +3335,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3508507a-f622-4842-8402-2b3c508211a5",
+      "id": "1e909dc1-8ba1-414e-8364-ae21d6fa8157",
       "details": {
         "calories_burned": 435,
         "splat_points": 7,
@@ -3365,17 +3365,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "d218c9d6-c093-4fb0-a4e9-bcfd9647ff9f",
+      "id": "c218d623-dad0-43f0-8838-e8377ef3b61a",
       "details": {
         "calories_burned": 376,
         "splat_points": 7,
@@ -3395,17 +3395,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "edcabf94-65f6-4a53-9226-a8b3b674410d",
+      "id": "40d4ef83-422c-4964-94a5-89279dd842a9",
       "details": {
         "calories_burned": 421,
         "splat_points": 4,
@@ -3425,17 +3425,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "905f9096-2996-46e2-8c9d-690713b22cec",
+      "id": "e02faba7-14e6-448c-98fc-6f997930150d",
       "details": {
         "calories_burned": 406,
         "splat_points": 3,
@@ -3455,17 +3455,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "d9750f00-d5ab-48ae-9112-fbc03d8f95f4",
+      "id": "858db4e0-c0c2-4d65-933a-f48a5df699bc",
       "details": {
         "calories_burned": 263,
         "splat_points": 0,
@@ -3485,17 +3485,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "David Torres"
+          "first_name": "Shane Gaines"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8a624cbd-e582-4678-ad52-29dd639fc471",
+      "id": "9ae3abc8-aff4-4009-94c6-beda1c04f434",
       "details": {
         "calories_burned": 402,
         "splat_points": 8,
@@ -3515,17 +3515,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "bd5ff093-c16f-4bcc-a243-bed754ec3f33",
+      "id": "1bf8229f-6bcb-4989-80e7-9d41dd2a6979",
       "details": {
         "calories_burned": 408,
         "splat_points": 0,
@@ -3545,17 +3545,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b076a7dc-fd0c-4433-8a5e-151b23d3cd4c",
+      "id": "ba7a7d9b-79f3-4d5b-bc00-9a1ad18dd48c",
       "details": {
         "calories_burned": 396,
         "splat_points": 9,
@@ -3575,17 +3575,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "bed63da0-8033-45c2-9413-d64db962c8a7",
+      "id": "5a0de6a4-cb1a-4471-9546-63942ae31d3c",
       "details": {
         "calories_burned": 445,
         "splat_points": 6,
@@ -3605,17 +3605,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "1901ef87-0dbf-4caf-988a-3f87f96d40f8",
+      "id": "4fbac554-e6c0-4bd3-94cc-739b617136ed",
       "details": {
         "calories_burned": 596,
         "splat_points": 3,
@@ -3635,17 +3635,17 @@
         "name": "Orange 90 Min 2G",
         "type": "ORANGE_90",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "1375ee90-d6b3-41e4-bb6d-ca0d6fe5040b",
+      "id": "6d5081d0-ec41-4268-aaf3-3ddca310dc8a",
       "details": {
         "calories_burned": 410,
         "splat_points": 6,
@@ -3665,17 +3665,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "9d264599-c4dd-4df5-9aec-56a857311609",
+      "id": "ba1ac267-cb9a-444c-b8d5-c1e8a20816b8",
       "details": {
         "calories_burned": 429,
         "splat_points": 5,
@@ -3695,17 +3695,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f80b2cea-658e-44a2-9879-cf35f4719986",
+      "id": "8a64bd78-b549-4491-8600-2345ffb730b5",
       "details": {
         "calories_burned": 406,
         "splat_points": 4,
@@ -3725,17 +3725,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a255e1bb-0795-4c1f-938d-6b8cc607b1e9",
+      "id": "7fb2eafc-cc0e-4c41-a42e-2d3142fd5ee1",
       "details": {
         "calories_burned": 432,
         "splat_points": 8,
@@ -3755,17 +3755,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "735741e5-fe1a-4ba9-8896-9c5b45f8c28d",
+      "id": "63759687-6f8b-40af-9d4e-dcd39d694fd6",
       "details": {
         "calories_burned": 441,
         "splat_points": 3,
@@ -3785,17 +3785,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8d93e14a-5b16-4158-ba67-470c7d98302f",
+      "id": "ef3d81ac-120f-41a2-be7c-9a715c142438",
       "details": {
         "calories_burned": 352,
         "splat_points": 1,
@@ -3815,17 +3815,17 @@
         "name": "DriTri",
         "type": "OTHER",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2f8c83e5-6e8d-4644-a01b-fbcbf0eebcce",
+      "id": "b7d6dfc1-23b8-4c0f-b27d-ac9b66868153",
       "details": {
         "calories_burned": 435,
         "splat_points": 4,
@@ -3845,17 +3845,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "614c721d-a921-4b4c-95fb-e976ae007b7e",
+      "id": "af87fde1-abce-47d2-b66b-096a0357be6b",
       "details": {
         "calories_burned": 358,
         "splat_points": 0,
@@ -3875,17 +3875,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "David Torres"
+          "first_name": "Shane Gaines"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "4b9dfd58-9e5d-4c7a-85ac-c35415f00cb4",
+      "id": "e9ac29f5-678e-48f3-9140-e0431f15fb3b",
       "details": {
         "calories_burned": 411,
         "splat_points": 11,
@@ -3905,17 +3905,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "12d15585-b68e-47fa-bf17-5534cc4d5819",
+      "id": "f3f6961b-72a5-4608-bab3-900d96908f50",
       "details": {
         "calories_burned": 468,
         "splat_points": 11,
@@ -3935,17 +3935,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Theresa Woods"
+          "first_name": "Thomas Hall"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "6147adeb-277b-4667-8499-d0a615007170",
+      "id": "94265149-4ec5-4f3f-8fd2-b39748818c10",
       "details": {
         "calories_burned": 395,
         "splat_points": 12,
@@ -3965,17 +3965,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "277eb0aa-a247-441d-88ad-0899b630794d",
+      "id": "07d26a08-e443-433e-942b-54b0ad3b9e6e",
       "details": {
         "calories_burned": 442,
         "splat_points": 9,
@@ -3995,17 +3995,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "5c56d9bc-5111-431d-a3be-441dbd5a0c9e",
+      "id": "e9c2eeef-2906-4ccf-b034-d01306e15a45",
       "details": {
         "calories_burned": 387,
         "splat_points": 10,
@@ -4025,17 +4025,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f165d779-0154-4950-976d-e21f1b46ebdc",
+      "id": "0a339f0c-9468-4e04-a7fb-678fc3805e7f",
       "details": {
         "calories_burned": 382,
         "splat_points": 2,
@@ -4055,17 +4055,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c2e79a98-5c23-4d8d-b1da-35b94eea9db8",
+      "id": "8d4672e2-dac7-4288-acde-d574161c78b2",
       "details": {
         "calories_burned": 386,
         "splat_points": 10,
@@ -4085,17 +4085,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "16591c89-21eb-4aa9-9a2b-d69c450f69ee",
+      "id": "1149b350-7413-4cf1-bdf8-4a5604bb0817",
       "details": {
         "calories_burned": 429,
         "splat_points": 20,
@@ -4115,17 +4115,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8e969227-72e7-4b51-ae54-ac6d2ff8e87e",
+      "id": "1d71961a-d657-4311-8309-37e5b7130940",
       "details": {
         "calories_burned": 449,
         "splat_points": 17,
@@ -4145,17 +4145,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "1a7167c7-6875-4545-832f-52c48e0370cf",
+      "id": "f2a3f114-d800-4528-bb0c-f4a4be7f50f3",
       "details": {
         "calories_burned": 445,
         "splat_points": 7,
@@ -4175,17 +4175,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Robert Charles"
+          "first_name": "Cynthia Benjamin"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8de1596c-5a9a-406a-96f1-42a206b919aa",
+      "id": "9b9c27bd-212d-4278-95da-b179673746a2",
       "details": {
         "calories_burned": 427,
         "splat_points": 14,
@@ -4205,17 +4205,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c8d0f9e5-9919-45ea-98d0-0c2c17d30f32",
+      "id": "e6b75958-ff67-4554-b9b8-0819fc56d36b",
       "details": {
         "calories_burned": 440,
         "splat_points": 8,
@@ -4235,17 +4235,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "0328c136-629e-43d8-9d1c-a267530ddda6",
+      "id": "5df639d5-1718-42f6-bb4d-0bebef88797e",
       "details": {
         "calories_burned": 391,
         "splat_points": 15,
@@ -4265,17 +4265,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c777a07f-6346-44ef-a9ef-74e34ab6821c",
+      "id": "4c033817-0560-45d7-844f-edc20303e986",
       "details": {
         "calories_burned": 459,
         "splat_points": 8,
@@ -4295,17 +4295,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8f3dc97f-e6b0-4a0a-b98f-5dbe15aede0f",
+      "id": "d5ac1317-fe9a-4d2f-ac45-59e80322dcb2",
       "details": {
         "calories_burned": 404,
         "splat_points": 2,
@@ -4325,17 +4325,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3e245fbf-fa69-4cd2-be23-90f3e7bbaefc",
+      "id": "bc41f8da-1d3f-4f85-b763-8b1826873cba",
       "details": {
         "calories_burned": 442,
         "splat_points": 13,
@@ -4355,17 +4355,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "af70de70-2b69-495e-8567-1b58926bffa5",
+      "id": "9f1737bc-21bd-46bc-86d7-22a70688e386",
       "details": {
         "calories_burned": 338,
         "splat_points": 0,
@@ -4385,17 +4385,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "44d7df9a-238b-45b7-ab64-777c6177a771",
+      "id": "38b99092-b217-4b1a-b390-7778fe0d9d38",
       "details": {
         "calories_burned": 493,
         "splat_points": 16,
@@ -4415,17 +4415,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "255bfc1c-7e3d-4ee4-84b6-4ec14d16f049",
+      "id": "8dc1bf5f-77e5-4cb7-9d3d-79e652d73df4",
       "details": {
         "calories_burned": 341,
         "splat_points": 0,
@@ -4445,17 +4445,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "46a56fe8-6f46-41b1-aace-1aa9103246b3",
+      "id": "1e450f5e-7459-4331-898c-976362e11dea",
       "details": {
         "calories_burned": 439,
         "splat_points": 9,
@@ -4475,17 +4475,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c85cd714-7bf6-4552-8cbc-90446bcd5ce7",
+      "id": "6b270d3a-285b-478b-895a-011ffdd42561",
       "details": {
         "calories_burned": 711,
         "splat_points": 15,
@@ -4505,17 +4505,17 @@
         "name": "Orange 90 Min 2G",
         "type": "ORANGE_90",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f1b88d65-406f-44d6-9c72-aebd13b11e59",
+      "id": "12b39d7a-b6f6-4e6b-96ff-4702efb1cd4b",
       "details": {
         "calories_burned": 387,
         "splat_points": 2,
@@ -4535,17 +4535,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Phillip Kent"
+          "first_name": "Janice Chen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "7eece88d-a002-452a-b88c-ddde3f2086c2",
+      "id": "5243733f-fb8e-423f-a1eb-2b1863014ef4",
       "details": {
         "calories_burned": 372,
         "splat_points": 8,
@@ -4565,17 +4565,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "75366b9f-320f-42c0-9dde-01889803b22e",
+      "id": "0d01062c-0336-4fea-a74d-0272fee0078d",
       "details": {
         "calories_burned": 468,
         "splat_points": 6,
@@ -4595,17 +4595,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "01bb819c-4dfe-4117-a2af-711f1b628a9d",
+      "id": "fca77975-60de-4c90-a70f-3cc20aa5ff6a",
       "details": {
         "calories_burned": 303,
         "splat_points": 0,
@@ -4625,17 +4625,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "d773f98d-550c-4fe9-a54c-11d9f2e61828",
+      "id": "4338f06a-ac55-4676-bb36-606759967443",
       "details": {
         "calories_burned": 463,
         "splat_points": 7,
@@ -4655,17 +4655,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "dcb9075e-cdd7-4460-a140-77d39ec4ea48",
+      "id": "6f4ec95f-54c0-43f6-8a6b-88ae00cd2dd8",
       "details": {
         "calories_burned": 400,
         "splat_points": 7,
@@ -4685,17 +4685,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "6e3cdd4f-55b1-45e4-b0b2-7304545cd88d",
+      "id": "33451c1b-37ed-4e9a-94a6-f4421371358e",
       "details": {
         "calories_burned": 702,
         "splat_points": 13,
@@ -4715,17 +4715,17 @@
         "name": "Orange 90 Min 2G",
         "type": "ORANGE_90",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a6aa59e5-dc08-4f29-92d3-3488d0c30018",
+      "id": "0295c69b-63e6-4d8a-87eb-2f2c34f93014",
       "details": {
         "calories_burned": 344,
         "splat_points": 0,
@@ -4745,17 +4745,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "4ce953a7-22d9-4db3-982a-2277f966d59f",
+      "id": "8d2b5db9-dd61-4725-a994-677befc37f76",
       "details": {
         "calories_burned": 483,
         "splat_points": 13,
@@ -4775,17 +4775,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b1fead13-f280-4f1d-9a6c-0db952171c88",
+      "id": "39a5276d-a1ad-4aab-86de-6d37307f9876",
       "details": {
         "calories_burned": 122,
         "splat_points": 4,
@@ -4805,17 +4805,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2d79a2d1-506e-40c7-baa0-61e9336b00cb",
+      "id": "3be737f9-bb7b-4406-be1c-cd67c0941226",
       "details": {
         "calories_burned": 346,
         "splat_points": 0,
@@ -4835,17 +4835,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "51b30182-f7fe-404f-a5f3-0779f6ee5cdb",
+      "id": "a825cb3d-c1ac-4206-ac5b-a858fa2eefbe",
       "details": {
         "calories_burned": 529,
         "splat_points": 23,
@@ -4865,17 +4865,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a205e54f-b1e8-409d-bc20-b9f24a9c589e",
+      "id": "edd72f8a-f32f-4f90-b8f3-f8bb744363c8",
       "details": {
         "calories_burned": 250,
         "splat_points": 0,
@@ -4895,17 +4895,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c82f78fd-936c-431c-b7bf-52447db2a7aa",
+      "id": "5aa0439b-d4b0-4e00-9c89-b8148e46d99c",
       "details": {
         "calories_burned": 448,
         "splat_points": 11,
@@ -4925,17 +4925,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "John Smith"
+          "first_name": "Dennis Jordan"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "47c1c017-6045-4909-936d-47d73e0f84ce",
+      "id": "d83ad9ca-c2ad-4bd8-944f-76e2207b8311",
       "details": {
         "calories_burned": 307,
         "splat_points": 0,
@@ -4955,17 +4955,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "5d71a898-6497-4593-892e-8c93d105c8d6",
+      "id": "4b7c0432-7ef6-4992-af7a-9d890cbb136f",
       "details": {
         "calories_burned": 417,
         "splat_points": 2,
@@ -4985,17 +4985,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "33261887-9058-41df-ae9b-f3e11d27c09a",
+      "id": "98b82b69-fa61-4d06-b2ff-94b28ca2acc7",
       "details": {
         "calories_burned": 405,
         "splat_points": 6,
@@ -5015,17 +5015,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2e0fb5b3-8bae-491e-bf4c-c10f979c30cf",
+      "id": "a42f976f-88c1-4856-b9a6-6e6b585c3462",
       "details": {
         "calories_burned": 403,
         "splat_points": 17,
@@ -5045,17 +5045,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "06e3f949-8cd3-4c62-8482-9b71ae84b81c",
+      "id": "a2ee7e4f-09e1-4f88-b46b-ebf2ef9a63ba",
       "details": {
         "calories_burned": 473,
         "splat_points": 6,
@@ -5075,17 +5075,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Omar Price"
+          "first_name": "Brittany Allen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f166cdcf-762c-4fbc-ba2a-a7baf3f81c31",
+      "id": "2333f639-119a-4281-8d39-26a3c007d89c",
       "details": {
         "calories_burned": 455,
         "splat_points": 21,
@@ -5105,17 +5105,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "cc351e4f-703e-457f-b5ab-8466b5578b00",
+      "id": "6b4eba2c-069a-4e29-b193-77ec772bea32",
       "details": {
         "calories_burned": 476,
         "splat_points": 16,
@@ -5135,17 +5135,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "11b461e9-b15d-472d-94ce-e27c4a94ae9f",
+      "id": "5b34a7fe-63e0-41a6-b83b-f0434a0ed9fb",
       "details": {
         "calories_burned": 435,
         "splat_points": 17,
@@ -5165,17 +5165,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "cb881c32-cbb0-4a8b-9908-a121d1a7ba20",
+      "id": "0bd52fee-f744-4eda-8b89-ea28c33fdd07",
       "details": {
         "calories_burned": 453,
         "splat_points": 6,
@@ -5195,17 +5195,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "23a13e20-7fd2-45ee-ac48-436668bd80d7",
+      "id": "c9fb7f63-40e6-40e5-b249-d4f0d1838f6a",
       "details": {
         "calories_burned": 470,
         "splat_points": 24,
@@ -5225,17 +5225,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "40afbf3f-3df5-4967-8d86-70bda2224f96",
+      "id": "3f251b5d-e001-4eab-851e-37d035cd73e5",
       "details": {
         "calories_burned": 451,
         "splat_points": 8,
@@ -5255,17 +5255,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "6c521d13-b719-4b68-a775-ee42a89e22f2",
+      "id": "0c9b97e9-86ab-4f96-b994-33cb35a5c6c5",
       "details": {
         "calories_burned": 416,
         "splat_points": 11,
@@ -5285,17 +5285,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "72f60958-12ef-4101-a082-786fca00ef58",
+      "id": "0aa301e7-31dd-48d5-9ddc-e697dc5e7ffa",
       "details": {
         "calories_burned": 467,
         "splat_points": 7,
@@ -5315,17 +5315,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "950df1a0-7aaf-4001-9912-316afd9e8e20",
+      "id": "bcf20536-30f8-4c23-a0ca-2c6e7f31d950",
       "details": {
         "calories_burned": 452,
         "splat_points": 13,
@@ -5345,17 +5345,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Henderson"
+          "first_name": "Sharon Roberts"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ec6a37ad-81b1-4db9-88cc-4d49669b29b8",
+      "id": "7b18f502-38e9-4110-8744-1cef35cb8331",
       "details": {
         "calories_burned": 439,
         "splat_points": 3,
@@ -5375,17 +5375,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "6b15c11b-b113-450b-9ea0-50c6eb9ed274",
+      "id": "0ff77f61-010a-4755-a73e-0fc56776ab16",
       "details": {
         "calories_burned": 431,
         "splat_points": 3,
@@ -5405,17 +5405,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f7eae66e-ca6c-4f9b-8969-71018b2c550a",
+      "id": "28d087e9-7915-4a60-9713-f41863e1438b",
       "details": {
         "calories_burned": 419,
         "splat_points": 4,
@@ -5435,17 +5435,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "cff2b1c4-e53f-4644-b39e-4df25c0a1feb",
+      "id": "16395ca6-88c9-4ad1-bea7-d47757c27c77",
       "details": {
         "calories_burned": 386,
         "splat_points": 6,
@@ -5465,17 +5465,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ea163354-a35f-49c1-9804-95628972abbd",
+      "id": "ade3d6d3-c7f7-46fa-bab1-d3ef0143b103",
       "details": {
         "calories_burned": 460,
         "splat_points": 11,
@@ -5495,17 +5495,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3f8c1097-c4da-4c2e-9bff-a27915c1604f",
+      "id": "3a826bc8-f137-4355-8647-dfc98f9c9dc0",
       "details": {
         "calories_burned": 418,
         "splat_points": 2,
@@ -5525,17 +5525,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2a9528c3-5ae1-4bad-aa29-60fda85894df",
+      "id": "173bee13-ab41-423d-8408-bee38e6c5d0f",
       "details": {
         "calories_burned": 411,
         "splat_points": 9,
@@ -5555,17 +5555,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "902f3465-0b57-4720-9cd8-758ba5a1c825",
+      "id": "35bb7fdb-6027-453a-aacb-57c7f769a45d",
       "details": {
         "calories_burned": 444,
         "splat_points": 12,
@@ -5585,17 +5585,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a590fd3c-ad6e-4c57-a520-c3d0fbcdbf5e",
+      "id": "620b838e-08cd-469f-9db5-ae85d84845cd",
       "details": {
         "calories_burned": 326,
         "splat_points": 9,
@@ -5615,17 +5615,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "David Torres"
+          "first_name": "Shane Gaines"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "54e38579-c0af-4193-b780-ef2f664d5922",
+      "id": "3a6650b6-27e1-48b4-8896-8b7565012b82",
       "details": {
         "calories_burned": 435,
         "splat_points": 13,
@@ -5645,17 +5645,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "1b1f2eb1-6e32-45a8-8bd5-cc86f73936e9",
+      "id": "d846d644-8dac-443b-8cd7-06f5293e59c1",
       "details": {
         "calories_burned": 409,
         "splat_points": 14,
@@ -5675,17 +5675,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "38d5101f-423c-4d9d-993e-478302b34254",
+      "id": "9c8a99b6-66a7-4873-8beb-60b4c5c50442",
       "details": {
         "calories_burned": 459,
         "splat_points": 10,
@@ -5705,17 +5705,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8ed8a80d-84cf-4e39-bf31-c29f82bbad84",
+      "id": "8faa0e7c-4177-48c7-a957-ca1aa30af41a",
       "details": {
         "calories_burned": 464,
         "splat_points": 20,
@@ -5735,17 +5735,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "38958939-9342-409f-b00a-c64c949cd8d4",
+      "id": "c0d48754-0e6b-4ced-a205-f82aa3986034",
       "details": {
         "calories_burned": 410,
         "splat_points": 9,
@@ -5765,17 +5765,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Melinda Mitchell"
+          "first_name": "Dana Carter"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "768b4f7e-6421-4e66-9fc6-4cd0721e8b1f",
+      "id": "b96f9f5e-a942-469a-b624-5b20688f42a2",
       "details": {
         "calories_burned": 440,
         "splat_points": 3,
@@ -5795,17 +5795,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b0c07fcc-96ad-44df-adf7-5924c5b8386b",
+      "id": "a7a2a802-0766-4a4f-be92-3e4c2ae6963d",
       "details": {
         "calories_burned": 496,
         "splat_points": 18,
@@ -5825,17 +5825,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ff69723d-584f-485b-a697-384d801e8690",
+      "id": "6ac88e11-bea7-491f-9065-6ffceab95b0f",
       "details": {
         "calories_burned": 494,
         "splat_points": 11,
@@ -5855,17 +5855,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "4ba17233-1ac3-4f31-bb96-e2d10649bcf6",
+      "id": "341ebb97-61b1-4992-895b-23ec35eb7a0c",
       "details": {
         "calories_burned": 421,
         "splat_points": 25,
@@ -5885,17 +5885,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "15fa9483-f633-4c2d-aba9-00e16a7d5d96",
+      "id": "400449b2-3f55-476d-9efe-cfe28d9f96e6",
       "details": {
         "calories_burned": 509,
         "splat_points": 19,
@@ -5915,17 +5915,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "baeb286b-f0d0-470f-94d1-3d551db6b844",
+      "id": "20497c4d-b799-4fd0-b5db-94bbe94c74a6",
       "details": {
         "calories_burned": 387,
         "splat_points": 8,
@@ -5945,17 +5945,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "57d337d3-4fd8-4bbb-992c-11072444d301",
+      "id": "86a4621d-8a95-4e41-96c5-ec3872262e6b",
       "details": {
         "calories_burned": 291,
         "splat_points": 9,
@@ -5975,17 +5975,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8567c805-34f5-41c0-88c5-eb2a7490adeb",
+      "id": "e2d44c03-8280-4a8c-86e0-403749f8b108",
       "details": {
         "calories_burned": 460,
         "splat_points": 6,
@@ -6005,17 +6005,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "18fdd2b9-79e5-49aa-992a-35497ba109d0",
+      "id": "6ebdb3eb-9c82-4261-acfe-9e6517ce2981",
       "details": {
         "calories_burned": 451,
         "splat_points": 9,
@@ -6035,17 +6035,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "73d39457-b25f-43df-b8d4-9848702ba49f",
+      "id": "29c4aa48-a714-4f48-af7c-6d2cf31a56b2",
       "details": {
         "calories_burned": 444,
         "splat_points": 12,
@@ -6065,17 +6065,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "0b705933-4cde-4b6b-9132-567c51a40d2a",
+      "id": "e4db2104-da4c-4c15-9b3f-656b6469eb1b",
       "details": {
         "calories_burned": 461,
         "splat_points": 8,
@@ -6094,17 +6094,17 @@
         "starts_at_local": "2024-08-20T09:46:00",
         "type": "OTHER",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "05c8234b-1d76-4a66-b5f5-9cb0cf685878",
+      "id": "260e1a23-ee9d-40d0-b382-ee421a5e8e62",
       "details": {
         "calories_burned": 289,
         "splat_points": 1,
@@ -6124,17 +6124,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "1bff3142-a5e1-4b55-97d3-f4ddd963dc72",
+      "id": "d0c8e807-f339-446e-8b84-73f4724aab45",
       "details": {
         "calories_burned": 463,
         "splat_points": 12,
@@ -6154,17 +6154,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ee0f65a8-2a13-4c1f-8cd0-15c1ad5900dd",
+      "id": "911682b2-ec54-4ded-94d7-ab410786e0a4",
       "details": {
         "calories_burned": 428,
         "splat_points": 16,
@@ -6184,17 +6184,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "84182d35-3e71-4433-bd90-b81afbe0e6b8",
+      "id": "0657e47d-2d8a-4193-ac33-ab53db57cc42",
       "details": {
         "calories_burned": 479,
         "splat_points": 10,
@@ -6214,17 +6214,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "54bbbcf8-28fe-4761-8d49-fe3f2ca8f783",
+      "id": "c1c71e39-7b1c-4aee-ba95-cafc9beb8d83",
       "details": {
         "calories_burned": 449,
         "splat_points": 13,
@@ -6244,17 +6244,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "76492e64-f55d-4e6d-ad26-8b378f5242d3",
+      "id": "c6e35b14-80a8-4008-a845-ba6ef5c62dd7",
       "details": {
         "calories_burned": 421,
         "splat_points": 20,
@@ -6274,17 +6274,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a137f8e4-67b1-4040-8c39-b9253b5ae288",
+      "id": "1204a8d1-e905-4a29-8182-7132302032b2",
       "details": {
         "calories_burned": 280,
         "splat_points": 5,
@@ -6304,17 +6304,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "David Torres"
+          "first_name": "Shane Gaines"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a84554c3-a3f6-4c61-afb7-0dab2f383b43",
+      "id": "93dd1bd3-6332-4b51-ae0d-643ef4576a51",
       "details": {
         "calories_burned": 486,
         "splat_points": 12,
@@ -6334,17 +6334,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "bcc57be0-0779-450a-a544-e3136ea05d13",
+      "id": "2e148b42-a5fb-4b34-b8ac-894e1dd5183b",
       "details": {
         "calories_burned": 420,
         "splat_points": 19,
@@ -6364,17 +6364,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "7317591a-3283-4aa4-a212-ab7c9d361cb6",
+      "id": "198f82e6-a226-438c-b8ae-21d1772e78c0",
       "details": {
         "calories_burned": 497,
         "splat_points": 18,
@@ -6394,17 +6394,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "0123a348-638a-4df6-adf7-2cd3979aa051",
+      "id": "06ee2d59-ffc1-4367-b64e-24445afa34e5",
       "details": {
         "calories_burned": 432,
         "splat_points": 23,
@@ -6424,17 +6424,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "47419b48-34ae-4abd-b6fc-e0acb4698db3",
+      "id": "e36252a9-c644-45ff-8210-6e5616effc15",
       "details": {
         "calories_burned": 310,
         "splat_points": 13,
@@ -6454,17 +6454,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "David Torres"
+          "first_name": "Shane Gaines"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "cbc72f1a-cf08-4a54-b429-9924c0986750",
+      "id": "18036642-e99d-4489-8c5c-9147f8ecf022",
       "details": {
         "calories_burned": 482,
         "splat_points": 11,
@@ -6484,17 +6484,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ccac2fb5-1a0c-4c04-93cd-129110042d82",
+      "id": "37ca2a94-12e1-4c80-aa17-d4a765a85d8c",
       "details": {
         "calories_burned": 459,
         "splat_points": 26,
@@ -6514,17 +6514,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "5da49cb9-2fdc-4992-8971-8eeadf3a098a",
+      "id": "49056fbe-9e48-4635-8b0f-3d2588881d05",
       "details": {
         "calories_burned": 482,
         "splat_points": 16,
@@ -6544,17 +6544,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "1d2c2721-7522-4646-b273-75bf5373bf4d",
+      "id": "1940d6da-6d7c-4f90-9604-5511dce834f4",
       "details": {
         "calories_burned": 336,
         "splat_points": 2,
@@ -6574,17 +6574,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "7d4ed26e-dcd5-4fae-abb3-16a743299780",
+      "id": "e13b54d0-e004-47fb-9f8f-7404e9399d20",
       "details": {
         "calories_burned": 482,
         "splat_points": 9,
@@ -6604,17 +6604,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "503b4078-a39c-4ec6-b746-4c02871854c1",
+      "id": "1b0b214e-72c1-487a-bf95-46960e55270c",
       "details": {
         "calories_burned": 339,
         "splat_points": 2,
@@ -6634,17 +6634,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Rhonda Gutierrez"
+          "first_name": "Jenna Hansen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "647dc392-9c7e-4575-a37d-dcd698d3148b",
+      "id": "d14c6ad0-6c9b-4220-8b2e-ea59c643dc1a",
       "details": {
         "calories_burned": 459,
         "splat_points": 10,
@@ -6664,17 +6664,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "5a1baf0e-5911-46dc-9d3e-503a9645f0e4",
+      "id": "8b601615-9e72-437b-96a8-8b7d99d19c29",
       "details": {
         "calories_burned": 487,
         "splat_points": 17,
@@ -6694,17 +6694,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2c2ac34b-9e0b-4b01-b536-59efd873dad9",
+      "id": "b0efee0a-8bda-4f8a-93a4-2f4a5a73e2ae",
       "details": {
         "calories_burned": 323,
         "splat_points": 0,
@@ -6724,17 +6724,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ccf4ffb0-b4bb-473f-ac70-51d1d051267f",
+      "id": "43e1305e-6c64-47e2-94f7-5cbee9268e54",
       "details": {
         "calories_burned": 564,
         "splat_points": 23,
@@ -6754,17 +6754,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "97154633-9d4e-4b71-ab2e-c80e4c255823",
+      "id": "b777fae0-24e0-4d45-a4b9-c36b486ea68c",
       "details": {
         "calories_burned": 506,
         "splat_points": 18,
@@ -6784,17 +6784,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "502cf0ee-224a-46a6-ac0f-680115b24e1d",
+      "id": "8d7885cc-be62-4e7d-9121-bb5d2b8a4784",
       "details": {
         "calories_burned": 337,
         "splat_points": 2,
@@ -6814,17 +6814,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "1df05d18-4e2d-4255-bd13-1a3d1e2c2e7d",
+      "id": "b2f031b6-b120-4528-a3f5-b24dba00f556",
       "details": {
         "calories_burned": 497,
         "splat_points": 11,
@@ -6844,17 +6844,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "243012da-b185-4eb8-9f90-fc872edc017e",
+      "id": "077e95a2-0ffc-4df5-9a02-22cc92f3443b",
       "details": {
         "calories_burned": 427,
         "splat_points": 14,
@@ -6874,17 +6874,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "98af5cca-6b11-47cb-a372-542482c56b21",
+      "id": "5cff0318-7c62-4c2a-88ee-e8d244c31fd9",
       "details": {
         "calories_burned": 514,
         "splat_points": 10,
@@ -6904,17 +6904,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "6c4c450b-623a-40fc-9326-7d25234b4562",
+      "id": "74e8a223-54a3-46ce-897d-df7c98ffa4cf",
       "details": {
         "calories_burned": 450,
         "splat_points": 7,
@@ -6934,17 +6934,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8991b01a-a2b0-4c4b-bc96-6b552f8d8ded",
+      "id": "e49ac200-4832-4103-bdce-333b177aa0be",
       "details": {
         "calories_burned": 339,
         "splat_points": 5,
@@ -6964,17 +6964,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ee4205ee-a52f-43ec-ab4e-2281b184d1fc",
+      "id": "fa2d933e-6532-45dc-8e97-1ae9ee09ca32",
       "details": {
         "calories_burned": 460,
         "splat_points": 14,
@@ -6994,17 +6994,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2ab7b2ef-8e0e-4033-ac59-1da8fff96acf",
+      "id": "e48d4f7a-c62d-408b-81b1-18d5fad641e7",
       "details": {
         "calories_burned": 476,
         "splat_points": 12,
@@ -7024,17 +7024,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Theresa Woods"
+          "first_name": "Thomas Hall"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2fe5b140-23ea-4956-89f1-137d7d592e19",
+      "id": "5da256c6-81a8-4f42-8f01-b7d1dba14a55",
       "details": {
         "calories_burned": 442,
         "splat_points": 15,
@@ -7054,17 +7054,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "9e91a71c-7374-4cbf-978c-57d3508850d3",
+      "id": "10d5de22-f606-49ff-a6f1-4cab98ad4a43",
       "details": {
         "calories_burned": 357,
         "splat_points": 5,
@@ -7084,17 +7084,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f3abea0d-5be9-4db3-9d92-dd7c0db977a9",
+      "id": "8b09c1ef-d54f-4db5-8ea7-873bdfaf0923",
       "details": {
         "calories_burned": 505,
         "splat_points": 21,
@@ -7114,17 +7114,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "31f3f0c0-22f3-4068-bc0f-549d02740f73",
+      "id": "87141baf-60a2-4774-ad23-471d9f127048",
       "details": {
         "calories_burned": 435,
         "splat_points": 17,
@@ -7144,17 +7144,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8fc3d7d3-f6bd-40c7-a24a-2a50d0b1fde0",
+      "id": "d6f3fea3-6868-4d86-96f4-fa494051b301",
       "details": {
         "calories_burned": 342,
         "splat_points": 2,
@@ -7174,17 +7174,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "68bd075b-7eb6-481e-a72f-947d816462cb",
+      "id": "94a8b7b8-8e04-4f55-84b2-7a9041772a30",
       "details": {
         "calories_burned": 503,
         "splat_points": 18,
@@ -7204,17 +7204,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b5cbe3f5-6a66-4184-bde1-bf5daf4847f0",
+      "id": "cfb4fc42-c111-4056-83c0-3f71e07cd90e",
       "details": {
         "calories_burned": 333,
         "splat_points": 2,
@@ -7234,17 +7234,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Adam Brooks"
+          "first_name": "Christine Rodgers"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2ad11fe8-7d1b-495e-b1a0-449dd703262f",
+      "id": "c651f528-0f41-4fb8-8d11-2b0459b16412",
       "details": {
         "calories_burned": 507,
         "splat_points": 23,
@@ -7264,17 +7264,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "cbbed980-07e6-4cb0-90bd-e9001529e6f5",
+      "id": "11cfd7d2-3206-417d-820a-8d118c4973ff",
       "details": {
         "calories_burned": 549,
         "splat_points": 24,
@@ -7294,17 +7294,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "085eb489-4ac6-4780-b874-9f3cc2d49b56",
+      "id": "b3ad44b7-2f37-447a-8bda-e2f0f26d0e95",
       "details": {
         "calories_burned": 313,
         "splat_points": 1,
@@ -7324,17 +7324,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "49e64c22-89a0-47eb-b98f-569b465cc2cb",
+      "id": "5f47140b-b59c-4221-8b65-1030fa5bad7a",
       "details": {
         "calories_burned": 489,
         "splat_points": 17,
@@ -7354,17 +7354,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "90ce77e9-7513-43b9-87de-96ea2b0fbe44",
+      "id": "00f0b695-3e44-4621-b1d0-84505dc98680",
       "details": {
         "calories_burned": 549,
         "splat_points": 18,
@@ -7384,17 +7384,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "7eccdaf4-c413-4dc2-85c5-ae8abe15ad12",
+      "id": "dfe46e7d-a57d-42e2-b6b0-398088746eb1",
       "details": {
         "calories_burned": 311,
         "splat_points": 1,
@@ -7414,17 +7414,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "929d6377-1cfb-455f-82c4-2e488cbadae5",
+      "id": "082cc1e7-a400-43bc-a4e8-6d9760133859",
       "details": {
         "calories_burned": 547,
         "splat_points": 24,
@@ -7444,17 +7444,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8b0901ab-c66d-4eb3-8494-5e091d3ca5a4",
+      "id": "8b0ac308-d01e-459c-894a-c4cac525ab6f",
       "details": {
         "calories_burned": 344,
         "splat_points": 1,
@@ -7474,17 +7474,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "8ac35ac4-5dea-4737-bdab-3441d2c2a960",
+      "id": "4b1acaab-5e00-4837-98ae-c9682f0c9a27",
       "details": {
         "calories_burned": 547,
         "splat_points": 23,
@@ -7504,17 +7504,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c28fa16b-0aa6-4cb9-81bc-be59d296a12d",
+      "id": "edc85f04-1f92-45ed-a322-d57e9713026e",
       "details": {
         "calories_burned": 272,
         "splat_points": 2,
@@ -7534,17 +7534,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "37f25d36-8bdd-4ee3-b0fd-6672b80f16c5",
+      "id": "188be744-4544-443a-8029-b8abbfc47352",
       "details": {
         "calories_burned": 477,
         "splat_points": 17,
@@ -7564,17 +7564,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "bc69c155-1a37-46bd-acd6-f011fd61f13b",
+      "id": "41ed108c-292e-4059-96d6-31db40ea602f",
       "details": {
         "calories_burned": 332,
         "splat_points": 2,
@@ -7594,17 +7594,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3f5e3b8c-c058-4da5-a757-075bd47f83b1",
+      "id": "4ae7647e-04f5-404f-acc8-3a8357c6570d",
       "details": {
         "calories_burned": 583,
         "splat_points": 32,
@@ -7624,17 +7624,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "0840405a-ffd2-4491-9ff3-89aa4c36a70c",
+      "id": "3cdff150-c25e-4453-a76f-796666ca025a",
       "details": {
         "calories_burned": 357,
         "splat_points": 11,
@@ -7654,17 +7654,17 @@
         "name": "Orange Tornado",
         "type": "OTHER",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "dcb91d5f-593c-472b-8347-dbca7321a8b2",
+      "id": "99697683-042f-49b4-9aed-9ce3c68288d5",
       "details": {
         "calories_burned": 399,
         "splat_points": 2,
@@ -7684,17 +7684,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Edward Moore"
+          "first_name": "Christopher Moreno"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "dd83ad03-7066-4289-9644-84a0d1151fff",
+      "id": "a692b848-2549-444e-a19d-e464545ee4ca",
       "details": {
         "calories_burned": 548,
         "splat_points": 26,
@@ -7714,17 +7714,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "cfd7f3b9-c68f-4ba5-9e0d-02b5fe7402cd",
+      "id": "f7ac1762-9d00-4ce2-aa08-f6074f4e59ca",
       "details": {
         "calories_burned": 417,
         "splat_points": 8,
@@ -7744,17 +7744,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Justin Foster"
+          "first_name": "Brian Williams"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "bcd4344f-cf8a-468e-b5ba-93573ca87f31",
+      "id": "7b9857c6-8bc4-4dc7-a515-fbb90f6ba229",
       "details": {
         "calories_burned": 548,
         "splat_points": 26,
@@ -7774,17 +7774,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "dc6dafff-59c2-4153-b06b-0f0c96822e22",
+      "id": "be8daca6-ff2c-4658-966a-89cff0a0a744",
       "details": {
         "calories_burned": 492,
         "splat_points": 19,
@@ -7804,17 +7804,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "6d9c5b50-a1fd-4187-9c3a-1e0bb5f3f8aa",
+      "id": "b0ae1829-c75d-4f35-a7f0-782e52b8e7dc",
       "details": {
         "calories_burned": 523,
         "splat_points": 26,
@@ -7834,17 +7834,17 @@
         "name": "Orange Tornado",
         "type": "OTHER",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "c8ebe27a-23a4-470e-9dbc-15c02a7dc57c",
+      "id": "f3ba7146-bfb2-43bb-9ca1-e25a863b3ef4",
       "details": {
         "calories_burned": 532,
         "splat_points": 26,
@@ -7864,17 +7864,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "ce315937-34fa-42b6-9043-7e4c34e50699",
+      "id": "51d8091f-eef5-4884-b422-b1c3bcfb9e33",
       "details": {
         "calories_burned": 545,
         "splat_points": 27,
@@ -7894,17 +7894,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "88438de2-59cf-4b0d-91f0-647d0f321333",
+      "id": "9af43ee4-c3b9-4941-a71c-d8b2869ee7df",
       "details": {
         "calories_burned": 584,
         "splat_points": 33,
@@ -7924,17 +7924,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "2b1ac76c-89ec-4c51-98cb-aa5247f53019",
+      "id": "4081a8e9-3486-48e5-8300-e674c9b3db46",
       "details": {
         "calories_burned": 563,
         "splat_points": 28,
@@ -7954,17 +7954,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "4aea1b8f-b43c-4e0a-ba9f-c10e52daf681",
+      "id": "7d6a0e12-6819-4675-a7b6-6ca15ebbc06e",
       "details": {
         "calories_burned": 560,
         "splat_points": 30,
@@ -7984,17 +7984,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "f3d04ffb-4470-4848-929e-cc924a11be44",
+      "id": "e23df8b6-81c4-411b-a4b2-9bab8aa7e151",
       "details": {
         "calories_burned": 546,
         "splat_points": 35,
@@ -8014,17 +8014,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "e67093a0-fc48-4615-83b0-b35cdba6fdf8",
+      "id": "37e87aae-d5ae-4e3d-ba3c-00085436e485",
       "details": {
         "calories_burned": 578,
         "splat_points": 36,
@@ -8044,17 +8044,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "22b5f457-1860-4d28-90af-b235ade68f51",
+      "id": "f628eae7-8709-4b17-8c05-6fa0ae9ed59e",
       "details": {
         "calories_burned": 382,
         "splat_points": 19,
@@ -8074,17 +8074,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "695e5ea9-c923-4c64-8006-2b5bf67839b2",
+      "id": "4f704467-bd35-4cda-84cc-4248c9000f74",
       "details": {
         "calories_burned": 541,
         "splat_points": 27,
@@ -8104,17 +8104,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "46feacd4-fe13-43cd-8f2d-5c15eb346d3a",
+      "id": "7096b2ab-baf7-47c0-bc90-4360d2c4ad7c",
       "details": {
         "calories_burned": 531,
         "splat_points": 23,
@@ -8134,17 +8134,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b390b059-207b-4e21-a7e8-d18eddf6d4ac",
+      "id": "f35c335d-50e4-4449-b135-06801b34313d",
       "details": {
         "calories_burned": 517,
         "splat_points": 17,
@@ -8164,17 +8164,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Pamela Anderson"
+          "first_name": "Elizabeth Garcia"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "257035db-3fea-490a-a1f8-072dddb7570e",
+      "id": "1af34183-ecdc-41cd-b4df-de6aa3f5bf98",
       "details": {
         "calories_burned": 558,
         "splat_points": 26,
@@ -8194,17 +8194,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jeffrey Carter"
+          "first_name": "Jonathan Beard"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "3f5fbf4f-d417-4230-9274-ee11b61df906",
+      "id": "201fde97-2a26-479f-88c0-e77515c259ee",
       "details": {
         "calories_burned": 511,
         "splat_points": 13,
@@ -8224,17 +8224,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Rhonda Gutierrez"
+          "first_name": "Jenna Hansen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "64880945-ad1d-4537-97f3-4368c2efeecb",
+      "id": "ab28c3c6-b0b1-4911-9840-8fe4746b1cf1",
       "details": {
         "calories_burned": 470,
         "splat_points": 10,
@@ -8254,17 +8254,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Catherine Roberts"
+          "first_name": "Alyssa Warren"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "a1e518a2-93d2-48d4-a465-5c397d4d2add",
+      "id": "10a7385f-d1b0-407c-8a0c-18d79189bb99",
       "details": {
         "calories_burned": 531,
         "splat_points": 24,
@@ -8284,17 +8284,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Catherine Roberts"
+          "first_name": "Alyssa Warren"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "600b4b35-6a0a-47d5-a0b8-575544caa5a2",
+      "id": "cca47c17-b9bd-4065-8b3c-5cc469c152c3",
       "details": {
         "calories_burned": 519,
         "splat_points": 25,
@@ -8314,17 +8314,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Catherine Roberts"
+          "first_name": "Alyssa Warren"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "cb6ad0c7-a235-4dd4-9355-08d073b5bad5",
+      "id": "6196333b-542f-4b8c-bae7-aacf0ef35436",
       "details": {
         "calories_burned": 265,
         "splat_points": 0,
@@ -8344,17 +8344,17 @@
         "name": "Lift 45 (Total Body 1)",
         "type": "OTHER",
         "coach": {
-          "first_name": "Lisa Nelson"
+          "first_name": "Elizabeth Wright"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "67213a70-17d5-4f59-84d5-98f7e14fe093",
+      "id": "b713917c-b74c-4829-a819-059cc65b53aa",
       "details": {
         "calories_burned": 446,
         "splat_points": 5,
@@ -8374,17 +8374,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Rhonda Gutierrez"
+          "first_name": "Jenna Hansen"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "b1d81887-4739-4c7b-bff3-0c8d83ff3e96",
+      "id": "b6526b09-e658-4aeb-b1a4-74afa3899e17",
       "details": {
         "calories_burned": 572,
         "splat_points": 31,
@@ -8404,17 +8404,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Catherine Roberts"
+          "first_name": "Alyssa Warren"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     },
     {
-      "id": "7466ef02-5e7b-42c8-a097-dedbefb3b939",
+      "id": "c32ec4d9-7382-4059-bba8-59fead7f2661",
       "details": {
         "calories_burned": 376,
         "splat_points": 4,
@@ -8434,12 +8434,12 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Catherine Roberts"
+          "first_name": "Alyssa Warren"
         },
         "studio": {
-          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
           "license_number": "0590",
-          "name": "Wichita - West, KS"
+          "name": "Lake Nicholas - North, MH"
         }
       }
     }

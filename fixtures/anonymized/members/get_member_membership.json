@@ -2,9 +2,9 @@
   "code": "SUCCESS",
   "data": {
     "memberMembershipId": 122349355,
-    "memberMembershipUUId": "eb5cf467-80ba-4d64-ba0e-cfea958ca9ba",
+    "memberMembershipUUId": "5cd5eb2c-d73f-4ade-bd79-7596fc37a89b",
     "membershipId": 4821747,
-    "memberId": 690356940,
+    "memberId": 311787488,
     "paymentDate": "2026-04-06",
     "activeDate": "2026-04-06",
     "expirationDate": "2026-05-06",
@@ -13,9 +13,9 @@
     "count": 10000,
     "remaining": 9992,
     "name": "Orange Premier Membership",
-    "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+    "createdBy": "982f5dde-2a51-4f1c-8f62-e2eda757eee5",
     "createdDate": "2026-04-06T09:16:42.000Z",
-    "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+    "updatedBy": "982f5dde-2a51-4f1c-8f62-e2eda757eee5",
     "updatedDate": "2026-04-27T01:38:57Z",
     "isDeleted": false
   }

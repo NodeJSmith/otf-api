@@ -158,6 +158,7 @@ FIELD_MAPPINGS: list[FieldMapping] = [
             "physicalCity",
             "suburb",
             "billToCity",
+            "shipToCity",
             "state",
             "physicalState",
             "territory",
@@ -292,6 +293,22 @@ FIELD_MAPPINGS: list[FieldMapping] = [
         referential=False,
     ),
     # ------------------------------------------------------------------
+    # Studio name — contains city/state that reveals user's location
+    # ------------------------------------------------------------------
+    FieldMapping(
+        json_keys=("studioName", "StudioName"),
+        category="studio_name",
+        referential=True,
+    ),
+    # ------------------------------------------------------------------
+    # Geo coordinates — latitude/longitude reveal user's studio location
+    # ------------------------------------------------------------------
+    FieldMapping(
+        json_keys=("latitude", "longitude"),
+        category="geo_coordinate",
+        referential=True,
+    ),
+    # ------------------------------------------------------------------
     # Auth tokens — always redacted
     # studioToken lives here (not in identity_uuid) because the primary
     # concern is that it never leaks as a bearer credential.
@@ -382,7 +399,6 @@ KNOWN_SAFE_FIELDS: frozenset[str] = frozenset(
         # Country metadata (studioLocation.country is a currency dict, not PII)
         "country",
         # Studio descriptive metadata
-        "studioName",
         "studioStatus",
         "studioType",
         "phoneNumberFormat",

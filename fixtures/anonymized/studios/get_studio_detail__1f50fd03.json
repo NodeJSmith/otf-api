@@ -1,14 +1,14 @@
 {
   "code": "SUCCESS",
   "data": {
-    "studioId": 850588739,
-    "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
-    "mboStudioId": 773969166,
+    "studioId": 30832388,
+    "studioUUId": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+    "mboStudioId": 240265693,
     "studioNumber": "0590",
-    "studioName": "Wichita - West, KS",
+    "studioName": "Lake Nicholas - North, MH",
     "studioPhysicalLocationId": 494,
     "timeZone": "America/Chicago",
-    "contactEmail": "williamsjeremy@example.com",
+    "contactEmail": "wsmith@example.org",
     "studioToken": "REDACTED",
     "environment": "PROD",
     "pricingLevel": "",
@@ -43,22 +43,22 @@
     "isMobile": null,
     "isOtbeat": null,
     "studioLocation": {
-      "physicalAddress": "16475 Mitchell Fords",
+      "physicalAddress": "4854 Ayala Prairie",
       "physicalAddress2": null,
-      "physicalCity": "East Lydiamouth",
-      "physicalState": "IA",
-      "physicalPostalCode": "55834",
+      "physicalCity": "Andrewfurt",
+      "physicalState": "LA",
+      "physicalPostalCode": "90281",
       "physicalRegion": "KS/MO-01",
-      "physicalCountry": "BA",
+      "physicalCountry": "BR",
       "country": {
         "countryId": 1,
         "countryCurrencyCode": "USD",
         "countryCurrencyName": "US Dollar",
         "currencyAlphabeticCode": "USD"
       },
-      "phoneNumber": "3178988797",
-      "latitude": 37.735043,
-      "longitude": -97.463166
+      "phoneNumber": "4102993037",
+      "latitude": 35.498964,
+      "longitude": -94.577771
     },
     "studioLocationLocalized": {
       "language": {
@@ -76,37 +76,37 @@
     },
     "socialMediaLinks": [
       {
-        "id": "b289f224-4ac9-478d-8da8-eee40df56ac6",
+        "id": "2f1120a7-58f9-4ef2-93ae-cbfee7070127",
         "languageId": "16",
         "name": "Web",
         "value": "https://www.orangetheory.com/en-us"
       },
       {
-        "id": "de53790a-a34b-4cf6-a053-da42f1afdb65",
+        "id": "a5df086e-aa90-4719-b18f-c80a49d651b1",
         "languageId": "16",
         "name": "Facebook",
         "value": "https://www.facebook.com/OrangeTheoryFitness"
       },
       {
-        "id": "df6a8f93-1a43-4f0a-bdaa-39f0c0b6fce2",
+        "id": "d51a62e0-7446-416a-8309-f480b2830dad",
         "languageId": "16",
         "name": "Twitter",
         "value": "https://www.twitter.com/orangetheory"
       },
       {
-        "id": "782a65e0-48ca-4651-92f5-df7b0323d342",
+        "id": "9cceb548-faf5-48e1-a8ee-6a97f33e9951",
         "languageId": "16",
         "name": "Instagram",
         "value": "https://www.instagram.com/orangetheory"
       },
       {
-        "id": "2f32751e-5738-411d-b0c2-903f7a8d03aa",
+        "id": "a88d09b9-12f1-417f-8da4-f5c566720b99",
         "languageId": "16",
         "name": "LinkedIn",
         "value": "https://www.linkedin.com/company/orangetheory-fitness"
       },
       {
-        "id": "f0e98b3b-40a2-4c60-8d27-0659f72ada9b",
+        "id": "066e5e49-63c6-4870-8f7f-de836c442251",
         "languageId": "16",
         "name": "YouTube",
         "value": "https://www.youtube.com/Otheoryfitness"

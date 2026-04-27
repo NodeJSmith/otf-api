@@ -27,14 +27,14 @@
           "ChallengeObjective": "None",
           "ChallengeId": 690815,
           "StudioId": 1267,
-          "StudioName": "Wichita - West, KS",
+          "StudioName": "Lake Nicholas - North, MH",
           "StartDate": "2025-01-16T00:00:00",
           "EndDate": "2025-01-16T23:59:00",
           "TotalResult": "00:10:49.48",
           "IsFinished": true,
           "BenchmarkHistories": [
             {
-              "StudioName": "Wichita - West, KS",
+              "StudioName": "Lake Nicholas - North, MH",
               "EquipmentId": 4,
               "Result": "10:49.48",
               "DateCreated": "2025-01-16T16:20:45",
@@ -45,8 +45,8 @@
               "SubstituteId": null,
               "WeightLBS": 0,
               "ClassName": "Orange 60 Min 2G",
-              "CoachName": "Daniel Wagner",
-              "CoachImageUrl": "https://placeholder.example.com/profile/896866.jpg",
+              "CoachName": "Rachel Riddle",
+              "CoachImageUrl": "https://placeholder.example.com/profile/801913.jpg",
               "WorkoutTypeId": null,
               "WorkoutId": null,
               "LinkedChallenges": []

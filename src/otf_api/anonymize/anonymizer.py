@@ -61,6 +61,7 @@ _ADDRESS_ALIAS_TO_CANONICAL: dict[str, str] = {
     "physicalCity": "city",
     "suburb": "city",
     "billToCity": "city",
+    "shipToCity": "city",
     "physicalState": "state",
     "territory": "state",
     "physicalPostalCode": "postalCode",
@@ -366,8 +367,13 @@ class Anonymizer:
                     anonymized = self.anonymize_value(key, value)
                 result[key] = anonymized
             elif key in KNOWN_SAFE_FIELDS:
-                # Known safe fields: always pass through without recursion check
-                result[key] = value
+                # Known safe fields pass through, but if the value is a string
+                # that matches a previously-mapped PII value, replace it.
+                if isinstance(value, str):
+                    existing = self._replacement_map.get_existing(value)
+                    result[key] = existing if existing is not None else value
+                else:
+                    result[key] = value
             elif isinstance(value, dict):
                 # Unknown key but dict value: recurse
                 result[key] = self._walk_dict(value, context, depth + 1)
@@ -447,7 +453,11 @@ class Anonymizer:
             elif key in self._key_index:
                 result[key] = self.anonymize_value(key, value)
             elif key in KNOWN_SAFE_FIELDS:
-                result[key] = value
+                if isinstance(value, str):
+                    existing = self._replacement_map.get_existing(value)
+                    result[key] = existing if existing is not None else value
+                else:
+                    result[key] = value
             elif isinstance(value, dict):
                 result[key] = self._walk_dict(value, context)
             elif isinstance(value, list):
@@ -651,6 +661,17 @@ class Anonymizer:
             except (TypeError, ValueError):
                 orig = 0
             return orig + g.fake_hr_delta()
+        if category == "studio_name":
+            return g.fake_studio_name()
+        if category == "geo_coordinate":
+            try:
+                orig = float(value) if value is not None else 0.0
+            except (TypeError, ValueError):
+                orig = 0.0
+            fake = g.fake_geo_coordinate(orig)
+            if isinstance(value, str):
+                return str(fake)
+            return fake
         if category == "auth_token":
             return "REDACTED"
         if category == "image_url":

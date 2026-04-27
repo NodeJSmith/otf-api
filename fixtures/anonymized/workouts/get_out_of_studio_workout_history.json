@@ -25,8 +25,8 @@
         "displayName": "Outdoor Run",
         "icon": "https://otf-icons.s3.amazonaws.com/out-of-studio-icons/Run_Outdoor.png"
       },
-      "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
-      "workoutUUId": "0e8fa8e0-284d-42e5-87f7-e1fbda4bd9ca",
+      "memberUUId": "b1ef4b6c-3045-49fd-a21b-7244f6692002",
+      "workoutUUId": "9a27cfd9-e42d-4545-9d29-38639fcd0b8d",
       "avgHeartrate": 0,
       "maxHeartrate": 0
     },
@@ -54,8 +54,8 @@
         "displayName": "Outdoor Run",
         "icon": "https://otf-icons.s3.amazonaws.com/out-of-studio-icons/Run_Outdoor.png"
       },
-      "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
-      "workoutUUId": "d9f195d0-1482-4f53-8201-0c62f5f59b22",
+      "memberUUId": "b1ef4b6c-3045-49fd-a21b-7244f6692002",
+      "workoutUUId": "8cecf88a-e54e-4eec-ace3-dd4962488796",
       "avgHeartrate": 90,
       "maxHeartrate": 104
     },
@@ -83,8 +83,8 @@
         "displayName": "Outdoor Run",
         "icon": "https://otf-icons.s3.amazonaws.com/out-of-studio-icons/Run_Outdoor.png"
       },
-      "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
-      "workoutUUId": "1165e210-9854-4881-918a-9d292f923996",
+      "memberUUId": "b1ef4b6c-3045-49fd-a21b-7244f6692002",
+      "workoutUUId": "a9c58711-7434-4e1a-8794-291eae65c884",
       "avgHeartrate": 69,
       "maxHeartrate": 87
     },
@@ -112,8 +112,8 @@
         "displayName": "Indoor Run",
         "icon": "https://otf-icons.s3.amazonaws.com/out-of-studio-icons/Run_Indoor.png"
       },
-      "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
-      "workoutUUId": "675dd5af-3c36-4296-9ca0-2eecacdabacc",
+      "memberUUId": "b1ef4b6c-3045-49fd-a21b-7244f6692002",
+      "workoutUUId": "8fd0f5c3-7b2b-4f0f-918d-596940e340a6",
       "avgHeartrate": 142,
       "maxHeartrate": 169
     }

@@ -1,23 +1,23 @@
 {
-  "id": "b74d0fb1-32e7-4629-8fad-c1a606cb0fb3",
+  "id": "6b1e200b-a2c4-4d7d-a03b-5a68e2578904",
   "details": {
-    "calories_burned": 297,
-    "splat_points": 0,
-    "step_count": 293,
+    "calories_burned": 370,
+    "splat_points": 2,
+    "step_count": 602,
     "active_time_seconds": 0,
     "zone_time_minutes": {
-      "gray": 7,
-      "blue": 21,
-      "green": 15,
-      "orange": 0,
+      "gray": 1,
+      "blue": 12,
+      "green": 30,
+      "orange": 2,
       "red": 0
     },
     "heart_rate": {
       "max_hr": 0,
-      "peak_hr": 163,
-      "peak_hr_percent": 85,
-      "avg_hr": 129,
-      "avg_hr_percent": 67
+      "peak_hr": 170,
+      "peak_hr_percent": 89,
+      "avg_hr": 141,
+      "avg_hr_percent": 73
     },
     "equipment_data": {
       "treadmill": {
@@ -123,7 +123,7 @@
   },
   "ratable": false,
   "class": {
-    "starts_at_local": "2026-04-04T10:30:00",
+    "starts_at_local": "2026-04-11T10:30:00",
     "name": "Strength 50 (Total)",
     "type": "STRENGTH_50"
   }

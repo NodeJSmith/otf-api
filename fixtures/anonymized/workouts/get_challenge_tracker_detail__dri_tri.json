@@ -34,14 +34,14 @@
           "ChallengeObjective": "None",
           "ChallengeId": 757728,
           "StudioId": 1267,
-          "StudioName": "Wichita - West, KS",
+          "StudioName": "Lake Nicholas - North, MH",
           "StartDate": "2025-04-11T00:00:00",
           "EndDate": "2025-04-13T23:59:00",
           "TotalResult": "36:54.00",
           "IsFinished": true,
           "BenchmarkHistories": [
             {
-              "StudioName": "Wichita - West, KS",
+              "StudioName": "Lake Nicholas - North, MH",
               "EquipmentId": 2,
               "Result": "36:54.00",
               "DateCreated": "2025-04-12T15:14:52",
@@ -52,8 +52,8 @@
               "SubstituteId": 1,
               "WeightLBS": 0,
               "ClassName": "DriTri",
-              "CoachName": "Allison Hill",
-              "CoachImageUrl": "https://placeholder.example.com/profile/356779.jpg",
+              "CoachName": "Elizabeth Martinez",
+              "CoachImageUrl": "https://placeholder.example.com/profile/778004.jpg",
               "WorkoutTypeId": null,
               "WorkoutId": null,
               "LinkedChallenges": []
