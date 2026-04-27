@@ -5,8 +5,8 @@ from pathlib import Path
 
 FIXTURE_DIR = Path(__file__).parent.parent / "fixtures" / "anonymized"
 
-MOCK_MEMBER_UUID = "b1ef4b6c-3045-49fd-a21b-7244f6692002"
-MOCK_COGNITO_ID = "aefb4ee1-e56d-4d97-8cde-9a7260a514e4"
+MOCK_MEMBER_UUID = "d1f6f86c-029a-4245-bb91-433a6aa79987"
+MOCK_COGNITO_ID = "daea58ba-4c73-4942-8d87-78e7d340bbcd"
 
 
 def load_fixture(name: str) -> dict | list:

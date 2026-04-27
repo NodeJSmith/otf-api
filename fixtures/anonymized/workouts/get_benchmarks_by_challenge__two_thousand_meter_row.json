@@ -27,14 +27,14 @@
           "ChallengeObjective": "None",
           "ChallengeId": 690815,
           "StudioId": 1267,
-          "StudioName": "Lake Nicholas - North, MH",
+          "StudioName": "Oconnorport - North, PR",
           "StartDate": "2025-01-16T00:00:00",
           "EndDate": "2025-01-16T23:59:00",
           "TotalResult": "00:10:49.48",
           "IsFinished": true,
           "BenchmarkHistories": [
             {
-              "StudioName": "Lake Nicholas - North, MH",
+              "StudioName": "Oconnorport - North, PR",
               "EquipmentId": 4,
               "Result": "10:49.48",
               "DateCreated": "2025-01-16T16:20:45",
@@ -45,8 +45,8 @@
               "SubstituteId": null,
               "WeightLBS": 0,
               "ClassName": "Orange 60 Min 2G",
-              "CoachName": "Rachel Riddle",
-              "CoachImageUrl": "https://placeholder.example.com/profile/801913.jpg",
+              "CoachName": "Evan",
+              "CoachImageUrl": "https://placeholder.example.com/profile/226892.jpg",
               "WorkoutTypeId": null,
               "WorkoutId": null,
               "LinkedChallenges": []

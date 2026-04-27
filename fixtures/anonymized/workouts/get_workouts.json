@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "id": "495b29ea-ab57-4865-a71e-7753fcfdf01a",
+      "id": "95c5fb98-6980-481f-bc42-8d42fa882692",
       "details": {
         "calories_burned": 409,
         "splat_points": 16,
@@ -17,23 +17,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "1447a72b-67ce-4d39-9774-9c25de200670",
+        "ot_base_class_uuid": "a44b6c34-28de-4432-9dec-5ba8350dd951",
         "starts_at_local": "2026-04-21T10:00:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/148038.jpg",
-          "first_name": "Mark Waller"
+          "image_url": "https://placeholder.example.com/profile/933810.jpg",
+          "first_name": "Ashlee"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "74be9b1e-888b-41be-8f53-e7a28ac98e9d",
+      "id": "42d6cb5c-6ed4-494b-9fc9-e3b11fcff454",
       "details": {
         "calories_burned": 122,
         "splat_points": 1,
@@ -49,23 +49,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "119af20b-cd71-4b6c-9f25-c2610d032da4",
+        "ot_base_class_uuid": "24815791-4661-4df7-a4e5-6a61fcac6f18",
         "starts_at_local": "2026-04-18T10:30:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/761193.jpg",
-          "first_name": "Elizabeth Martinez"
+          "image_url": "https://placeholder.example.com/profile/415627.jpg",
+          "first_name": "Miguel"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6b1e200b-a2c4-4d7d-a03b-5a68e2578904",
+      "id": "34a9af41-25ec-4845-aaa4-857e8101e89a",
       "details": {
         "calories_burned": 370,
         "splat_points": 2,
@@ -81,23 +81,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "c41b6cf0-b339-49b1-bd7d-f8b85567ec79",
+        "ot_base_class_uuid": "7a62eb07-c3b0-4374-b6c7-446c9109cf35",
         "starts_at_local": "2026-04-11T10:30:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/995951.jpg",
-          "first_name": "Elizabeth Martinez"
+          "image_url": "https://placeholder.example.com/profile/791232.jpg",
+          "first_name": "Miguel"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d0a88132-b11d-494f-be0c-f56850c4608f",
+      "id": "87f26aee-175f-4cd2-bb9d-58e4f543bbcf",
       "details": {
         "calories_burned": 415,
         "splat_points": 14,
@@ -113,23 +113,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "f5a18fb2-3616-4800-9e55-45d47fc06fa2",
+        "ot_base_class_uuid": "81859134-ccb8-4541-bfdf-f49fddb9d47a",
         "starts_at_local": "2026-04-07T10:00:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/917648.jpg",
-          "first_name": "Mark Waller"
+          "image_url": "https://placeholder.example.com/profile/295938.jpg",
+          "first_name": "Ashlee"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c8e8e450-c66f-40c2-88a2-6d99b54cc1f6",
+      "id": "bcf74d7a-5ada-4121-afd2-b7a48d9fe5b9",
       "details": {
         "calories_burned": 297,
         "splat_points": 0,
@@ -145,23 +145,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "b52abe11-5320-4c12-ab4c-6da54a1d63a1",
+        "ot_base_class_uuid": "05ac5b89-3e31-447f-84ab-a75eb5852144",
         "starts_at_local": "2026-04-04T10:30:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/715633.jpg",
-          "first_name": "Elizabeth Martinez"
+          "image_url": "https://placeholder.example.com/profile/878879.jpg",
+          "first_name": "Miguel"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f875f38c-394f-4d11-a35f-5db1b26f258d",
+      "id": "9c9cea0c-2ca1-4789-a091-250e8fe46024",
       "details": {
         "calories_burned": 416,
         "splat_points": 14,
@@ -177,23 +177,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "f0107299-024e-4715-8aee-cb088bd12c12",
+        "ot_base_class_uuid": "096525ea-0833-4e21-b67e-eb7c72dde967",
         "starts_at_local": "2026-04-02T10:00:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/622371.jpg",
-          "first_name": "Jason Robinson"
+          "image_url": "https://placeholder.example.com/profile/107456.jpg",
+          "first_name": "Ryan"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "85205ffa-7236-4b42-b872-0ff40c4850c4",
+      "id": "d64a3ce0-30a1-46d5-93ed-748bb80e3b0d",
       "details": {
         "calories_burned": 382,
         "splat_points": 4,
@@ -209,23 +209,23 @@
       },
       "ratable": true,
       "class": {
-        "ot_base_class_uuid": "25e30ea7-23a4-4f2f-a4b8-3917cc1cbc1c",
+        "ot_base_class_uuid": "f7b8dc40-15a6-44c4-97d6-9e40ca457754",
         "starts_at_local": "2026-03-26T10:00:00",
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "image_url": "https://placeholder.example.com/profile/83336.jpg",
-          "first_name": "Jason Robinson"
+          "image_url": "https://placeholder.example.com/profile/672360.jpg",
+          "first_name": "Ryan"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "9e29c2e8-2d75-4dc8-8ded-e5311a78efd6",
+      "id": "17c8ea7d-6f7d-4472-bc81-c2825febfef2",
       "details": {
         "calories_burned": 249,
         "splat_points": 0,
@@ -245,17 +245,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Jason Robinson"
+          "first_name": "Ryan"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "753105b4-d1d6-4231-b317-d0616298c79f",
+      "id": "6aa77b8c-5863-4483-b295-cf55940fcb48",
       "details": {
         "calories_burned": 326,
         "splat_points": 0,
@@ -275,17 +275,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Mark Waller"
+          "first_name": "Ashlee"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "43ad2420-2a23-4750-b53a-2bb6a11bfb4e",
+      "id": "89d1bf81-5437-486b-af8c-07c311a34fe5",
       "details": {
         "calories_burned": 254,
         "splat_points": 0,
@@ -305,17 +305,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Jason Robinson"
+          "first_name": "Ryan"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "41dd1924-fe72-4fbd-b988-784099f19abd",
+      "id": "9ca32f89-00ea-43f3-80d3-f5a9b1b077d8",
       "details": {
         "calories_burned": 440,
         "splat_points": 26,
@@ -335,17 +335,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Mark Waller"
+          "first_name": "Ashlee"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "480397b6-ffd1-49de-a3c0-70a33a3b396f",
+      "id": "f94424f8-04ff-418e-9631-48bb8596c3e6",
       "details": {
         "calories_burned": 271,
         "splat_points": 0,
@@ -365,17 +365,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Jason Robinson"
+          "first_name": "Ryan"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0d57ddfe-f6ee-4d27-8dd9-4e3e64c166b8",
+      "id": "68d0e2d5-3258-4011-95f9-396bdd3d1def",
       "details": {
         "calories_burned": 389,
         "splat_points": 6,
@@ -395,17 +395,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Elizabeth Martinez"
+          "first_name": "Miguel"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "9ec1e6a6-b4c9-4673-b50e-d80b02aacf1d",
+      "id": "50cf7c10-1763-4d7d-a8b0-2b45889b20b9",
       "details": {
         "calories_burned": 256,
         "splat_points": 0,
@@ -425,17 +425,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Jason Robinson"
+          "first_name": "Ryan"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f0d606d5-bbec-49b4-9e7e-22734bd90ea2",
+      "id": "f75111a7-caf7-43fd-843a-a2ba8c1bcee6",
       "details": {
         "calories_burned": 263,
         "splat_points": 0,
@@ -455,17 +455,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Elizabeth Martinez"
+          "first_name": "Miguel"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "ef6a3f2d-9a54-42f7-9cbb-c81347749f33",
+      "id": "adcb49b4-ca2a-4834-9519-0a9cea221823",
       "details": {
         "calories_burned": 310,
         "splat_points": 0,
@@ -485,17 +485,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Jason Robinson"
+          "first_name": "Ryan"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "24baccbf-348a-4e0f-99a5-e6e3fab2b348",
+      "id": "7c48960f-01fd-47c5-8cc1-9f30e4c8d264",
       "details": {
         "calories_burned": 324,
         "splat_points": 0,
@@ -515,17 +515,17 @@
         "name": "STRENGTH_50",
         "type": "OTHER",
         "coach": {
-          "first_name": "Elizabeth Martinez"
+          "first_name": "Miguel"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "75958daf-cfbe-45d0-a5ed-0aaa99a9b0b7",
+      "id": "62c486eb-0c8c-4205-aeb2-cee6ce481f6f",
       "details": {
         "calories_burned": 290,
         "splat_points": 0,
@@ -545,17 +545,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "37bd427b-a845-4ada-8b2b-0f16394b619c",
+      "id": "e5ba21bf-ff0f-4f1d-89d4-98d1dedcd7df",
       "details": {
         "calories_burned": 269,
         "splat_points": 0,
@@ -575,17 +575,17 @@
         "name": "Strength 50 (Upper)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Kevin Johnson"
+          "first_name": "Gregory"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "aebc8b4f-0327-445a-a15c-173bae4c5bf7",
+      "id": "d8a2b623-9b38-4062-ae88-2a60b7b7b884",
       "details": {
         "calories_burned": 334,
         "splat_points": 0,
@@ -605,17 +605,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "fd75b757-72bc-4212-a4bf-3e6caf9885e2",
+      "id": "cee9b6bf-1636-4f4b-bfe0-7ac0bbb46da1",
       "details": {
         "calories_burned": 236,
         "splat_points": 0,
@@ -635,17 +635,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "47735f13-5dae-4094-923c-07753069ce74",
+      "id": "bc588908-1660-4388-bd27-43dddd09cc14",
       "details": {
         "calories_burned": 338,
         "splat_points": 1,
@@ -665,17 +665,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "538e762d-601c-420a-bba3-afae0381fce9",
+      "id": "d8269336-4523-46e5-858a-4b593d1e1dc8",
       "details": {
         "calories_burned": 431,
         "splat_points": 20,
@@ -695,17 +695,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a9432fbc-8519-4006-b9f7-c5c3c3dc0218",
+      "id": "02c9cba5-64c2-4918-beee-eb2cb0057bde",
       "details": {
         "calories_burned": 253,
         "splat_points": 0,
@@ -725,17 +725,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "ab541ecf-814b-4b6c-8717-033b3057488e",
+      "id": "e0b9b65d-8082-4978-8fc0-f92162c9e058",
       "details": {
         "calories_burned": 360,
         "splat_points": 2,
@@ -755,17 +755,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Kevin Johnson"
+          "first_name": "Gregory"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "703154ea-a62a-4833-b500-bf3a50999020",
+      "id": "632108df-d6fe-4511-9916-b2a8c0d87731",
       "details": {
         "calories_burned": 399,
         "splat_points": 15,
@@ -785,17 +785,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "af1fc36e-1198-41e8-ba6f-8baf4e37b357",
+      "id": "12e2b95e-4883-449b-a38f-9fccd858e4f3",
       "details": {
         "calories_burned": 264,
         "splat_points": 0,
@@ -815,17 +815,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6d69a93e-c42c-4ef9-a70c-47510be90dd6",
+      "id": "f57c2841-1825-4c3d-ac15-ced90d6ac205",
       "details": {
         "calories_burned": 426,
         "splat_points": 5,
@@ -845,17 +845,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Kevin Johnson"
+          "first_name": "Gregory"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1835e9ac-6b20-4c49-bfd0-614641337178",
+      "id": "d8f4e54e-bee5-4520-a35a-4e771d6d886d",
       "details": {
         "calories_burned": 434,
         "splat_points": 17,
@@ -875,17 +875,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d01432f1-0d4a-437b-b514-d7b8fd1e7681",
+      "id": "26aabb9d-c1a9-4b93-bbba-78d6159189ae",
       "details": {
         "calories_burned": 288,
         "splat_points": 1,
@@ -905,17 +905,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5ac48a54-032b-49bb-b2de-d8bdb6d7fa23",
+      "id": "c10b2089-afd9-409d-b383-a63c00757294",
       "details": {
         "calories_burned": 444,
         "splat_points": 10,
@@ -935,17 +935,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c2608dcc-f541-4820-b083-876790bddccc",
+      "id": "2f616fac-a51b-4b48-b2c5-83a33f500c42",
       "details": {
         "calories_burned": 277,
         "splat_points": 0,
@@ -965,17 +965,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3b93bb56-091b-4a5b-a1b2-b5240be67ad4",
+      "id": "51bf5bfd-a791-4651-9a44-f1d1c2a248f2",
       "details": {
         "calories_burned": 460,
         "splat_points": 11,
@@ -995,17 +995,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "488964ef-5b41-4691-8793-a2e5bf89171b",
+      "id": "c66d2a84-054f-4333-bcc4-b3b312f16492",
       "details": {
         "calories_burned": 406,
         "splat_points": 16,
@@ -1025,17 +1025,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "08681803-2127-444a-936e-d7575dd85736",
+      "id": "1416f0d3-e831-4b26-9b79-408a61f7485b",
       "details": {
         "calories_burned": 192,
         "splat_points": 0,
@@ -1055,17 +1055,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "9b63f0b7-55bc-4097-a0e7-656cf2c833a0",
+      "id": "8bfd6b14-4346-4245-b256-e65d76e86032",
       "details": {
         "calories_burned": 404,
         "splat_points": 10,
@@ -1085,17 +1085,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "28e0a94b-1811-40b6-a232-f41ba9668d63",
+      "id": "c0d28fac-d209-4be4-a69a-b1e9787cc1d4",
       "details": {
         "calories_burned": 396,
         "splat_points": 4,
@@ -1115,17 +1115,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "dffc7dc4-7478-4737-8651-4a4dc3621b32",
+      "id": "339119e6-1f97-4141-ac26-339c3503bc7a",
       "details": {
         "calories_burned": 240,
         "splat_points": 0,
@@ -1145,17 +1145,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "09b8fd8e-cab0-496e-82f1-0ca30359208b",
+      "id": "cf6ff176-6c90-40f3-9206-5ec7eb20948f",
       "details": {
         "calories_burned": 447,
         "splat_points": 9,
@@ -1175,17 +1175,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "33949572-7233-483a-a4dc-b1872336f7c1",
+      "id": "76c9f6b5-4f97-4214-95f5-98c3719ca25f",
       "details": {
         "calories_burned": 420,
         "splat_points": 17,
@@ -1205,17 +1205,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "2dc17ab4-c53f-4c80-9463-df17a21ae3ea",
+      "id": "5dc4da6b-dca8-4456-a7bf-a16d3e95219d",
       "details": {
         "calories_burned": 219,
         "splat_points": 0,
@@ -1235,17 +1235,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a7780cca-93ff-416c-8a1d-421162ea5933",
+      "id": "c228c129-4109-4699-8423-3586cd703c9a",
       "details": {
         "calories_burned": 439,
         "splat_points": 5,
@@ -1265,17 +1265,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "17ab2972-8212-4477-ba7b-883987240fce",
+      "id": "64a80c5a-eb46-488e-997c-0eb7b9982747",
       "details": {
         "calories_burned": 382,
         "splat_points": 9,
@@ -1295,17 +1295,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c54f8b36-05e3-48ea-815f-df8bc3daf401",
+      "id": "a1652cf4-fb20-4987-8e39-ec956af0c24c",
       "details": {
         "calories_burned": 251,
         "splat_points": 0,
@@ -1325,17 +1325,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6ef1c447-2399-47d2-8b3b-c74a038199f9",
+      "id": "54ef811b-d675-4507-82ab-85c3173f2478",
       "details": {
         "calories_burned": 440,
         "splat_points": 7,
@@ -1355,17 +1355,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "7aff7c22-9b2f-43b9-bfe7-3691e5ffd8c1",
+      "id": "ceb380e0-4093-4e2b-9d73-a315d9ce55a0",
       "details": {
         "calories_burned": 416,
         "splat_points": 10,
@@ -1385,17 +1385,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "848eacce-1a14-4c78-929f-75009ae35810",
+      "id": "a68c3b99-459f-4677-8397-87ae46de7d17",
       "details": {
         "calories_burned": 450,
         "splat_points": 8,
@@ -1415,17 +1415,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0b4461d5-7ca2-4cd3-9f96-4ba50f417f43",
+      "id": "a9485ae7-cfa4-45c1-8155-cc7522f80c21",
       "details": {
         "calories_burned": 284,
         "splat_points": 0,
@@ -1445,17 +1445,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4cac9226-181c-4d30-8c36-f8637c520bd6",
+      "id": "7437a327-c9bb-4a24-adee-e66ab2c8cec4",
       "details": {
         "calories_burned": 467,
         "splat_points": 14,
@@ -1475,17 +1475,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Thomas Hall"
+          "first_name": "Angela"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "aad5c5db-16ff-4619-ae27-1191b0761e41",
+      "id": "f044c5d1-42eb-45fb-a76c-a5f8a4618037",
       "details": {
         "calories_burned": 435,
         "splat_points": 20,
@@ -1505,17 +1505,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "27cbb264-7710-4753-9615-5cb8c4944871",
+      "id": "41c10f44-422a-4f82-a32e-63e4164f1c29",
       "details": {
         "calories_burned": 389,
         "splat_points": 2,
@@ -1535,17 +1535,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Thomas Hall"
+          "first_name": "Angela"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "fbc5de0f-82aa-47a7-a879-6996a4b5a721",
+      "id": "82a519be-0507-4dba-a84c-ac8cc9ceed79",
       "details": {
         "calories_burned": 482,
         "splat_points": 10,
@@ -1565,17 +1565,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b6a9e8a3-8bf7-4ba8-a76a-9e527717f62e",
+      "id": "62c9b781-5248-4a31-87ba-d801888f7fdc",
       "details": {
         "calories_burned": 423,
         "splat_points": 9,
@@ -1595,17 +1595,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Thomas Hall"
+          "first_name": "Angela"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e67c7316-5fac-4a01-8230-c1ba497dcd7e",
+      "id": "f648b7b0-55b2-46e9-a8c0-eaef49dbd548",
       "details": {
         "calories_burned": 425,
         "splat_points": 8,
@@ -1625,17 +1625,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3829671a-93c9-48c6-9ed7-312ca327fbfc",
+      "id": "3d5b1302-2b3f-44fb-b7c6-959d97756f37",
       "details": {
         "calories_burned": 429,
         "splat_points": 2,
@@ -1655,17 +1655,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b71fc108-3d06-4a5e-9cc6-44782067d30e",
+      "id": "5d5d8690-d97d-4b3a-9aa8-da8528b751bc",
       "details": {
         "calories_burned": 268,
         "splat_points": 0,
@@ -1685,17 +1685,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3e5c1585-40d0-4acd-8021-65767a8b6cfa",
+      "id": "30a724c4-5c19-4788-9e07-7821c125cc68",
       "details": {
         "calories_burned": 398,
         "splat_points": 12,
@@ -1715,17 +1715,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "53e11542-5715-42a9-9089-d2c3280b32ac",
+      "id": "2481868d-95a5-42e9-a931-888a3fb0418b",
       "details": {
         "calories_burned": 371,
         "splat_points": 1,
@@ -1745,17 +1745,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3275dbaf-510d-4280-8cd6-d657b332c75c",
+      "id": "0ee4d2be-c9c2-4937-9a80-844ceeb737cd",
       "details": {
         "calories_burned": 208,
         "splat_points": 0,
@@ -1775,17 +1775,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "35d0f4cf-6f71-4595-a394-fef83d0342bd",
+      "id": "99afe233-a273-47c1-a975-7354716eeab0",
       "details": {
         "calories_burned": 462,
         "splat_points": 9,
@@ -1805,17 +1805,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "50c42ec8-5285-4c76-87fe-43b205134293",
+      "id": "13411847-b594-42c9-99a4-10dd5bf790ce",
       "details": {
         "calories_burned": 399,
         "splat_points": 6,
@@ -1835,17 +1835,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d91b079a-c504-42af-bc18-849b2a28e140",
+      "id": "7f3e7534-06f5-456f-afa3-650984960e32",
       "details": {
         "calories_burned": 389,
         "splat_points": 6,
@@ -1865,17 +1865,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "88deb153-0f3b-4ca6-88b0-803fa86db98f",
+      "id": "f936c174-df1f-419d-b29f-ac22ac878ce4",
       "details": {
         "calories_burned": 267,
         "splat_points": 0,
@@ -1895,17 +1895,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e4a12d31-a9fa-4015-b3bf-852e5c311929",
+      "id": "d9ab07a8-28f8-4e93-95b9-35de7c1690b9",
       "details": {
         "calories_burned": 489,
         "splat_points": 12,
@@ -1925,17 +1925,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "fb996707-2a32-46a0-9ce0-18f4e0ca6507",
+      "id": "a9c7fedc-3140-4a4e-9a62-903e4da9b3fd",
       "details": {
         "calories_burned": 378,
         "splat_points": 7,
@@ -1955,17 +1955,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "aba3067f-90f7-42ff-bdd3-f80371e0256d",
+      "id": "892cdf9a-bc44-4134-bae5-9810d706fbf5",
       "details": {
         "calories_burned": 384,
         "splat_points": 8,
@@ -1985,17 +1985,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "15736bc9-1aa0-4f58-b98b-0fe4f31f0050",
+      "id": "cea2b33c-4d73-4943-b885-83f44c1f215b",
       "details": {
         "calories_burned": 267,
         "splat_points": 0,
@@ -2015,17 +2015,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f55ba6a1-12c0-4ed9-8282-03de3a0039d7",
+      "id": "dff20253-70b5-43fa-89ea-381d205649c3",
       "details": {
         "calories_burned": 382,
         "splat_points": 8,
@@ -2045,17 +2045,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christine Rodgers"
+          "first_name": "Andrea"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "12ceb99e-a4fc-4f74-981c-062a50479499",
+      "id": "1583394f-c1c4-4a5c-a7e1-1f44f9dfaae2",
       "details": {
         "calories_burned": 406,
         "splat_points": 9,
@@ -2075,17 +2075,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a066c718-c075-4ef6-8c33-3f60243f61e8",
+      "id": "dd7056bb-130b-455b-9bc2-8316ef80b34c",
       "details": {
         "calories_burned": 430,
         "splat_points": 10,
@@ -2105,17 +2105,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a7f7075c-c754-4031-abc8-e06592d4fb74",
+      "id": "2ddda2ac-e9b0-4113-8570-d681ecef50d5",
       "details": {
         "calories_burned": 249,
         "splat_points": 0,
@@ -2135,17 +2135,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3fd524d8-b635-4cf3-bf29-75f7ec1f90c0",
+      "id": "fafa2202-20cc-4cde-9079-682ecf92b892",
       "details": {
         "calories_burned": 426,
         "splat_points": 13,
@@ -2165,17 +2165,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d79e1186-5ce2-4f9d-a24c-fc954c1cae71",
+      "id": "16d9b144-fa63-4f4c-8d56-2268de6d5f8c",
       "details": {
         "calories_burned": 401,
         "splat_points": 16,
@@ -2195,17 +2195,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Shane Gaines"
+          "first_name": "Jose"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3ca69a7b-8876-4358-a7c4-15259d95869d",
+      "id": "2f521153-83ba-4ab1-bda3-cc2fbd86ff4e",
       "details": {
         "calories_burned": 337,
         "splat_points": 0,
@@ -2225,17 +2225,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "05fce41b-b7dc-4d88-a489-4d947011eb5e",
+      "id": "b524c4ee-e0e1-4b25-bfba-931357ca794f",
       "details": {
         "calories_burned": 413,
         "splat_points": 15,
@@ -2255,17 +2255,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "50946013-2bfa-4faa-99cc-510f0662ea14",
+      "id": "d0ddc356-52b1-4085-b4de-45579938fc79",
       "details": {
         "calories_burned": 429,
         "splat_points": 3,
@@ -2285,17 +2285,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0f2a0b67-b69a-40d4-b7a6-ac47d440de85",
+      "id": "14325113-0473-497c-aaa9-6d2e150e0fc9",
       "details": {
         "calories_burned": 428,
         "splat_points": 13,
@@ -2315,17 +2315,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c4b31e33-a3a5-48cc-83c4-8c86c7cfa343",
+      "id": "61e02bb8-4bae-4daf-9097-440eb3b6577a",
       "details": {
         "calories_burned": 424,
         "splat_points": 5,
@@ -2345,17 +2345,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brian Williams"
+          "first_name": "Keith"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e9f232b9-449b-413e-8156-e0970b7e41c7",
+      "id": "dcbc1211-4e98-484d-b0d0-359021d897b1",
       "details": {
         "calories_burned": 232,
         "splat_points": 0,
@@ -2375,17 +2375,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f12799bc-dafc-4bc5-bde0-9fd475ec88b2",
+      "id": "414c8290-d8d9-40d6-ad3c-5f9d76492afb",
       "details": {
         "calories_burned": 423,
         "splat_points": 19,
@@ -2405,17 +2405,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a6cc18d5-a09b-4ead-afc7-bbe7022a0932",
+      "id": "f2ddd77f-20f6-4444-a84a-de7b79632dcf",
       "details": {
         "calories_burned": 383,
         "splat_points": 12,
@@ -2435,17 +2435,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8234848f-38db-4d44-b907-5260e6bf1313",
+      "id": "66bfc09c-aca9-4f34-961c-25b4d416f1f3",
       "details": {
         "calories_burned": 396,
         "splat_points": 7,
@@ -2465,17 +2465,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "09712ca6-faed-4314-8622-cb9fb520e392",
+      "id": "57ae5970-e5fb-49e5-a2a7-5b448bc50b6e",
       "details": {
         "calories_burned": 393,
         "splat_points": 10,
@@ -2495,17 +2495,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0b30bbb3-9e21-457f-9820-d1c6b10c905a",
+      "id": "e3a55181-631b-4444-b6f1-d3ba67bef8be",
       "details": {
         "calories_burned": 434,
         "splat_points": 6,
@@ -2525,17 +2525,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "ed6deb2e-d0c4-4f10-b949-9ad3b4cc4559",
+      "id": "404e7c05-b21c-4aab-8051-80450e04cd26",
       "details": {
         "calories_burned": 414,
         "splat_points": 11,
@@ -2555,17 +2555,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "bae633c0-ccda-48fe-bf0e-ecee50e8ae5f",
+      "id": "4065efcf-f28f-4b1f-87cd-0b3f9f291728",
       "details": {
         "calories_burned": 393,
         "splat_points": 6,
@@ -2585,17 +2585,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f455a994-891b-4306-ab1c-a976150d67a7",
+      "id": "c6605a4e-69b2-4e82-af55-7b590201cf49",
       "details": {
         "calories_burned": 357,
         "splat_points": 3,
@@ -2615,17 +2615,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "952434ad-5ab2-466a-88f3-f77195867c0f",
+      "id": "28aa74a1-6a53-497a-8c25-936e6ff8c4cd",
       "details": {
         "calories_burned": 434,
         "splat_points": 4,
@@ -2645,17 +2645,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "7faf572a-4d2e-4612-9ed6-8acddcf17b13",
+      "id": "fb3c3451-d08a-4252-be5d-30920b16f9d5",
       "details": {
         "calories_burned": 507,
         "splat_points": 7,
@@ -2675,17 +2675,17 @@
         "name": "Orange 90 Min 2G",
         "type": "ORANGE_90",
         "coach": {
-          "first_name": "Thomas Hall"
+          "first_name": "Angela"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5a436749-680a-47f9-ad6b-31bfd7e2c550",
+      "id": "f1f41a4d-a3e2-4ff2-8bd8-da8a0b002f21",
       "details": {
         "calories_burned": 415,
         "splat_points": 17,
@@ -2705,17 +2705,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8eb183ed-4429-4867-a7af-e53c46658c2c",
+      "id": "7dfb836b-6cb4-4b7b-89ed-bb725001ec9f",
       "details": {
         "calories_burned": 335,
         "splat_points": 2,
@@ -2735,17 +2735,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Thomas Hall"
+          "first_name": "Angela"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "de983060-b17f-44a3-951c-b4f1f5d56f4c",
+      "id": "3a834d72-3445-4bcc-b8b9-b5add6838d7d",
       "details": {
         "calories_burned": 369,
         "splat_points": 3,
@@ -2765,17 +2765,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "fafe294b-8a3a-4943-9a7b-c916f4671165",
+      "id": "fac03e45-4447-48b3-8bcd-2fc282f1aa57",
       "details": {
         "calories_burned": 369,
         "splat_points": 1,
@@ -2795,17 +2795,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Thomas Hall"
+          "first_name": "Angela"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3e6f63ec-fdd2-4275-88f9-15253d02d5c5",
+      "id": "a086488b-8b50-4e0c-a2c3-f5239c2ec7d9",
       "details": {
         "calories_burned": 391,
         "splat_points": 14,
@@ -2825,17 +2825,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f1d298b2-664a-4640-9183-7976edd7b8b4",
+      "id": "dd938831-1870-454f-887b-2e04aad722c5",
       "details": {
         "calories_burned": 401,
         "splat_points": 4,
@@ -2855,17 +2855,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "91a28ceb-24ea-4614-b793-727b86831a1d",
+      "id": "e1486c02-a984-4730-a89a-3e2fa1f5e58c",
       "details": {
         "calories_burned": 376,
         "splat_points": 4,
@@ -2885,17 +2885,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6df0036b-39ca-45d3-834b-cb1e62d52495",
+      "id": "56c6cb0c-f81d-4cae-b07c-459511580326",
       "details": {
         "calories_burned": 424,
         "splat_points": 9,
@@ -2915,17 +2915,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1ed514a5-4ec7-4822-aea1-3f6b23247336",
+      "id": "91d37b0c-cb09-4063-84df-892cd9cc64b7",
       "details": {
         "calories_burned": 427,
         "splat_points": 18,
@@ -2945,17 +2945,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4076a938-2643-4786-af24-9d11d93474a8",
+      "id": "cd9d7fd7-8008-4086-9c90-6a4fc953bdc9",
       "details": {
         "calories_burned": 483,
         "splat_points": 23,
@@ -2975,17 +2975,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "63f84569-5288-41da-af15-41af1a779e16",
+      "id": "fc11537e-27ae-4b19-87d1-1e26ea543b7c",
       "details": {
         "calories_burned": 264,
         "splat_points": 0,
@@ -3005,17 +3005,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "55e3af3f-08b1-4572-90f8-7508b3cde0ad",
+      "id": "b7cc4d65-fa05-428f-a4b2-29ddbe645536",
       "details": {
         "calories_burned": 450,
         "splat_points": 27,
@@ -3035,17 +3035,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1bcea02c-bbc3-4e6b-a830-549933348e63",
+      "id": "21326c97-a616-4b86-81d9-0d1f1010c4ae",
       "details": {
         "calories_burned": 421,
         "splat_points": 6,
@@ -3065,17 +3065,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "911db2cb-df01-4db0-9f4b-d9d2a5b0d117",
+      "id": "0c0f0bd3-244b-4c64-984a-274ff92421b8",
       "details": {
         "calories_burned": 390,
         "splat_points": 11,
@@ -3095,17 +3095,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3298cdf7-87ba-4fc9-a684-13a348a4a678",
+      "id": "4f93b4a5-e5da-4783-9d8f-75de8f239172",
       "details": {
         "calories_burned": 375,
         "splat_points": 2,
@@ -3125,17 +3125,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "74b16529-393a-4a04-b864-fdb98ee6c4d8",
+      "id": "6c2797e1-35c3-4c64-b08d-788c43857ab7",
       "details": {
         "calories_burned": 379,
         "splat_points": 5,
@@ -3155,17 +3155,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "edd73930-38a0-449f-9153-001801fe3547",
+      "id": "ea0b1d45-cb58-4bea-a9c3-3027b7bcf69f",
       "details": {
         "calories_burned": 218,
         "splat_points": 0,
@@ -3185,17 +3185,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Shane Gaines"
+          "first_name": "Jose"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "afdc4aea-6199-4c13-9257-e07442d120ef",
+      "id": "eafd5eaf-a70d-4a53-9659-c781f114169e",
       "details": {
         "calories_burned": 383,
         "splat_points": 0,
@@ -3215,17 +3215,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e20be38d-4faa-4770-b97b-42035bc2401f",
+      "id": "ff4f0755-d238-4068-ad0a-835e0dc90ea2",
       "details": {
         "calories_burned": 406,
         "splat_points": 5,
@@ -3245,17 +3245,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0f483f58-d6c5-490a-bf0d-c5b73d0f4903",
+      "id": "2bfc64fc-9042-4e7b-98cb-737e493550d9",
       "details": {
         "calories_burned": 424,
         "splat_points": 4,
@@ -3275,17 +3275,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5c4e81ad-db76-4680-a836-ae738086f8ec",
+      "id": "4df20df7-fa68-4ff3-b6f2-1415b88c031d",
       "details": {
         "calories_burned": 384,
         "splat_points": 6,
@@ -3305,17 +3305,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a28a08d6-3781-433e-ba65-f14c7705d336",
+      "id": "54dca4ca-2510-45fa-b83d-cebc8d274633",
       "details": {
         "calories_burned": 406,
         "splat_points": 12,
@@ -3335,17 +3335,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1e909dc1-8ba1-414e-8364-ae21d6fa8157",
+      "id": "b503f3df-8e0f-4192-83d4-265883012ac9",
       "details": {
         "calories_burned": 435,
         "splat_points": 7,
@@ -3365,17 +3365,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c218d623-dad0-43f0-8838-e8377ef3b61a",
+      "id": "bc085b0e-30e9-496c-9f8d-6fd4c089541d",
       "details": {
         "calories_burned": 376,
         "splat_points": 7,
@@ -3395,17 +3395,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "40d4ef83-422c-4964-94a5-89279dd842a9",
+      "id": "6dcd545c-0cb5-461b-81ff-bf0c8d37297c",
       "details": {
         "calories_burned": 421,
         "splat_points": 4,
@@ -3425,17 +3425,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e02faba7-14e6-448c-98fc-6f997930150d",
+      "id": "f810536d-05ca-40a2-8b70-0637fc29e8ac",
       "details": {
         "calories_burned": 406,
         "splat_points": 3,
@@ -3455,17 +3455,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "858db4e0-c0c2-4d65-933a-f48a5df699bc",
+      "id": "a0b78efd-2cb0-45fa-8b13-8afe8a808e5b",
       "details": {
         "calories_burned": 263,
         "splat_points": 0,
@@ -3485,17 +3485,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Shane Gaines"
+          "first_name": "Jose"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "9ae3abc8-aff4-4009-94c6-beda1c04f434",
+      "id": "be648705-66f9-4eca-88cb-b1ab4655ff2c",
       "details": {
         "calories_burned": 402,
         "splat_points": 8,
@@ -3515,17 +3515,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1bf8229f-6bcb-4989-80e7-9d41dd2a6979",
+      "id": "e4605cb9-42d8-4358-b082-31eb40ca5f70",
       "details": {
         "calories_burned": 408,
         "splat_points": 0,
@@ -3545,17 +3545,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "ba7a7d9b-79f3-4d5b-bc00-9a1ad18dd48c",
+      "id": "6514fcf3-7fcb-4450-9618-02274f03fdf0",
       "details": {
         "calories_burned": 396,
         "splat_points": 9,
@@ -3575,17 +3575,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5a0de6a4-cb1a-4471-9546-63942ae31d3c",
+      "id": "3b083271-358d-4220-b73e-5930f4d9952f",
       "details": {
         "calories_burned": 445,
         "splat_points": 6,
@@ -3605,17 +3605,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4fbac554-e6c0-4bd3-94cc-739b617136ed",
+      "id": "84fbbffc-0afa-4967-80e7-7e7c2c324e1f",
       "details": {
         "calories_burned": 596,
         "splat_points": 3,
@@ -3635,17 +3635,17 @@
         "name": "Orange 90 Min 2G",
         "type": "ORANGE_90",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6d5081d0-ec41-4268-aaf3-3ddca310dc8a",
+      "id": "b5f482d2-c876-46ca-af08-f901ea6742b6",
       "details": {
         "calories_burned": 410,
         "splat_points": 6,
@@ -3665,17 +3665,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "ba1ac267-cb9a-444c-b8d5-c1e8a20816b8",
+      "id": "52e0a95c-2649-47ba-bca3-cd5dd49f1398",
       "details": {
         "calories_burned": 429,
         "splat_points": 5,
@@ -3695,17 +3695,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8a64bd78-b549-4491-8600-2345ffb730b5",
+      "id": "6d15fc03-abe6-49fb-a205-07e77100f49c",
       "details": {
         "calories_burned": 406,
         "splat_points": 4,
@@ -3725,17 +3725,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "7fb2eafc-cc0e-4c41-a42e-2d3142fd5ee1",
+      "id": "0ccc9c25-bb79-47bf-8c60-aed388053f55",
       "details": {
         "calories_burned": 432,
         "splat_points": 8,
@@ -3755,17 +3755,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "63759687-6f8b-40af-9d4e-dcd39d694fd6",
+      "id": "fde13dc9-e70f-4950-9121-01d731b8093f",
       "details": {
         "calories_burned": 441,
         "splat_points": 3,
@@ -3785,17 +3785,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "ef3d81ac-120f-41a2-be7c-9a715c142438",
+      "id": "85d2560c-9ca4-445f-8ed4-a1d4978a3443",
       "details": {
         "calories_burned": 352,
         "splat_points": 1,
@@ -3815,17 +3815,17 @@
         "name": "DriTri",
         "type": "OTHER",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b7d6dfc1-23b8-4c0f-b27d-ac9b66868153",
+      "id": "82007da8-7161-4f02-88c2-43b39605ee64",
       "details": {
         "calories_burned": 435,
         "splat_points": 4,
@@ -3845,17 +3845,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "af87fde1-abce-47d2-b66b-096a0357be6b",
+      "id": "ea9975eb-29ea-4e1b-bd56-468f033817ea",
       "details": {
         "calories_burned": 358,
         "splat_points": 0,
@@ -3875,17 +3875,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Shane Gaines"
+          "first_name": "Jose"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e9ac29f5-678e-48f3-9140-e0431f15fb3b",
+      "id": "92bddf07-14f7-4e3e-8c36-a4d47b3007c1",
       "details": {
         "calories_burned": 411,
         "splat_points": 11,
@@ -3905,17 +3905,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f3f6961b-72a5-4608-bab3-900d96908f50",
+      "id": "ca035847-30a5-4700-93be-a5ab9852cad8",
       "details": {
         "calories_burned": 468,
         "splat_points": 11,
@@ -3935,17 +3935,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Thomas Hall"
+          "first_name": "Angela"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "94265149-4ec5-4f3f-8fd2-b39748818c10",
+      "id": "1d5d093b-67ae-44a6-8c27-6f14af44314d",
       "details": {
         "calories_burned": 395,
         "splat_points": 12,
@@ -3965,17 +3965,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "07d26a08-e443-433e-942b-54b0ad3b9e6e",
+      "id": "579c20c0-4310-40c7-b839-ebfba858aa71",
       "details": {
         "calories_burned": 442,
         "splat_points": 9,
@@ -3995,17 +3995,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e9c2eeef-2906-4ccf-b034-d01306e15a45",
+      "id": "0ee52afc-aa10-49b9-92df-20e61fe4d874",
       "details": {
         "calories_burned": 387,
         "splat_points": 10,
@@ -4025,17 +4025,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0a339f0c-9468-4e04-a7fb-678fc3805e7f",
+      "id": "cb071ef2-3603-4bd6-872f-7456d354e14b",
       "details": {
         "calories_burned": 382,
         "splat_points": 2,
@@ -4055,17 +4055,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8d4672e2-dac7-4288-acde-d574161c78b2",
+      "id": "837abc50-de5d-481c-9f40-86ea0961fd04",
       "details": {
         "calories_burned": 386,
         "splat_points": 10,
@@ -4085,17 +4085,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1149b350-7413-4cf1-bdf8-4a5604bb0817",
+      "id": "62d23522-c452-4bf3-990e-bc92c0d56f54",
       "details": {
         "calories_burned": 429,
         "splat_points": 20,
@@ -4115,17 +4115,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1d71961a-d657-4311-8309-37e5b7130940",
+      "id": "f29adebb-6ad1-480b-af04-5245ca6adfca",
       "details": {
         "calories_burned": 449,
         "splat_points": 17,
@@ -4145,17 +4145,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f2a3f114-d800-4528-bb0c-f4a4be7f50f3",
+      "id": "aaf5f0c1-cebd-4682-8ae3-d730f3780c77",
       "details": {
         "calories_burned": 445,
         "splat_points": 7,
@@ -4175,17 +4175,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Cynthia Benjamin"
+          "first_name": "Cynthia"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "9b9c27bd-212d-4278-95da-b179673746a2",
+      "id": "0527cfb7-f0cd-49c4-abfe-a539c1793522",
       "details": {
         "calories_burned": 427,
         "splat_points": 14,
@@ -4205,17 +4205,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e6b75958-ff67-4554-b9b8-0819fc56d36b",
+      "id": "fe106b81-90a4-421e-87d2-a5aae879269f",
       "details": {
         "calories_burned": 440,
         "splat_points": 8,
@@ -4235,17 +4235,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5df639d5-1718-42f6-bb4d-0bebef88797e",
+      "id": "8f7655d4-970a-4937-adc3-5d5f0e749162",
       "details": {
         "calories_burned": 391,
         "splat_points": 15,
@@ -4265,17 +4265,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4c033817-0560-45d7-844f-edc20303e986",
+      "id": "70e9d005-0454-4030-a7fa-477f7ee723c7",
       "details": {
         "calories_burned": 459,
         "splat_points": 8,
@@ -4295,17 +4295,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d5ac1317-fe9a-4d2f-ac45-59e80322dcb2",
+      "id": "e8cba589-d1fa-4645-a14a-d1df50733268",
       "details": {
         "calories_burned": 404,
         "splat_points": 2,
@@ -4325,17 +4325,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "bc41f8da-1d3f-4f85-b763-8b1826873cba",
+      "id": "cb44a1c1-ee26-4645-901d-379a9ff2891a",
       "details": {
         "calories_burned": 442,
         "splat_points": 13,
@@ -4355,17 +4355,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "9f1737bc-21bd-46bc-86d7-22a70688e386",
+      "id": "c8f33458-2f8a-4020-91d3-06bbc1833945",
       "details": {
         "calories_burned": 338,
         "splat_points": 0,
@@ -4385,17 +4385,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "38b99092-b217-4b1a-b390-7778fe0d9d38",
+      "id": "7e2b4c94-0c02-4d59-a50c-4a5db6998543",
       "details": {
         "calories_burned": 493,
         "splat_points": 16,
@@ -4415,17 +4415,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8dc1bf5f-77e5-4cb7-9d3d-79e652d73df4",
+      "id": "67fc83fe-4b55-417a-bf59-289ede8e926f",
       "details": {
         "calories_burned": 341,
         "splat_points": 0,
@@ -4445,17 +4445,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1e450f5e-7459-4331-898c-976362e11dea",
+      "id": "718956ca-0c35-4d9c-b144-3bb4f8957f19",
       "details": {
         "calories_burned": 439,
         "splat_points": 9,
@@ -4475,17 +4475,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6b270d3a-285b-478b-895a-011ffdd42561",
+      "id": "d229c308-19f2-4690-bd73-12eebe10ce5b",
       "details": {
         "calories_burned": 711,
         "splat_points": 15,
@@ -4505,17 +4505,17 @@
         "name": "Orange 90 Min 2G",
         "type": "ORANGE_90",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "12b39d7a-b6f6-4e6b-96ff-4702efb1cd4b",
+      "id": "d96b8972-d140-4ecd-800d-5590dcf17a46",
       "details": {
         "calories_burned": 387,
         "splat_points": 2,
@@ -4535,17 +4535,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Janice Chen"
+          "first_name": "Amy"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5243733f-fb8e-423f-a1eb-2b1863014ef4",
+      "id": "437193e3-902c-440f-86ee-aaf48323a6ad",
       "details": {
         "calories_burned": 372,
         "splat_points": 8,
@@ -4565,17 +4565,17 @@
         "name": "Strength 50 (Lower)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0d01062c-0336-4fea-a74d-0272fee0078d",
+      "id": "15457ed9-5d4c-42e7-a9db-6a1d384d6561",
       "details": {
         "calories_burned": 468,
         "splat_points": 6,
@@ -4595,17 +4595,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "fca77975-60de-4c90-a70f-3cc20aa5ff6a",
+      "id": "ddbd2cf0-64bc-4fc9-b9e7-301225f949b7",
       "details": {
         "calories_burned": 303,
         "splat_points": 0,
@@ -4625,17 +4625,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4338f06a-ac55-4676-bb36-606759967443",
+      "id": "f7f8770d-a257-497e-94a4-c5b42350510f",
       "details": {
         "calories_burned": 463,
         "splat_points": 7,
@@ -4655,17 +4655,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6f4ec95f-54c0-43f6-8a6b-88ae00cd2dd8",
+      "id": "d73906f0-5af9-43e1-b367-078c7e30c577",
       "details": {
         "calories_burned": 400,
         "splat_points": 7,
@@ -4685,17 +4685,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "33451c1b-37ed-4e9a-94a6-f4421371358e",
+      "id": "9ee9f693-f3b2-4a8e-b7fb-1a0958a450a0",
       "details": {
         "calories_burned": 702,
         "splat_points": 13,
@@ -4715,17 +4715,17 @@
         "name": "Orange 90 Min 2G",
         "type": "ORANGE_90",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0295c69b-63e6-4d8a-87eb-2f2c34f93014",
+      "id": "4b29f852-faaf-4270-b9f9-2dcaf2a45fda",
       "details": {
         "calories_burned": 344,
         "splat_points": 0,
@@ -4745,17 +4745,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8d2b5db9-dd61-4725-a994-677befc37f76",
+      "id": "3dda9cf3-14fe-4b31-a63e-0c835cd21fa4",
       "details": {
         "calories_burned": 483,
         "splat_points": 13,
@@ -4775,17 +4775,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "39a5276d-a1ad-4aab-86de-6d37307f9876",
+      "id": "479e4d19-dc45-4094-bbfb-a91129ab3a7c",
       "details": {
         "calories_burned": 122,
         "splat_points": 4,
@@ -4805,17 +4805,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3be737f9-bb7b-4406-be1c-cd67c0941226",
+      "id": "c100ef46-25a4-4e8b-8dae-879b59d6e963",
       "details": {
         "calories_burned": 346,
         "splat_points": 0,
@@ -4835,17 +4835,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a825cb3d-c1ac-4206-ac5b-a858fa2eefbe",
+      "id": "47c4e840-391c-4167-ad63-0584f4a59fe9",
       "details": {
         "calories_burned": 529,
         "splat_points": 23,
@@ -4865,17 +4865,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "edd72f8a-f32f-4f90-b8f3-f8bb744363c8",
+      "id": "b053b24b-69df-477f-b240-26f18f716b9d",
       "details": {
         "calories_burned": 250,
         "splat_points": 0,
@@ -4895,17 +4895,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5aa0439b-d4b0-4e00-9c89-b8148e46d99c",
+      "id": "102cce3e-5f4a-45c5-bdb8-7268235b7490",
       "details": {
         "calories_burned": 448,
         "splat_points": 11,
@@ -4925,17 +4925,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Dennis Jordan"
+          "first_name": "Rebecca"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d83ad9ca-c2ad-4bd8-944f-76e2207b8311",
+      "id": "9fc054ab-8b02-46dd-8b52-76f6c9d3dad9",
       "details": {
         "calories_burned": 307,
         "splat_points": 0,
@@ -4955,17 +4955,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4b7c0432-7ef6-4992-af7a-9d890cbb136f",
+      "id": "07736c38-041b-4cbf-ae05-ab90db9890f3",
       "details": {
         "calories_burned": 417,
         "splat_points": 2,
@@ -4985,17 +4985,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "98b82b69-fa61-4d06-b2ff-94b28ca2acc7",
+      "id": "423c0474-6e9e-4c75-b532-b0c81b996d88",
       "details": {
         "calories_burned": 405,
         "splat_points": 6,
@@ -5015,17 +5015,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a42f976f-88c1-4856-b9a6-6e6b585c3462",
+      "id": "b5ad9a32-6954-4ebc-8444-5cfea4623af0",
       "details": {
         "calories_burned": 403,
         "splat_points": 17,
@@ -5045,17 +5045,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a2ee7e4f-09e1-4f88-b46b-ebf2ef9a63ba",
+      "id": "9129c4fa-d079-4eb1-8a50-8f0646a87104",
       "details": {
         "calories_burned": 473,
         "splat_points": 6,
@@ -5075,17 +5075,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Brittany Allen"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "2333f639-119a-4281-8d39-26a3c007d89c",
+      "id": "eab8be6f-a632-4418-a0cb-e076da52e31e",
       "details": {
         "calories_burned": 455,
         "splat_points": 21,
@@ -5105,17 +5105,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6b4eba2c-069a-4e29-b193-77ec772bea32",
+      "id": "96d0eb87-bdac-4ff4-b4c1-b5ef21e8769a",
       "details": {
         "calories_burned": 476,
         "splat_points": 16,
@@ -5135,17 +5135,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5b34a7fe-63e0-41a6-b83b-f0434a0ed9fb",
+      "id": "1d938bb4-bc1c-428d-ba08-d78d9b8ad964",
       "details": {
         "calories_burned": 435,
         "splat_points": 17,
@@ -5165,17 +5165,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0bd52fee-f744-4eda-8b89-ea28c33fdd07",
+      "id": "a356cd52-9033-465b-9202-150bbc51612e",
       "details": {
         "calories_burned": 453,
         "splat_points": 6,
@@ -5195,17 +5195,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c9fb7f63-40e6-40e5-b249-d4f0d1838f6a",
+      "id": "550be77d-d660-46a9-85fe-ff18626aa926",
       "details": {
         "calories_burned": 470,
         "splat_points": 24,
@@ -5225,17 +5225,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3f251b5d-e001-4eab-851e-37d035cd73e5",
+      "id": "02f78930-f38c-4423-9335-5785ecec8feb",
       "details": {
         "calories_burned": 451,
         "splat_points": 8,
@@ -5255,17 +5255,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0c9b97e9-86ab-4f96-b994-33cb35a5c6c5",
+      "id": "d112ecfb-3622-4db2-8be1-8e454db3a1e5",
       "details": {
         "calories_burned": 416,
         "splat_points": 11,
@@ -5285,17 +5285,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0aa301e7-31dd-48d5-9ddc-e697dc5e7ffa",
+      "id": "4f5e2ba6-ae4d-44e2-aa65-c139314ddb79",
       "details": {
         "calories_burned": 467,
         "splat_points": 7,
@@ -5315,17 +5315,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "bcf20536-30f8-4c23-a0ca-2c6e7f31d950",
+      "id": "a00158a8-3d2d-424f-af79-5a46f6dbc8b9",
       "details": {
         "calories_burned": 452,
         "splat_points": 13,
@@ -5345,17 +5345,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Sharon Roberts"
+          "first_name": "Dean"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "7b18f502-38e9-4110-8744-1cef35cb8331",
+      "id": "e0e0e0a8-8b8d-475a-8156-ee147303c7de",
       "details": {
         "calories_burned": 439,
         "splat_points": 3,
@@ -5375,17 +5375,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0ff77f61-010a-4755-a73e-0fc56776ab16",
+      "id": "28b9f34e-8c74-4bfb-a707-e2b46a9e4210",
       "details": {
         "calories_burned": 431,
         "splat_points": 3,
@@ -5405,17 +5405,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "28d087e9-7915-4a60-9713-f41863e1438b",
+      "id": "ca286d9d-9637-4932-b1b6-c28a5ef349f2",
       "details": {
         "calories_burned": 419,
         "splat_points": 4,
@@ -5435,17 +5435,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "16395ca6-88c9-4ad1-bea7-d47757c27c77",
+      "id": "3d12af6e-c39e-4773-80cf-a085fa62c865",
       "details": {
         "calories_burned": 386,
         "splat_points": 6,
@@ -5465,17 +5465,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "ade3d6d3-c7f7-46fa-bab1-d3ef0143b103",
+      "id": "bcd22bfa-6bd4-4a7e-988a-f12cf6805721",
       "details": {
         "calories_burned": 460,
         "splat_points": 11,
@@ -5495,17 +5495,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3a826bc8-f137-4355-8647-dfc98f9c9dc0",
+      "id": "aadc6b49-33be-41d1-aa06-64a42644c157",
       "details": {
         "calories_burned": 418,
         "splat_points": 2,
@@ -5525,17 +5525,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "173bee13-ab41-423d-8408-bee38e6c5d0f",
+      "id": "d1a2d5a9-c516-4914-a135-8a1b3b40b10a",
       "details": {
         "calories_burned": 411,
         "splat_points": 9,
@@ -5555,17 +5555,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "35bb7fdb-6027-453a-aacb-57c7f769a45d",
+      "id": "9bad53ab-8fae-4d34-8f87-7375391f5081",
       "details": {
         "calories_burned": 444,
         "splat_points": 12,
@@ -5585,17 +5585,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "620b838e-08cd-469f-9db5-ae85d84845cd",
+      "id": "a187a0e6-6bd8-49fb-89d6-c14aed6064ef",
       "details": {
         "calories_burned": 326,
         "splat_points": 9,
@@ -5615,17 +5615,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Shane Gaines"
+          "first_name": "Jose"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3a6650b6-27e1-48b4-8896-8b7565012b82",
+      "id": "2454ee6d-e331-4878-a1e9-e3d43cb22d61",
       "details": {
         "calories_burned": 435,
         "splat_points": 13,
@@ -5645,17 +5645,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d846d644-8dac-443b-8cd7-06f5293e59c1",
+      "id": "10eee882-116c-497e-b7de-bf69faa2a45c",
       "details": {
         "calories_burned": 409,
         "splat_points": 14,
@@ -5675,17 +5675,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "9c8a99b6-66a7-4873-8beb-60b4c5c50442",
+      "id": "94598e41-f96a-467b-a2a0-c4d2d2965ad8",
       "details": {
         "calories_burned": 459,
         "splat_points": 10,
@@ -5705,17 +5705,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8faa0e7c-4177-48c7-a957-ca1aa30af41a",
+      "id": "2e9d55b4-5bb4-458a-bb68-7df24be14dca",
       "details": {
         "calories_burned": 464,
         "splat_points": 20,
@@ -5735,17 +5735,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c0d48754-0e6b-4ced-a205-f82aa3986034",
+      "id": "cc0df37a-3783-4de6-9415-67193119d9f6",
       "details": {
         "calories_burned": 410,
         "splat_points": 9,
@@ -5765,17 +5765,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Dana Carter"
+          "first_name": "Robin"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b96f9f5e-a942-469a-b624-5b20688f42a2",
+      "id": "75b8d612-7112-4e4f-b295-c054c4fecde2",
       "details": {
         "calories_burned": 440,
         "splat_points": 3,
@@ -5795,17 +5795,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a7a2a802-0766-4a4f-be92-3e4c2ae6963d",
+      "id": "7e819413-5d52-40c3-bcaf-22d74f2d5d59",
       "details": {
         "calories_burned": 496,
         "splat_points": 18,
@@ -5825,17 +5825,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6ac88e11-bea7-491f-9065-6ffceab95b0f",
+      "id": "b80f98ff-ff2b-4088-8959-e58be84bb27c",
       "details": {
         "calories_burned": 494,
         "splat_points": 11,
@@ -5855,17 +5855,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "341ebb97-61b1-4992-895b-23ec35eb7a0c",
+      "id": "29a24141-446d-4a6d-8ae2-932d51d197ea",
       "details": {
         "calories_burned": 421,
         "splat_points": 25,
@@ -5885,17 +5885,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "400449b2-3f55-476d-9efe-cfe28d9f96e6",
+      "id": "5d2da8e0-c8b3-4edf-b9b4-672444f3423b",
       "details": {
         "calories_burned": 509,
         "splat_points": 19,
@@ -5915,17 +5915,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "20497c4d-b799-4fd0-b5db-94bbe94c74a6",
+      "id": "73a2e2c7-315c-4843-bd7c-dec5e8a5d0f9",
       "details": {
         "calories_burned": 387,
         "splat_points": 8,
@@ -5945,17 +5945,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "86a4621d-8a95-4e41-96c5-ec3872262e6b",
+      "id": "2a0eb3cc-552e-45fa-a66c-79811ad099a6",
       "details": {
         "calories_burned": 291,
         "splat_points": 9,
@@ -5975,17 +5975,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e2d44c03-8280-4a8c-86e0-403749f8b108",
+      "id": "a401d26f-d8ed-445b-ba3a-6885d488d8ee",
       "details": {
         "calories_burned": 460,
         "splat_points": 6,
@@ -6005,17 +6005,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6ebdb3eb-9c82-4261-acfe-9e6517ce2981",
+      "id": "fc7e2199-6b8b-4200-b29c-7251f338bafe",
       "details": {
         "calories_burned": 451,
         "splat_points": 9,
@@ -6035,17 +6035,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "29c4aa48-a714-4f48-af7c-6d2cf31a56b2",
+      "id": "c0d1f208-0bbc-4959-8894-f12e0b14c33c",
       "details": {
         "calories_burned": 444,
         "splat_points": 12,
@@ -6065,17 +6065,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e4db2104-da4c-4c15-9b3f-656b6469eb1b",
+      "id": "dc1f4d24-5ff1-4405-a2e1-ecf2ce77677e",
       "details": {
         "calories_burned": 461,
         "splat_points": 8,
@@ -6094,17 +6094,17 @@
         "starts_at_local": "2024-08-20T09:46:00",
         "type": "OTHER",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "260e1a23-ee9d-40d0-b382-ee421a5e8e62",
+      "id": "7f0003fe-4825-4144-a7f8-24b32b9c97e9",
       "details": {
         "calories_burned": 289,
         "splat_points": 1,
@@ -6124,17 +6124,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d0c8e807-f339-446e-8b84-73f4724aab45",
+      "id": "aa4903b0-ea92-4279-8bcd-f0b0199fceae",
       "details": {
         "calories_burned": 463,
         "splat_points": 12,
@@ -6154,17 +6154,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "911682b2-ec54-4ded-94d7-ab410786e0a4",
+      "id": "6a5ece5c-813e-434e-9fd8-6b876e1faffa",
       "details": {
         "calories_burned": 428,
         "splat_points": 16,
@@ -6184,17 +6184,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "0657e47d-2d8a-4193-ac33-ab53db57cc42",
+      "id": "d9e45406-85ce-446b-b4c2-af11332f652e",
       "details": {
         "calories_burned": 479,
         "splat_points": 10,
@@ -6214,17 +6214,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c1c71e39-7b1c-4aee-ba95-cafc9beb8d83",
+      "id": "d00c9410-f066-4a7a-bcb2-7a4540f1ee69",
       "details": {
         "calories_burned": 449,
         "splat_points": 13,
@@ -6244,17 +6244,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c6e35b14-80a8-4008-a845-ba6ef5c62dd7",
+      "id": "01ca1056-b7f4-40d2-b04a-7387dd7f4c6e",
       "details": {
         "calories_burned": 421,
         "splat_points": 20,
@@ -6274,17 +6274,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1204a8d1-e905-4a29-8182-7132302032b2",
+      "id": "0fb60b98-bb03-48d9-8b14-97f39071d491",
       "details": {
         "calories_burned": 280,
         "splat_points": 5,
@@ -6304,17 +6304,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Shane Gaines"
+          "first_name": "Jose"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "93dd1bd3-6332-4b51-ae0d-643ef4576a51",
+      "id": "2d226e52-5c9f-4792-9f2b-667f15af5636",
       "details": {
         "calories_burned": 486,
         "splat_points": 12,
@@ -6334,17 +6334,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "2e148b42-a5fb-4b34-b8ac-894e1dd5183b",
+      "id": "c2883c09-ca88-443b-9675-06cde193a72e",
       "details": {
         "calories_burned": 420,
         "splat_points": 19,
@@ -6364,17 +6364,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "198f82e6-a226-438c-b8ae-21d1772e78c0",
+      "id": "983f7e75-625e-43d6-9f1b-7e1750cef8b6",
       "details": {
         "calories_burned": 497,
         "splat_points": 18,
@@ -6394,17 +6394,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "06ee2d59-ffc1-4367-b64e-24445afa34e5",
+      "id": "b5ea0570-0035-4afb-acff-83d423ad22b6",
       "details": {
         "calories_burned": 432,
         "splat_points": 23,
@@ -6424,17 +6424,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e36252a9-c644-45ff-8210-6e5616effc15",
+      "id": "cc2a8d66-2f3a-4815-9f02-b231f337aa46",
       "details": {
         "calories_burned": 310,
         "splat_points": 13,
@@ -6454,17 +6454,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Shane Gaines"
+          "first_name": "Jose"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "18036642-e99d-4489-8c5c-9147f8ecf022",
+      "id": "d1a4eba6-2db1-4ec5-81c7-29d8cd1127c5",
       "details": {
         "calories_burned": 482,
         "splat_points": 11,
@@ -6484,17 +6484,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "37ca2a94-12e1-4c80-aa17-d4a765a85d8c",
+      "id": "b54aa00f-8b51-45a1-a38c-29b0748371dc",
       "details": {
         "calories_burned": 459,
         "splat_points": 26,
@@ -6514,17 +6514,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "49056fbe-9e48-4635-8b0f-3d2588881d05",
+      "id": "536f34b9-47f6-420f-a582-186b2f52e55d",
       "details": {
         "calories_burned": 482,
         "splat_points": 16,
@@ -6544,17 +6544,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1940d6da-6d7c-4f90-9604-5511dce834f4",
+      "id": "00e562a6-00f9-4a53-8267-d81423a5e737",
       "details": {
         "calories_burned": 336,
         "splat_points": 2,
@@ -6574,17 +6574,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e13b54d0-e004-47fb-9f8f-7404e9399d20",
+      "id": "d9ca9fbf-d6e1-46cf-8a35-81da5e3f7cff",
       "details": {
         "calories_burned": 482,
         "splat_points": 9,
@@ -6604,17 +6604,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1b0b214e-72c1-487a-bf95-46960e55270c",
+      "id": "487045e2-6ec9-47d8-b628-9c5b385811c3",
       "details": {
         "calories_burned": 339,
         "splat_points": 2,
@@ -6634,17 +6634,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Jenna Hansen"
+          "first_name": "Brent"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d14c6ad0-6c9b-4220-8b2e-ea59c643dc1a",
+      "id": "bf1a05fd-83d7-4c4f-afb4-eceb64bf4b50",
       "details": {
         "calories_burned": 459,
         "splat_points": 10,
@@ -6664,17 +6664,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8b601615-9e72-437b-96a8-8b7d99d19c29",
+      "id": "745f2312-0c20-4eef-9ada-ce8936d7cb47",
       "details": {
         "calories_burned": 487,
         "splat_points": 17,
@@ -6694,17 +6694,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b0efee0a-8bda-4f8a-93a4-2f4a5a73e2ae",
+      "id": "a19721ce-fab3-4c09-983c-7ebf548b691c",
       "details": {
         "calories_burned": 323,
         "splat_points": 0,
@@ -6724,17 +6724,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "43e1305e-6c64-47e2-94f7-5cbee9268e54",
+      "id": "63731524-73b7-4c63-a012-05f29489de93",
       "details": {
         "calories_burned": 564,
         "splat_points": 23,
@@ -6754,17 +6754,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b777fae0-24e0-4d45-a4b9-c36b486ea68c",
+      "id": "2759c562-b77f-4115-aa58-4cb54b60ac39",
       "details": {
         "calories_burned": 506,
         "splat_points": 18,
@@ -6784,17 +6784,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8d7885cc-be62-4e7d-9121-bb5d2b8a4784",
+      "id": "5159a7c4-9d18-43aa-a8a5-77c225f12adf",
       "details": {
         "calories_burned": 337,
         "splat_points": 2,
@@ -6814,17 +6814,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b2f031b6-b120-4528-a3f5-b24dba00f556",
+      "id": "4264ab9d-118d-4c47-834c-9e337fe33d3f",
       "details": {
         "calories_burned": 497,
         "splat_points": 11,
@@ -6844,17 +6844,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "077e95a2-0ffc-4df5-9a02-22cc92f3443b",
+      "id": "0cecd99f-56ab-4f83-bfa0-7788803eb4de",
       "details": {
         "calories_burned": 427,
         "splat_points": 14,
@@ -6874,17 +6874,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5cff0318-7c62-4c2a-88ee-e8d244c31fd9",
+      "id": "53389e6c-7314-45c1-9539-77f602ad640a",
       "details": {
         "calories_burned": 514,
         "splat_points": 10,
@@ -6904,17 +6904,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "74e8a223-54a3-46ce-897d-df7c98ffa4cf",
+      "id": "311ff84c-1b5d-4cb2-8f1d-2c383433451c",
       "details": {
         "calories_burned": 450,
         "splat_points": 7,
@@ -6934,17 +6934,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e49ac200-4832-4103-bdce-333b177aa0be",
+      "id": "94c6b27d-8db1-4911-bf63-b805afc05c88",
       "details": {
         "calories_burned": 339,
         "splat_points": 5,
@@ -6964,17 +6964,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "fa2d933e-6532-45dc-8e97-1ae9ee09ca32",
+      "id": "7af664d5-b459-4f2f-bba9-92e0640b8a34",
       "details": {
         "calories_burned": 460,
         "splat_points": 14,
@@ -6994,17 +6994,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e48d4f7a-c62d-408b-81b1-18d5fad641e7",
+      "id": "cb7cd9f3-5d96-46f4-938e-0879e0719620",
       "details": {
         "calories_burned": 476,
         "splat_points": 12,
@@ -7024,17 +7024,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Thomas Hall"
+          "first_name": "Angela"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5da256c6-81a8-4f42-8f01-b7d1dba14a55",
+      "id": "3f3f3725-e41a-46b1-90bc-c15786bdf8ac",
       "details": {
         "calories_burned": 442,
         "splat_points": 15,
@@ -7054,17 +7054,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "10d5de22-f606-49ff-a6f1-4cab98ad4a43",
+      "id": "c45d60e2-7399-489e-b3e9-823344333ced",
       "details": {
         "calories_burned": 357,
         "splat_points": 5,
@@ -7084,17 +7084,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8b09c1ef-d54f-4db5-8ea7-873bdfaf0923",
+      "id": "47aac516-5c4a-4edf-a536-769e7c82a621",
       "details": {
         "calories_burned": 505,
         "splat_points": 21,
@@ -7114,17 +7114,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "87141baf-60a2-4774-ad23-471d9f127048",
+      "id": "94ef02c9-c999-4d28-971e-c6f78f7b24a9",
       "details": {
         "calories_burned": 435,
         "splat_points": 17,
@@ -7144,17 +7144,17 @@
         "name": "Orange 3G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "d6f3fea3-6868-4d86-96f4-fa494051b301",
+      "id": "0a64b9b9-69a4-4d87-8e30-c5dcdf2d6fcb",
       "details": {
         "calories_burned": 342,
         "splat_points": 2,
@@ -7174,17 +7174,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "94a8b7b8-8e04-4f55-84b2-7a9041772a30",
+      "id": "1d8a747e-c48d-4c10-95bb-432448893baf",
       "details": {
         "calories_burned": 503,
         "splat_points": 18,
@@ -7204,17 +7204,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "cfb4fc42-c111-4056-83c0-3f71e07cd90e",
+      "id": "1833cc6e-462c-43fe-bc81-b008b4128749",
       "details": {
         "calories_burned": 333,
         "splat_points": 2,
@@ -7234,17 +7234,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christine Rodgers"
+          "first_name": "Andrea"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c651f528-0f41-4fb8-8d11-2b0459b16412",
+      "id": "ea92068f-3f48-4131-ba73-755a717fd726",
       "details": {
         "calories_burned": 507,
         "splat_points": 23,
@@ -7264,17 +7264,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "11cfd7d2-3206-417d-820a-8d118c4973ff",
+      "id": "456598fe-3565-4d3b-9811-2e65860cf851",
       "details": {
         "calories_burned": 549,
         "splat_points": 24,
@@ -7294,17 +7294,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b3ad44b7-2f37-447a-8bda-e2f0f26d0e95",
+      "id": "fb18f04a-43bf-42a4-a718-8abc1222fb0d",
       "details": {
         "calories_burned": 313,
         "splat_points": 1,
@@ -7324,17 +7324,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "5f47140b-b59c-4221-8b65-1030fa5bad7a",
+      "id": "32970da8-4cb5-449a-83f8-3772164bcdb7",
       "details": {
         "calories_burned": 489,
         "splat_points": 17,
@@ -7354,17 +7354,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "00f0b695-3e44-4621-b1d0-84505dc98680",
+      "id": "885660ae-4f87-4509-89e2-1111540dcea3",
       "details": {
         "calories_burned": 549,
         "splat_points": 18,
@@ -7384,17 +7384,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "dfe46e7d-a57d-42e2-b6b0-398088746eb1",
+      "id": "4eb850fb-c38c-45b7-9665-3013edfb9e89",
       "details": {
         "calories_burned": 311,
         "splat_points": 1,
@@ -7414,17 +7414,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "082cc1e7-a400-43bc-a4e8-6d9760133859",
+      "id": "be23278d-e7af-47d8-ab34-b2cd42e913da",
       "details": {
         "calories_burned": 547,
         "splat_points": 24,
@@ -7444,17 +7444,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "8b0ac308-d01e-459c-894a-c4cac525ab6f",
+      "id": "b5b24011-03df-48fd-91f5-8d637b726b51",
       "details": {
         "calories_burned": 344,
         "splat_points": 1,
@@ -7474,17 +7474,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4b1acaab-5e00-4837-98ae-c9682f0c9a27",
+      "id": "02c8d618-1584-4381-823b-fda0782a40f2",
       "details": {
         "calories_burned": 547,
         "splat_points": 23,
@@ -7504,17 +7504,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "edc85f04-1f92-45ed-a322-d57e9713026e",
+      "id": "00af32fd-f5ff-4c26-b72e-bf354654b6e4",
       "details": {
         "calories_burned": 272,
         "splat_points": 2,
@@ -7534,17 +7534,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "188be744-4544-443a-8029-b8abbfc47352",
+      "id": "19ee0f14-fc28-4297-8fff-b655881b22d6",
       "details": {
         "calories_burned": 477,
         "splat_points": 17,
@@ -7564,17 +7564,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "41ed108c-292e-4059-96d6-31db40ea602f",
+      "id": "b53c662a-5556-4c62-ac43-0972712924d3",
       "details": {
         "calories_burned": 332,
         "splat_points": 2,
@@ -7594,17 +7594,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4ae7647e-04f5-404f-acc8-3a8357c6570d",
+      "id": "6a8372fe-3f5a-43c1-a527-0caa3aba4a63",
       "details": {
         "calories_burned": 583,
         "splat_points": 32,
@@ -7624,17 +7624,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "3cdff150-c25e-4453-a76f-796666ca025a",
+      "id": "3f4d1d3c-9742-41a7-85e6-b166c57ebeb0",
       "details": {
         "calories_burned": 357,
         "splat_points": 11,
@@ -7654,17 +7654,17 @@
         "name": "Orange Tornado",
         "type": "OTHER",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "99697683-042f-49b4-9aed-9ce3c68288d5",
+      "id": "d2c9ede9-7ac7-480a-b3a2-84e9dc657123",
       "details": {
         "calories_burned": 399,
         "splat_points": 2,
@@ -7684,17 +7684,17 @@
         "name": "Strength 50 (Total)",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Christopher Moreno"
+          "first_name": "Christopher"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "a692b848-2549-444e-a19d-e464545ee4ca",
+      "id": "46ef0a17-e68a-4706-8023-d8a6decf5580",
       "details": {
         "calories_burned": 548,
         "splat_points": 26,
@@ -7714,17 +7714,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f7ac1762-9d00-4ce2-aa08-f6074f4e59ca",
+      "id": "733f5bc7-ab13-42ef-83ef-1c9112f559f6",
       "details": {
         "calories_burned": 417,
         "splat_points": 8,
@@ -7744,17 +7744,17 @@
         "name": "Tread 50 / Strength 50",
         "type": "STRENGTH_50",
         "coach": {
-          "first_name": "Brian Williams"
+          "first_name": "Keith"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "7b9857c6-8bc4-4dc7-a515-fbb90f6ba229",
+      "id": "6ca56f5e-5a68-44ce-85db-20b213248a2c",
       "details": {
         "calories_burned": 548,
         "splat_points": 26,
@@ -7774,17 +7774,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "be8daca6-ff2c-4658-966a-89cff0a0a744",
+      "id": "a696c149-a1f1-44f6-baa3-076b209b5872",
       "details": {
         "calories_burned": 492,
         "splat_points": 19,
@@ -7804,17 +7804,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b0ae1829-c75d-4f35-a7f0-782e52b8e7dc",
+      "id": "44e83d02-1681-47ea-98de-8db91fc7912b",
       "details": {
         "calories_burned": 523,
         "splat_points": 26,
@@ -7834,17 +7834,17 @@
         "name": "Orange Tornado",
         "type": "OTHER",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f3ba7146-bfb2-43bb-9ca1-e25a863b3ef4",
+      "id": "fb6c5e42-ada5-4068-b539-fc0dbc64a0f8",
       "details": {
         "calories_burned": 532,
         "splat_points": 26,
@@ -7864,17 +7864,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "51d8091f-eef5-4884-b422-b1c3bcfb9e33",
+      "id": "226a46de-e8ab-4da0-8723-fa48d891be9e",
       "details": {
         "calories_burned": 545,
         "splat_points": 27,
@@ -7894,17 +7894,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "9af43ee4-c3b9-4941-a71c-d8b2869ee7df",
+      "id": "1dd1a822-d427-4ffc-9c24-c4abb67f13f9",
       "details": {
         "calories_burned": 584,
         "splat_points": 33,
@@ -7924,17 +7924,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4081a8e9-3486-48e5-8300-e674c9b3db46",
+      "id": "10e1f15f-7527-4fd2-9822-d8d749d141f2",
       "details": {
         "calories_burned": 563,
         "splat_points": 28,
@@ -7954,17 +7954,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "7d6a0e12-6819-4675-a7b6-6ca15ebbc06e",
+      "id": "a636373d-65d1-46d5-bfd8-9a2d8b9939e7",
       "details": {
         "calories_burned": 560,
         "splat_points": 30,
@@ -7984,17 +7984,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "e23df8b6-81c4-411b-a4b2-9bab8aa7e151",
+      "id": "9035d214-7b4a-4650-b3fc-393976566c3a",
       "details": {
         "calories_burned": 546,
         "splat_points": 35,
@@ -8014,17 +8014,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "37e87aae-d5ae-4e3d-ba3c-00085436e485",
+      "id": "6405ccdd-09e3-48a4-aeb3-93188477a7f7",
       "details": {
         "calories_burned": 578,
         "splat_points": 36,
@@ -8044,17 +8044,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f628eae7-8709-4b17-8c05-6fa0ae9ed59e",
+      "id": "96cb606f-c595-46c8-9a2e-1a7025fc9bf4",
       "details": {
         "calories_burned": 382,
         "splat_points": 19,
@@ -8074,17 +8074,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "4f704467-bd35-4cda-84cc-4248c9000f74",
+      "id": "856f5c1c-350d-4e27-8f61-ef82dd852880",
       "details": {
         "calories_burned": 541,
         "splat_points": 27,
@@ -8104,17 +8104,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "7096b2ab-baf7-47c0-bc90-4360d2c4ad7c",
+      "id": "5cae1e54-3be0-4806-ac4c-8d0d1cb87039",
       "details": {
         "calories_burned": 531,
         "splat_points": 23,
@@ -8134,17 +8134,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "f35c335d-50e4-4449-b135-06801b34313d",
+      "id": "b325c354-717a-4013-ae35-9abde0fa901b",
       "details": {
         "calories_burned": 517,
         "splat_points": 17,
@@ -8164,17 +8164,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Elizabeth Garcia"
+          "first_name": "Madison"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "1af34183-ecdc-41cd-b4df-de6aa3f5bf98",
+      "id": "7f340410-7f16-440d-9877-2047fab177c0",
       "details": {
         "calories_burned": 558,
         "splat_points": 26,
@@ -8194,17 +8194,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jonathan Beard"
+          "first_name": "Jessica"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "201fde97-2a26-479f-88c0-e77515c259ee",
+      "id": "6ff2db24-c3dd-4273-8f44-9cd31db89551",
       "details": {
         "calories_burned": 511,
         "splat_points": 13,
@@ -8224,17 +8224,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jenna Hansen"
+          "first_name": "Brent"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "ab28c3c6-b0b1-4911-9840-8fe4746b1cf1",
+      "id": "bf60e503-b23f-46ff-b56e-1eb11ea65d32",
       "details": {
         "calories_burned": 470,
         "splat_points": 10,
@@ -8254,17 +8254,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Alyssa Warren"
+          "first_name": "Amber"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "10a7385f-d1b0-407c-8a0c-18d79189bb99",
+      "id": "c475c96d-be98-4ae9-a455-4419ff05f8f3",
       "details": {
         "calories_burned": 531,
         "splat_points": 24,
@@ -8284,17 +8284,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Alyssa Warren"
+          "first_name": "Amber"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "cca47c17-b9bd-4065-8b3c-5cc469c152c3",
+      "id": "3e3750c6-6cf2-4859-a302-ba1bd052c468",
       "details": {
         "calories_burned": 519,
         "splat_points": 25,
@@ -8314,17 +8314,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Alyssa Warren"
+          "first_name": "Amber"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "6196333b-542f-4b8c-bae7-aacf0ef35436",
+      "id": "9415e9e5-39c9-479b-bd80-29e80ff4c38d",
       "details": {
         "calories_burned": 265,
         "splat_points": 0,
@@ -8344,17 +8344,17 @@
         "name": "Lift 45 (Total Body 1)",
         "type": "OTHER",
         "coach": {
-          "first_name": "Elizabeth Wright"
+          "first_name": "Margaret"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b713917c-b74c-4829-a819-059cc65b53aa",
+      "id": "c850b588-c9ee-4afb-90e9-0794dbdfc8c2",
       "details": {
         "calories_burned": 446,
         "splat_points": 5,
@@ -8374,17 +8374,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Jenna Hansen"
+          "first_name": "Brent"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "b6526b09-e658-4aeb-b1a4-74afa3899e17",
+      "id": "c2114259-33ac-40cd-8c9c-42889304d784",
       "details": {
         "calories_burned": 572,
         "splat_points": 31,
@@ -8404,17 +8404,17 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Alyssa Warren"
+          "first_name": "Amber"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     },
     {
-      "id": "c32ec4d9-7382-4059-bba8-59fead7f2661",
+      "id": "dede6fa7-d19e-47c7-b8ba-f5327a4e4006",
       "details": {
         "calories_burned": 376,
         "splat_points": 4,
@@ -8434,12 +8434,12 @@
         "name": "Orange 60 Min 2G",
         "type": "ORANGE_60",
         "coach": {
-          "first_name": "Alyssa Warren"
+          "first_name": "Amber"
         },
         "studio": {
-          "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
           "license_number": "0590",
-          "name": "Lake Nicholas - North, MH"
+          "name": "Oconnorport - North, PR"
         }
       }
     }

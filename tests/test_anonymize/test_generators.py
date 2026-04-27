@@ -78,7 +78,7 @@ def test_seeded_determinism() -> None:
     assert gen1.fake_email() == gen2.fake_email()
     assert gen1.fake_phone() == gen2.fake_phone()
     assert gen1.fake_biometric_scalar("weight", 150.0) == gen2.fake_biometric_scalar("weight", 150.0)
-    assert gen1.fake_name() == gen2.fake_name()
+    assert gen1.fake_first_name() == gen2.fake_first_name()
     assert gen1.fake_image_url() == gen2.fake_image_url()
 
 
@@ -96,9 +96,14 @@ def test_fake_numeric_id_returns_int(gen: FakeDataGenerators) -> None:
     assert result > 0
 
 
-def test_fake_name_returns_string(gen: FakeDataGenerators) -> None:
-    """fake_name() must return a non-empty string."""
-    result = gen.fake_name()
+def test_fake_first_name_returns_string(gen: FakeDataGenerators) -> None:
+    result = gen.fake_first_name()
+    assert isinstance(result, str)
+    assert len(result) > 0
+
+
+def test_fake_last_name_returns_string(gen: FakeDataGenerators) -> None:
+    result = gen.fake_last_name()
     assert isinstance(result, str)
     assert len(result) > 0
 

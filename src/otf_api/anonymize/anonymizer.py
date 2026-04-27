@@ -611,7 +611,10 @@ class Anonymizer:
                 return str(fake_id)
             return fake_id
         if category == "name":
-            return g.fake_name()
+            key_lower = key.lower()
+            if "last" in key_lower:
+                return g.fake_last_name()
+            return g.fake_first_name()
         if category == "email":
             return g.fake_email()
         if category == "phone":

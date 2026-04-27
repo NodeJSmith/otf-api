@@ -1,8 +1,8 @@
 {
   "items": [
     {
-      "id": "90376040-a779-458b-bbb7-87a792ea200f",
-      "ot_base_class_uuid": "8d20272a-5674-41dd-ac5a-7d49432d6ff8",
+      "id": "cde45c2e-fded-4619-81e0-fa79b32b1983",
+      "ot_base_class_uuid": "0812193f-8395-4252-b3a3-0d701d1940b1",
       "starts_at": "2026-04-28T15:00:00.000Z",
       "starts_at_local": "2026-04-28T10:00:00",
       "ends_at": "2026-04-28T15:50:00.000Z",
@@ -10,27 +10,27 @@
       "name": "Tread 50",
       "type": "TREAD_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "256460193",
-        "first_name": "Elizabeth Garcia",
-        "image_url": "https://placeholder.example.com/profile/476950.jpg"
+        "mbo_staff_id": "408659902",
+        "first_name": "Madison",
+        "image_url": "https://placeholder.example.com/profile/954839.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -45,8 +45,8 @@
       "updated_at": "2026-03-31T05:00:06.908Z"
     },
     {
-      "id": "423c495b-c470-49a5-8f03-14ccf4315de6",
-      "ot_base_class_uuid": "5d2ac8bc-97e1-447e-8f78-e11736886801",
+      "id": "416f4dc9-e709-4481-9bd8-70027bd077a8",
+      "ot_base_class_uuid": "0ce4ad11-7afb-49be-be14-fe2ebcba851b",
       "starts_at": "2026-04-30T15:00:00.000Z",
       "starts_at_local": "2026-04-30T10:00:00",
       "ends_at": "2026-04-30T15:50:00.000Z",
@@ -54,27 +54,27 @@
       "name": "Tread 50",
       "type": "TREAD_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "706964361",
-        "first_name": "Kevin Johnson",
-        "image_url": "https://placeholder.example.com/profile/656315.jpg"
+        "mbo_staff_id": "944591457",
+        "first_name": "Gregory",
+        "image_url": "https://placeholder.example.com/profile/748095.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -89,8 +89,8 @@
       "updated_at": "2026-04-02T05:00:14.941Z"
     },
     {
-      "id": "c642ba7d-9d39-4dad-a354-bcb81ba901e1",
-      "ot_base_class_uuid": "474363d0-ca45-44a2-bb92-b99f08944f52",
+      "id": "7c1b3cf4-4665-46bf-ba1b-a52f56e3bcd6",
+      "ot_base_class_uuid": "2f2faab7-e0e3-417d-ab3f-4d0a3e46cc1c",
       "starts_at": "2026-05-02T15:30:00.000Z",
       "starts_at_local": "2026-05-02T10:30:00",
       "ends_at": "2026-05-02T16:20:00.000Z",
@@ -98,27 +98,27 @@
       "name": "Strength 50 (Total)",
       "type": "STRENGTH_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "20029832",
-        "first_name": "Christopher Moreno",
-        "image_url": "https://placeholder.example.com/profile/159172.jpg"
+        "mbo_staff_id": "117938667",
+        "first_name": "Christopher",
+        "image_url": "https://placeholder.example.com/profile/593029.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -133,8 +133,8 @@
       "updated_at": "2026-04-26T16:09:26.218Z"
     },
     {
-      "id": "33f465b9-7315-4b17-b104-98d9492dbe7b",
-      "ot_base_class_uuid": "75ee3423-32e3-437b-8797-ff5d0917073f",
+      "id": "8acbea0c-2f08-4fe0-b604-a162db17fd4b",
+      "ot_base_class_uuid": "288bfbe3-5be0-40a1-8848-8c9c91e19cb8",
       "starts_at": "2026-05-05T15:00:00.000Z",
       "starts_at_local": "2026-05-05T10:00:00",
       "ends_at": "2026-05-05T15:50:00.000Z",
@@ -142,27 +142,27 @@
       "name": "Tread 50",
       "type": "TREAD_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "256460193",
-        "first_name": "Elizabeth Garcia",
-        "image_url": "https://placeholder.example.com/profile/568821.jpg"
+        "mbo_staff_id": "408659902",
+        "first_name": "Madison",
+        "image_url": "https://placeholder.example.com/profile/594620.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -177,8 +177,8 @@
       "updated_at": "2026-04-07T05:00:09.313Z"
     },
     {
-      "id": "f7c9660a-362b-42ad-8bfa-983f0bbbe182",
-      "ot_base_class_uuid": "e8dac7dc-fcbc-4245-86f1-11f8b489ba5b",
+      "id": "3fea1f75-ec40-44ba-8d48-aeb5d1e3e958",
+      "ot_base_class_uuid": "63663481-d8a6-4224-90b7-da40b9b34ee7",
       "starts_at": "2026-05-07T15:00:00.000Z",
       "starts_at_local": "2026-05-07T10:00:00",
       "ends_at": "2026-05-07T15:50:00.000Z",
@@ -186,27 +186,27 @@
       "name": "Tread 50",
       "type": "TREAD_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "706964361",
-        "first_name": "Kevin Johnson",
-        "image_url": "https://placeholder.example.com/profile/483763.jpg"
+        "mbo_staff_id": "944591457",
+        "first_name": "Gregory",
+        "image_url": "https://placeholder.example.com/profile/790334.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -221,8 +221,8 @@
       "updated_at": "2026-04-09T05:00:06.800Z"
     },
     {
-      "id": "2ddb2248-ea0b-4199-b326-397985dbda57",
-      "ot_base_class_uuid": "22153d4c-39a2-4471-91fe-2fd0831862e3",
+      "id": "babb060e-6db7-49c0-aced-809fe32dc2be",
+      "ot_base_class_uuid": "a282bbfa-b564-41c8-a15e-16c15f081999",
       "starts_at": "2026-05-09T15:30:00.000Z",
       "starts_at_local": "2026-05-09T10:30:00",
       "ends_at": "2026-05-09T16:20:00.000Z",
@@ -230,26 +230,26 @@
       "name": "Strength 50 (Total)",
       "type": "STRENGTH_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "772327593",
-        "first_name": "Felicia Soto"
+        "mbo_staff_id": "451685695",
+        "first_name": "Nathan"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -264,8 +264,8 @@
       "updated_at": "2026-04-25T14:14:07.269Z"
     },
     {
-      "id": "892e3f39-3fe8-426c-98b8-bd9b1747ff0a",
-      "ot_base_class_uuid": "8d8eb449-f711-403f-ac43-70e14d8af69d",
+      "id": "eb479184-5bc3-4bee-a1bf-7188f9247991",
+      "ot_base_class_uuid": "68feb082-f619-4f9b-a844-8d68811348f1",
       "starts_at": "2026-05-12T15:00:00.000Z",
       "starts_at_local": "2026-05-12T10:00:00",
       "ends_at": "2026-05-12T15:50:00.000Z",
@@ -273,27 +273,27 @@
       "name": "Tread 50",
       "type": "TREAD_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "256460193",
-        "first_name": "Elizabeth Garcia",
-        "image_url": "https://placeholder.example.com/profile/78049.jpg"
+        "mbo_staff_id": "408659902",
+        "first_name": "Madison",
+        "image_url": "https://placeholder.example.com/profile/79269.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -308,8 +308,8 @@
       "updated_at": "2026-04-14T05:00:06.058Z"
     },
     {
-      "id": "ce2b875d-868b-43b5-851f-219834654cf6",
-      "ot_base_class_uuid": "05b38cb1-9945-4d57-a0ad-bef7c04f5431",
+      "id": "2a194e78-546d-417b-b7ff-5a31dbee1796",
+      "ot_base_class_uuid": "301d8a84-df44-45b4-9a3a-95651c6e7bd0",
       "starts_at": "2026-05-14T15:00:00.000Z",
       "starts_at_local": "2026-05-14T10:00:00",
       "ends_at": "2026-05-14T15:50:00.000Z",
@@ -317,27 +317,27 @@
       "name": "Tread 50",
       "type": "TREAD_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "706964361",
-        "first_name": "Kevin Johnson",
-        "image_url": "https://placeholder.example.com/profile/181281.jpg"
+        "mbo_staff_id": "944591457",
+        "first_name": "Gregory",
+        "image_url": "https://placeholder.example.com/profile/707899.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -352,8 +352,8 @@
       "updated_at": "2026-04-16T05:00:07.012Z"
     },
     {
-      "id": "075a950b-80c9-4e3c-bf92-bba237e1a693",
-      "ot_base_class_uuid": "5497a30a-762c-4a3d-99ce-3b62a92d396f",
+      "id": "febbf21f-de2f-4871-bd51-b369e2f273ae",
+      "ot_base_class_uuid": "87ed24ba-2291-4c37-bfc8-436533af061b",
       "starts_at": "2026-05-16T15:30:00.000Z",
       "starts_at_local": "2026-05-16T10:30:00",
       "ends_at": "2026-05-16T16:20:00.000Z",
@@ -361,27 +361,27 @@
       "name": "Strength 50 (Total)",
       "type": "STRENGTH_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "20029832",
-        "first_name": "Christopher Moreno",
-        "image_url": "https://placeholder.example.com/profile/723278.jpg"
+        "mbo_staff_id": "117938667",
+        "first_name": "Christopher",
+        "image_url": "https://placeholder.example.com/profile/113754.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -396,8 +396,8 @@
       "updated_at": "2026-04-25T14:14:45.812Z"
     },
     {
-      "id": "2c8b16df-3212-4c47-80ff-40c5cbc6a9f4",
-      "ot_base_class_uuid": "5b270fd5-6d5d-423b-9cb3-69675f11e6bd",
+      "id": "b1f22914-9ed4-4d16-b370-d614dd7a0c6f",
+      "ot_base_class_uuid": "29e8fa09-e666-4e8a-881d-4cd4c334629e",
       "starts_at": "2026-05-19T15:00:00.000Z",
       "starts_at_local": "2026-05-19T10:00:00",
       "ends_at": "2026-05-19T15:50:00.000Z",
@@ -405,27 +405,27 @@
       "name": "Tread 50",
       "type": "TREAD_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "256460193",
-        "first_name": "Elizabeth Garcia",
-        "image_url": "https://placeholder.example.com/profile/320329.jpg"
+        "mbo_staff_id": "408659902",
+        "first_name": "Madison",
+        "image_url": "https://placeholder.example.com/profile/900374.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -440,8 +440,8 @@
       "updated_at": "2026-04-21T05:05:06.804Z"
     },
     {
-      "id": "a56b3d3b-fc5c-4b07-8d1c-08e9816ddf25",
-      "ot_base_class_uuid": "767d33b5-5e10-4851-8f9a-24b1b68a6851",
+      "id": "846f8450-5316-4279-bc89-ca9bcd8b849c",
+      "ot_base_class_uuid": "249176da-14f4-413e-a918-3eca3091a72b",
       "starts_at": "2026-05-21T15:00:00.000Z",
       "starts_at_local": "2026-05-21T10:00:00",
       "ends_at": "2026-05-21T15:50:00.000Z",
@@ -449,27 +449,27 @@
       "name": "Tread 50",
       "type": "TREAD_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "706964361",
-        "first_name": "Kevin Johnson",
-        "image_url": "https://placeholder.example.com/profile/583143.jpg"
+        "mbo_staff_id": "944591457",
+        "first_name": "Gregory",
+        "image_url": "https://placeholder.example.com/profile/739919.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -484,8 +484,8 @@
       "updated_at": "2026-04-23T05:05:06.572Z"
     },
     {
-      "id": "059c2d37-a4a5-40a3-b251-cc75f4c49ea1",
-      "ot_base_class_uuid": "ca637790-9434-4224-9a00-b6e4a9ae318c",
+      "id": "179a9a9f-90b3-4ad4-900a-84ed12096715",
+      "ot_base_class_uuid": "5d2c805c-0b46-44e6-ad47-be83c6f736f0",
       "starts_at": "2026-05-23T15:30:00.000Z",
       "starts_at_local": "2026-05-23T10:30:00",
       "ends_at": "2026-05-23T16:20:00.000Z",
@@ -493,27 +493,27 @@
       "name": "Strength 50 (Total)",
       "type": "STRENGTH_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "20029832",
-        "first_name": "Christopher Moreno",
-        "image_url": "https://placeholder.example.com/profile/728557.jpg"
+        "mbo_staff_id": "117938667",
+        "first_name": "Christopher",
+        "image_url": "https://placeholder.example.com/profile/584750.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -528,8 +528,8 @@
       "updated_at": "2026-04-25T14:15:11.252Z"
     },
     {
-      "id": "3f62e37d-a021-4f8a-b6d6-c0d4e141afd5",
-      "ot_base_class_uuid": "d7e163b3-2c49-43cf-8b53-7f4adbdba45a",
+      "id": "e57a304e-092e-4b82-aea0-417d2af33cde",
+      "ot_base_class_uuid": "0e94d324-505d-428a-a9d9-7a83ac7a379d",
       "starts_at": "2026-04-27T10:00:00.000Z",
       "starts_at_local": "2026-04-27T05:00:00",
       "ends_at": "2026-04-27T11:00:00.000Z",
@@ -537,27 +537,27 @@
       "name": "Orange 3G",
       "type": "ORANGE_60",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "256460193",
-        "first_name": "Elizabeth Garcia",
-        "image_url": "https://placeholder.example.com/profile/632637.jpg"
+        "mbo_staff_id": "408659902",
+        "first_name": "Madison",
+        "image_url": "https://placeholder.example.com/profile/207604.jpg"
       },
       "max_capacity": 36,
       "booking_capacity": 36,
@@ -572,8 +572,8 @@
       "updated_at": "2026-04-27T01:27:56.116Z"
     },
     {
-      "id": "bf934558-96fc-460e-9743-7b75ff4838c5",
-      "ot_base_class_uuid": "b36036e7-13c3-48f1-b508-105cd6a25ae7",
+      "id": "b1e9d4d3-d34e-4ce1-8206-760a3fa7d6c3",
+      "ot_base_class_uuid": "bb27f9e6-9b32-4e46-9ab5-602eb3873620",
       "starts_at": "2026-04-27T11:15:00.000Z",
       "starts_at_local": "2026-04-27T06:15:00",
       "ends_at": "2026-04-27T12:15:00.000Z",
@@ -581,27 +581,27 @@
       "name": "Orange 3G",
       "type": "ORANGE_60",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "256460193",
-        "first_name": "Elizabeth Garcia",
-        "image_url": "https://placeholder.example.com/profile/803274.jpg"
+        "mbo_staff_id": "408659902",
+        "first_name": "Madison",
+        "image_url": "https://placeholder.example.com/profile/221545.jpg"
       },
       "max_capacity": 36,
       "booking_capacity": 36,
@@ -616,8 +616,8 @@
       "updated_at": "2026-04-27T01:29:15.075Z"
     },
     {
-      "id": "0e48a379-3a38-44d4-9b6f-b8f78fe02974",
-      "ot_base_class_uuid": "f8a0cf20-20b0-4886-9ff2-4d9af8628c5b",
+      "id": "1c3c5d9a-99d9-4f15-a150-a5b8a782b4d9",
+      "ot_base_class_uuid": "265f73b6-666d-413a-b366-5c16a7736adb",
       "starts_at": "2026-04-27T12:30:00.000Z",
       "starts_at_local": "2026-04-27T07:30:00",
       "ends_at": "2026-04-27T13:20:00.000Z",
@@ -625,27 +625,27 @@
       "name": "Tread 50",
       "type": "TREAD_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "256460193",
-        "first_name": "Elizabeth Garcia",
-        "image_url": "https://placeholder.example.com/profile/286997.jpg"
+        "mbo_staff_id": "408659902",
+        "first_name": "Madison",
+        "image_url": "https://placeholder.example.com/profile/694996.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -660,8 +660,8 @@
       "updated_at": "2026-04-23T11:03:33.928Z"
     },
     {
-      "id": "166198c9-8d32-44b5-9ccd-1cca8e0dcbee",
-      "ot_base_class_uuid": "85d6cb41-f266-4578-9226-40cd2d0aac6c",
+      "id": "db4100e1-b21e-4be9-9615-2c925e993f74",
+      "ot_base_class_uuid": "acf51fb2-489b-4d05-b7f6-86d6610f97bd",
       "starts_at": "2026-04-27T12:30:00.000Z",
       "starts_at_local": "2026-04-27T07:30:00",
       "ends_at": "2026-04-27T13:20:00.000Z",
@@ -669,27 +669,27 @@
       "name": "Strength 50 (Upper)",
       "type": "STRENGTH_50",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "256460193",
-        "first_name": "Elizabeth Garcia",
-        "image_url": "https://placeholder.example.com/profile/91933.jpg"
+        "mbo_staff_id": "408659902",
+        "first_name": "Madison",
+        "image_url": "https://placeholder.example.com/profile/826676.jpg"
       },
       "max_capacity": 12,
       "booking_capacity": 12,
@@ -704,8 +704,8 @@
       "updated_at": "2026-04-27T01:15:13.301Z"
     },
     {
-      "id": "45842b78-d9da-4a2d-bba5-ccf76a1b7c40",
-      "ot_base_class_uuid": "89e07abf-6079-41ff-ae48-a5c14cb1d721",
+      "id": "514fc647-53f5-461e-8659-425e1284c454",
+      "ot_base_class_uuid": "006f039b-4e9b-4903-99ac-4ece74a2e62d",
       "starts_at": "2026-04-27T13:30:00.000Z",
       "starts_at_local": "2026-04-27T08:30:00",
       "ends_at": "2026-04-27T14:30:00.000Z",
@@ -713,27 +713,27 @@
       "name": "Orange 60 Min 2G",
       "type": "ORANGE_60",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "706964361",
-        "first_name": "Kevin Johnson",
-        "image_url": "https://placeholder.example.com/profile/723166.jpg"
+        "mbo_staff_id": "944591457",
+        "first_name": "Gregory",
+        "image_url": "https://placeholder.example.com/profile/207890.jpg"
       },
       "max_capacity": 24,
       "booking_capacity": 24,
@@ -748,8 +748,8 @@
       "updated_at": "2026-04-27T00:57:31.950Z"
     },
     {
-      "id": "41479a94-3996-4810-98e9-b33930b6034a",
-      "ot_base_class_uuid": "53caaf55-5253-4976-8cb0-34a30abbfee9",
+      "id": "d55ed3f5-bfd2-4346-9fea-943546de9f91",
+      "ot_base_class_uuid": "ef7f3054-5cb3-4d89-8468-273507a19aa4",
       "starts_at": "2026-04-27T14:45:00.000Z",
       "starts_at_local": "2026-04-27T09:45:00",
       "ends_at": "2026-04-27T15:45:00.000Z",
@@ -757,27 +757,27 @@
       "name": "Orange 60 Min 2G",
       "type": "ORANGE_60",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "706964361",
-        "first_name": "Kevin Johnson",
-        "image_url": "https://placeholder.example.com/profile/788900.jpg"
+        "mbo_staff_id": "944591457",
+        "first_name": "Gregory",
+        "image_url": "https://placeholder.example.com/profile/656817.jpg"
       },
       "max_capacity": 24,
       "booking_capacity": 24,
@@ -792,8 +792,8 @@
       "updated_at": "2026-04-27T00:32:57.976Z"
     },
     {
-      "id": "5df9fa05-4a6f-4a98-858d-b2c957553c7c",
-      "ot_base_class_uuid": "7b581192-b7dd-446f-b904-d967025619b5",
+      "id": "ef7e0ac4-6c05-4de7-b189-5a75019eb6f9",
+      "ot_base_class_uuid": "7bff99c7-c13c-4642-8379-113fb8a72bdf",
       "starts_at": "2026-04-27T16:30:00.000Z",
       "starts_at_local": "2026-04-27T11:30:00",
       "ends_at": "2026-04-27T17:00:00.000Z",
@@ -801,26 +801,26 @@
       "name": "Open Studio",
       "type": "OTHER",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "237224136",
-        "first_name": "Andrew Kim"
+        "mbo_staff_id": "12913006",
+        "first_name": "Jesse"
       },
       "max_capacity": 36,
       "booking_capacity": 36,
@@ -835,8 +835,8 @@
       "updated_at": "2026-03-27T05:00:52.362Z"
     },
     {
-      "id": "3f308775-79cf-4d79-848a-acc2243377cd",
-      "ot_base_class_uuid": "1f875aa2-16ed-483b-882d-8b179a37b41d",
+      "id": "121f988e-f410-42ae-9d7a-b8fe830ce9d4",
+      "ot_base_class_uuid": "183f3c2e-c2ac-42ed-90ae-12b3869e72e2",
       "starts_at": "2026-04-27T17:00:00.000Z",
       "starts_at_local": "2026-04-27T12:00:00",
       "ends_at": "2026-04-27T18:00:00.000Z",
@@ -844,26 +844,26 @@
       "name": "Open Studio",
       "type": "OTHER",
       "studio": {
-        "id": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "name": "Lake Nicholas - North, MH",
-        "mbo_studio_id": "240265693",
+        "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "name": "Oconnorport - North, PR",
+        "mbo_studio_id": "29387072",
         "time_zone": "America/Chicago",
         "currency_code": "USD",
         "address": {
-          "line1": "874 Timothy Fort Suite 739",
-          "city": "Andrewfurt",
-          "state": "LA",
-          "country": "BR",
-          "postal_code": "90281"
+          "line1": "2934 Moore Streets",
+          "city": "Lake Laurie",
+          "state": "AL",
+          "country": "SO",
+          "postal_code": "48248"
         },
-        "phone_number": "4102993037",
-        "latitude": 35.498964,
-        "longitude": -94.577771,
+        "phone_number": "5815382882",
+        "latitude": 42.046502,
+        "longitude": -93.615804,
         "country_code": "US"
       },
       "coach": {
-        "mbo_staff_id": "237224136",
-        "first_name": "Andrew Kim"
+        "mbo_staff_id": "12913006",
+        "first_name": "Jesse"
       },
       "max_capacity": 36,
       "booking_capacity": 36,

@@ -9,14 +9,14 @@
     },
     "studios": [
       {
-        "studioId": 30832388,
-        "studioUUId": "1f50fd03-5254-4713-8ed6-5bbba2a13e64",
-        "mboStudioId": 240265693,
+        "studioId": 857443149,
+        "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "mboStudioId": 29387072,
         "studioNumber": "0590",
-        "studioName": "Lake Nicholas - North, MH",
+        "studioName": "Oconnorport - North, PR",
         "studioPhysicalLocationId": 494,
         "timeZone": "America/Chicago",
-        "contactEmail": "wsmith@example.org",
+        "contactEmail": "leematthew@example.org",
         "studioToken": "REDACTED",
         "environment": "PROD",
         "pricingLevel": "",
@@ -52,22 +52,22 @@
         "isOtbeat": null,
         "distance": 0,
         "studioLocation": {
-          "physicalAddress": "4854 Ayala Prairie",
+          "physicalAddress": "0860 Shelby Ways Apt. 924",
           "physicalAddress2": null,
-          "physicalCity": "Andrewfurt",
-          "physicalState": "LA",
-          "physicalPostalCode": "90281",
+          "physicalCity": "Lake Laurie",
+          "physicalState": "AL",
+          "physicalPostalCode": "48248",
           "physicalRegion": "KS/MO-01",
-          "physicalCountry": "BR",
+          "physicalCountry": "SO",
           "country": {
             "countryId": 1,
             "countryCurrencyCode": "USD",
             "countryCurrencyName": "US Dollar",
             "currencyAlphabeticCode": "USD"
           },
-          "phoneNumber": "4102993037",
-          "latitude": 35.498964,
-          "longitude": -94.577771
+          "phoneNumber": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
         },
         "studioLocationLocalized": {
           "language": {
@@ -85,37 +85,37 @@
         },
         "socialMediaLinks": [
           {
-            "id": "a88d09b9-12f1-417f-8da4-f5c566720b99",
+            "id": "eeac66f0-f6a2-447e-967a-8ad0b52a290e",
             "languageId": "16",
             "name": "LinkedIn",
             "value": "https://www.linkedin.com/company/orangetheory-fitness"
           },
           {
-            "id": "a5df086e-aa90-4719-b18f-c80a49d651b1",
+            "id": "cb1458ae-3b55-413c-975d-20f0953645f3",
             "languageId": "16",
             "name": "Facebook",
             "value": "https://www.facebook.com/OrangeTheoryFitness"
           },
           {
-            "id": "9cceb548-faf5-48e1-a8ee-6a97f33e9951",
+            "id": "f0543848-f1a4-45eb-8a7f-cc9fc18ba2db",
             "languageId": "16",
             "name": "Instagram",
             "value": "https://www.instagram.com/orangetheory"
           },
           {
-            "id": "2f1120a7-58f9-4ef2-93ae-cbfee7070127",
+            "id": "e3d8cee6-3a8e-42f8-bbb1-1ba1009afd80",
             "languageId": "16",
             "name": "Web",
             "value": "https://www.orangetheory.com/en-us"
           },
           {
-            "id": "066e5e49-63c6-4870-8f7f-de836c442251",
+            "id": "775ed7dc-22c6-4ea5-a381-2085776c72a0",
             "languageId": "16",
             "name": "YouTube",
             "value": "https://www.youtube.com/Otheoryfitness"
           },
           {
-            "id": "d51a62e0-7446-416a-8309-f480b2830dad",
+            "id": "2d30d773-bc80-42de-b180-f4c4d9e0681a",
             "languageId": "16",
             "name": "Twitter",
             "value": "https://www.twitter.com/orangetheory"
@@ -123,14 +123,14 @@
         ]
       },
       {
-        "studioId": 895055725,
-        "studioUUId": "e5a7c346-265d-4a94-98fb-153522688d7c",
-        "mboStudioId": 521067989,
+        "studioId": 659617736,
+        "studioUUId": "1937e00d-0793-4580-9278-e1543a2be06f",
+        "mboStudioId": 170346572,
         "studioNumber": "1546",
-        "studioName": "Riverafurt - South, RI",
+        "studioName": "Andersonberg - West, NC",
         "studioPhysicalLocationId": 58775,
         "timeZone": "America/Chicago",
-        "contactEmail": "wrightjennifer@example.com",
+        "contactEmail": "joshuahanson@example.org",
         "studioToken": "REDACTED",
         "environment": "PROD",
         "pricingLevel": null,
@@ -166,22 +166,22 @@
         "isOtbeat": null,
         "distance": 8.0053736150128,
         "studioLocation": {
-          "physicalAddress": "256 Cohen Branch",
+          "physicalAddress": "4887 Rodriguez Center Apt. 769",
           "physicalAddress2": "",
-          "physicalCity": "Andrewfurt",
-          "physicalState": "LA",
-          "physicalPostalCode": "38746",
+          "physicalCity": "Lake Laurie",
+          "physicalState": "AL",
+          "physicalPostalCode": "20604",
           "physicalRegion": "KS/MO-01",
-          "physicalCountry": "BR",
+          "physicalCountry": "SO",
           "country": {
             "countryId": 1,
             "countryCurrencyCode": "USD",
             "countryCurrencyName": "US Dollar",
             "currencyAlphabeticCode": "USD"
           },
-          "phoneNumber": "8248951553",
-          "latitude": 37.599558,
-          "longitude": -98.870504
+          "phoneNumber": "3259931970",
+          "latitude": 35.969783,
+          "longitude": -97.984677
         },
         "studioLocationLocalized": {
           "language": {
@@ -200,14 +200,14 @@
         "socialMediaLinks": []
       },
       {
-        "studioId": 406330864,
-        "studioUUId": "7715f9f5-92fb-4963-ae7f-696ba1fad12a",
-        "mboStudioId": 816728324,
+        "studioId": 587241888,
+        "studioUUId": "5f811cb9-2964-4f8b-afac-aa5090e5e945",
+        "mboStudioId": 455349154,
         "studioNumber": "0589",
-        "studioName": "Jillshire - West, MS",
+        "studioName": "South Natashaview - East, SD",
         "studioPhysicalLocationId": 493,
         "timeZone": "America/Chicago",
-        "contactEmail": "rodney24@example.com",
+        "contactEmail": "samantha69@example.com",
         "studioToken": "REDACTED",
         "environment": "PROD",
         "pricingLevel": "",
@@ -243,22 +243,22 @@
         "isOtbeat": null,
         "distance": 13.0196527230952,
         "studioLocation": {
-          "physicalAddress": "18980 Sherman Unions Suite 498",
+          "physicalAddress": "37824 Christopher Overpass Suite 797",
           "physicalAddress2": null,
-          "physicalCity": "Andrewfurt",
-          "physicalState": "LA",
-          "physicalPostalCode": "54752",
+          "physicalCity": "Lake Laurie",
+          "physicalState": "AL",
+          "physicalPostalCode": "16007",
           "physicalRegion": "KS/MO-01",
-          "physicalCountry": "BR",
+          "physicalCountry": "SO",
           "country": {
             "countryId": 1,
             "countryCurrencyCode": "USD",
             "countryCurrencyName": "US Dollar",
             "currencyAlphabeticCode": "USD"
           },
-          "phoneNumber": "9694828054",
-          "latitude": 40.339018,
-          "longitude": -94.609444
+          "phoneNumber": "6939489374",
+          "latitude": 37.876455,
+          "longitude": -92.739675
         },
         "studioLocationLocalized": {
           "language": {
@@ -276,37 +276,37 @@
         },
         "socialMediaLinks": [
           {
-            "id": "066e5e49-63c6-4870-8f7f-de836c442251",
+            "id": "775ed7dc-22c6-4ea5-a381-2085776c72a0",
             "languageId": "16",
             "name": "YouTube",
             "value": "https://www.youtube.com/Otheoryfitness"
           },
           {
-            "id": "2f1120a7-58f9-4ef2-93ae-cbfee7070127",
+            "id": "e3d8cee6-3a8e-42f8-bbb1-1ba1009afd80",
             "languageId": "16",
             "name": "Web",
             "value": "https://www.orangetheory.com/en-us"
           },
           {
-            "id": "d51a62e0-7446-416a-8309-f480b2830dad",
+            "id": "2d30d773-bc80-42de-b180-f4c4d9e0681a",
             "languageId": "16",
             "name": "Twitter",
             "value": "https://www.twitter.com/orangetheory"
           },
           {
-            "id": "a88d09b9-12f1-417f-8da4-f5c566720b99",
+            "id": "eeac66f0-f6a2-447e-967a-8ad0b52a290e",
             "languageId": "16",
             "name": "LinkedIn",
             "value": "https://www.linkedin.com/company/orangetheory-fitness"
           },
           {
-            "id": "a5df086e-aa90-4719-b18f-c80a49d651b1",
+            "id": "cb1458ae-3b55-413c-975d-20f0953645f3",
             "languageId": "16",
             "name": "Facebook",
             "value": "https://www.facebook.com/OrangeTheoryFitness"
           },
           {
-            "id": "9cceb548-faf5-48e1-a8ee-6a97f33e9951",
+            "id": "f0543848-f1a4-45eb-8a7f-cc9fc18ba2db",
             "languageId": "16",
             "name": "Instagram",
             "value": "https://www.instagram.com/orangetheory"

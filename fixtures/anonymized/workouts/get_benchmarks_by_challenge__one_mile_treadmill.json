@@ -27,14 +27,14 @@
           "ChallengeObjective": "None",
           "ChallengeId": 724939,
           "StudioId": 1267,
-          "StudioName": "Lake Nicholas - North, MH",
+          "StudioName": "Oconnorport - North, PR",
           "StartDate": "2025-03-11T00:00:00",
           "EndDate": "2025-03-11T23:59:00",
           "TotalResult": "00:11:17.00",
           "IsFinished": true,
           "BenchmarkHistories": [
             {
-              "StudioName": "Lake Nicholas - North, MH",
+              "StudioName": "Oconnorport - North, PR",
               "EquipmentId": 2,
               "Result": "11:17",
               "DateCreated": "2025-03-11T15:27:59",
@@ -45,8 +45,8 @@
               "SubstituteId": 1,
               "WeightLBS": 0,
               "ClassName": "Tread 50",
-              "CoachName": "Mark Waller",
-              "CoachImageUrl": "https://placeholder.example.com/profile/459970.jpg",
+              "CoachName": "Ashlee",
+              "CoachImageUrl": "https://placeholder.example.com/profile/773003.jpg",
               "WorkoutTypeId": null,
               "WorkoutId": null,
               "LinkedChallenges": []

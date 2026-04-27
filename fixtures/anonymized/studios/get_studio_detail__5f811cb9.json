@@ -1,14 +1,14 @@
 {
   "code": "SUCCESS",
   "data": {
-    "studioId": 406330864,
-    "studioUUId": "7715f9f5-92fb-4963-ae7f-696ba1fad12a",
-    "mboStudioId": 816728324,
+    "studioId": 587241888,
+    "studioUUId": "5f811cb9-2964-4f8b-afac-aa5090e5e945",
+    "mboStudioId": 455349154,
     "studioNumber": "0589",
-    "studioName": "Jillshire - West, MS",
+    "studioName": "South Natashaview - East, SD",
     "studioPhysicalLocationId": 493,
     "timeZone": "America/Chicago",
-    "contactEmail": "rodney24@example.com",
+    "contactEmail": "samantha69@example.com",
     "studioToken": "REDACTED",
     "environment": "PROD",
     "pricingLevel": "",
@@ -43,22 +43,22 @@
     "isMobile": null,
     "isOtbeat": null,
     "studioLocation": {
-      "physicalAddress": "18980 Sherman Unions Suite 498",
+      "physicalAddress": "37824 Christopher Overpass Suite 797",
       "physicalAddress2": null,
-      "physicalCity": "Andrewfurt",
-      "physicalState": "LA",
-      "physicalPostalCode": "54752",
+      "physicalCity": "Lake Laurie",
+      "physicalState": "AL",
+      "physicalPostalCode": "16007",
       "physicalRegion": "KS/MO-01",
-      "physicalCountry": "BR",
+      "physicalCountry": "SO",
       "country": {
         "countryId": 1,
         "countryCurrencyCode": "USD",
         "countryCurrencyName": "US Dollar",
         "currencyAlphabeticCode": "USD"
       },
-      "phoneNumber": "9694828054",
-      "latitude": 40.339018,
-      "longitude": -94.609444
+      "phoneNumber": "6939489374",
+      "latitude": 37.876455,
+      "longitude": -92.739675
     },
     "studioLocationLocalized": {
       "language": {
@@ -76,37 +76,37 @@
     },
     "socialMediaLinks": [
       {
-        "id": "2f1120a7-58f9-4ef2-93ae-cbfee7070127",
+        "id": "e3d8cee6-3a8e-42f8-bbb1-1ba1009afd80",
         "languageId": "16",
         "name": "Web",
         "value": "https://www.orangetheory.com/en-us"
       },
       {
-        "id": "a5df086e-aa90-4719-b18f-c80a49d651b1",
+        "id": "cb1458ae-3b55-413c-975d-20f0953645f3",
         "languageId": "16",
         "name": "Facebook",
         "value": "https://www.facebook.com/OrangeTheoryFitness"
       },
       {
-        "id": "d51a62e0-7446-416a-8309-f480b2830dad",
+        "id": "2d30d773-bc80-42de-b180-f4c4d9e0681a",
         "languageId": "16",
         "name": "Twitter",
         "value": "https://www.twitter.com/orangetheory"
       },
       {
-        "id": "9cceb548-faf5-48e1-a8ee-6a97f33e9951",
+        "id": "f0543848-f1a4-45eb-8a7f-cc9fc18ba2db",
         "languageId": "16",
         "name": "Instagram",
         "value": "https://www.instagram.com/orangetheory"
       },
       {
-        "id": "a88d09b9-12f1-417f-8da4-f5c566720b99",
+        "id": "eeac66f0-f6a2-447e-967a-8ad0b52a290e",
         "languageId": "16",
         "name": "LinkedIn",
         "value": "https://www.linkedin.com/company/orangetheory-fitness"
       },
       {
-        "id": "066e5e49-63c6-4870-8f7f-de836c442251",
+        "id": "775ed7dc-22c6-4ea5-a381-2085776c72a0",
         "languageId": "16",
         "name": "YouTube",
         "value": "https://www.youtube.com/Otheoryfitness"

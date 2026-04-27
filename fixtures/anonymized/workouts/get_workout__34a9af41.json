@@ -1,70 +1,70 @@
 {
-  "id": "495b29ea-ab57-4865-a71e-7753fcfdf01a",
+  "id": "34a9af41-25ec-4845-aaa4-857e8101e89a",
   "details": {
-    "calories_burned": 409,
-    "splat_points": 16,
-    "step_count": 5918,
+    "calories_burned": 370,
+    "splat_points": 2,
+    "step_count": 602,
     "active_time_seconds": 0,
     "zone_time_minutes": {
       "gray": 1,
-      "blue": 6,
-      "green": 21,
-      "orange": 16,
+      "blue": 12,
+      "green": 30,
+      "orange": 2,
       "red": 0
     },
     "heart_rate": {
       "max_hr": 0,
-      "peak_hr": 173,
-      "peak_hr_percent": 90,
-      "avg_hr": 150,
-      "avg_hr_percent": 78
+      "peak_hr": 170,
+      "peak_hr_percent": 89,
+      "avg_hr": 141,
+      "avg_hr_percent": 73
     },
     "equipment_data": {
       "treadmill": {
         "avg_speed": {
-          "display_value": 3.7,
+          "display_value": 0.0,
           "display_unit": "mph",
-          "metric_value": 3.7
+          "metric_value": 0.0
         },
         "max_speed": {
-          "display_value": 6.0,
+          "display_value": 0.0,
           "display_unit": "mph",
-          "metric_value": 6.0
+          "metric_value": 0.0
         },
         "avg_incline": {
-          "display_value": 1.2,
+          "display_value": 0.0,
           "display_unit": "%",
-          "metric_value": 1.2
+          "metric_value": 0.0
         },
         "max_incline": {
-          "display_value": 8.0,
+          "display_value": 0.0,
           "display_unit": "%",
-          "metric_value": 8.0
+          "metric_value": 0.0
         },
         "avg_pace": {
-          "display_value": "16:13",
+          "display_value": "00:00",
           "display_unit": "min/mile",
-          "metric_value": "973"
+          "metric_value": "0"
         },
         "max_pace": {
-          "display_value": "10:00",
+          "display_value": "00:00",
           "display_unit": "min/mile",
-          "metric_value": "600"
+          "metric_value": "0"
         },
         "total_distance": {
-          "display_value": 2.69,
+          "display_value": 0.0,
           "display_unit": "miles",
-          "metric_value": 2.69
+          "metric_value": 0.0
         },
         "moving_time": {
-          "display_value": "43:05",
+          "display_value": "00:00",
           "display_unit": "Duration",
-          "metric_value": "2585"
+          "metric_value": "0"
         },
         "elevation_gained": {
-          "display_value": 170.438,
+          "display_value": 0.0,
           "display_unit": "feet",
-          "metric_value": 170.438
+          "metric_value": 0.0
         }
       },
       "rower": {
@@ -123,8 +123,8 @@
   },
   "ratable": false,
   "class": {
-    "starts_at_local": "2026-04-21T10:00:00",
-    "name": "Tread 50",
-    "type": "TREAD_50"
+    "starts_at_local": "2026-04-11T10:30:00",
+    "name": "Strength 50 (Total)",
+    "type": "STRENGTH_50"
   }
 }

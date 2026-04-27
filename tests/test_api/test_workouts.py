@@ -79,7 +79,7 @@ def test_get_hr_history(mock_otf) -> None:
 
 def test_get_telemetry(mock_otf) -> None:
     # use a performance_summary_id that has a telemetry fixture
-    perf_id = "495b29ea-ab57-4865-a71e-7753fcfdf01a"
+    perf_id = "42d6cb5c-6ed4-494b-9fc9-e3b11fcff454"
     result = mock_otf.workouts.get_telemetry(perf_id)
 
     assert isinstance(result, Telemetry)

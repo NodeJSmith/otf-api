@@ -1,31 +1,31 @@
 {
-  "memberUuid": "b1ef4b6c-3045-49fd-a21b-7244f6692002",
+  "memberUuid": "d1f6f86c-029a-4245-bb91-433a6aa79987",
   "history": [
     {
       "maxHr": {
         "type": "SESSION_ADJUSTED",
-        "value": 118
+        "value": 138
       },
       "zones": {
         "gray": {
-          "startBpm": 86,
-          "endBpm": 100
+          "startBpm": 99,
+          "endBpm": 114
         },
         "blue": {
-          "startBpm": 105,
-          "endBpm": 150
+          "startBpm": 102,
+          "endBpm": 122
         },
         "green": {
-          "startBpm": 129,
-          "endBpm": 137
+          "startBpm": 114,
+          "endBpm": 136
         },
         "orange": {
-          "startBpm": 151,
-          "endBpm": 193
+          "startBpm": 166,
+          "endBpm": 168
         },
         "red": {
-          "startBpm": 187,
-          "endBpm": 179
+          "startBpm": 195,
+          "endBpm": 164
         }
       },
       "changeFromPrevious": 1,
@@ -35,28 +35,28 @@
     {
       "maxHr": {
         "type": "SESSION_ADJUSTED",
-        "value": 150
+        "value": 185
       },
       "zones": {
         "gray": {
-          "startBpm": 67,
-          "endBpm": 118
+          "startBpm": 96,
+          "endBpm": 86
         },
         "blue": {
-          "startBpm": 115,
-          "endBpm": 117
+          "startBpm": 141,
+          "endBpm": 137
         },
         "green": {
-          "startBpm": 115,
-          "endBpm": 138
+          "startBpm": 125,
+          "endBpm": 143
         },
         "orange": {
-          "startBpm": 154,
-          "endBpm": 154
+          "startBpm": 132,
+          "endBpm": 160
         },
         "red": {
-          "startBpm": 191,
-          "endBpm": 200
+          "startBpm": 146,
+          "endBpm": 205
         }
       },
       "changeFromPrevious": 4,

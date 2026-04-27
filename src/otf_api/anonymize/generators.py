@@ -62,10 +62,15 @@ class FakeDataGenerators:
     # Personal info
     # ------------------------------------------------------------------
 
-    def fake_name(self) -> str:
-        """Return a fake full name (first or last, caller chooses context)."""
+    def fake_first_name(self) -> str:
+        """Return a fake first name."""
         with self._lock:
-            return self._faker.name()
+            return self._faker.first_name()
+
+    def fake_last_name(self) -> str:
+        """Return a fake last name."""
+        with self._lock:
+            return self._faker.last_name()
 
     def fake_email(self) -> str:
         """Return a fake email address."""
