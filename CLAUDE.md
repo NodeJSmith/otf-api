@@ -47,6 +47,6 @@ Tests require real OrangeTheory credentials. Set `OTF_EMAIL` and `OTF_PASSWORD` 
 ## Git Workflow
 
 - Feature branches for new work
-- Version bumps via `bump-my-version` (configured in `.bumpversion.toml`)
+- Versioning and release PRs managed via `release-please`
 - CI runs tests on Python 3.11 and 3.12, plus pre-commit checks
-- Releases triggered by `v*.*.*` tags; publishes to PyPI via trusted publishing
+- Releases created through the release-please workflow; published to PyPI via trusted publishing

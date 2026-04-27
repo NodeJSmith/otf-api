@@ -282,7 +282,6 @@ def collect_real_values(
     """Walk a raw dict and extract all values from mapped PII fields into a set.
 
     Includes URL-encoded variants (e.g. both ``%40`` and ``@`` forms of email).
-    Includes case variants (lowercase and uppercase).
 
     Args:
         data: The raw (pre-anonymization) dict to scan.

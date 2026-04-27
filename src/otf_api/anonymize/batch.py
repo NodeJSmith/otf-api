@@ -158,8 +158,9 @@ false-positive leak reports because:
      generate a name that matches a real name in the corpus.
 
 8 characters is the practical threshold: short enough to catch phone numbers
-(10 digits), numeric member IDs (6-7 digits), and emails; long enough to
-exclude common first names and 2-letter state codes from scanning.
+(10 digits) and emails; long enough to exclude common first names (7 chars
+or fewer) and 2-letter state codes from scanning. Note: numeric member IDs
+(6-7 digits) fall below this threshold and are not scanned for leaks.
 """
 
 
