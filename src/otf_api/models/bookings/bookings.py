@@ -23,7 +23,7 @@ class Coach(OtfItemBase):
         return f"{self.first_name} {self.last_name}"
 
 
-class OtfClass(OtfItemBase):
+class BookingClass(OtfItemBase):
     class_uuid: str = Field(validation_alias="classUUId")
     name: str
     starts_at: datetime = Field(validation_alias="startDateTime", description="Start time in local timezone")
@@ -63,7 +63,7 @@ class Booking(ApiMixin, OtfItemBase):
     updated_date: datetime = Field(validation_alias="updatedDate")
     is_deleted: bool = Field(validation_alias="isDeleted")
     waitlist_position: int | None = Field(None, validation_alias="waitlistPosition")
-    otf_class: OtfClass = Field(validation_alias="class")
+    otf_class: BookingClass = Field(validation_alias="class")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
     # unused fields

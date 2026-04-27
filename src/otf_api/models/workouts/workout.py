@@ -1,6 +1,6 @@
 from typing import Any, Literal
 
-from pydantic import AliasPath, Field
+from pydantic import AliasPath, Field, computed_field
 
 from otf_api.models.base import OtfItemBase
 from otf_api.models.bookings import BookingV2, BookingV2Class, BookingV2Studio, Rating
@@ -19,9 +19,6 @@ class Workout(ApiMixin, OtfItemBase):
 
     performance_summary_id: str = Field(
         default="unknown", validation_alias="id", description="Unique identifier for this performance summary"
-    )
-    class_history_uuid: str = Field(
-        default="unknown", validation_alias="id", description="Same as performance_summary_id"
     )
     booking_id: str = Field(..., description="The booking id for the new bookings endpoint.")
     class_uuid: str | None = Field(
@@ -47,6 +44,12 @@ class Workout(ApiMixin, OtfItemBase):
     otf_class: BookingV2Class
     studio: BookingV2Studio
     telemetry: Telemetry | None = None
+
+    @computed_field
+    @property
+    def class_history_uuid(self) -> str:
+        """Alias for performance_summary_id."""
+        return self.performance_summary_id
 
     def __init__(self, **data):
         v2_booking = data.get("v2_booking")

@@ -1,7 +1,7 @@
 from logging import getLogger
 from typing import Any
 
-from pydantic import AliasPath, Field
+from pydantic import AliasPath, Field, computed_field
 
 from otf_api.models.base import OtfItemBase
 
@@ -67,8 +67,13 @@ class PerformanceSummary(OtfItemBase):
     performance_summary_id: str = Field(
         ..., validation_alias="id", description="Unique identifier for this performance summary"
     )
-    class_history_uuid: str = Field(..., validation_alias="id", description="Same as performance_summary_id")
     ratable: bool | None = None
+
+    @computed_field
+    @property
+    def class_history_uuid(self) -> str:
+        """Alias for performance_summary_id."""
+        return self.performance_summary_id
 
     calories_burned: int | None = Field(None, validation_alias=AliasPath("details", "calories_burned"))
     splat_points: int | None = Field(None, validation_alias=AliasPath("details", "splat_points"))

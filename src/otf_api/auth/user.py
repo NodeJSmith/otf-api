@@ -50,9 +50,9 @@ class OtfUser:
             LOGGER.debug("No credentials provided, attempting to get them from environment or prompt user")
             username, password = get_username_password()
             self.cognito = OtfCognito(username=username, password=password)
-        except Exception as e:
+        except Exception:
             LOGGER.exception("Failed to authenticate with Cognito")
-            raise e
+            raise
 
         self.cognito_id = self.cognito.access_claims["sub"]
         self.member_uuid = self.cognito.id_claims["cognito:username"]
