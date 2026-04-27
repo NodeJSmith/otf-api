@@ -1,0 +1,116 @@
+{
+  "code": "__MASKED__",
+  "data": {
+    "studioId": 857443149,
+    "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
+    "mboStudioId": 29387072,
+    "studioNumber": "0590",
+    "studioName": "Oconnorport - North, PR",
+    "studioPhysicalLocationId": 494,
+    "timeZone": "America/Chicago",
+    "contactEmail": "kelliwhite@example.org",
+    "studioToken": "REDACTED",
+    "environment": "__MASKED__",
+    "pricingLevel": "__MASKED__",
+    "taxRate": "0.000000",
+    "acceptsVisaMasterCard": true,
+    "acceptsAmericanExpress": true,
+    "acceptsDiscover": true,
+    "acceptsAch": false,
+    "isIntegrated": true,
+    "description": "",
+    "studioVersion": "__MASKED__",
+    "studioStatus": "Active",
+    "openDate": "2017-01-13 00:00:00",
+    "reOpenDate": "2020-05-26 00:00:00",
+    "studioTypeId": 2,
+    "posTypeId": 0,
+    "marketId": 0,
+    "areaId": 0,
+    "stateId": 0,
+    "logoUrl": "__MASKED__",
+    "pageColor1": "__MASKED__",
+    "pageColor2": "__MASKED__",
+    "pageColor3": "__MASKED__",
+    "pageColor4": "__MASKED__",
+    "smsPackageEnabled": false,
+    "allowsDashboardAccess": false,
+    "allowsCrWaitlist": true,
+    "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+    "royaltyRate": 0,
+    "marketingFundRate": 0,
+    "commissionPercent": 0,
+    "isMobile": null,
+    "isOtbeat": null,
+    "studioLocation": {
+      "physicalAddress": "92638 Roman Fort Apt. 738",
+      "physicalAddress2": null,
+      "physicalCity": "North Brucemouth",
+      "physicalState": "OH",
+      "physicalPostalCode": "20180",
+      "physicalRegion": "__MASKED__",
+      "physicalCountry": "PK",
+      "country": {
+        "countryId": 1,
+        "countryCurrencyCode": "USD",
+        "countryCurrencyName": "US Dollar",
+        "currencyAlphabeticCode": "USD"
+      },
+      "phoneNumber": "5815382882",
+      "latitude": 42.046502,
+      "longitude": -93.615804
+    },
+    "studioLocationLocalized": {
+      "language": {
+        "languageId": null,
+        "languageCode": null,
+        "languageName": null
+      },
+      "studioName": null,
+      "studioAddress": null
+    },
+    "studioProfiles": {
+      "isWeb": true,
+      "introCapacity": 1,
+      "isCrm": true
+    },
+    "socialMediaLinks": [
+      {
+        "id": "e3d8cee6-3a8e-42f8-bbb1-1ba1009afd80",
+        "languageId": "16",
+        "name": "Web",
+        "value": "__MASKED__"
+      },
+      {
+        "id": "cb1458ae-3b55-413c-975d-20f0953645f3",
+        "languageId": "16",
+        "name": "Facebook",
+        "value": "__MASKED__"
+      },
+      {
+        "id": "2d30d773-bc80-42de-b180-f4c4d9e0681a",
+        "languageId": "16",
+        "name": "Twitter",
+        "value": "__MASKED__"
+      },
+      {
+        "id": "f0543848-f1a4-45eb-8a7f-cc9fc18ba2db",
+        "languageId": "16",
+        "name": "Instagram",
+        "value": "__MASKED__"
+      },
+      {
+        "id": "eeac66f0-f6a2-447e-967a-8ad0b52a290e",
+        "languageId": "16",
+        "name": "LinkedIn",
+        "value": "__MASKED__"
+      },
+      {
+        "id": "775ed7dc-22c6-4ea5-a381-2085776c72a0",
+        "languageId": "16",
+        "name": "YouTube",
+        "value": "__MASKED__"
+      }
+    ]
+  }
+}

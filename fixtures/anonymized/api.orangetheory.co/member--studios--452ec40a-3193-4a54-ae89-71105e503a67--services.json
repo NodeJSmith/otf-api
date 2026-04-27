@@ -1,0 +1,375 @@
+{
+  "code": "__MASKED__",
+  "data": [
+    {
+      "serviceId": 31065,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "10 Session Pack - $199",
+      "price": "12.25",
+      "qty": 10,
+      "mboProgramId": 22,
+      "mboDescriptionId": "110000",
+      "mboProductId": 110000,
+      "onlinePrice": "176.35",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "c00187a6-8152-42c5-83a7-c488188b2694",
+      "createdDate": "2018-12-27T18:04:48.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "serviceId": 31068,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "20 Session Pack - $359",
+      "price": "380.03",
+      "qty": 20,
+      "mboProgramId": 22,
+      "mboDescriptionId": "110001",
+      "mboProductId": 110001,
+      "onlinePrice": "484.08",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "c00187a6-8152-42c5-83a7-c488188b2694",
+      "createdDate": "2018-12-27T18:04:48.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "serviceId": 31069,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "30 Session Pack - $499",
+      "price": "333.14",
+      "qty": 30,
+      "mboProgramId": 22,
+      "mboDescriptionId": "110002",
+      "mboProductId": 110002,
+      "onlinePrice": "333.04",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "c00187a6-8152-42c5-83a7-c488188b2694",
+      "createdDate": "2018-12-27T18:04:48.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "serviceId": 9408654,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "DriTri Registration - Outdoor",
+      "price": "71.58",
+      "qty": 1,
+      "mboProgramId": 26,
+      "mboDescriptionId": "144800",
+      "mboProductId": 144800,
+      "onlinePrice": "292.52",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "c00187a6-8152-42c5-83a7-c488188b2694",
+      "createdDate": "2023-08-18T20:34:00.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "serviceId": 8775867,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "DriTri Registration - Full",
+      "price": "313.8",
+      "qty": 1,
+      "mboProgramId": 26,
+      "mboDescriptionId": "144801",
+      "mboProductId": 144801,
+      "onlinePrice": "97.61",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "c00187a6-8152-42c5-83a7-c488188b2694",
+      "createdDate": "2021-09-01T00:58:12.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "serviceId": 8775869,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "DriTri Registration - Sprint",
+      "price": "12.95",
+      "qty": 1,
+      "mboProgramId": 26,
+      "mboDescriptionId": "144802",
+      "mboProductId": 144802,
+      "onlinePrice": "339.11",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "c00187a6-8152-42c5-83a7-c488188b2694",
+      "createdDate": "2021-09-01T00:58:12.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "serviceId": 9423089,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "5 Session Pack - $105",
+      "price": "496.63",
+      "qty": 5,
+      "mboProgramId": 22,
+      "mboDescriptionId": "151200",
+      "mboProductId": 151200,
+      "onlinePrice": "323.34",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "c00187a6-8152-42c5-83a7-c488188b2694",
+      "createdDate": "2023-11-22T18:42:03.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "serviceId": 9410778,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "DriTri Registration - Strength",
+      "price": "100.39",
+      "qty": 1,
+      "mboProgramId": 26,
+      "mboDescriptionId": "151710",
+      "mboProductId": 151710,
+      "onlinePrice": "435.2",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "c00187a6-8152-42c5-83a7-c488188b2694",
+      "createdDate": "2023-08-31T19:18:16.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "serviceId": 9460121,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "DriTri Registration - Team",
+      "price": "158.8",
+      "qty": 1,
+      "mboProgramId": 26,
+      "mboDescriptionId": "157220",
+      "mboProductId": 157220,
+      "onlinePrice": "170.66",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "createdDate": "2025-03-17T16:02:53.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "serviceId": 31084,
+      "serviceUUId": "__MASKED__",
+      "studioId": 857443149,
+      "name": "Private Class Session",
+      "price": "406.73",
+      "qty": 0,
+      "mboProgramId": 22,
+      "mboDescriptionId": "21390",
+      "mboProductId": 21390,
+      "onlinePrice": "397.06",
+      "taxRate": "0.075000",
+      "current": true,
+      "isWeb": false,
+      "isCrm": false,
+      "isMobile": true,
+      "createdBy": "c00187a6-8152-42c5-83a7-c488188b2694",
+      "createdDate": "2018-12-27T18:04:49.000Z",
+      "updatedBy": "d8e9107c-7010-4df0-aa7e-5e67aec07c1b",
+      "updatedDate": "2026-04-27T11:43:21.000Z",
+      "isDeleted": false,
+      "studio": {
+        "studioId": 857443149,
+        "studioLocation": {
+          "studioLocationId": 494,
+          "country": {
+            "countryCurrencyCode": "USD",
+            "defaultCurrency": {
+              "currencyId": 4,
+              "currency": {
+                "currencyAlphabeticCode": "USD"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

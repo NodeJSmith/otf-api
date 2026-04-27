@@ -1,0 +1,728 @@
+{
+  "captured_at": "2026-04-27T22:14:13.970050+00:00",
+  "total_http_responses": 66,
+  "endpoints_called": 51,
+  "endpoints_ok": 51,
+  "endpoints_failed": 0,
+  "endpoint_details": [
+    {
+      "endpoint": "members.get_member_detail",
+      "status": "ok",
+      "elapsed": "0.65s"
+    },
+    {
+      "endpoint": "members.get_member_membership",
+      "status": "ok",
+      "elapsed": "1.29s"
+    },
+    {
+      "endpoint": "members.get_member_purchases",
+      "status": "ok",
+      "elapsed": "1.01s"
+    },
+    {
+      "endpoint": "members.get_sms_notification_settings",
+      "status": "ok",
+      "elapsed": "0.19s"
+    },
+    {
+      "endpoint": "members.get_email_notification_settings",
+      "status": "ok",
+      "elapsed": "0.11s"
+    },
+    {
+      "endpoint": "studios.get_studio_detail",
+      "status": "ok",
+      "elapsed": "0.00s"
+    },
+    {
+      "endpoint": "studios.search_studios_by_geo",
+      "status": "ok",
+      "elapsed": "0.32s"
+    },
+    {
+      "endpoint": "studios.get_favorite_studios",
+      "status": "ok",
+      "elapsed": "0.21s"
+    },
+    {
+      "endpoint": "studios.get_studio_services",
+      "status": "ok",
+      "elapsed": "2.00s"
+    },
+    {
+      "endpoint": "bookings.get_classes",
+      "status": "ok",
+      "elapsed": "0.81s"
+    },
+    {
+      "endpoint": "bookings.get_bookings",
+      "status": "ok",
+      "elapsed": "0.22s"
+    },
+    {
+      "endpoint": "bookings.get_bookings_new",
+      "status": "ok",
+      "elapsed": "0.26s"
+    },
+    {
+      "endpoint": "workouts.get_body_composition_list",
+      "status": "ok",
+      "elapsed": "0.28s"
+    },
+    {
+      "endpoint": "workouts.get_challenge_tracker",
+      "status": "ok",
+      "elapsed": "0.70s"
+    },
+    {
+      "endpoint": "workouts.get_member_lifetime_stats_in_studio",
+      "status": "ok",
+      "elapsed": "0.23s"
+    },
+    {
+      "endpoint": "workouts.get_member_lifetime_stats_in_studio (ThisMonth)",
+      "status": "ok",
+      "elapsed": "0.19s"
+    },
+    {
+      "endpoint": "workouts.get_member_lifetime_stats_out_of_studio",
+      "status": "ok",
+      "elapsed": "0.18s"
+    },
+    {
+      "endpoint": "workouts.get_out_of_studio_workout_history",
+      "status": "ok",
+      "elapsed": "0.35s"
+    },
+    {
+      "endpoint": "workouts.get_hr_history",
+      "status": "ok",
+      "elapsed": "0.59s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_equipment(Treadmill)",
+      "status": "ok",
+      "elapsed": "0.66s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_equipment(Strider)",
+      "status": "ok",
+      "elapsed": "0.10s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_equipment(Rower)",
+      "status": "ok",
+      "elapsed": "0.52s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_equipment(Bike)",
+      "status": "ok",
+      "elapsed": "0.25s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_equipment(WeightFloor)",
+      "status": "ok",
+      "elapsed": "0.10s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_equipment(PowerWalker)",
+      "status": "ok",
+      "elapsed": "0.10s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(Other)",
+      "status": "ok",
+      "elapsed": "0.73s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(DriTri)",
+      "status": "ok",
+      "elapsed": "0.30s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(Infinity)",
+      "status": "ok",
+      "elapsed": "0.11s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(MarathonMonth)",
+      "status": "ok",
+      "elapsed": "0.41s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(OrangeEverest)",
+      "status": "ok",
+      "elapsed": "0.25s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(CatchMeIfYouCan)",
+      "status": "ok",
+      "elapsed": "0.15s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(TwoHundredMeterRow)",
+      "status": "ok",
+      "elapsed": "0.33s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(FiveHundredMeterRow)",
+      "status": "ok",
+      "elapsed": "0.31s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(TwoThousandMeterRow)",
+      "status": "ok",
+      "elapsed": "0.13s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(TwelveMinuteTreadmill)",
+      "status": "ok",
+      "elapsed": "0.10s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(OneMileTreadmill)",
+      "status": "ok",
+      "elapsed": "0.24s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(TenMinuteRow)",
+      "status": "ok",
+      "elapsed": "0.25s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(HellWeek)",
+      "status": "ok",
+      "elapsed": "0.16s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(Inferno)",
+      "status": "ok",
+      "elapsed": "0.28s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(Mayhem)",
+      "status": "ok",
+      "elapsed": "0.24s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(BackAtIt)",
+      "status": "ok",
+      "elapsed": "0.26s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(FourteenMinuteRow)",
+      "status": "ok",
+      "elapsed": "0.25s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(TwelveDaysOfFitness)",
+      "status": "ok",
+      "elapsed": "0.27s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(TransformationChallenge)",
+      "status": "ok",
+      "elapsed": "0.24s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(RemixInSix)",
+      "status": "ok",
+      "elapsed": "0.10s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(Push)",
+      "status": "ok",
+      "elapsed": "0.26s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(QuarterMileTreadmill)",
+      "status": "ok",
+      "elapsed": "0.28s"
+    },
+    {
+      "endpoint": "workouts.get_benchmarks_by_challenge_category(OneThousandMeterRow)",
+      "status": "ok",
+      "elapsed": "0.25s"
+    },
+    {
+      "endpoint": "workouts.get_challenge_tracker_detail(DriTri)",
+      "status": "ok",
+      "elapsed": "0.15s"
+    },
+    {
+      "endpoint": "workouts.get_telemetry",
+      "status": "ok",
+      "elapsed": "0.31s"
+    },
+    {
+      "endpoint": "workouts.get_workouts",
+      "status": "ok",
+      "elapsed": "3.76s"
+    }
+  ],
+  "files": [
+    {
+      "file": "api.orangetheory.co/member--members--d1f6f86c-029a-4245-bb91-433a6aa79987___include=memberAddresses%2CmemberClassSummary.json",
+      "method": "GET",
+      "path": "/member/members/d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "params": "include=memberAddresses%2CmemberClassSummary",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/mobile--v1--studios--452ec40a-3193-4a54-ae89-71105e503a67.json",
+      "method": "GET",
+      "path": "/mobile/v1/studios/452ec40a-3193-4a54-ae89-71105e503a67",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/member--members--d1f6f86c-029a-4245-bb91-433a6aa79987--memberships.json",
+      "method": "GET",
+      "path": "/member/members/d1f6f86c-029a-4245-bb91-433a6aa79987/memberships",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/member--members--d1f6f86c-029a-4245-bb91-433a6aa79987--purchases.json",
+      "method": "GET",
+      "path": "/member/members/d1f6f86c-029a-4245-bb91-433a6aa79987/purchases",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/mobile--v1--studios--5f811cb9-2964-4f8b-afac-aa5090e5e945.json",
+      "method": "GET",
+      "path": "/mobile/v1/studios/5f811cb9-2964-4f8b-afac-aa5090e5e945",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/sms--v1--preferences___phoneNumber=6152677550.json",
+      "method": "GET",
+      "path": "/sms/v1/preferences",
+      "params": "phoneNumber=6152677550",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/otfmailing--v2--preferences___email=anthony86%40example.org.json",
+      "method": "GET",
+      "path": "/otfmailing/v2/preferences",
+      "params": "email=anthony86%40example.org",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/mobile--v1--studios___latitude=42.046502&longitude=-93.615804&distance=50&pageIndex=1&pageSize=100.json",
+      "method": "GET",
+      "path": "/mobile/v1/studios",
+      "params": "latitude=42.046502&longitude=-93.615804&distance=50&pageIndex=1&pageSize=100",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/member--members--d1f6f86c-029a-4245-bb91-433a6aa79987--favorite-studios.json",
+      "method": "GET",
+      "path": "/member/members/d1f6f86c-029a-4245-bb91-433a6aa79987/favorite-studios",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/member--studios--452ec40a-3193-4a54-ae89-71105e503a67--services.json",
+      "method": "GET",
+      "path": "/member/studios/452ec40a-3193-4a54-ae89-71105e503a67/services",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--classes___studio_ids=452ec40a-3193-4a54-ae89-71105e503a67.json",
+      "method": "GET",
+      "path": "/v1/classes",
+      "params": "studio_ids=452ec40a-3193-4a54-ae89-71105e503a67",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/member--members--d1f6f86c-029a-4245-bb91-433a6aa79987--bookings___statuses=Booked.json",
+      "method": "GET",
+      "path": "/member/members/d1f6f86c-029a-4245-bb91-433a6aa79987/bookings",
+      "params": "statuses=Booked",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/member--members--d1f6f86c-029a-4245-bb91-433a6aa79987--bookings.json",
+      "method": "GET",
+      "path": "/member/members/d1f6f86c-029a-4245-bb91-433a6aa79987/bookings",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--bookings--me___ends_before=2026-06-11T00%3A00%3A00Z&starts_after=2026-02-27T00%3A00%3A00Z&include_canceled=false&expand=true.json",
+      "method": "GET",
+      "path": "/v1/bookings/me",
+      "params": "ends_before=2026-06-11T00%3A00%3A00Z&starts_after=2026-02-27T00%3A00%3A00Z&include_canceled=false&expand=true",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/member--members--daea58ba-4c73-4942-8d87-78e7d340bbcd--body-composition.json",
+      "method": "GET",
+      "path": "/member/members/daea58ba-4c73-4942-8d87-78e7d340bbcd/body-composition",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3.1--member--d1f6f86c-029a-4245-bb91-433a6aa79987.json",
+      "method": "GET",
+      "path": "/challenges/v3.1/member/d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/performance--v2--d1f6f86c-029a-4245-bb91-433a6aa79987--over-time--allTime.json",
+      "method": "GET",
+      "path": "/performance/v2/d1f6f86c-029a-4245-bb91-433a6aa79987/over-time/allTime",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/performance--v2--d1f6f86c-029a-4245-bb91-433a6aa79987--over-time--thisMonth.json",
+      "method": "GET",
+      "path": "/performance/v2/d1f6f86c-029a-4245-bb91-433a6aa79987/over-time/thisMonth",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/performance--v2--d1f6f86c-029a-4245-bb91-433a6aa79987--over-time--allTime___2.json",
+      "method": "GET",
+      "path": "/performance/v2/d1f6f86c-029a-4245-bb91-433a6aa79987/over-time/allTime",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/member--members--d1f6f86c-029a-4245-bb91-433a6aa79987--out-of-studio-workout.json",
+      "method": "GET",
+      "path": "/member/members/d1f6f86c-029a-4245-bb91-433a6aa79987/out-of-studio-workout",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.yuzu.orangetheory.com/v1--physVars--maxHr--history___memberUuid=d1f6f86c-029a-4245-bb91-433a6aa79987.json",
+      "method": "GET",
+      "path": "/v1/physVars/maxHr/history",
+      "params": "memberUuid=d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=2&challengeTypeId=0&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=2&challengeTypeId=0&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=3&challengeTypeId=0&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=3&challengeTypeId=0&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=4&challengeTypeId=0&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=4&challengeTypeId=0&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=5&challengeTypeId=0&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=5&challengeTypeId=0&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=6&challengeTypeId=0&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=6&challengeTypeId=0&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=7&challengeTypeId=0&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=7&challengeTypeId=0&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=0&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=0&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=2&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=2&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=3&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=3&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=5&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=5&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=9&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=9&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=10&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=10&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=15&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=15&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=16&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=16&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=17&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=17&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=18&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=18&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=19&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=19&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=20&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=20&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=52&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=52&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=55&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=55&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=58&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=58&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=60&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=60&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=61&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=61&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=63&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=63&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=64&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=64&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=65&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=65&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=66&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=66&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=69&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=69&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v3--member--d1f6f86c-029a-4245-bb91-433a6aa79987--benchmarks___equipmentId=0&challengeTypeId=70&challengeSubTypeId=0.json",
+      "method": "GET",
+      "path": "/challenges/v3/member/d1f6f86c-029a-4245-bb91-433a6aa79987/benchmarks",
+      "params": "equipmentId=0&challengeTypeId=70&challengeSubTypeId=0",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.co/challenges--v1--member--d1f6f86c-029a-4245-bb91-433a6aa79987--participation___challengeTypeId=2.json",
+      "method": "GET",
+      "path": "/challenges/v1/member/d1f6f86c-029a-4245-bb91-433a6aa79987/participation",
+      "params": "challengeTypeId=2",
+      "status": 200
+    },
+    {
+      "file": "api.yuzu.orangetheory.com/v1--performance--summary___classHistoryUuid=d64a3ce0-30a1-46d5-93ed-748bb80e3b0d&maxDataPoints=150.json",
+      "method": "GET",
+      "path": "/v1/performance/summary",
+      "params": "classHistoryUuid=d64a3ce0-30a1-46d5-93ed-748bb80e3b0d&maxDataPoints=150",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--bookings--me___ends_before=2026-04-27T23%3A59%3A59Z&starts_after=2026-03-28T00%3A00%3A00Z&include_canceled=false&expand=true.json",
+      "method": "GET",
+      "path": "/v1/bookings/me",
+      "params": "ends_before=2026-04-27T23%3A59%3A59Z&starts_after=2026-03-28T00%3A00%3A00Z&include_canceled=false&expand=true",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--performance-summaries--bcf74d7a-5ada-4121-afd2-b7a48d9fe5b9.json",
+      "method": "GET",
+      "path": "/v1/performance-summaries/bcf74d7a-5ada-4121-afd2-b7a48d9fe5b9",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--performance-summaries--34a9af41-25ec-4845-aaa4-857e8101e89a.json",
+      "method": "GET",
+      "path": "/v1/performance-summaries/34a9af41-25ec-4845-aaa4-857e8101e89a",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--performance-summaries--9c9cea0c-2ca1-4789-a091-250e8fe46024.json",
+      "method": "GET",
+      "path": "/v1/performance-summaries/9c9cea0c-2ca1-4789-a091-250e8fe46024",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--performance-summaries--95c5fb98-6980-481f-bc42-8d42fa882692.json",
+      "method": "GET",
+      "path": "/v1/performance-summaries/95c5fb98-6980-481f-bc42-8d42fa882692",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--performance-summaries--87f26aee-175f-4cd2-bb9d-58e4f543bbcf.json",
+      "method": "GET",
+      "path": "/v1/performance-summaries/87f26aee-175f-4cd2-bb9d-58e4f543bbcf",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--performance-summaries--42d6cb5c-6ed4-494b-9fc9-e3b11fcff454.json",
+      "method": "GET",
+      "path": "/v1/performance-summaries/42d6cb5c-6ed4-494b-9fc9-e3b11fcff454",
+      "params": "",
+      "status": 200
+    },
+    {
+      "file": "api.yuzu.orangetheory.com/v1--performance--summary___classHistoryUuid=bcf74d7a-5ada-4121-afd2-b7a48d9fe5b9&maxDataPoints=150.json",
+      "method": "GET",
+      "path": "/v1/performance/summary",
+      "params": "classHistoryUuid=bcf74d7a-5ada-4121-afd2-b7a48d9fe5b9&maxDataPoints=150",
+      "status": 200
+    },
+    {
+      "file": "api.yuzu.orangetheory.com/v1--performance--summary___classHistoryUuid=34a9af41-25ec-4845-aaa4-857e8101e89a&maxDataPoints=150.json",
+      "method": "GET",
+      "path": "/v1/performance/summary",
+      "params": "classHistoryUuid=34a9af41-25ec-4845-aaa4-857e8101e89a&maxDataPoints=150",
+      "status": 200
+    },
+    {
+      "file": "api.yuzu.orangetheory.com/v1--performance--summary___classHistoryUuid=9c9cea0c-2ca1-4789-a091-250e8fe46024&maxDataPoints=150.json",
+      "method": "GET",
+      "path": "/v1/performance/summary",
+      "params": "classHistoryUuid=9c9cea0c-2ca1-4789-a091-250e8fe46024&maxDataPoints=150",
+      "status": 200
+    },
+    {
+      "file": "api.yuzu.orangetheory.com/v1--performance--summary___classHistoryUuid=87f26aee-175f-4cd2-bb9d-58e4f543bbcf&maxDataPoints=150.json",
+      "method": "GET",
+      "path": "/v1/performance/summary",
+      "params": "classHistoryUuid=87f26aee-175f-4cd2-bb9d-58e4f543bbcf&maxDataPoints=150",
+      "status": 200
+    },
+    {
+      "file": "api.yuzu.orangetheory.com/v1--performance--summary___classHistoryUuid=42d6cb5c-6ed4-494b-9fc9-e3b11fcff454&maxDataPoints=150.json",
+      "method": "GET",
+      "path": "/v1/performance/summary",
+      "params": "classHistoryUuid=42d6cb5c-6ed4-494b-9fc9-e3b11fcff454&maxDataPoints=150",
+      "status": 200
+    },
+    {
+      "file": "api.yuzu.orangetheory.com/v1--performance--summary___classHistoryUuid=95c5fb98-6980-481f-bc42-8d42fa882692&maxDataPoints=150.json",
+      "method": "GET",
+      "path": "/v1/performance/summary",
+      "params": "classHistoryUuid=95c5fb98-6980-481f-bc42-8d42fa882692&maxDataPoints=150",
+      "status": 200
+    },
+    {
+      "file": "api.orangetheory.io/v1--performance-summaries.json",
+      "method": "GET",
+      "path": "/v1/performance-summaries",
+      "params": "",
+      "status": 200
+    }
+  ]
+}

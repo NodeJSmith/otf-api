@@ -384,6 +384,7 @@ KNOWN_SAFE_FIELDS: frozenset[str] = frozenset(
         "equipmentName",
         "equipment",
         # Status / enum values
+        "type",
         "status",
         "bookingStatus",
         "memberStatus",
@@ -421,6 +422,9 @@ KNOWN_SAFE_FIELDS: frozenset[str] = frozenset(
         # InBody scan metadata (non-biometric labels)
         "inBodyType",
         "inBodyScore",
+        "bfmGraphScale",
+        "smmGraphScale",
+        "wtGraphScale",
         # Distance / unit fields
         "unit",
         "distanceUnit",

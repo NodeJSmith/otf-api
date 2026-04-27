@@ -1,0 +1,149 @@
+{
+  "Status": 200,
+  "Message": "__MASKED__",
+  "Dto": [
+    {
+      "ChallengeCategoryId": 15,
+      "ChallengeSubCategoryId": null,
+      "EquipmentId": 4,
+      "EquipmentName": "__MASKED__",
+      "MetricEntry": {
+        "Title": "__MASKED__",
+        "EquipmentId": 4,
+        "EntryType": "__MASKED__",
+        "MetricKey": "__MASKED__",
+        "MinValue": "__MASKED__",
+        "MaxValue": "__MASKED__"
+      },
+      "ChallengeName": "__MASKED__",
+      "LogoUrl": "__MASKED__",
+      "BestRecord": "__MASKED__",
+      "LastRecord": "__MASKED__",
+      "PreviousRecord": "__MASKED__",
+      "Unit": null,
+      "Goals": null,
+      "ChallengeHistories": [
+        {
+          "ChallengeObjective": "__MASKED__",
+          "ChallengeId": 780685,
+          "StudioId": 1267,
+          "StudioName": "Oconnorport - North, PR",
+          "StartDate": "2025-07-31T00:00:00",
+          "EndDate": "2025-07-31T23:59:00",
+          "TotalResult": "__MASKED__",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Oconnorport - North, PR",
+              "EquipmentId": 4,
+              "Result": "__MASKED__",
+              "DateCreated": "2025-07-31T15:04:57",
+              "DateUpdated": "2025-07-31T15:04:57",
+              "ClassTime": "2025-07-31T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2431597892,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "__MASKED__",
+              "CoachName": "Anna Thompson",
+              "CoachImageUrl": "https://placeholder.example.com/profile/345918.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        },
+        {
+          "ChallengeObjective": "__MASKED__",
+          "ChallengeId": 669222,
+          "StudioId": 1267,
+          "StudioName": "Oconnorport - North, PR",
+          "StartDate": "2025-01-07T00:00:00",
+          "EndDate": "2025-01-07T23:59:00",
+          "TotalResult": "__MASKED__",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Oconnorport - North, PR",
+              "EquipmentId": 4,
+              "Result": "__MASKED__",
+              "DateCreated": "2025-01-07T16:12:23",
+              "DateUpdated": "2025-01-07T16:31:46",
+              "ClassTime": "2025-01-07T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2420690798,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "__MASKED__",
+              "CoachName": "David Hamilton",
+              "CoachImageUrl": "https://placeholder.example.com/profile/846332.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        },
+        {
+          "ChallengeObjective": "__MASKED__",
+          "ChallengeId": 629668,
+          "StudioId": 1267,
+          "StudioName": "Oconnorport - North, PR",
+          "StartDate": "2024-11-07T00:00:00",
+          "EndDate": "2024-11-07T23:59:00",
+          "TotalResult": "__MASKED__",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Oconnorport - North, PR",
+              "EquipmentId": 4,
+              "Result": "__MASKED__",
+              "DateCreated": "2024-11-07T16:04:17",
+              "DateUpdated": "2024-11-07T16:04:17",
+              "ClassTime": "2024-11-07T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2238320422,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "__MASKED__",
+              "CoachName": "Ashlee Martin",
+              "CoachImageUrl": "https://placeholder.example.com/profile/42207.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        },
+        {
+          "ChallengeObjective": "__MASKED__",
+          "ChallengeId": 454008,
+          "StudioId": 1267,
+          "StudioName": "Oconnorport - North, PR",
+          "StartDate": "2024-03-12T00:00:00",
+          "EndDate": "2024-03-12T23:59:00",
+          "TotalResult": "__MASKED__",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Oconnorport - North, PR",
+              "EquipmentId": 4,
+              "Result": "__MASKED__",
+              "DateCreated": "2024-03-12T15:12:34",
+              "DateUpdated": "2024-03-12T15:13:01",
+              "ClassTime": "2024-03-12T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2238322712,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "__MASKED__",
+              "CoachName": "David Hamilton",
+              "CoachImageUrl": "https://placeholder.example.com/profile/243593.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

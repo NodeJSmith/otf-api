@@ -1,0 +1,59 @@
+{
+  "Status": 200,
+  "Message": "__MASKED__",
+  "Dto": [
+    {
+      "ChallengeCategoryId": 17,
+      "ChallengeSubCategoryId": null,
+      "EquipmentId": 4,
+      "EquipmentName": "__MASKED__",
+      "MetricEntry": {
+        "Title": "__MASKED__",
+        "EquipmentId": 4,
+        "EntryType": "__MASKED__",
+        "MetricKey": "__MASKED__",
+        "MinValue": "__MASKED__",
+        "MaxValue": "__MASKED__"
+      },
+      "ChallengeName": "__MASKED__",
+      "LogoUrl": "__MASKED__",
+      "BestRecord": "__MASKED__",
+      "LastRecord": "__MASKED__",
+      "PreviousRecord": "__MASKED__",
+      "Unit": null,
+      "Goals": null,
+      "ChallengeHistories": [
+        {
+          "ChallengeObjective": "__MASKED__",
+          "ChallengeId": 690815,
+          "StudioId": 1267,
+          "StudioName": "Oconnorport - North, PR",
+          "StartDate": "2025-01-16T00:00:00",
+          "EndDate": "2025-01-16T23:59:00",
+          "TotalResult": "__MASKED__",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Oconnorport - North, PR",
+              "EquipmentId": 4,
+              "Result": "__MASKED__",
+              "DateCreated": "2025-01-16T16:20:45",
+              "DateUpdated": "2025-01-16T16:20:45",
+              "ClassTime": "2025-01-16T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2425757949,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "__MASKED__",
+              "CoachName": "Anna Thompson",
+              "CoachImageUrl": "https://placeholder.example.com/profile/226892.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

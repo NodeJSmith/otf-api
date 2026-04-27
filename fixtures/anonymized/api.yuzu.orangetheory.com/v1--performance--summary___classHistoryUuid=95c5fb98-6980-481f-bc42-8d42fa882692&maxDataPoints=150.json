@@ -1,0 +1,1641 @@
+{
+  "memberUuid": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+  "classHistoryUuid": "95c5fb98-6980-481f-bc42-8d42fa882692",
+  "classStartTime": "2026-04-21T15:00:08Z",
+  "maxHr": 211,
+  "zones": {
+    "gray": {
+      "startBpm": 0,
+      "endBpm": 131
+    },
+    "blue": {
+      "startBpm": 131,
+      "endBpm": 152
+    },
+    "green": {
+      "startBpm": 152,
+      "endBpm": 177
+    },
+    "orange": {
+      "startBpm": 177,
+      "endBpm": 194
+    },
+    "red": {
+      "startBpm": 194,
+      "endBpm": 211
+    }
+  },
+  "windowSize": 18,
+  "telemetry": [
+    {
+      "relativeTimestamp": 0,
+      "hr": 160,
+      "aggSplats": 0,
+      "aggCalories": 1,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 159
+      }
+    },
+    {
+      "relativeTimestamp": 18,
+      "hr": 156,
+      "aggSplats": 0,
+      "aggCalories": 4,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 164
+      }
+    },
+    {
+      "relativeTimestamp": 36,
+      "hr": 152,
+      "aggSplats": 0,
+      "aggCalories": 5
+    },
+    {
+      "relativeTimestamp": 54,
+      "hr": 147,
+      "aggSplats": 0,
+      "aggCalories": 7
+    },
+    {
+      "relativeTimestamp": 72,
+      "hr": 138,
+      "aggSplats": 0,
+      "aggCalories": 9,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 171
+      }
+    },
+    {
+      "relativeTimestamp": 90,
+      "hr": 137,
+      "aggSplats": 0,
+      "aggCalories": 10,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 190
+      }
+    },
+    {
+      "relativeTimestamp": 108,
+      "hr": 138,
+      "aggSplats": 0,
+      "aggCalories": 12,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 211
+      }
+    },
+    {
+      "relativeTimestamp": 126,
+      "hr": 139,
+      "aggSplats": 0,
+      "aggCalories": 13,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 227
+      }
+    },
+    {
+      "relativeTimestamp": 144,
+      "hr": 143,
+      "aggSplats": 0,
+      "aggCalories": 15,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 259
+      }
+    },
+    {
+      "relativeTimestamp": 162,
+      "hr": 156,
+      "aggSplats": 0,
+      "aggCalories": 17,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 296
+      }
+    },
+    {
+      "relativeTimestamp": 180,
+      "hr": 163,
+      "aggSplats": 0,
+      "aggCalories": 19,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 332
+      }
+    },
+    {
+      "relativeTimestamp": 198,
+      "hr": 167,
+      "aggSplats": 0,
+      "aggCalories": 21,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 368
+      }
+    },
+    {
+      "relativeTimestamp": 216,
+      "hr": 175,
+      "aggSplats": 0,
+      "aggCalories": 24,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 404
+      }
+    },
+    {
+      "relativeTimestamp": 234,
+      "hr": 179,
+      "aggSplats": 0,
+      "aggCalories": 27,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 441
+      }
+    },
+    {
+      "relativeTimestamp": 252,
+      "hr": 180,
+      "aggSplats": 0,
+      "aggCalories": 29,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 477
+      }
+    },
+    {
+      "relativeTimestamp": 270,
+      "hr": 181,
+      "aggSplats": 0,
+      "aggCalories": 32,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 501
+      }
+    },
+    {
+      "relativeTimestamp": 288,
+      "hr": 181,
+      "aggSplats": 0,
+      "aggCalories": 35,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 536
+      }
+    },
+    {
+      "relativeTimestamp": 306,
+      "hr": 179,
+      "aggSplats": 0,
+      "aggCalories": 38,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 572
+      }
+    },
+    {
+      "relativeTimestamp": 324,
+      "hr": 184,
+      "aggSplats": 0,
+      "aggCalories": 41,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 608
+      }
+    },
+    {
+      "relativeTimestamp": 342,
+      "hr": 186,
+      "aggSplats": 0,
+      "aggCalories": 44,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 644
+      }
+    },
+    {
+      "relativeTimestamp": 360,
+      "hr": 191,
+      "aggSplats": 0,
+      "aggCalories": 47,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 681
+      }
+    },
+    {
+      "relativeTimestamp": 378,
+      "hr": 191,
+      "aggSplats": 0,
+      "aggCalories": 50,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 717
+      }
+    },
+    {
+      "relativeTimestamp": 396,
+      "hr": 190,
+      "aggSplats": 1,
+      "aggCalories": 54,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 753
+      }
+    },
+    {
+      "relativeTimestamp": 414,
+      "hr": 192,
+      "aggSplats": 1,
+      "aggCalories": 57,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 789
+      }
+    },
+    {
+      "relativeTimestamp": 432,
+      "hr": 192,
+      "aggSplats": 1,
+      "aggCalories": 60,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 825
+      }
+    },
+    {
+      "relativeTimestamp": 450,
+      "hr": 192,
+      "aggSplats": 1,
+      "aggCalories": 63,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 860
+      }
+    },
+    {
+      "relativeTimestamp": 468,
+      "hr": 192,
+      "aggSplats": 2,
+      "aggCalories": 67,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 884
+      }
+    },
+    {
+      "relativeTimestamp": 486,
+      "hr": 187,
+      "aggSplats": 2,
+      "aggCalories": 70,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 908
+      }
+    },
+    {
+      "relativeTimestamp": 504,
+      "hr": 181,
+      "aggSplats": 2,
+      "aggCalories": 72,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 932
+      }
+    },
+    {
+      "relativeTimestamp": 522,
+      "hr": 175,
+      "aggSplats": 2,
+      "aggCalories": 75,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 956
+      }
+    },
+    {
+      "relativeTimestamp": 540,
+      "hr": 172,
+      "aggSplats": 2,
+      "aggCalories": 78,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 980
+      }
+    },
+    {
+      "relativeTimestamp": 558,
+      "hr": 166,
+      "aggSplats": 2,
+      "aggCalories": 80,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1015
+      }
+    },
+    {
+      "relativeTimestamp": 576,
+      "hr": 166,
+      "aggSplats": 2,
+      "aggCalories": 83,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1051
+      }
+    },
+    {
+      "relativeTimestamp": 594,
+      "hr": 173,
+      "aggSplats": 2,
+      "aggCalories": 85,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1087
+      }
+    },
+    {
+      "relativeTimestamp": 612,
+      "hr": 180,
+      "aggSplats": 2,
+      "aggCalories": 88,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1124
+      }
+    },
+    {
+      "relativeTimestamp": 630,
+      "hr": 186,
+      "aggSplats": 2,
+      "aggCalories": 91,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1160
+      }
+    },
+    {
+      "relativeTimestamp": 648,
+      "hr": 188,
+      "aggSplats": 2,
+      "aggCalories": 94,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1196
+      }
+    },
+    {
+      "relativeTimestamp": 666,
+      "hr": 190,
+      "aggSplats": 3,
+      "aggCalories": 97,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1232
+      }
+    },
+    {
+      "relativeTimestamp": 684,
+      "hr": 191,
+      "aggSplats": 3,
+      "aggCalories": 100,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1259
+      }
+    },
+    {
+      "relativeTimestamp": 702,
+      "hr": 190,
+      "aggSplats": 3,
+      "aggCalories": 104,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1276
+      }
+    },
+    {
+      "relativeTimestamp": 720,
+      "hr": 184,
+      "aggSplats": 3,
+      "aggCalories": 107,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1291
+      }
+    },
+    {
+      "relativeTimestamp": 738,
+      "hr": 180,
+      "aggSplats": 3,
+      "aggCalories": 109,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1308
+      }
+    },
+    {
+      "relativeTimestamp": 756,
+      "hr": 176,
+      "aggSplats": 3,
+      "aggCalories": 112,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 6.0,
+        "aggTreadDistance": 1330
+      }
+    },
+    {
+      "relativeTimestamp": 774,
+      "hr": 171,
+      "aggSplats": 3,
+      "aggCalories": 115,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 8.0,
+        "aggTreadDistance": 1354
+      }
+    },
+    {
+      "relativeTimestamp": 792,
+      "hr": 167,
+      "aggSplats": 3,
+      "aggCalories": 117,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 8.0,
+        "aggTreadDistance": 1378
+      }
+    },
+    {
+      "relativeTimestamp": 810,
+      "hr": 169,
+      "aggSplats": 3,
+      "aggCalories": 120,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 8.0,
+        "aggTreadDistance": 1403
+      }
+    },
+    {
+      "relativeTimestamp": 828,
+      "hr": 174,
+      "aggSplats": 3,
+      "aggCalories": 122,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 8.0,
+        "aggTreadDistance": 1427
+      }
+    },
+    {
+      "relativeTimestamp": 846,
+      "hr": 176,
+      "aggSplats": 3,
+      "aggCalories": 125,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 8.0,
+        "aggTreadDistance": 1445
+      }
+    },
+    {
+      "relativeTimestamp": 864,
+      "hr": 174,
+      "aggSplats": 3,
+      "aggCalories": 127,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1468
+      }
+    },
+    {
+      "relativeTimestamp": 882,
+      "hr": 169,
+      "aggSplats": 3,
+      "aggCalories": 130,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1492
+      }
+    },
+    {
+      "relativeTimestamp": 900,
+      "hr": 168,
+      "aggSplats": 3,
+      "aggCalories": 132,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1516
+      }
+    },
+    {
+      "relativeTimestamp": 918,
+      "hr": 165,
+      "aggSplats": 3,
+      "aggCalories": 135,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1540
+      }
+    },
+    {
+      "relativeTimestamp": 936,
+      "hr": 160,
+      "aggSplats": 3,
+      "aggCalories": 137,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1562
+      }
+    },
+    {
+      "relativeTimestamp": 954,
+      "hr": 158,
+      "aggSplats": 3,
+      "aggCalories": 139,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1578
+      }
+    },
+    {
+      "relativeTimestamp": 972,
+      "hr": 157,
+      "aggSplats": 3,
+      "aggCalories": 141,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1594
+      }
+    },
+    {
+      "relativeTimestamp": 990,
+      "hr": 152,
+      "aggSplats": 3,
+      "aggCalories": 143,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1610
+      }
+    },
+    {
+      "relativeTimestamp": 1008,
+      "hr": 150,
+      "aggSplats": 3,
+      "aggCalories": 145,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1626
+      }
+    },
+    {
+      "relativeTimestamp": 1026,
+      "hr": 149,
+      "aggSplats": 3,
+      "aggCalories": 147,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1648
+      }
+    },
+    {
+      "relativeTimestamp": 1044,
+      "hr": 150,
+      "aggSplats": 3,
+      "aggCalories": 149,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1684
+      }
+    },
+    {
+      "relativeTimestamp": 1062,
+      "hr": 155,
+      "aggSplats": 3,
+      "aggCalories": 151,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1720
+      }
+    },
+    {
+      "relativeTimestamp": 1080,
+      "hr": 163,
+      "aggSplats": 3,
+      "aggCalories": 153,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1756
+      }
+    },
+    {
+      "relativeTimestamp": 1098,
+      "hr": 170,
+      "aggSplats": 3,
+      "aggCalories": 156,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1793
+      }
+    },
+    {
+      "relativeTimestamp": 1116,
+      "hr": 176,
+      "aggSplats": 3,
+      "aggCalories": 158,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1829
+      }
+    },
+    {
+      "relativeTimestamp": 1134,
+      "hr": 181,
+      "aggSplats": 3,
+      "aggCalories": 161,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1865
+      }
+    },
+    {
+      "relativeTimestamp": 1152,
+      "hr": 183,
+      "aggSplats": 3,
+      "aggCalories": 164,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1901
+      }
+    },
+    {
+      "relativeTimestamp": 1170,
+      "hr": 186,
+      "aggSplats": 4,
+      "aggCalories": 167,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1937
+      }
+    },
+    {
+      "relativeTimestamp": 1188,
+      "hr": 189,
+      "aggSplats": 4,
+      "aggCalories": 170,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1958
+      }
+    },
+    {
+      "relativeTimestamp": 1206,
+      "hr": 187,
+      "aggSplats": 4,
+      "aggCalories": 173,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 1989
+      }
+    },
+    {
+      "relativeTimestamp": 1224,
+      "hr": 186,
+      "aggSplats": 4,
+      "aggCalories": 177,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2026
+      }
+    },
+    {
+      "relativeTimestamp": 1242,
+      "hr": 184,
+      "aggSplats": 4,
+      "aggCalories": 180,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2062
+      }
+    },
+    {
+      "relativeTimestamp": 1260,
+      "hr": 188,
+      "aggSplats": 5,
+      "aggCalories": 183,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2098
+      }
+    },
+    {
+      "relativeTimestamp": 1278,
+      "hr": 190,
+      "aggSplats": 5,
+      "aggCalories": 186,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2134
+      }
+    },
+    {
+      "relativeTimestamp": 1296,
+      "hr": 191,
+      "aggSplats": 5,
+      "aggCalories": 189,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2171
+      }
+    },
+    {
+      "relativeTimestamp": 1314,
+      "hr": 190,
+      "aggSplats": 5,
+      "aggCalories": 192,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2207
+      }
+    },
+    {
+      "relativeTimestamp": 1332,
+      "hr": 192,
+      "aggSplats": 6,
+      "aggCalories": 195,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2243
+      }
+    },
+    {
+      "relativeTimestamp": 1350,
+      "hr": 193,
+      "aggSplats": 6,
+      "aggCalories": 199,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2279
+      }
+    },
+    {
+      "relativeTimestamp": 1368,
+      "hr": 195,
+      "aggSplats": 6,
+      "aggCalories": 202,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2315
+      }
+    },
+    {
+      "relativeTimestamp": 1386,
+      "hr": 196,
+      "aggSplats": 7,
+      "aggCalories": 205,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2344
+      }
+    },
+    {
+      "relativeTimestamp": 1404,
+      "hr": 196,
+      "aggSplats": 7,
+      "aggCalories": 209,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2360
+      }
+    },
+    {
+      "relativeTimestamp": 1422,
+      "hr": 191,
+      "aggSplats": 7,
+      "aggCalories": 212,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2376
+      }
+    },
+    {
+      "relativeTimestamp": 1440,
+      "hr": 188,
+      "aggSplats": 7,
+      "aggCalories": 215,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2392
+      }
+    },
+    {
+      "relativeTimestamp": 1458,
+      "hr": 176,
+      "aggSplats": 7,
+      "aggCalories": 218,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2408
+      }
+    },
+    {
+      "relativeTimestamp": 1476,
+      "hr": 168,
+      "aggSplats": 7,
+      "aggCalories": 220,
+      "treadData": {
+        "treadSpeed": 2.41,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2432
+      }
+    },
+    {
+      "relativeTimestamp": 1494,
+      "hr": 161,
+      "aggSplats": 7,
+      "aggCalories": 222,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2468
+      }
+    },
+    {
+      "relativeTimestamp": 1512,
+      "hr": 158,
+      "aggSplats": 7,
+      "aggCalories": 224,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2504
+      }
+    },
+    {
+      "relativeTimestamp": 1530,
+      "hr": 166,
+      "aggSplats": 7,
+      "aggCalories": 227,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2540
+      }
+    },
+    {
+      "relativeTimestamp": 1548,
+      "hr": 173,
+      "aggSplats": 7,
+      "aggCalories": 229,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2576
+      }
+    },
+    {
+      "relativeTimestamp": 1566,
+      "hr": 178,
+      "aggSplats": 7,
+      "aggCalories": 232,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2615
+      }
+    },
+    {
+      "relativeTimestamp": 1584,
+      "hr": 182,
+      "aggSplats": 7,
+      "aggCalories": 235,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2651
+      }
+    },
+    {
+      "relativeTimestamp": 1602,
+      "hr": 185,
+      "aggSplats": 7,
+      "aggCalories": 238,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2687
+      }
+    },
+    {
+      "relativeTimestamp": 1620,
+      "hr": 185,
+      "aggSplats": 8,
+      "aggCalories": 241,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2723
+      }
+    },
+    {
+      "relativeTimestamp": 1638,
+      "hr": 190,
+      "aggSplats": 8,
+      "aggCalories": 244,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2757
+      }
+    },
+    {
+      "relativeTimestamp": 1656,
+      "hr": 192,
+      "aggSplats": 8,
+      "aggCalories": 247,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2788
+      }
+    },
+    {
+      "relativeTimestamp": 1674,
+      "hr": 188,
+      "aggSplats": 8,
+      "aggCalories": 250,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2812
+      }
+    },
+    {
+      "relativeTimestamp": 1692,
+      "hr": 185,
+      "aggSplats": 9,
+      "aggCalories": 253,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2837
+      }
+    },
+    {
+      "relativeTimestamp": 1710,
+      "hr": 182,
+      "aggSplats": 9,
+      "aggCalories": 256,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2868
+      }
+    },
+    {
+      "relativeTimestamp": 1728,
+      "hr": 177,
+      "aggSplats": 9,
+      "aggCalories": 259,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2904
+      }
+    },
+    {
+      "relativeTimestamp": 1746,
+      "hr": 177,
+      "aggSplats": 9,
+      "aggCalories": 261,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2941
+      }
+    },
+    {
+      "relativeTimestamp": 1764,
+      "hr": 184,
+      "aggSplats": 9,
+      "aggCalories": 264,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 2977
+      }
+    },
+    {
+      "relativeTimestamp": 1782,
+      "hr": 184,
+      "aggSplats": 9,
+      "aggCalories": 267,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3013
+      }
+    },
+    {
+      "relativeTimestamp": 1800,
+      "hr": 186,
+      "aggSplats": 9,
+      "aggCalories": 270,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3049
+      }
+    },
+    {
+      "relativeTimestamp": 1818,
+      "hr": 190,
+      "aggSplats": 10,
+      "aggCalories": 274,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3085
+      }
+    },
+    {
+      "relativeTimestamp": 1836,
+      "hr": 191,
+      "aggSplats": 10,
+      "aggCalories": 277,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3122
+      }
+    },
+    {
+      "relativeTimestamp": 1854,
+      "hr": 192,
+      "aggSplats": 10,
+      "aggCalories": 280,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3148
+      }
+    },
+    {
+      "relativeTimestamp": 1872,
+      "hr": 192,
+      "aggSplats": 10,
+      "aggCalories": 283,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3177
+      }
+    },
+    {
+      "relativeTimestamp": 1890,
+      "hr": 186,
+      "aggSplats": 11,
+      "aggCalories": 286,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3213
+      }
+    },
+    {
+      "relativeTimestamp": 1908,
+      "hr": 184,
+      "aggSplats": 11,
+      "aggCalories": 289,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3249
+      }
+    },
+    {
+      "relativeTimestamp": 1926,
+      "hr": 188,
+      "aggSplats": 11,
+      "aggCalories": 292,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3285
+      }
+    },
+    {
+      "relativeTimestamp": 1944,
+      "hr": 188,
+      "aggSplats": 11,
+      "aggCalories": 296,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3321
+      }
+    },
+    {
+      "relativeTimestamp": 1962,
+      "hr": 191,
+      "aggSplats": 12,
+      "aggCalories": 299,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3358
+      }
+    },
+    {
+      "relativeTimestamp": 1980,
+      "hr": 193,
+      "aggSplats": 12,
+      "aggCalories": 302,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3394
+      }
+    },
+    {
+      "relativeTimestamp": 1998,
+      "hr": 196,
+      "aggSplats": 12,
+      "aggCalories": 305,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3430
+      }
+    },
+    {
+      "relativeTimestamp": 2016,
+      "hr": 197,
+      "aggSplats": 12,
+      "aggCalories": 309,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3455
+      }
+    },
+    {
+      "relativeTimestamp": 2034,
+      "hr": 194,
+      "aggSplats": 13,
+      "aggCalories": 312,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3471
+      }
+    },
+    {
+      "relativeTimestamp": 2052,
+      "hr": 189,
+      "aggSplats": 13,
+      "aggCalories": 315,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3487
+      }
+    },
+    {
+      "relativeTimestamp": 2070,
+      "hr": 181,
+      "aggSplats": 13,
+      "aggCalories": 318,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3503
+      }
+    },
+    {
+      "relativeTimestamp": 2088,
+      "hr": 176,
+      "aggSplats": 13,
+      "aggCalories": 321,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3519
+      }
+    },
+    {
+      "relativeTimestamp": 2106,
+      "hr": 165,
+      "aggSplats": 13,
+      "aggCalories": 323,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3535
+      }
+    },
+    {
+      "relativeTimestamp": 2124,
+      "hr": 162,
+      "aggSplats": 13,
+      "aggCalories": 325,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3551
+      }
+    },
+    {
+      "relativeTimestamp": 2142,
+      "hr": 157,
+      "aggSplats": 13,
+      "aggCalories": 327,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3583
+      }
+    },
+    {
+      "relativeTimestamp": 2160,
+      "hr": 157,
+      "aggSplats": 13,
+      "aggCalories": 329,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3619
+      }
+    },
+    {
+      "relativeTimestamp": 2178,
+      "hr": 163,
+      "aggSplats": 13,
+      "aggCalories": 332,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3656
+      }
+    },
+    {
+      "relativeTimestamp": 2196,
+      "hr": 164,
+      "aggSplats": 13,
+      "aggCalories": 334,
+      "treadData": {
+        "treadSpeed": 2.1,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3693
+      }
+    },
+    {
+      "relativeTimestamp": 2214,
+      "hr": 174,
+      "aggSplats": 13,
+      "aggCalories": 337,
+      "treadData": {
+        "treadSpeed": 2.1,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3730
+      }
+    },
+    {
+      "relativeTimestamp": 2232,
+      "hr": 182,
+      "aggSplats": 13,
+      "aggCalories": 339,
+      "treadData": {
+        "treadSpeed": 2.1,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3768
+      }
+    },
+    {
+      "relativeTimestamp": 2250,
+      "hr": 182,
+      "aggSplats": 13,
+      "aggCalories": 342,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3792
+      }
+    },
+    {
+      "relativeTimestamp": 2268,
+      "hr": 182,
+      "aggSplats": 13,
+      "aggCalories": 345,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3823
+      }
+    },
+    {
+      "relativeTimestamp": 2286,
+      "hr": 178,
+      "aggSplats": 13,
+      "aggCalories": 348,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3859
+      }
+    },
+    {
+      "relativeTimestamp": 2304,
+      "hr": 183,
+      "aggSplats": 13,
+      "aggCalories": 351,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3896
+      }
+    },
+    {
+      "relativeTimestamp": 2322,
+      "hr": 181,
+      "aggSplats": 13,
+      "aggCalories": 354,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3932
+      }
+    },
+    {
+      "relativeTimestamp": 2340,
+      "hr": 188,
+      "aggSplats": 13,
+      "aggCalories": 357,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 3968
+      }
+    },
+    {
+      "relativeTimestamp": 2358,
+      "hr": 191,
+      "aggSplats": 13,
+      "aggCalories": 360,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4004
+      }
+    },
+    {
+      "relativeTimestamp": 2376,
+      "hr": 188,
+      "aggSplats": 14,
+      "aggCalories": 363,
+      "treadData": {
+        "treadSpeed": 2.01,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4032
+      }
+    },
+    {
+      "relativeTimestamp": 2394,
+      "hr": 190,
+      "aggSplats": 14,
+      "aggCalories": 366,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4056
+      }
+    },
+    {
+      "relativeTimestamp": 2412,
+      "hr": 185,
+      "aggSplats": 14,
+      "aggCalories": 369,
+      "treadData": {
+        "treadSpeed": 1.34,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4080
+      }
+    },
+    {
+      "relativeTimestamp": 2430,
+      "hr": 178,
+      "aggSplats": 14,
+      "aggCalories": 372,
+      "treadData": {
+        "treadSpeed": 2.68,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4110
+      }
+    },
+    {
+      "relativeTimestamp": 2448,
+      "hr": 172,
+      "aggSplats": 14,
+      "aggCalories": 375,
+      "treadData": {
+        "treadSpeed": 2.68,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4161
+      }
+    },
+    {
+      "relativeTimestamp": 2466,
+      "hr": 180,
+      "aggSplats": 14,
+      "aggCalories": 377,
+      "treadData": {
+        "treadSpeed": 2.68,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4206
+      }
+    },
+    {
+      "relativeTimestamp": 2484,
+      "hr": 189,
+      "aggSplats": 14,
+      "aggCalories": 380,
+      "treadData": {
+        "treadSpeed": 2.68,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4242
+      }
+    },
+    {
+      "relativeTimestamp": 2502,
+      "hr": 193,
+      "aggSplats": 14,
+      "aggCalories": 384,
+      "treadData": {
+        "treadSpeed": 2.68,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4287
+      }
+    },
+    {
+      "relativeTimestamp": 2520,
+      "hr": 193,
+      "aggSplats": 15,
+      "aggCalories": 387,
+      "treadData": {
+        "treadSpeed": 2.68,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4326
+      }
+    },
+    {
+      "relativeTimestamp": 2538,
+      "hr": 197,
+      "aggSplats": 15,
+      "aggCalories": 390,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4342
+      }
+    },
+    {
+      "relativeTimestamp": 2556,
+      "hr": 193,
+      "aggSplats": 15,
+      "aggCalories": 393,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4357
+      }
+    },
+    {
+      "relativeTimestamp": 2574,
+      "hr": 187,
+      "aggSplats": 15,
+      "aggCalories": 396,
+      "treadData": {
+        "treadSpeed": 0.89,
+        "treadIncline": 1.0,
+        "aggTreadDistance": 4372
+      }
+    },
+    {
+      "relativeTimestamp": 2592,
+      "hr": 175,
+      "aggSplats": 15,
+      "aggCalories": 399
+    },
+    {
+      "relativeTimestamp": 2610,
+      "hr": 170,
+      "aggSplats": 15,
+      "aggCalories": 401
+    },
+    {
+      "relativeTimestamp": 2628,
+      "hr": 163,
+      "aggSplats": 15,
+      "aggCalories": 404
+    },
+    {
+      "relativeTimestamp": 2646,
+      "hr": 158,
+      "aggSplats": 15,
+      "aggCalories": 406
+    },
+    {
+      "relativeTimestamp": 2664,
+      "hr": 157,
+      "aggSplats": 15,
+      "aggCalories": 408
+    },
+    {
+      "relativeTimestamp": 2682,
+      "hr": 154,
+      "aggSplats": 15,
+      "aggCalories": 409
+    }
+  ]
+}
