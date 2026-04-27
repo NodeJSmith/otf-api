@@ -72,7 +72,7 @@ class AnonymizeConfig:
     """
 
     seed: int | None = None
-    strictness: Literal["permissive", "mask", "drop"] = "permissive"
+    strictness: Literal["permissive", "mask", "drop"] = "mask"
     output_dir: Path | None = None
 
 

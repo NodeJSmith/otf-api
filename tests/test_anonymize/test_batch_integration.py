@@ -16,6 +16,7 @@ from unittest.mock import patch
 import pytest
 
 from otf_api.anonymize import anonymize_batch, batch
+from otf_api.anonymize.anonymizer import AnonymizeConfig
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -49,7 +50,7 @@ def batch_result(tmp_path_factory: pytest.TempPathFactory) -> tuple[Path, object
         pytest.skip("Real fixture files not present")
 
     out = tmp_path_factory.mktemp("anonymized_batch")
-    result = anonymize_batch(_RAW_FIXTURES_DIR, out, seed=42)
+    result = anonymize_batch(_RAW_FIXTURES_DIR, out, seed=42, config=AnonymizeConfig(seed=42, strictness="permissive"))
     return out, result
 
 
@@ -226,8 +227,9 @@ def test_full_batch_determinism(tmp_path: Path) -> None:
     out1 = tmp_path / "run1"
     out2 = tmp_path / "run2"
 
-    anonymize_batch(_RAW_FIXTURES_DIR, out1, seed=42)
-    anonymize_batch(_RAW_FIXTURES_DIR, out2, seed=42)
+    cfg = AnonymizeConfig(seed=42, strictness="permissive")
+    anonymize_batch(_RAW_FIXTURES_DIR, out1, seed=42, config=cfg)
+    anonymize_batch(_RAW_FIXTURES_DIR, out2, seed=42, config=cfg)
 
     files1 = sorted(p.relative_to(out1) for p in out1.rglob("*.json"))
     files2 = sorted(p.relative_to(out2) for p in out2.rglob("*.json"))

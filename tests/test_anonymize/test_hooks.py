@@ -199,26 +199,26 @@ def test_env_var_config_parsing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch)
 
 
 def test_env_var_config_parsing_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
-    """create_capture_hook uses permissive strictness and random seed when vars are unset."""
+    """create_capture_hook uses mask strictness and random seed when vars are unset."""
     monkeypatch.delenv("OTF_ANONYMIZE_OUTPUT_DIR", raising=False)
     monkeypatch.delenv("OTF_ANONYMIZE_SEED", raising=False)
     monkeypatch.delenv("OTF_ANONYMIZE_STRICTNESS", raising=False)
 
     hook = create_capture_hook()
 
-    assert hook.anonymizer._config.strictness == "permissive"
+    assert hook.anonymizer._config.strictness == "mask"
     assert hook.anonymizer._config.seed is None
 
 
 def test_env_var_invalid_strictness_falls_back(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Invalid OTF_ANONYMIZE_STRICTNESS falls back to permissive without raising."""
+    """Invalid OTF_ANONYMIZE_STRICTNESS falls back to mask without raising."""
     monkeypatch.setenv("OTF_ANONYMIZE_STRICTNESS", "invalid_value")
     monkeypatch.delenv("OTF_ANONYMIZE_SEED", raising=False)
     monkeypatch.delenv("OTF_ANONYMIZE_OUTPUT_DIR", raising=False)
 
     hook = create_capture_hook()
 
-    assert hook.anonymizer._config.strictness == "permissive"
+    assert hook.anonymizer._config.strictness == "mask"
 
 
 def test_env_var_invalid_seed_falls_back(monkeypatch: pytest.MonkeyPatch) -> None:

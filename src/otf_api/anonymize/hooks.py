@@ -219,7 +219,7 @@ def create_capture_hook(config: AnonymizeConfig | None = None) -> AnonymizedCapt
         OTF_ANONYMIZE_SEED: Override the integer seed for fake data generation.
             Default: derived from the member UUID (handled by the caller).
         OTF_ANONYMIZE_STRICTNESS: One of ``permissive``, ``mask``, or ``drop``.
-            Default: ``permissive``.
+            Default: ``mask``.
 
     Args:
         config: Optional pre-built ``AnonymizeConfig``.  If provided, env vars
@@ -246,13 +246,13 @@ def create_capture_hook(config: AnonymizeConfig | None = None) -> AnonymizedCapt
                 )
 
         # --- strictness ---
-        strictness_raw = os.getenv("OTF_ANONYMIZE_STRICTNESS", "permissive").lower()
+        strictness_raw = os.getenv("OTF_ANONYMIZE_STRICTNESS", "mask").lower()
         if strictness_raw not in ("permissive", "mask", "drop"):
             logger.warning(
-                "AnonymizedCaptureHook: OTF_ANONYMIZE_STRICTNESS=%r is invalid; defaulting to 'permissive'",
+                "AnonymizedCaptureHook: OTF_ANONYMIZE_STRICTNESS=%r is invalid; defaulting to 'mask'",
                 strictness_raw,
             )
-            strictness_raw = "permissive"
+            strictness_raw = "mask"
 
         config = AnonymizeConfig(
             seed=seed,
