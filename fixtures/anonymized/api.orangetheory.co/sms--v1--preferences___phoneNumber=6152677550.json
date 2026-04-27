@@ -1,9 +1,0 @@
-{
-  "code": "__MASKED__",
-  "data": {
-    "isPromotionalSmsOptIn": true,
-    "isTransactionalSmsOptIn": true,
-    "isPromotionalPhoneOptIn": false,
-    "isTransactionalPhoneOptIn": false
-  }
-}

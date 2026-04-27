@@ -1,9 +1,0 @@
-{
-  "code": "__MASKED__",
-  "data": {
-    "email": "anthony86@example.org",
-    "isSystemEmailOptIn": true,
-    "isPromotionalEmailOptIn": false,
-    "isTransactionalEmailOptIn": false
-  }
-}
