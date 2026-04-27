@@ -46,6 +46,28 @@ _OTF_ZONE_PERCENTAGES: dict[str, tuple[float, float]] = {
     "red": (0.92, 1.0),
 }
 
+# Normalize address alias keys to the canonical keys returned by
+# fake_address_components() so that aliases like "addressLine1" or "line1"
+# get the correct component instead of falling back to city.
+_ADDRESS_ALIAS_TO_CANONICAL: dict[str, str] = {
+    "addressLine1": "address1",
+    "physicalAddress": "address1",
+    "billToAddress": "address1",
+    "shipToAddress": "address1",
+    "line1": "address1",
+    "addressLine2": "address1",
+    "line2": "address1",
+    "address2": "address1",
+    "physicalCity": "city",
+    "suburb": "city",
+    "billToCity": "city",
+    "physicalState": "state",
+    "territory": "state",
+    "physicalPostalCode": "postalCode",
+    "postal_code": "postalCode",
+    "physicalCountry": "country",
+}
+
 # Placeholder returned when a generator raises.  Must never equal a real PII value.
 _GENERATOR_FAILURE_SENTINEL = "__ANONYMIZE_ERROR__"
 
@@ -521,7 +543,8 @@ class Anonymizer:
                 self._address_component_cache[location_id] = self._generators.fake_address_components()
             components = self._address_component_cache[location_id]
 
-        return components.get(key, components.get("city", "FakeCity"))
+        canonical = _ADDRESS_ALIAS_TO_CANONICAL.get(key, key)
+        return components.get(canonical, components.get("city", "FakeCity"))
 
     # ------------------------------------------------------------------
     # Internal: strategy dispatch
@@ -584,10 +607,9 @@ class Anonymizer:
         if category == "phone":
             return g.fake_phone()
         if category == "address":
-            # Address strategy returns a dict of components; return the specific key's value
             components = g.fake_address_components()
-            # Return the specific field from the components dict, or a generic fake city
-            return components.get(key, components.get("city", "FakeCity"))
+            canonical = _ADDRESS_ALIAS_TO_CANONICAL.get(key, key)
+            return components.get(canonical, components.get("city", "FakeCity"))
         if category == "birthday":
             return g.fake_birthday()
         if category == "financial_cc_last4":

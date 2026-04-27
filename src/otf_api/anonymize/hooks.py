@@ -12,6 +12,7 @@ import json
 import logging
 import os
 import re
+import threading
 from pathlib import Path
 
 import httpx
@@ -73,6 +74,7 @@ class AnonymizedCaptureHook:
         self._output_dir = output_dir
         self._first_call_done = False
         self._seen_slugs: dict[str, int] = {}
+        self._lock = threading.Lock()
 
     @property
     def anonymizer(self) -> Anonymizer:
@@ -107,9 +109,10 @@ class AnonymizedCaptureHook:
 
     def _handle_response(self, response: httpx.Response) -> None:
         """Internal response handler (may raise; caller catches)."""
-        if not self._first_call_done:
-            self._write_capture_start()
-            self._first_call_done = True
+        with self._lock:
+            if not self._first_call_done:
+                self._write_capture_start()
+                self._first_call_done = True
 
         response.read()
 
@@ -173,11 +176,12 @@ class AnonymizedCaptureHook:
         slug = self._anonymizer.anonymize_filename(raw_slug)
 
         # Collision counter: append ___N for repeated slugs
-        slug_key = slug
-        count = self._seen_slugs.get(slug_key, 0) + 1
-        self._seen_slugs[slug_key] = count
-        if count > 1:
-            slug = f"{slug}___{count}"
+        with self._lock:
+            slug_key = slug
+            count = self._seen_slugs.get(slug_key, 0) + 1
+            self._seen_slugs[slug_key] = count
+            if count > 1:
+                slug = f"{slug}___{count}"
 
         host_dir = self._output_dir / host
         host_dir.mkdir(parents=True, exist_ok=True)
