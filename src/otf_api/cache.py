@@ -99,7 +99,7 @@ class OtfCache(Cache):
     def clear(self) -> None:
         """Clears the cache."""
         try:
-            self.clear()
+            super().clear()
         except Exception:
             LOGGER.exception("Failed to clear cache")
 

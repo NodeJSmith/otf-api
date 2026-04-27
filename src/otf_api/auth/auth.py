@@ -332,8 +332,10 @@ class OtfCognito(Cognito):
         auth_result = tokens["AuthenticationResult"]
         device_metadata = auth_result.get("NewDeviceMetadata", {})
 
-        assert "AccessToken" in auth_result, "AccessToken not found in AuthenticationResult"
-        assert "IdToken" in auth_result, "IdToken not found in AuthenticationResult"
+        if "AccessToken" not in auth_result:
+            raise ValueError("AccessToken not found in AuthenticationResult")
+        if "IdToken" not in auth_result:
+            raise ValueError("IdToken not found in AuthenticationResult")
 
         # tokens - refresh token defaults to existing value if not present
         # note: verify_token also sets the token attribute
@@ -366,7 +368,8 @@ class HttpxCognitoAuth(httpx.Auth):
 
         token = self.cognito.id_token
 
-        assert isinstance(token, str), "Token is not a string"
+        if not isinstance(token, str):
+            raise ValueError("Token is not a string")
 
         request.headers[self.http_header] = self.http_header_prefix + token
 
