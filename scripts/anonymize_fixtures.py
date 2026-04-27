@@ -106,7 +106,7 @@ def main() -> int:
         config = AnonymizeConfig(seed=seed, strictness=args.strictness)
 
     try:
-        result = anonymize_batch(input_dir, output_dir, seed=seed, config=config)
+        result = anonymize_batch(input_dir, output_dir, config=config)
     except OSError as exc:
         logger.error("Batch anonymization failed: %s", exc)
         return 1
