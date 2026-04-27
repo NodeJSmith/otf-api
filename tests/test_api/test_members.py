@@ -4,6 +4,7 @@ from otf_api.models.members.member_detail import MemberDetail
 from otf_api.models.members.member_membership import MemberMembership
 from otf_api.models.members.member_purchases import MemberPurchase
 from otf_api.models.members.notifications import EmailNotificationSettings, SmsNotificationSettings
+from otf_api.models.studios.studio_detail import StudioDetail
 
 
 def test_get_member_detail(mock_otf) -> None:
@@ -34,7 +35,7 @@ def test_get_member_purchases(mock_otf) -> None:
 
     first = result[0]
     assert isinstance(first.purchase_uuid, str)
-    assert first.studio is not None
+    assert isinstance(first.studio, StudioDetail)
     assert isinstance(first.studio.studio_uuid, str)
 
 

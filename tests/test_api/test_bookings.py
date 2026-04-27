@@ -83,6 +83,15 @@ def test_get_classes(mock_otf) -> None:
     assert isinstance(first.studio.studio_uuid, str)
 
 
+def test_get_bookings_with_default_filters(mock_otf) -> None:
+    all_bookings = mock_otf.bookings.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
+    filtered = mock_otf.bookings.get_bookings()
+
+    assert isinstance(filtered, list)
+    assert len(filtered) > 0
+    assert len(filtered) <= len(all_bookings)
+
+
 def test_get_booking_from_class(mock_otf) -> None:
     bookings = mock_otf.bookings.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
     assert len(bookings) > 0

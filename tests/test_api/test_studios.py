@@ -1,5 +1,7 @@
 """Tests for StudioApi read-only methods."""
 
+import httpx
+
 from otf_api.models.studios.studio_detail import StudioDetail
 from otf_api.models.studios.studio_services import StudioService
 
@@ -30,6 +32,19 @@ def test_get_favorite_studios_empty(mock_otf) -> None:
 
     assert isinstance(result, list)
     assert result == []
+
+
+def test_get_studio_detail_not_found_returns_empty(mock_otf, mock_router) -> None:
+    fake_uuid = "00000000-0000-0000-0000-000000000000"
+    mock_router.request("GET", f"https://api.orangetheory.co/mobile/v1/studios/{fake_uuid}").mock(
+        return_value=httpx.Response(404, json={"code": "NOT_FOUND", "message": "Studio not found"})
+    )
+
+    result = mock_otf.studios.get_studio_detail(fake_uuid)
+
+    assert isinstance(result, StudioDetail)
+    assert result.studio_uuid == fake_uuid
+    assert result.name == "Studio Not Found"
 
 
 def test_get_studio_services(mock_otf) -> None:
