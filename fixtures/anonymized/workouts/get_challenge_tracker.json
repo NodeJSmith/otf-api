@@ -1,0 +1,1543 @@
+{
+  "Status": 200,
+  "Message": "Success",
+  "Dto": {
+    "Programs": [
+      {
+        "ChallengeCategoryId": 2,
+        "ChallengeSubCategoryId": 1,
+        "ChallengeName": "DriTri Full",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": true
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/DriTri_Icon_Spring2026.png"
+      },
+      {
+        "ChallengeCategoryId": 2,
+        "ChallengeSubCategoryId": 4,
+        "ChallengeName": "DriTri Relay",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": true
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/DriTri_Icon_Spring2026.png"
+      },
+      {
+        "ChallengeCategoryId": 2,
+        "ChallengeSubCategoryId": 3,
+        "ChallengeName": "DriTri Sprint",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": true
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": true,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/DriTri_Icon_Spring2026.png"
+      },
+      {
+        "ChallengeCategoryId": 2,
+        "ChallengeSubCategoryId": 1500,
+        "ChallengeName": "DriTri Strength",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": true
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/DriTri_Icon_Spring2026.png"
+      },
+      {
+        "ChallengeCategoryId": 2,
+        "ChallengeSubCategoryId": 975,
+        "ChallengeName": "DriTri Team",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": true
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/DriTri_Icon_Spring2026.png"
+      },
+      {
+        "ChallengeCategoryId": 63,
+        "ChallengeSubCategoryId": 0,
+        "ChallengeName": "12 Days of Fitness",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/12DoF_2025_Icon_250x250.png"
+      },
+      {
+        "ChallengeCategoryId": 58,
+        "ChallengeSubCategoryId": 0,
+        "ChallengeName": "All Out Mayhem",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/All_Out_Mayhem_2025_Icon_250x250.png"
+      },
+      {
+        "ChallengeCategoryId": 60,
+        "ChallengeSubCategoryId": 0,
+        "ChallengeName": "Back At It",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/BackAtIt.png"
+      },
+      {
+        "ChallengeCategoryId": 52,
+        "ChallengeSubCategoryId": 0,
+        "ChallengeName": "Hell Week",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/Hell_Week_2025_Icon.png"
+      },
+      {
+        "ChallengeCategoryId": 5,
+        "ChallengeSubCategoryId": 14,
+        "ChallengeName": "Marathon Month Full",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenge-sub-types/Marathon_Month_Full_2025_Icon.png"
+      },
+      {
+        "ChallengeCategoryId": 5,
+        "ChallengeSubCategoryId": 15,
+        "ChallengeName": "Marathon Month Half",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": true,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenge-sub-types/Marathon_Month_Half_2025_Icon.png"
+      },
+      {
+        "ChallengeCategoryId": 5,
+        "ChallengeSubCategoryId": 1,
+        "ChallengeName": "Marathon Month Original",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/Marathon_Month_2025_Icon.png"
+      },
+      {
+        "ChallengeCategoryId": 5,
+        "ChallengeSubCategoryId": 16,
+        "ChallengeName": "Marathon Month Ultra",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenge-sub-types/Marathon_Month_Ultra_2025_Icon.png"
+      },
+      {
+        "ChallengeCategoryId": 66,
+        "ChallengeSubCategoryId": 0,
+        "ChallengeName": "Push 30",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/Push_30_2025_Icon_250x250.png"
+      },
+      {
+        "ChallengeCategoryId": 65,
+        "ChallengeSubCategoryId": 0,
+        "ChallengeName": "Remix In Six",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/RemixInSix.png"
+      },
+      {
+        "ChallengeCategoryId": 64,
+        "ChallengeSubCategoryId": 0,
+        "ChallengeName": "Transformation Challenge",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/tc_2025_icon.png"
+      }
+    ],
+    "Challenges": [
+      {
+        "ChallengeCategoryId": 10,
+        "ChallengeSubCategoryId": 8,
+        "ChallengeName": "Catch Me If You Can 3G",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/CatchMeIfYouCan.png"
+      },
+      {
+        "ChallengeCategoryId": 10,
+        "ChallengeSubCategoryId": 1,
+        "ChallengeName": "Catch me If You Can Original",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": true,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/CatchMeIfYouCan.png"
+      },
+      {
+        "ChallengeCategoryId": 55,
+        "ChallengeSubCategoryId": 17,
+        "ChallengeName": "Inferno 3G",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/Inferno2.png"
+      },
+      {
+        "ChallengeCategoryId": 55,
+        "ChallengeSubCategoryId": 1,
+        "ChallengeName": "Inferno Original",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": true,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": true,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/Inferno2.png"
+      },
+      {
+        "ChallengeCategoryId": 3,
+        "ChallengeSubCategoryId": 0,
+        "ChallengeName": "Infinity",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/Infinity.png"
+      },
+      {
+        "ChallengeCategoryId": 9,
+        "ChallengeSubCategoryId": 6,
+        "ChallengeName": "Orange Everest 3G",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/Everest.png"
+      },
+      {
+        "ChallengeCategoryId": 9,
+        "ChallengeSubCategoryId": 1,
+        "ChallengeName": "Orange Everest Original",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/Everest.png"
+      }
+    ],
+    "Benchmarks": [
+      {
+        "EquipmentId": 2,
+        "EquipmentName": "Treadmill",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": true,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/Treadmill.png"
+      },
+      {
+        "EquipmentId": 4,
+        "EquipmentName": "Rower",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": true,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": true,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/Rower.png"
+      },
+      {
+        "EquipmentId": 6,
+        "EquipmentName": "Weight Floor",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/WeightFloor.png"
+      },
+      {
+        "EquipmentId": 7,
+        "EquipmentName": "Power Walker",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/PowerWalker.png"
+      },
+      {
+        "EquipmentId": 3,
+        "EquipmentName": "Strider",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/Strider.png"
+      },
+      {
+        "EquipmentId": 5,
+        "EquipmentName": "Bike",
+        "Years": [
+          {
+            "Year": "2026",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2025",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2024",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2023",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2022",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2021",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2020",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2019",
+            "IsParticipated": false,
+            "InProgress": false
+          },
+          {
+            "Year": "2018",
+            "IsParticipated": false,
+            "InProgress": false
+          }
+        ],
+        "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/Bike.png"
+      }
+    ]
+  }
+}

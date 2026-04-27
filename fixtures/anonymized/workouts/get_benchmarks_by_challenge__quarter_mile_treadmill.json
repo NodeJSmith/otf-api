@@ -1,0 +1,59 @@
+{
+  "Status": 200,
+  "Message": "Success",
+  "Dto": [
+    {
+      "ChallengeCategoryId": 69,
+      "ChallengeSubCategoryId": null,
+      "EquipmentId": 2,
+      "EquipmentName": "Treadmill",
+      "MetricEntry": {
+        "Title": "0.25 MILE",
+        "EquipmentId": 2,
+        "EntryType": "Time",
+        "MetricKey": "0.25MILE",
+        "MinValue": "",
+        "MaxValue": ""
+      },
+      "ChallengeName": "0.25 MILE Treadmill",
+      "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/Treadmill.png",
+      "BestRecord": "01:58",
+      "LastRecord": "01:58",
+      "PreviousRecord": "01:58",
+      "Unit": null,
+      "Goals": null,
+      "ChallengeHistories": [
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 847573,
+          "StudioId": 1267,
+          "StudioName": "Oconnorport - North, PR",
+          "StartDate": "2025-09-30T00:00:00",
+          "EndDate": "2025-09-30T23:59:00",
+          "TotalResult": "00:01:58.00",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Oconnorport - North, PR",
+              "EquipmentId": 2,
+              "Result": "01:58",
+              "DateCreated": "2025-09-30T15:16:52",
+              "DateUpdated": "2025-09-30T15:29:31",
+              "ClassTime": "2025-09-30T10:00:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2431597730,
+              "SubstituteId": 1,
+              "WeightLBS": 0,
+              "ClassName": "Tread 50",
+              "CoachName": "David Hamilton",
+              "CoachImageUrl": "https://placeholder.example.com/profile/565328.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

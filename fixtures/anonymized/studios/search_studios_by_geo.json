@@ -1,0 +1,318 @@
+{
+  "code": "SUCCESS",
+  "data": {
+    "pagination": {
+      "pageIndex": "1",
+      "pageSize": "100",
+      "totalCount": 3,
+      "totalPages": 1
+    },
+    "studios": [
+      {
+        "studioId": 857443149,
+        "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
+        "mboStudioId": 29387072,
+        "studioNumber": "0590",
+        "studioName": "Oconnorport - North, PR",
+        "studioPhysicalLocationId": 494,
+        "timeZone": "America/Chicago",
+        "contactEmail": "kelliwhite@example.org",
+        "studioToken": "REDACTED",
+        "environment": "PROD",
+        "pricingLevel": "",
+        "taxRate": "0.000000",
+        "acceptsVisaMasterCard": true,
+        "acceptsAmericanExpress": true,
+        "acceptsDiscover": true,
+        "acceptsAch": false,
+        "isIntegrated": true,
+        "description": "",
+        "studioVersion": "",
+        "studioStatus": "Active",
+        "openDate": "2017-01-13 00:00:00",
+        "reOpenDate": "2020-05-26 00:00:00",
+        "studioTypeId": 2,
+        "posTypeId": 0,
+        "marketId": 0,
+        "areaId": 0,
+        "stateId": 0,
+        "logoUrl": "",
+        "pageColor1": "",
+        "pageColor2": "",
+        "pageColor3": "",
+        "pageColor4": "",
+        "smsPackageEnabled": false,
+        "allowsDashboardAccess": false,
+        "allowsCrWaitlist": true,
+        "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+        "royaltyRate": 0,
+        "marketingFundRate": 0,
+        "commissionPercent": 0,
+        "isMobile": null,
+        "isOtbeat": null,
+        "distance": 0,
+        "studioLocation": {
+          "physicalAddress": "92638 Roman Fort Apt. 738",
+          "physicalAddress2": null,
+          "physicalCity": "North Brucemouth",
+          "physicalState": "OH",
+          "physicalPostalCode": "20180",
+          "physicalRegion": "KS/MO-01",
+          "physicalCountry": "PK",
+          "country": {
+            "countryId": 1,
+            "countryCurrencyCode": "USD",
+            "countryCurrencyName": "US Dollar",
+            "currencyAlphabeticCode": "USD"
+          },
+          "phoneNumber": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "studioLocationLocalized": {
+          "language": {
+            "languageId": null,
+            "languageCode": null,
+            "languageName": null
+          },
+          "studioName": null,
+          "studioAddress": null
+        },
+        "studioProfiles": {
+          "isWeb": true,
+          "introCapacity": 1,
+          "isCrm": true
+        },
+        "socialMediaLinks": [
+          {
+            "id": "eeac66f0-f6a2-447e-967a-8ad0b52a290e",
+            "languageId": "16",
+            "name": "LinkedIn",
+            "value": "https://www.linkedin.com/company/orangetheory-fitness"
+          },
+          {
+            "id": "cb1458ae-3b55-413c-975d-20f0953645f3",
+            "languageId": "16",
+            "name": "Facebook",
+            "value": "https://www.facebook.com/OrangeTheoryFitness"
+          },
+          {
+            "id": "f0543848-f1a4-45eb-8a7f-cc9fc18ba2db",
+            "languageId": "16",
+            "name": "Instagram",
+            "value": "https://www.instagram.com/orangetheory"
+          },
+          {
+            "id": "e3d8cee6-3a8e-42f8-bbb1-1ba1009afd80",
+            "languageId": "16",
+            "name": "Web",
+            "value": "https://www.orangetheory.com/en-us"
+          },
+          {
+            "id": "775ed7dc-22c6-4ea5-a381-2085776c72a0",
+            "languageId": "16",
+            "name": "YouTube",
+            "value": "https://www.youtube.com/Otheoryfitness"
+          },
+          {
+            "id": "2d30d773-bc80-42de-b180-f4c4d9e0681a",
+            "languageId": "16",
+            "name": "Twitter",
+            "value": "https://www.twitter.com/orangetheory"
+          }
+        ]
+      },
+      {
+        "studioId": 659617736,
+        "studioUUId": "1937e00d-0793-4580-9278-e1543a2be06f",
+        "mboStudioId": 170346572,
+        "studioNumber": "1546",
+        "studioName": "South Melissa - West, TX",
+        "studioPhysicalLocationId": 58775,
+        "timeZone": "America/Chicago",
+        "contactEmail": "lcalderon@example.com",
+        "studioToken": "REDACTED",
+        "environment": "PROD",
+        "pricingLevel": null,
+        "taxRate": "0.000000",
+        "acceptsVisaMasterCard": true,
+        "acceptsAmericanExpress": true,
+        "acceptsDiscover": true,
+        "acceptsAch": false,
+        "isIntegrated": true,
+        "description": null,
+        "studioVersion": null,
+        "studioStatus": "Active",
+        "openDate": "2023-07-12 00:00:00",
+        "reOpenDate": "2023-07-12 00:00:00",
+        "studioTypeId": 2,
+        "posTypeId": null,
+        "marketId": null,
+        "areaId": null,
+        "stateId": null,
+        "logoUrl": null,
+        "pageColor1": null,
+        "pageColor2": null,
+        "pageColor3": null,
+        "pageColor4": null,
+        "smsPackageEnabled": null,
+        "allowsDashboardAccess": null,
+        "allowsCrWaitlist": true,
+        "crWaitlistFlagLastUpdated": "2022-12-14T00:01:29.000Z",
+        "royaltyRate": null,
+        "marketingFundRate": null,
+        "commissionPercent": null,
+        "isMobile": null,
+        "isOtbeat": null,
+        "distance": 8.0053736150128,
+        "studioLocation": {
+          "physicalAddress": "962 Mullen Point",
+          "physicalAddress2": "",
+          "physicalCity": "North Brucemouth",
+          "physicalState": "OH",
+          "physicalPostalCode": "73925",
+          "physicalRegion": "KS/MO-01",
+          "physicalCountry": "PK",
+          "country": {
+            "countryId": 1,
+            "countryCurrencyCode": "USD",
+            "countryCurrencyName": "US Dollar",
+            "currencyAlphabeticCode": "USD"
+          },
+          "phoneNumber": "3259931970",
+          "latitude": 35.969783,
+          "longitude": -97.984677
+        },
+        "studioLocationLocalized": {
+          "language": {
+            "languageId": null,
+            "languageCode": null,
+            "languageName": null
+          },
+          "studioName": null,
+          "studioAddress": null
+        },
+        "studioProfiles": {
+          "isWeb": true,
+          "introCapacity": 1,
+          "isCrm": true
+        },
+        "socialMediaLinks": []
+      },
+      {
+        "studioId": 587241888,
+        "studioUUId": "5f811cb9-2964-4f8b-afac-aa5090e5e945",
+        "mboStudioId": 455349154,
+        "studioNumber": "0589",
+        "studioName": "Lake Jose - East, FM",
+        "studioPhysicalLocationId": 493,
+        "timeZone": "America/Chicago",
+        "contactEmail": "linda26@example.org",
+        "studioToken": "REDACTED",
+        "environment": "PROD",
+        "pricingLevel": "",
+        "taxRate": "0.000000",
+        "acceptsVisaMasterCard": true,
+        "acceptsAmericanExpress": true,
+        "acceptsDiscover": true,
+        "acceptsAch": false,
+        "isIntegrated": true,
+        "description": "",
+        "studioVersion": "",
+        "studioStatus": "Active",
+        "openDate": "2016-01-22 00:00:00",
+        "reOpenDate": "2020-05-26 00:00:00",
+        "studioTypeId": 2,
+        "posTypeId": 0,
+        "marketId": 0,
+        "areaId": 0,
+        "stateId": 0,
+        "logoUrl": "",
+        "pageColor1": "",
+        "pageColor2": "",
+        "pageColor3": "",
+        "pageColor4": "",
+        "smsPackageEnabled": false,
+        "allowsDashboardAccess": false,
+        "allowsCrWaitlist": true,
+        "crWaitlistFlagLastUpdated": "2020-07-09T13:01:06.000Z",
+        "royaltyRate": 0,
+        "marketingFundRate": 0,
+        "commissionPercent": 0,
+        "isMobile": null,
+        "isOtbeat": null,
+        "distance": 13.0196527230952,
+        "studioLocation": {
+          "physicalAddress": "46996 Jennifer Trail",
+          "physicalAddress2": null,
+          "physicalCity": "North Brucemouth",
+          "physicalState": "OH",
+          "physicalPostalCode": "19927",
+          "physicalRegion": "KS/MO-01",
+          "physicalCountry": "PK",
+          "country": {
+            "countryId": 1,
+            "countryCurrencyCode": "USD",
+            "countryCurrencyName": "US Dollar",
+            "currencyAlphabeticCode": "USD"
+          },
+          "phoneNumber": "6939489374",
+          "latitude": 37.876455,
+          "longitude": -92.739675
+        },
+        "studioLocationLocalized": {
+          "language": {
+            "languageId": null,
+            "languageCode": null,
+            "languageName": null
+          },
+          "studioName": null,
+          "studioAddress": null
+        },
+        "studioProfiles": {
+          "isWeb": true,
+          "introCapacity": 1,
+          "isCrm": true
+        },
+        "socialMediaLinks": [
+          {
+            "id": "775ed7dc-22c6-4ea5-a381-2085776c72a0",
+            "languageId": "16",
+            "name": "YouTube",
+            "value": "https://www.youtube.com/Otheoryfitness"
+          },
+          {
+            "id": "e3d8cee6-3a8e-42f8-bbb1-1ba1009afd80",
+            "languageId": "16",
+            "name": "Web",
+            "value": "https://www.orangetheory.com/en-us"
+          },
+          {
+            "id": "2d30d773-bc80-42de-b180-f4c4d9e0681a",
+            "languageId": "16",
+            "name": "Twitter",
+            "value": "https://www.twitter.com/orangetheory"
+          },
+          {
+            "id": "eeac66f0-f6a2-447e-967a-8ad0b52a290e",
+            "languageId": "16",
+            "name": "LinkedIn",
+            "value": "https://www.linkedin.com/company/orangetheory-fitness"
+          },
+          {
+            "id": "cb1458ae-3b55-413c-975d-20f0953645f3",
+            "languageId": "16",
+            "name": "Facebook",
+            "value": "https://www.facebook.com/OrangeTheoryFitness"
+          },
+          {
+            "id": "f0543848-f1a4-45eb-8a7f-cc9fc18ba2db",
+            "languageId": "16",
+            "name": "Instagram",
+            "value": "https://www.instagram.com/orangetheory"
+          }
+        ]
+      }
+    ]
+  }
+}

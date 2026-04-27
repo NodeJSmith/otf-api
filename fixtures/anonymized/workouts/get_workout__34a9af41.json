@@ -1,0 +1,130 @@
+{
+  "id": "34a9af41-25ec-4845-aaa4-857e8101e89a",
+  "details": {
+    "calories_burned": 370,
+    "splat_points": 2,
+    "step_count": 602,
+    "active_time_seconds": 0,
+    "zone_time_minutes": {
+      "gray": 1,
+      "blue": 12,
+      "green": 30,
+      "orange": 2,
+      "red": 0
+    },
+    "heart_rate": {
+      "max_hr": 0,
+      "peak_hr": 170,
+      "peak_hr_percent": 89,
+      "avg_hr": 141,
+      "avg_hr_percent": 73
+    },
+    "equipment_data": {
+      "treadmill": {
+        "avg_speed": {
+          "display_value": 0.0,
+          "display_unit": "mph",
+          "metric_value": 0.0
+        },
+        "max_speed": {
+          "display_value": 0.0,
+          "display_unit": "mph",
+          "metric_value": 0.0
+        },
+        "avg_incline": {
+          "display_value": 0.0,
+          "display_unit": "%",
+          "metric_value": 0.0
+        },
+        "max_incline": {
+          "display_value": 0.0,
+          "display_unit": "%",
+          "metric_value": 0.0
+        },
+        "avg_pace": {
+          "display_value": "00:00",
+          "display_unit": "min/mile",
+          "metric_value": "0"
+        },
+        "max_pace": {
+          "display_value": "00:00",
+          "display_unit": "min/mile",
+          "metric_value": "0"
+        },
+        "total_distance": {
+          "display_value": 0.0,
+          "display_unit": "miles",
+          "metric_value": 0.0
+        },
+        "moving_time": {
+          "display_value": "00:00",
+          "display_unit": "Duration",
+          "metric_value": "0"
+        },
+        "elevation_gained": {
+          "display_value": 0.0,
+          "display_unit": "feet",
+          "metric_value": 0.0
+        }
+      },
+      "rower": {
+        "avg_power": {
+          "display_value": 0.0,
+          "display_unit": "watt",
+          "metric_value": 0.0
+        },
+        "max_power": {
+          "display_value": 0.0,
+          "display_unit": "watt",
+          "metric_value": 0.0
+        },
+        "avg_speed": {
+          "display_value": 0.0,
+          "display_unit": "km/h",
+          "metric_value": 0.0
+        },
+        "max_speed": {
+          "display_value": 0.0,
+          "display_unit": "km/h",
+          "metric_value": 0.0
+        },
+        "avg_pace": {
+          "display_value": "00:00",
+          "display_unit": "min/500m",
+          "metric_value": "0"
+        },
+        "max_pace": {
+          "display_value": "00:00",
+          "display_unit": "min/500m",
+          "metric_value": "0"
+        },
+        "avg_cadence": {
+          "display_value": 0.0,
+          "display_unit": "",
+          "metric_value": 0.0
+        },
+        "max_cadence": {
+          "display_value": 0.0,
+          "display_unit": "",
+          "metric_value": 0.0
+        },
+        "total_distance": {
+          "display_value": 0.0,
+          "display_unit": "m",
+          "metric_value": 0.0
+        },
+        "moving_time": {
+          "display_value": "00:00",
+          "display_unit": "Duration",
+          "metric_value": "0"
+        }
+      }
+    }
+  },
+  "ratable": false,
+  "class": {
+    "starts_at_local": "2026-04-11T10:30:00",
+    "name": "Strength 50 (Total)",
+    "type": "STRENGTH_50"
+  }
+}

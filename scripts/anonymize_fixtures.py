@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 
 from otf_api.anonymize import anonymize_batch
+from otf_api.anonymize.anonymizer import AnonymizeConfig
 
 # ---------------------------------------------------------------------------
 # Logging setup
@@ -61,6 +62,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional integer seed for reproducible output (default: derived from first member UUID)",
     )
     parser.add_argument(
+        "--strictness",
+        choices=["permissive", "mask", "drop"],
+        default="mask",
+        help="How to handle unknown fields (default: mask)",
+    )
+    parser.add_argument(
         "--verbose",
         "-v",
         action="store_true",
@@ -94,8 +101,12 @@ def main() -> int:
     else:
         logger.info("  Seed:   auto-derived from first member UUID")
 
+    config = AnonymizeConfig(strictness=args.strictness)
+    if seed is not None:
+        config = AnonymizeConfig(seed=seed, strictness=args.strictness)
+
     try:
-        result = anonymize_batch(input_dir, output_dir, seed=seed)
+        result = anonymize_batch(input_dir, output_dir, config=config)
     except OSError as exc:
         logger.error("Batch anonymization failed: %s", exc)
         return 1

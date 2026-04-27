@@ -1,0 +1,59 @@
+{
+  "Status": 200,
+  "Message": "Success",
+  "Dto": [
+    {
+      "ChallengeCategoryId": 2,
+      "ChallengeSubCategoryId": 3,
+      "EquipmentId": 2,
+      "EquipmentName": "Treadmill",
+      "MetricEntry": {
+        "Title": "3.1 MILE",
+        "EquipmentId": 2,
+        "EntryType": "Time",
+        "MetricKey": "3.1MILE",
+        "MinValue": "20:00.00",
+        "MaxValue": "90:00.00"
+      },
+      "ChallengeName": "DriTri Sprint",
+      "LogoUrl": "https://otf-icons.s3.us-east-1.amazonaws.com/challenges/DriTri_Icon_Spring2026.png",
+      "BestRecord": "36:54.00",
+      "LastRecord": "36:54.00",
+      "PreviousRecord": "36:54.00",
+      "Unit": null,
+      "Goals": null,
+      "ChallengeHistories": [
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 757728,
+          "StudioId": 1267,
+          "StudioName": "Oconnorport - North, PR",
+          "StartDate": "2025-04-11T00:00:00",
+          "EndDate": "2025-04-13T23:59:00",
+          "TotalResult": "36:54.00",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Oconnorport - North, PR",
+              "EquipmentId": 2,
+              "Result": "36:54.00",
+              "DateCreated": "2025-04-12T15:14:52",
+              "DateUpdated": "2025-04-12T15:15:53",
+              "ClassTime": "2025-04-12T09:30:00",
+              "ChallengeSubCategoryId": 3,
+              "ClassId": 2479622036,
+              "SubstituteId": 1,
+              "WeightLBS": 0,
+              "ClassName": "DriTri",
+              "CoachName": "Miguel Lee",
+              "CoachImageUrl": "https://placeholder.example.com/profile/840853.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

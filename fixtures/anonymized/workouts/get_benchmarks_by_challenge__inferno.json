@@ -1,0 +1,89 @@
+{
+  "Status": 200,
+  "Message": "Success",
+  "Dto": [
+    {
+      "ChallengeCategoryId": 55,
+      "ChallengeSubCategoryId": null,
+      "EquipmentId": 4,
+      "EquipmentName": "Rower",
+      "MetricEntry": {
+        "Title": "23 MIN",
+        "EquipmentId": 4,
+        "EntryType": "Distance",
+        "MetricKey": "23MIN",
+        "MinValue": "",
+        "MaxValue": ""
+      },
+      "ChallengeName": "Inferno",
+      "LogoUrl": "https://otf-icons.s3.amazonaws.com/challenges/Inferno2.png",
+      "BestRecord": 2323.0,
+      "LastRecord": 2323.0,
+      "PreviousRecord": 2284.0,
+      "Unit": "m",
+      "Goals": null,
+      "ChallengeHistories": [
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 747486,
+          "StudioId": 1267,
+          "StudioName": "Oconnorport - North, PR",
+          "StartDate": "2025-06-26T00:00:00",
+          "EndDate": "2025-06-26T23:59:00",
+          "TotalResult": 2323.0,
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Oconnorport - North, PR",
+              "EquipmentId": 4,
+              "Result": 2323.0,
+              "DateCreated": "2025-06-26T15:15:55",
+              "DateUpdated": "2025-06-26T15:15:55",
+              "ClassTime": "2025-06-26T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2431597692,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "Angela Kelly",
+              "CoachImageUrl": "https://placeholder.example.com/profile/240243.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        },
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 522640,
+          "StudioId": 1267,
+          "StudioName": "Oconnorport - North, PR",
+          "StartDate": "2024-05-14T00:00:00",
+          "EndDate": "2024-05-14T23:59:00",
+          "TotalResult": 2284.0,
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Oconnorport - North, PR",
+              "EquipmentId": 4,
+              "Result": 2284.0,
+              "DateCreated": "2024-05-14T15:19:08",
+              "DateUpdated": "2024-05-14T15:19:08",
+              "ClassTime": "2024-05-14T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2238319881,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "David Hamilton",
+              "CoachImageUrl": "https://placeholder.example.com/profile/366716.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

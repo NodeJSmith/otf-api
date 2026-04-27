@@ -1,0 +1,994 @@
+{
+  "items": [
+    {
+      "id": "849c052c-e3e0-4ddd-a474-c7b4c974a4a3",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "578051150",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-25T05:05:05.481Z",
+      "updated_at": "2026-04-25T14:15:11.743Z",
+      "ratable": false,
+      "class": {
+        "id": "179a9a9f-90b3-4ad4-900a-84ed12096715",
+        "name": "Strength 50 (Total)",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-05-23T10:30:00",
+        "starts_at": "2026-05-23T15:30:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "Robert",
+          "image_url": "https://placeholder.example.com/profile/821917.jpg"
+        }
+      }
+    },
+    {
+      "id": "6cfc5266-9793-478e-b7fe-28d9521f7012",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "928862884",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-23T05:05:06.706Z",
+      "updated_at": "2026-04-23T05:05:06.913Z",
+      "ratable": false,
+      "class": {
+        "id": "846f8450-5316-4279-bc89-ca9bcd8b849c",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-21T10:00:00",
+        "starts_at": "2026-05-21T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/872158.jpg"
+        }
+      }
+    },
+    {
+      "id": "8e111833-1ba4-455b-9694-462b040d9c89",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "570922020",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-21T05:05:06.878Z",
+      "updated_at": "2026-04-21T05:05:07.308Z",
+      "ratable": false,
+      "class": {
+        "id": "b1f22914-9ed4-4d16-b370-d614dd7a0c6f",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-19T10:00:00",
+        "starts_at": "2026-05-19T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/316546.jpg"
+        }
+      }
+    },
+    {
+      "id": "95e98312-6ba2-44ac-a234-e24d23112147",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "798496692",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-18T05:05:05.574Z",
+      "updated_at": "2026-04-25T14:14:46.366Z",
+      "ratable": false,
+      "class": {
+        "id": "febbf21f-de2f-4871-bd51-b369e2f273ae",
+        "name": "Strength 50 (Total)",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-05-16T10:30:00",
+        "starts_at": "2026-05-16T15:30:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "Robert",
+          "image_url": "https://placeholder.example.com/profile/990389.jpg"
+        }
+      }
+    },
+    {
+      "id": "e78c4fbd-c057-4d5e-b192-b67eb4d2b1c6",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "671835535",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-16T05:00:07.259Z",
+      "updated_at": "2026-04-16T05:00:07.332Z",
+      "ratable": false,
+      "class": {
+        "id": "2a194e78-546d-417b-b7ff-5a31dbee1796",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-14T10:00:00",
+        "starts_at": "2026-05-14T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/439399.jpg"
+        }
+      }
+    },
+    {
+      "id": "c4e0f800-f343-4825-9eb1-cf8ce5798cb8",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "101016400",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-14T05:00:06.089Z",
+      "updated_at": "2026-04-14T05:00:06.361Z",
+      "ratable": false,
+      "class": {
+        "id": "eb479184-5bc3-4bee-a1bf-7188f9247991",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-12T10:00:00",
+        "starts_at": "2026-05-12T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/235842.jpg"
+        }
+      }
+    },
+    {
+      "id": "b6793d24-c183-44f3-acb7-f594726d332c",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "814884628",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-11T05:00:06.083Z",
+      "updated_at": "2026-04-25T14:14:07.937Z",
+      "ratable": false,
+      "class": {
+        "id": "babb060e-6db7-49c0-aced-809fe32dc2be",
+        "name": "Strength 50 (Total)",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-05-09T10:30:00",
+        "starts_at": "2026-05-09T15:30:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "Carlos",
+          "image_url": "https://placeholder.example.com/profile/930419.jpg"
+        }
+      }
+    },
+    {
+      "id": "bf0c39fc-bae2-4ed8-beb2-5cbefc10fb67",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "374975253",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-09T05:00:06.984Z",
+      "updated_at": "2026-04-09T05:00:07.249Z",
+      "ratable": false,
+      "class": {
+        "id": "3fea1f75-ec40-44ba-8d48-aeb5d1e3e958",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-07T10:00:00",
+        "starts_at": "2026-05-07T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/450615.jpg"
+        }
+      }
+    },
+    {
+      "id": "69e8f4d2-3f30-4e35-ab7a-f4281589282a",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "159566647",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-07T05:00:08.503Z",
+      "updated_at": "2026-04-07T05:00:09.615Z",
+      "ratable": false,
+      "class": {
+        "id": "8acbea0c-2f08-4fe0-b604-a162db17fd4b",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-05T10:00:00",
+        "starts_at": "2026-05-05T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/610645.jpg"
+        }
+      }
+    },
+    {
+      "id": "9b35e377-027f-46a2-831e-7757a40fa769",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "913436998",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-04T05:00:13.155Z",
+      "updated_at": "2026-04-26T16:09:26.653Z",
+      "ratable": false,
+      "class": {
+        "id": "7c1b3cf4-4665-46bf-ba1b-a52f56e3bcd6",
+        "name": "Strength 50 (Total)",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-05-02T10:30:00",
+        "starts_at": "2026-05-02T15:30:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "Robert",
+          "image_url": "https://placeholder.example.com/profile/12581.jpg"
+        }
+      }
+    },
+    {
+      "id": "41d79d43-6d8f-4ce7-9023-2394ae88c5c1",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "655483737",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-02T05:00:15.050Z",
+      "updated_at": "2026-04-06T09:16:45.040Z",
+      "ratable": false,
+      "class": {
+        "id": "416f4dc9-e709-4481-9bd8-70027bd077a8",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-30T10:00:00",
+        "starts_at": "2026-04-30T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/353766.jpg"
+        }
+      }
+    },
+    {
+      "id": "8bbc8e2b-372c-4673-80af-4325dc414427",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "215820407",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-03-31T05:00:07.202Z",
+      "updated_at": "2026-04-06T09:16:44.412Z",
+      "ratable": false,
+      "class": {
+        "id": "cde45c2e-fded-4619-81e0-fa79b32b1983",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-28T10:00:00",
+        "starts_at": "2026-04-28T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/9522.jpg"
+        }
+      }
+    },
+    {
+      "id": "c6b6d5a5-5506-44d6-a377-b1caf9bb3ec6",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "414155232",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-03-24T12:00:17.067Z",
+      "updated_at": "2026-04-21T15:01:52.895Z",
+      "ratable": true,
+      "workout": {
+        "id": "95c5fb98-6980-481f-bc42-8d42fa882692",
+        "calories_burned": 409,
+        "splat_points": 16,
+        "step_count": 0,
+        "active_time_seconds": 2690,
+        "zone_time_minutes": {
+          "gray": 1,
+          "blue": 6,
+          "green": 21,
+          "orange": 16,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "71cf3794-3299-40a6-ad2e-a70b160214ba",
+        "name": "Tread 50",
+        "ot_base_class_uuid": "a44b6c34-28de-4432-9dec-5ba8350dd951",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-21T10:00:00",
+        "starts_at": "2026-04-21T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/681526.jpg"
+        }
+      }
+    },
+    {
+      "id": "cd73b8f4-1c94-404a-9f3e-fdcf8e655e41",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "133586745",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-03-21T05:00:07.297Z",
+      "updated_at": "2026-04-18T15:31:36.817Z",
+      "ratable": true,
+      "workout": {
+        "id": "42d6cb5c-6ed4-494b-9fc9-e3b11fcff454",
+        "calories_burned": 122,
+        "splat_points": 1,
+        "step_count": 0,
+        "active_time_seconds": 880,
+        "zone_time_minutes": {
+          "gray": 0,
+          "blue": 3,
+          "green": 11,
+          "orange": 1,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "42d6cb5c-6ed4-494b-9fc9-e3b11fcff454",
+        "name": "Strength 50 (Total)",
+        "ot_base_class_uuid": "24815791-4661-4df7-a4e5-6a61fcac6f18",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-04-18T10:30:00",
+        "starts_at": "2026-04-18T15:30:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "Robert",
+          "image_url": "https://placeholder.example.com/profile/745629.jpg"
+        }
+      }
+    },
+    {
+      "id": "81959cb5-38ef-4942-87d8-5759edf62400",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "919267605",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-03-14T05:00:07.212Z",
+      "updated_at": "2026-04-11T15:31:42.871Z",
+      "ratable": true,
+      "workout": {
+        "id": "34a9af41-25ec-4845-aaa4-857e8101e89a",
+        "calories_burned": 370,
+        "splat_points": 2,
+        "step_count": 0,
+        "active_time_seconds": 2745,
+        "zone_time_minutes": {
+          "gray": 1,
+          "blue": 12,
+          "green": 30,
+          "orange": 2,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "34a9af41-25ec-4845-aaa4-857e8101e89a",
+        "name": "Strength 50 (Total)",
+        "ot_base_class_uuid": "7a62eb07-c3b0-4374-b6c7-446c9109cf35",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-04-11T10:30:00",
+        "starts_at": "2026-04-11T15:30:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "Robert",
+          "image_url": "https://placeholder.example.com/profile/392195.jpg"
+        }
+      }
+    },
+    {
+      "id": "7cb49bdf-4733-44ea-83ef-689407870684",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "357221477",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-03-10T05:00:07.724Z",
+      "updated_at": "2026-04-07T14:56:45.492Z",
+      "ratable": true,
+      "workout": {
+        "id": "87f26aee-175f-4cd2-bb9d-58e4f543bbcf",
+        "calories_burned": 415,
+        "splat_points": 14,
+        "step_count": 0,
+        "active_time_seconds": 2851,
+        "zone_time_minutes": {
+          "gray": 1,
+          "blue": 10,
+          "green": 22,
+          "orange": 13,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "53fc5a69-e201-4908-8017-b014cf79caef",
+        "name": "Tread 50",
+        "ot_base_class_uuid": "81859134-ccb8-4541-bfdf-f49fddb9d47a",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-07T10:00:00",
+        "starts_at": "2026-04-07T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/140944.jpg"
+        }
+      }
+    },
+    {
+      "id": "5da011f9-bfc3-4324-86af-294d8fa0ebef",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "653689089",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-03-07T06:00:05.659Z",
+      "updated_at": "2026-04-04T15:25:56.398Z",
+      "ratable": true,
+      "workout": {
+        "id": "bcf74d7a-5ada-4121-afd2-b7a48d9fe5b9",
+        "calories_burned": 297,
+        "splat_points": 0,
+        "step_count": 0,
+        "active_time_seconds": 2614,
+        "zone_time_minutes": {
+          "gray": 7,
+          "blue": 21,
+          "green": 15,
+          "orange": 0,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "bcf74d7a-5ada-4121-afd2-b7a48d9fe5b9",
+        "name": "Strength 50 (Total)",
+        "ot_base_class_uuid": "05ac5b89-3e31-447f-84ab-a75eb5852144",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-04-04T10:30:00",
+        "starts_at": "2026-04-04T15:30:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "Robert",
+          "image_url": "https://placeholder.example.com/profile/167108.jpg"
+        }
+      }
+    },
+    {
+      "id": "c4b1d722-2c10-467a-980e-d82db5f1fc70",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "235006612",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-02T03:07:14.019Z",
+      "updated_at": "2026-04-02T14:57:29.837Z",
+      "ratable": true,
+      "workout": {
+        "id": "9c9cea0c-2ca1-4789-a091-250e8fe46024",
+        "calories_burned": 416,
+        "splat_points": 14,
+        "step_count": 0,
+        "active_time_seconds": 2783,
+        "zone_time_minutes": {
+          "gray": 0,
+          "blue": 8,
+          "green": 25,
+          "orange": 14,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "4ad92e9a-ba6c-43a1-9ca7-d9f8ff031b6e",
+        "name": "Tread 50",
+        "ot_base_class_uuid": "096525ea-0833-4e21-b67e-eb7c72dde967",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-02T10:00:00",
+        "starts_at": "2026-04-02T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/193793.jpg"
+        }
+      }
+    },
+    {
+      "id": "eafd304f-6710-4d23-8ed5-27faa894ad5c",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "545847987",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-03-26T14:59:02.749Z",
+      "updated_at": "2026-03-26T14:59:05.988Z",
+      "ratable": true,
+      "workout": {
+        "id": "d64a3ce0-30a1-46d5-93ed-748bb80e3b0d",
+        "calories_burned": 382,
+        "splat_points": 4,
+        "step_count": 0,
+        "active_time_seconds": 2754,
+        "zone_time_minutes": {
+          "gray": 0,
+          "blue": 11,
+          "green": 31,
+          "orange": 4,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "73fb3d10-177d-47a4-b25b-8476e051e684",
+        "name": "Tread 50",
+        "ot_base_class_uuid": "f7b8dc40-15a6-44c4-97d6-9e40ca457754",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-03-26T10:00:00",
+        "starts_at": "2026-03-26T15:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "James",
+          "image_url": "https://placeholder.example.com/profile/376122.jpg"
+        }
+      }
+    }
+  ]
+}

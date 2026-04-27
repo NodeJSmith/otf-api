@@ -62,10 +62,15 @@ class FakeDataGenerators:
     # Personal info
     # ------------------------------------------------------------------
 
-    def fake_name(self) -> str:
-        """Return a fake full name (first or last, caller chooses context)."""
+    def fake_first_name(self) -> str:
+        """Return a fake first name."""
         with self._lock:
-            return self._faker.name()
+            return self._faker.first_name()
+
+    def fake_last_name(self) -> str:
+        """Return a fake last name."""
+        with self._lock:
+            return self._faker.last_name()
 
     def fake_email(self) -> str:
         """Return a fake email address."""
@@ -171,6 +176,29 @@ class FakeDataGenerators:
         """
         with self._lock:
             return self._rng.randint(-365 * 24 * 3600, 365 * 24 * 3600)
+
+    # ------------------------------------------------------------------
+    # Studio / Geo
+    # ------------------------------------------------------------------
+
+    def fake_studio_name(self) -> str:
+        """Return a fake studio name in OTF's 'City - Direction, ST' format."""
+        with self._lock:
+            city = self._faker.city()
+            direction = self._rng.choice(("East", "West", "North", "South", "Central", "Downtown"))
+            state = self._faker.state_abbr()
+            return f"{city} - {direction}, {state}"
+
+    def fake_geo_coordinate(self, original: float) -> float:
+        """Return a fake coordinate offset from the original by a random amount.
+
+        Clamps to valid WGS-84 ranges: [-90, 90] for latitude, [-180, 180] for longitude.
+        """
+        with self._lock:
+            fake = round(original + self._rng.uniform(-5.0, 5.0), 6)
+        if abs(original) <= 90:
+            return max(-90.0, min(90.0, fake))
+        return max(-180.0, min(180.0, fake))
 
     # ------------------------------------------------------------------
     # Media

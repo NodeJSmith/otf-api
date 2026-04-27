@@ -5,8 +5,8 @@ results.json
 # Raw API responses contain PII — never commit
 fixtures/raw_responses/
 
-# Anonymized output is for local review only — not checked in
-fixtures/anonymized/
+# Anonymized fixtures are committed — they serve as test data for CI
+# fixtures/anonymized/  (un-ignored: needed for offline test suite)
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
