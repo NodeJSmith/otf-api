@@ -1,0 +1,116 @@
+{
+  "code": "SUCCESS",
+  "data": {
+    "studioId": 850588739,
+    "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+    "mboStudioId": 773969166,
+    "studioNumber": "0590",
+    "studioName": "Wichita - West, KS",
+    "studioPhysicalLocationId": 494,
+    "timeZone": "America/Chicago",
+    "contactEmail": "williamsjeremy@example.com",
+    "studioToken": "REDACTED",
+    "environment": "PROD",
+    "pricingLevel": "",
+    "taxRate": "0.000000",
+    "acceptsVisaMasterCard": true,
+    "acceptsAmericanExpress": true,
+    "acceptsDiscover": true,
+    "acceptsAch": false,
+    "isIntegrated": true,
+    "description": "",
+    "studioVersion": "",
+    "studioStatus": "Active",
+    "openDate": "2017-01-13 00:00:00",
+    "reOpenDate": "2020-05-26 00:00:00",
+    "studioTypeId": 2,
+    "posTypeId": 0,
+    "marketId": 0,
+    "areaId": 0,
+    "stateId": 0,
+    "logoUrl": "",
+    "pageColor1": "",
+    "pageColor2": "",
+    "pageColor3": "",
+    "pageColor4": "",
+    "smsPackageEnabled": false,
+    "allowsDashboardAccess": false,
+    "allowsCrWaitlist": true,
+    "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+    "royaltyRate": 0,
+    "marketingFundRate": 0,
+    "commissionPercent": 0,
+    "isMobile": null,
+    "isOtbeat": null,
+    "studioLocation": {
+      "physicalAddress": "16475 Mitchell Fords",
+      "physicalAddress2": null,
+      "physicalCity": "East Lydiamouth",
+      "physicalState": "IA",
+      "physicalPostalCode": "55834",
+      "physicalRegion": "KS/MO-01",
+      "physicalCountry": "BA",
+      "country": {
+        "countryId": 1,
+        "countryCurrencyCode": "USD",
+        "countryCurrencyName": "US Dollar",
+        "currencyAlphabeticCode": "USD"
+      },
+      "phoneNumber": "3178988797",
+      "latitude": 37.735043,
+      "longitude": -97.463166
+    },
+    "studioLocationLocalized": {
+      "language": {
+        "languageId": null,
+        "languageCode": null,
+        "languageName": null
+      },
+      "studioName": null,
+      "studioAddress": null
+    },
+    "studioProfiles": {
+      "isWeb": true,
+      "introCapacity": 1,
+      "isCrm": true
+    },
+    "socialMediaLinks": [
+      {
+        "id": "b289f224-4ac9-478d-8da8-eee40df56ac6",
+        "languageId": "16",
+        "name": "Web",
+        "value": "https://www.orangetheory.com/en-us"
+      },
+      {
+        "id": "de53790a-a34b-4cf6-a053-da42f1afdb65",
+        "languageId": "16",
+        "name": "Facebook",
+        "value": "https://www.facebook.com/OrangeTheoryFitness"
+      },
+      {
+        "id": "df6a8f93-1a43-4f0a-bdaa-39f0c0b6fce2",
+        "languageId": "16",
+        "name": "Twitter",
+        "value": "https://www.twitter.com/orangetheory"
+      },
+      {
+        "id": "782a65e0-48ca-4651-92f5-df7b0323d342",
+        "languageId": "16",
+        "name": "Instagram",
+        "value": "https://www.instagram.com/orangetheory"
+      },
+      {
+        "id": "2f32751e-5738-411d-b0c2-903f7a8d03aa",
+        "languageId": "16",
+        "name": "LinkedIn",
+        "value": "https://www.linkedin.com/company/orangetheory-fitness"
+      },
+      {
+        "id": "f0e98b3b-40a2-4c60-8d27-0659f72ada9b",
+        "languageId": "16",
+        "name": "YouTube",
+        "value": "https://www.youtube.com/Otheoryfitness"
+      }
+    ]
+  }
+}

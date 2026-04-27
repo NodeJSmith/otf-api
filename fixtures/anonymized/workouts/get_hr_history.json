@@ -1,0 +1,67 @@
+{
+  "memberUuid": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+  "history": [
+    {
+      "maxHr": {
+        "type": "SESSION_ADJUSTED",
+        "value": 207
+      },
+      "zones": {
+        "gray": {
+          "startBpm": 114,
+          "endBpm": 89
+        },
+        "blue": {
+          "startBpm": 89,
+          "endBpm": 111
+        },
+        "green": {
+          "startBpm": 146,
+          "endBpm": 179
+        },
+        "orange": {
+          "startBpm": 183,
+          "endBpm": 174
+        },
+        "red": {
+          "startBpm": 147,
+          "endBpm": 168
+        }
+      },
+      "changeFromPrevious": 1,
+      "changeBucket": "LITTLE_TO_NO_CHANGE",
+      "assignedAt": "2024-02-21T11:05:25Z"
+    },
+    {
+      "maxHr": {
+        "type": "SESSION_ADJUSTED",
+        "value": 212
+      },
+      "zones": {
+        "gray": {
+          "startBpm": 75,
+          "endBpm": 113
+        },
+        "blue": {
+          "startBpm": 115,
+          "endBpm": 104
+        },
+        "green": {
+          "startBpm": 132,
+          "endBpm": 141
+        },
+        "orange": {
+          "startBpm": 174,
+          "endBpm": 202
+        },
+        "red": {
+          "startBpm": 153,
+          "endBpm": 216
+        }
+      },
+      "changeFromPrevious": 4,
+      "changeBucket": "LITTLE_TO_NO_CHANGE",
+      "assignedAt": "2023-09-11T11:03:17Z"
+    }
+  ]
+}

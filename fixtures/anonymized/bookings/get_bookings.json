@@ -1,0 +1,1157 @@
+{
+  "code": "SUCCESS",
+  "data": [
+    {
+      "classBookingId": 1001490304,
+      "classBookingUUId": "28f49481-a0a0-4dc4-a720-9bdf1c11f735",
+      "studioId": 850588739,
+      "classId": 2594587273,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 46979,
+      "mboVisitId": 730761141,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-06T09:16:44.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-04T05:00:11.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-23T12:14:30.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "M",
+        "ccLast4": "4563"
+      },
+      "class": {
+        "classUUId": "ae270da7-02f0-4b90-b143-262fdc5c0eed",
+        "name": "Strength 50 (Total)",
+        "description": "",
+        "startDateTime": "2026-05-02T10:30:00.000",
+        "endDateTime": "2026-05-02T11:20:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 1204786,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "a4161293-c4c2-42e3-844e-a7c8c0398710",
+          "name": "Bobby",
+          "firstName": "Edward Moore",
+          "lastName": "Nathan Cortez",
+          "imageUrl": "https://placeholder.example.com/profile/485101.jpg",
+          "profilePictureUrl": "https://placeholder.example.com/profile/261942.jpg"
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1004554360,
+      "classBookingUUId": "74273ca3-287d-46ca-af4c-c69a4b22d308",
+      "studioId": 850588739,
+      "classId": 2594587293,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 46981,
+      "mboVisitId": 3584630,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-18T05:05:03.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-18T05:05:04.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-18T05:05:05.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "M",
+        "ccLast4": "7260"
+      },
+      "class": {
+        "classUUId": "e9a1fa6f-81f7-4d1c-adbc-2134c30ff46e",
+        "name": "Strength 50 (Total)",
+        "description": "",
+        "startDateTime": "2026-05-16T10:30:00.000",
+        "endDateTime": "2026-05-16T11:20:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 1204786,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "a4161293-c4c2-42e3-844e-a7c8c0398710",
+          "name": "Bobby",
+          "firstName": "Edward Moore",
+          "lastName": "Nathan Cortez",
+          "imageUrl": "https://placeholder.example.com/profile/847273.jpg",
+          "profilePictureUrl": "https://placeholder.example.com/profile/903190.jpg"
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1006101530,
+      "classBookingUUId": "a39231a7-d777-4477-8c66-e0a8a013ac6e",
+      "studioId": 850588739,
+      "classId": 2594587646,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 46982,
+      "mboVisitId": 545198869,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-25T05:05:03.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-25T05:05:04.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-25T05:05:05.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "M",
+        "ccLast4": "0828"
+      },
+      "class": {
+        "classUUId": "8a14be62-295b-4715-8333-e8615fb8d16c",
+        "name": "Strength 50 (Total)",
+        "description": "",
+        "startDateTime": "2026-05-23T10:30:00.000",
+        "endDateTime": "2026-05-23T11:20:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 1204786,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "a4161293-c4c2-42e3-844e-a7c8c0398710",
+          "name": "Bobby",
+          "firstName": "Edward Moore",
+          "lastName": "Nathan Cortez",
+          "imageUrl": "https://placeholder.example.com/profile/683824.jpg",
+          "profilePictureUrl": "https://placeholder.example.com/profile/566848.jpg"
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1003023981,
+      "classBookingUUId": "00257ad1-eb22-43dd-87c5-421eec24a3c5",
+      "studioId": 850588739,
+      "classId": 2594588080,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 46980,
+      "mboVisitId": 643211853,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-11T05:00:04.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-11T05:00:04.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-11T05:00:06.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "M",
+        "ccLast4": "1528"
+      },
+      "class": {
+        "classUUId": "5cec4eb5-edd9-4831-9ca3-5cfb04fc6d82",
+        "name": "Strength 50 (Total)",
+        "description": "",
+        "startDateTime": "2026-05-09T10:30:00.000",
+        "endDateTime": "2026-05-09T11:20:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 4365621,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "ce88cb2d-d4e8-4839-bc3e-058be0f3eab0",
+          "name": "Blair",
+          "firstName": "Alec Hickman",
+          "lastName": "Sandra Parker",
+          "imageUrl": "https://placeholder.example.com/profile/971367.jpg",
+          "profilePictureUrl": null
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1001040675,
+      "classBookingUUId": "e0c53cb8-3da9-42a9-8ed4-2f1a3d4cbf37",
+      "studioId": 850588739,
+      "classId": 2594604988,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 49953,
+      "mboVisitId": 609294872,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-06T09:16:44.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-02T05:00:13.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-06T09:16:46.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "M",
+        "ccLast4": "2724"
+      },
+      "class": {
+        "classUUId": "11b7e948-d0e6-4660-bc69-dee1bb5e4bcf",
+        "name": "Tread 50",
+        "description": "",
+        "startDateTime": "2026-04-30T10:00:00.000",
+        "endDateTime": "2026-04-30T10:50:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 4230447,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "c40db9b4-885f-4e66-82b6-d2c5fa5d3100",
+          "name": "Erika",
+          "firstName": "Shawn Arroyo",
+          "lastName": "John Jones",
+          "imageUrl": "https://placeholder.example.com/profile/426157.jpg",
+          "profilePictureUrl": null
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1004128712,
+      "classBookingUUId": "f264accc-79ac-4b1e-a8e5-6e0c20de435d",
+      "studioId": 850588739,
+      "classId": 2594604998,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 49955,
+      "mboVisitId": 590447116,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-16T05:00:05.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-16T05:00:05.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-16T05:00:07.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "F",
+        "ccLast4": "7886"
+      },
+      "class": {
+        "classUUId": "6c52c49f-9b49-4d26-9f57-c59a8715a103",
+        "name": "Tread 50",
+        "description": "",
+        "startDateTime": "2026-05-14T10:00:00.000",
+        "endDateTime": "2026-05-14T10:50:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 4230447,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "c40db9b4-885f-4e66-82b6-d2c5fa5d3100",
+          "name": "Erika",
+          "firstName": "Shawn Arroyo",
+          "lastName": "John Jones",
+          "imageUrl": "https://placeholder.example.com/profile/224131.jpg",
+          "profilePictureUrl": null
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1002591531,
+      "classBookingUUId": "badcc32a-c159-4f53-8a0f-4efbedcd465e",
+      "studioId": 850588739,
+      "classId": 2594605038,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 49954,
+      "mboVisitId": 740839735,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-09T05:00:05.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-09T05:00:05.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-09T05:00:07.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "F",
+        "ccLast4": "0960"
+      },
+      "class": {
+        "classUUId": "a65e688e-abf3-4d39-bec2-1bbe66245bfa",
+        "name": "Tread 50",
+        "description": "",
+        "startDateTime": "2026-05-07T10:00:00.000",
+        "endDateTime": "2026-05-07T10:50:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 4230447,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "c40db9b4-885f-4e66-82b6-d2c5fa5d3100",
+          "name": "Erika",
+          "firstName": "Shawn Arroyo",
+          "lastName": "John Jones",
+          "imageUrl": "https://placeholder.example.com/profile/172635.jpg",
+          "profilePictureUrl": null
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1005678876,
+      "classBookingUUId": "7394988f-847f-49b4-a64d-1bcb702753a1",
+      "studioId": 850588739,
+      "classId": 2594605073,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 49956,
+      "mboVisitId": 130027269,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-23T05:05:05.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-23T05:05:05.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-23T05:05:06.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "F",
+        "ccLast4": "0035"
+      },
+      "class": {
+        "classUUId": "969b6662-0562-4059-968c-c69b1064005c",
+        "name": "Tread 50",
+        "description": "",
+        "startDateTime": "2026-05-21T10:00:00.000",
+        "endDateTime": "2026-05-21T10:50:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 4230447,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "c40db9b4-885f-4e66-82b6-d2c5fa5d3100",
+          "name": "Erika",
+          "firstName": "Shawn Arroyo",
+          "lastName": "John Jones",
+          "imageUrl": "https://placeholder.example.com/profile/409387.jpg",
+          "profilePictureUrl": null
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1000551554,
+      "classBookingUUId": "01d74256-3860-4ab6-96a4-02f23ae8cc93",
+      "studioId": 850588739,
+      "classId": 2631354018,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 42722,
+      "mboVisitId": 76328245,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-06T09:16:43.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-03-31T05:00:06.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-06T09:16:45.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "F",
+        "ccLast4": "7454"
+      },
+      "class": {
+        "classUUId": "dc1110c1-080a-4dfb-a7c9-9b26114125c6",
+        "name": "Tread 50",
+        "description": "",
+        "startDateTime": "2026-04-28T10:00:00.000",
+        "endDateTime": "2026-04-28T10:50:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 4213470,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "3ceddf2d-839f-4c50-9223-b5135496f63c",
+          "name": "Lexi",
+          "firstName": "Pamela Anderson",
+          "lastName": "Joshua Baker",
+          "imageUrl": "https://placeholder.example.com/profile/299106.jpg",
+          "profilePictureUrl": "https://placeholder.example.com/profile/443556.jpg"
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1002135762,
+      "classBookingUUId": "21df306f-8a0b-4c33-b6d8-393a7c441fe7",
+      "studioId": 850588739,
+      "classId": 2636144836,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 42723,
+      "mboVisitId": 776793898,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-07T05:00:07.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-07T05:00:07.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-07T05:00:09.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "F",
+        "ccLast4": "2536"
+      },
+      "class": {
+        "classUUId": "683514f2-ceb8-4f9d-b914-c120c8dcd19f",
+        "name": "Tread 50",
+        "description": "",
+        "startDateTime": "2026-05-05T10:00:00.000",
+        "endDateTime": "2026-05-05T10:50:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 4213470,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "3ceddf2d-839f-4c50-9223-b5135496f63c",
+          "name": "Lexi",
+          "firstName": "Pamela Anderson",
+          "lastName": "Joshua Baker",
+          "imageUrl": "https://placeholder.example.com/profile/199123.jpg",
+          "profilePictureUrl": "https://placeholder.example.com/profile/311121.jpg"
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1003683697,
+      "classBookingUUId": "5ab33edf-6e59-4ed3-a8b3-17fa18d0752b",
+      "studioId": 850588739,
+      "classId": 2637481215,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 42724,
+      "mboVisitId": 454914084,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-14T05:00:04.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-14T05:00:04.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-14T05:00:06.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "M",
+        "ccLast4": "0958"
+      },
+      "class": {
+        "classUUId": "ac619e63-0dde-49a6-baa4-b71add2467ac",
+        "name": "Tread 50",
+        "description": "",
+        "startDateTime": "2026-05-12T10:00:00.000",
+        "endDateTime": "2026-05-12T10:50:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 4213470,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "3ceddf2d-839f-4c50-9223-b5135496f63c",
+          "name": "Lexi",
+          "firstName": "Pamela Anderson",
+          "lastName": "Joshua Baker",
+          "imageUrl": "https://placeholder.example.com/profile/607315.jpg",
+          "profilePictureUrl": "https://placeholder.example.com/profile/771477.jpg"
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    },
+    {
+      "classBookingId": 1005223236,
+      "classBookingUUId": "ba6c34ab-6712-403a-8f84-4fef1931e9ee",
+      "studioId": 850588739,
+      "classId": 2641045816,
+      "isIntro": false,
+      "memberId": 690356940,
+      "mboMemberId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "mboClassId": 42725,
+      "mboVisitId": 364423393,
+      "mboWaitlistEntryId": null,
+      "mboSyncMessage": null,
+      "status": "Booked",
+      "bookedDate": "2026-04-21T05:05:05.000Z",
+      "checkedInDate": null,
+      "cancelledDate": null,
+      "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "createdDate": "2026-04-21T05:05:05.000Z",
+      "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+      "updatedDate": "2026-04-21T05:05:07.000Z",
+      "isDeleted": false,
+      "member": {
+        "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "firstName": "Edward Fuller",
+        "lastName": "Heidi Lee",
+        "email": "blairamanda@example.com",
+        "phoneNumber": "5908107668",
+        "gender": "M",
+        "ccLast4": "5138"
+      },
+      "class": {
+        "classUUId": "72d8567d-894a-45e4-b0b1-87ef310c0c00",
+        "name": "Tread 50",
+        "description": "",
+        "startDateTime": "2026-05-19T10:00:00.000",
+        "endDateTime": "2026-05-19T10:50:00.000",
+        "isAvailable": true,
+        "isCancelled": false,
+        "programName": "Group Fitness",
+        "coachId": 4213470,
+        "studio": {
+          "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "studioName": "Wichita - West, KS",
+          "description": "",
+          "contactEmail": "williamsjeremy@example.com",
+          "status": "Active",
+          "logoUrl": "",
+          "timeZone": "America/Chicago",
+          "mboStudioId": 773969166,
+          "studioId": 850588739,
+          "allowsCRWaitlist": true,
+          "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
+          "studioLocation": {
+            "physicalAddress": "16475 Mitchell Fords",
+            "physicalAddress2": null,
+            "physicalCity": "East Lydiamouth",
+            "physicalState": "IA",
+            "physicalPostalCode": "55834",
+            "physicalRegion": "KS/MO-01",
+            "physicalCountryId": 1,
+            "physicalCountry": "BA",
+            "phoneNumber": "3178988797",
+            "latitude": "37.73504300",
+            "longitude": "-97.46316600",
+            "country": {
+              "countryCurrencyCode": "USD",
+              "defaultCurrency": {
+                "currencyId": 4,
+                "currency": {
+                  "currencyAlphabeticCode": "USD"
+                }
+              }
+            }
+          }
+        },
+        "coach": {
+          "coachUUId": "3ceddf2d-839f-4c50-9223-b5135496f63c",
+          "name": "Lexi",
+          "firstName": "Pamela Anderson",
+          "lastName": "Joshua Baker",
+          "imageUrl": "https://placeholder.example.com/profile/59943.jpg",
+          "profilePictureUrl": "https://placeholder.example.com/profile/52579.jpg"
+        },
+        "location": {
+          "phone": "3178988797",
+          "latitude": "37.73407745",
+          "longitude": "-97.46269226",
+          "address1": "16475 Mitchell Fords",
+          "address2": null,
+          "city": "East Lydiamouth",
+          "state": "NC",
+          "postalCode": "55834"
+        },
+        "virtualClass": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Status": 200,
+  "Message": "Success",
+  "Dto": [
+    {
+      "ChallengeCategoryId": 17,
+      "ChallengeSubCategoryId": null,
+      "EquipmentId": 4,
+      "EquipmentName": "Rower",
+      "MetricEntry": {
+        "Title": "2000 METER",
+        "EquipmentId": 4,
+        "EntryType": "Time",
+        "MetricKey": "2000METER",
+        "MinValue": "05:00.00",
+        "MaxValue": "25:00.00"
+      },
+      "ChallengeName": "2000 METER Row",
+      "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/Rower.png",
+      "BestRecord": "10:49.48",
+      "LastRecord": "10:49.48",
+      "PreviousRecord": "10:49.48",
+      "Unit": null,
+      "Goals": null,
+      "ChallengeHistories": [
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 690815,
+          "StudioId": 1267,
+          "StudioName": "Wichita - West, KS",
+          "StartDate": "2025-01-16T00:00:00",
+          "EndDate": "2025-01-16T23:59:00",
+          "TotalResult": "00:10:49.48",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Wichita - West, KS",
+              "EquipmentId": 4,
+              "Result": "10:49.48",
+              "DateCreated": "2025-01-16T16:20:45",
+              "DateUpdated": "2025-01-16T16:20:45",
+              "ClassTime": "2025-01-16T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2425757949,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "Daniel Wagner",
+              "CoachImageUrl": "https://placeholder.example.com/profile/896866.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

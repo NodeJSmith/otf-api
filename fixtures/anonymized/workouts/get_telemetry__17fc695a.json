@@ -1,0 +1,823 @@
+{
+  "memberUuid": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+  "classHistoryUuid": "17fc695a-07a0-4a6e-8822-e8f36c031199",
+  "classStartTime": "2026-04-18T15:30:13Z",
+  "maxHr": 214,
+  "zones": {
+    "gray": {
+      "startBpm": 0,
+      "endBpm": 133
+    },
+    "blue": {
+      "startBpm": 133,
+      "endBpm": 154
+    },
+    "green": {
+      "startBpm": 154,
+      "endBpm": 180
+    },
+    "orange": {
+      "startBpm": 180,
+      "endBpm": 197
+    },
+    "red": {
+      "startBpm": 197,
+      "endBpm": 214
+    }
+  },
+  "windowSize": 7,
+  "telemetry": [
+    {
+      "relativeTimestamp": 0,
+      "hr": 139,
+      "aggSplats": 0,
+      "aggCalories": 0
+    },
+    {
+      "relativeTimestamp": 7,
+      "hr": 138,
+      "aggSplats": 0,
+      "aggCalories": 1
+    },
+    {
+      "relativeTimestamp": 14,
+      "hr": 135,
+      "aggSplats": 0,
+      "aggCalories": 2
+    },
+    {
+      "relativeTimestamp": 21,
+      "hr": 138,
+      "aggSplats": 0,
+      "aggCalories": 2
+    },
+    {
+      "relativeTimestamp": 28,
+      "hr": 140,
+      "aggSplats": 0,
+      "aggCalories": 3
+    },
+    {
+      "relativeTimestamp": 35,
+      "hr": 139,
+      "aggSplats": 0,
+      "aggCalories": 4
+    },
+    {
+      "relativeTimestamp": 42,
+      "hr": 140,
+      "aggSplats": 0,
+      "aggCalories": 5
+    },
+    {
+      "relativeTimestamp": 49,
+      "hr": 143,
+      "aggSplats": 0,
+      "aggCalories": 5
+    },
+    {
+      "relativeTimestamp": 56,
+      "hr": 148,
+      "aggSplats": 0,
+      "aggCalories": 6
+    },
+    {
+      "relativeTimestamp": 63,
+      "hr": 148,
+      "aggSplats": 0,
+      "aggCalories": 7
+    },
+    {
+      "relativeTimestamp": 70,
+      "hr": 147,
+      "aggSplats": 0,
+      "aggCalories": 8
+    },
+    {
+      "relativeTimestamp": 77,
+      "hr": 149,
+      "aggSplats": 0,
+      "aggCalories": 9
+    },
+    {
+      "relativeTimestamp": 84,
+      "hr": 149,
+      "aggSplats": 0,
+      "aggCalories": 10
+    },
+    {
+      "relativeTimestamp": 91,
+      "hr": 149,
+      "aggSplats": 0,
+      "aggCalories": 11
+    },
+    {
+      "relativeTimestamp": 98,
+      "hr": 148,
+      "aggSplats": 0,
+      "aggCalories": 12
+    },
+    {
+      "relativeTimestamp": 105,
+      "hr": 146,
+      "aggSplats": 0,
+      "aggCalories": 13
+    },
+    {
+      "relativeTimestamp": 112,
+      "hr": 154,
+      "aggSplats": 0,
+      "aggCalories": 13
+    },
+    {
+      "relativeTimestamp": 119,
+      "hr": 158,
+      "aggSplats": 0,
+      "aggCalories": 14
+    },
+    {
+      "relativeTimestamp": 126,
+      "hr": 158,
+      "aggSplats": 0,
+      "aggCalories": 16
+    },
+    {
+      "relativeTimestamp": 133,
+      "hr": 156,
+      "aggSplats": 0,
+      "aggCalories": 17
+    },
+    {
+      "relativeTimestamp": 140,
+      "hr": 155,
+      "aggSplats": 0,
+      "aggCalories": 17
+    },
+    {
+      "relativeTimestamp": 147,
+      "hr": 153,
+      "aggSplats": 0,
+      "aggCalories": 18
+    },
+    {
+      "relativeTimestamp": 154,
+      "hr": 158,
+      "aggSplats": 0,
+      "aggCalories": 19
+    },
+    {
+      "relativeTimestamp": 161,
+      "hr": 155,
+      "aggSplats": 0,
+      "aggCalories": 20
+    },
+    {
+      "relativeTimestamp": 168,
+      "hr": 156,
+      "aggSplats": 0,
+      "aggCalories": 21
+    },
+    {
+      "relativeTimestamp": 175,
+      "hr": 156,
+      "aggSplats": 0,
+      "aggCalories": 22
+    },
+    {
+      "relativeTimestamp": 182,
+      "hr": 154,
+      "aggSplats": 0,
+      "aggCalories": 23
+    },
+    {
+      "relativeTimestamp": 189,
+      "hr": 154,
+      "aggSplats": 0,
+      "aggCalories": 24
+    },
+    {
+      "relativeTimestamp": 196,
+      "hr": 155,
+      "aggSplats": 0,
+      "aggCalories": 25
+    },
+    {
+      "relativeTimestamp": 203,
+      "hr": 155,
+      "aggSplats": 0,
+      "aggCalories": 26
+    },
+    {
+      "relativeTimestamp": 210,
+      "hr": 152,
+      "aggSplats": 0,
+      "aggCalories": 27
+    },
+    {
+      "relativeTimestamp": 217,
+      "hr": 157,
+      "aggSplats": 0,
+      "aggCalories": 28
+    },
+    {
+      "relativeTimestamp": 224,
+      "hr": 157,
+      "aggSplats": 0,
+      "aggCalories": 29
+    },
+    {
+      "relativeTimestamp": 231,
+      "hr": 154,
+      "aggSplats": 0,
+      "aggCalories": 30
+    },
+    {
+      "relativeTimestamp": 238,
+      "hr": 153,
+      "aggSplats": 0,
+      "aggCalories": 31
+    },
+    {
+      "relativeTimestamp": 245,
+      "hr": 156,
+      "aggSplats": 0,
+      "aggCalories": 32
+    },
+    {
+      "relativeTimestamp": 252,
+      "hr": 158,
+      "aggSplats": 0,
+      "aggCalories": 33
+    },
+    {
+      "relativeTimestamp": 259,
+      "hr": 159,
+      "aggSplats": 0,
+      "aggCalories": 34
+    },
+    {
+      "relativeTimestamp": 266,
+      "hr": 161,
+      "aggSplats": 0,
+      "aggCalories": 35
+    },
+    {
+      "relativeTimestamp": 273,
+      "hr": 161,
+      "aggSplats": 0,
+      "aggCalories": 36
+    },
+    {
+      "relativeTimestamp": 280,
+      "hr": 160,
+      "aggSplats": 0,
+      "aggCalories": 37
+    },
+    {
+      "relativeTimestamp": 287,
+      "hr": 159,
+      "aggSplats": 0,
+      "aggCalories": 38
+    },
+    {
+      "relativeTimestamp": 294,
+      "hr": 154,
+      "aggSplats": 0,
+      "aggCalories": 39
+    },
+    {
+      "relativeTimestamp": 301,
+      "hr": 152,
+      "aggSplats": 0,
+      "aggCalories": 40
+    },
+    {
+      "relativeTimestamp": 308,
+      "hr": 155,
+      "aggSplats": 0,
+      "aggCalories": 41
+    },
+    {
+      "relativeTimestamp": 315,
+      "hr": 155,
+      "aggSplats": 0,
+      "aggCalories": 42
+    },
+    {
+      "relativeTimestamp": 322,
+      "hr": 150,
+      "aggSplats": 0,
+      "aggCalories": 43
+    },
+    {
+      "relativeTimestamp": 329,
+      "hr": 148,
+      "aggSplats": 0,
+      "aggCalories": 44
+    },
+    {
+      "relativeTimestamp": 336,
+      "hr": 147,
+      "aggSplats": 0,
+      "aggCalories": 45
+    },
+    {
+      "relativeTimestamp": 343,
+      "hr": 144,
+      "aggSplats": 0,
+      "aggCalories": 46
+    },
+    {
+      "relativeTimestamp": 350,
+      "hr": 134,
+      "aggSplats": 0,
+      "aggCalories": 46
+    },
+    {
+      "relativeTimestamp": 357,
+      "hr": 134,
+      "aggSplats": 0,
+      "aggCalories": 47
+    },
+    {
+      "relativeTimestamp": 364,
+      "hr": 132,
+      "aggSplats": 0,
+      "aggCalories": 48
+    },
+    {
+      "relativeTimestamp": 371,
+      "hr": 135,
+      "aggSplats": 0,
+      "aggCalories": 49
+    },
+    {
+      "relativeTimestamp": 378,
+      "hr": 135,
+      "aggSplats": 0,
+      "aggCalories": 49
+    },
+    {
+      "relativeTimestamp": 385,
+      "hr": 129,
+      "aggSplats": 0,
+      "aggCalories": 50
+    },
+    {
+      "relativeTimestamp": 392,
+      "hr": 123,
+      "aggSplats": 0,
+      "aggCalories": 51
+    },
+    {
+      "relativeTimestamp": 399,
+      "hr": 128,
+      "aggSplats": 0,
+      "aggCalories": 51
+    },
+    {
+      "relativeTimestamp": 406,
+      "hr": 132,
+      "aggSplats": 0,
+      "aggCalories": 52
+    },
+    {
+      "relativeTimestamp": 413,
+      "hr": 135,
+      "aggSplats": 0,
+      "aggCalories": 53
+    },
+    {
+      "relativeTimestamp": 420,
+      "hr": 144,
+      "aggSplats": 0,
+      "aggCalories": 53
+    },
+    {
+      "relativeTimestamp": 427,
+      "hr": 149,
+      "aggSplats": 0,
+      "aggCalories": 54
+    },
+    {
+      "relativeTimestamp": 434,
+      "hr": 153,
+      "aggSplats": 0,
+      "aggCalories": 55
+    },
+    {
+      "relativeTimestamp": 441,
+      "hr": 153,
+      "aggSplats": 0,
+      "aggCalories": 56
+    },
+    {
+      "relativeTimestamp": 448,
+      "hr": 156,
+      "aggSplats": 0,
+      "aggCalories": 57
+    },
+    {
+      "relativeTimestamp": 455,
+      "hr": 161,
+      "aggSplats": 0,
+      "aggCalories": 58
+    },
+    {
+      "relativeTimestamp": 462,
+      "hr": 165,
+      "aggSplats": 0,
+      "aggCalories": 59
+    },
+    {
+      "relativeTimestamp": 469,
+      "hr": 170,
+      "aggSplats": 0,
+      "aggCalories": 60
+    },
+    {
+      "relativeTimestamp": 476,
+      "hr": 170,
+      "aggSplats": 0,
+      "aggCalories": 62
+    },
+    {
+      "relativeTimestamp": 483,
+      "hr": 169,
+      "aggSplats": 0,
+      "aggCalories": 63
+    },
+    {
+      "relativeTimestamp": 490,
+      "hr": 169,
+      "aggSplats": 0,
+      "aggCalories": 64
+    },
+    {
+      "relativeTimestamp": 497,
+      "hr": 170,
+      "aggSplats": 0,
+      "aggCalories": 65
+    },
+    {
+      "relativeTimestamp": 504,
+      "hr": 171,
+      "aggSplats": 0,
+      "aggCalories": 66
+    },
+    {
+      "relativeTimestamp": 511,
+      "hr": 176,
+      "aggSplats": 0,
+      "aggCalories": 68
+    },
+    {
+      "relativeTimestamp": 518,
+      "hr": 177,
+      "aggSplats": 0,
+      "aggCalories": 69
+    },
+    {
+      "relativeTimestamp": 525,
+      "hr": 179,
+      "aggSplats": 0,
+      "aggCalories": 70
+    },
+    {
+      "relativeTimestamp": 532,
+      "hr": 179,
+      "aggSplats": 0,
+      "aggCalories": 71
+    },
+    {
+      "relativeTimestamp": 539,
+      "hr": 179,
+      "aggSplats": 0,
+      "aggCalories": 73
+    },
+    {
+      "relativeTimestamp": 546,
+      "hr": 178,
+      "aggSplats": 0,
+      "aggCalories": 74
+    },
+    {
+      "relativeTimestamp": 553,
+      "hr": 177,
+      "aggSplats": 1,
+      "aggCalories": 75
+    },
+    {
+      "relativeTimestamp": 560,
+      "hr": 172,
+      "aggSplats": 1,
+      "aggCalories": 76
+    },
+    {
+      "relativeTimestamp": 567,
+      "hr": 168,
+      "aggSplats": 1,
+      "aggCalories": 77
+    },
+    {
+      "relativeTimestamp": 574,
+      "hr": 166,
+      "aggSplats": 1,
+      "aggCalories": 79
+    },
+    {
+      "relativeTimestamp": 581,
+      "hr": 164,
+      "aggSplats": 1,
+      "aggCalories": 80
+    },
+    {
+      "relativeTimestamp": 588,
+      "hr": 163,
+      "aggSplats": 1,
+      "aggCalories": 81
+    },
+    {
+      "relativeTimestamp": 595,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 82
+    },
+    {
+      "relativeTimestamp": 602,
+      "hr": 157,
+      "aggSplats": 1,
+      "aggCalories": 83
+    },
+    {
+      "relativeTimestamp": 609,
+      "hr": 154,
+      "aggSplats": 1,
+      "aggCalories": 84
+    },
+    {
+      "relativeTimestamp": 616,
+      "hr": 151,
+      "aggSplats": 1,
+      "aggCalories": 85
+    },
+    {
+      "relativeTimestamp": 623,
+      "hr": 151,
+      "aggSplats": 1,
+      "aggCalories": 86
+    },
+    {
+      "relativeTimestamp": 630,
+      "hr": 151,
+      "aggSplats": 1,
+      "aggCalories": 87
+    },
+    {
+      "relativeTimestamp": 637,
+      "hr": 151,
+      "aggSplats": 1,
+      "aggCalories": 88
+    },
+    {
+      "relativeTimestamp": 644,
+      "hr": 150,
+      "aggSplats": 1,
+      "aggCalories": 88
+    },
+    {
+      "relativeTimestamp": 651,
+      "hr": 150,
+      "aggSplats": 1,
+      "aggCalories": 89
+    },
+    {
+      "relativeTimestamp": 658,
+      "hr": 151,
+      "aggSplats": 1,
+      "aggCalories": 90
+    },
+    {
+      "relativeTimestamp": 665,
+      "hr": 149,
+      "aggSplats": 1,
+      "aggCalories": 91
+    },
+    {
+      "relativeTimestamp": 672,
+      "hr": 149,
+      "aggSplats": 1,
+      "aggCalories": 92
+    },
+    {
+      "relativeTimestamp": 679,
+      "hr": 149,
+      "aggSplats": 1,
+      "aggCalories": 93
+    },
+    {
+      "relativeTimestamp": 686,
+      "hr": 144,
+      "aggSplats": 1,
+      "aggCalories": 94
+    },
+    {
+      "relativeTimestamp": 693,
+      "hr": 150,
+      "aggSplats": 1,
+      "aggCalories": 95
+    },
+    {
+      "relativeTimestamp": 700,
+      "hr": 153,
+      "aggSplats": 1,
+      "aggCalories": 96
+    },
+    {
+      "relativeTimestamp": 707,
+      "hr": 156,
+      "aggSplats": 1,
+      "aggCalories": 97
+    },
+    {
+      "relativeTimestamp": 714,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 98
+    },
+    {
+      "relativeTimestamp": 721,
+      "hr": 165,
+      "aggSplats": 1,
+      "aggCalories": 99
+    },
+    {
+      "relativeTimestamp": 728,
+      "hr": 167,
+      "aggSplats": 1,
+      "aggCalories": 100
+    },
+    {
+      "relativeTimestamp": 735,
+      "hr": 167,
+      "aggSplats": 1,
+      "aggCalories": 101
+    },
+    {
+      "relativeTimestamp": 742,
+      "hr": 169,
+      "aggSplats": 1,
+      "aggCalories": 102
+    },
+    {
+      "relativeTimestamp": 749,
+      "hr": 167,
+      "aggSplats": 1,
+      "aggCalories": 103
+    },
+    {
+      "relativeTimestamp": 756,
+      "hr": 166,
+      "aggSplats": 1,
+      "aggCalories": 104
+    },
+    {
+      "relativeTimestamp": 763,
+      "hr": 162,
+      "aggSplats": 1,
+      "aggCalories": 106
+    },
+    {
+      "relativeTimestamp": 770,
+      "hr": 157,
+      "aggSplats": 1,
+      "aggCalories": 107
+    },
+    {
+      "relativeTimestamp": 777,
+      "hr": 155,
+      "aggSplats": 1,
+      "aggCalories": 108
+    },
+    {
+      "relativeTimestamp": 784,
+      "hr": 155,
+      "aggSplats": 1,
+      "aggCalories": 109
+    },
+    {
+      "relativeTimestamp": 791,
+      "hr": 154,
+      "aggSplats": 1,
+      "aggCalories": 109
+    },
+    {
+      "relativeTimestamp": 798,
+      "hr": 150,
+      "aggSplats": 1,
+      "aggCalories": 110
+    },
+    {
+      "relativeTimestamp": 805,
+      "hr": 155,
+      "aggSplats": 1,
+      "aggCalories": 111
+    },
+    {
+      "relativeTimestamp": 812,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 112
+    },
+    {
+      "relativeTimestamp": 819,
+      "hr": 168,
+      "aggSplats": 1,
+      "aggCalories": 113
+    },
+    {
+      "relativeTimestamp": 826,
+      "hr": 168,
+      "aggSplats": 1,
+      "aggCalories": 115
+    },
+    {
+      "relativeTimestamp": 833,
+      "hr": 167,
+      "aggSplats": 1,
+      "aggCalories": 116
+    },
+    {
+      "relativeTimestamp": 840,
+      "hr": 165,
+      "aggSplats": 1,
+      "aggCalories": 117
+    },
+    {
+      "relativeTimestamp": 847,
+      "hr": 165,
+      "aggSplats": 1,
+      "aggCalories": 118
+    },
+    {
+      "relativeTimestamp": 854,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 119
+    },
+    {
+      "relativeTimestamp": 861,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 120
+    },
+    {
+      "relativeTimestamp": 868,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 121
+    },
+    {
+      "relativeTimestamp": 875,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 122
+    },
+    {
+      "relativeTimestamp": 882,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 122
+    },
+    {
+      "relativeTimestamp": 889,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 122
+    },
+    {
+      "relativeTimestamp": 896,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 122
+    },
+    {
+      "relativeTimestamp": 903,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 122
+    },
+    {
+      "relativeTimestamp": 910,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 122
+    },
+    {
+      "relativeTimestamp": 917,
+      "hr": 160,
+      "aggSplats": 1,
+      "aggCalories": 122
+    }
+  ]
+}

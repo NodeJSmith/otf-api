@@ -1,0 +1,994 @@
+{
+  "items": [
+    {
+      "id": "ef04e57d-cdcc-433a-a943-4aa096fc734d",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "545198869",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-25T05:05:05.481Z",
+      "updated_at": "2026-04-25T14:15:11.743Z",
+      "ratable": false,
+      "class": {
+        "id": "8b6870b5-1d61-4ac3-acd5-e85932a447b2",
+        "name": "Strength 50 (Total)",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-05-23T10:30:00",
+        "starts_at": "2026-05-23T15:30:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Edward Moore",
+          "image_url": "https://placeholder.example.com/profile/235730.jpg"
+        }
+      }
+    },
+    {
+      "id": "44007d5a-e88d-4719-a624-2b40a5cb63a2",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "130027269",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-23T05:05:06.706Z",
+      "updated_at": "2026-04-23T05:05:06.913Z",
+      "ratable": false,
+      "class": {
+        "id": "0f44704f-1247-4a4e-a469-98e8d39e198b",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-21T10:00:00",
+        "starts_at": "2026-05-21T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Shawn Arroyo",
+          "image_url": "https://placeholder.example.com/profile/173983.jpg"
+        }
+      }
+    },
+    {
+      "id": "bfbbb17f-9854-4e4e-8ebf-a5c3cae9b4a7",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "364423393",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-21T05:05:06.878Z",
+      "updated_at": "2026-04-21T05:05:07.308Z",
+      "ratable": false,
+      "class": {
+        "id": "49e2623d-ebd3-4616-91b7-8d8ed3016989",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-19T10:00:00",
+        "starts_at": "2026-05-19T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Pamela Anderson",
+          "image_url": "https://placeholder.example.com/profile/460486.jpg"
+        }
+      }
+    },
+    {
+      "id": "4dd8eb85-b04d-4376-b7fc-97031fd5a423",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "3584630",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-18T05:05:05.574Z",
+      "updated_at": "2026-04-25T14:14:46.366Z",
+      "ratable": false,
+      "class": {
+        "id": "45b1ed25-f153-4ae8-a70a-cc5cb321bf21",
+        "name": "Strength 50 (Total)",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-05-16T10:30:00",
+        "starts_at": "2026-05-16T15:30:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Edward Moore",
+          "image_url": "https://placeholder.example.com/profile/524784.jpg"
+        }
+      }
+    },
+    {
+      "id": "1497d658-7010-4719-be69-5d0d8a3c3b5e",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "590447116",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-16T05:00:07.259Z",
+      "updated_at": "2026-04-16T05:00:07.332Z",
+      "ratable": false,
+      "class": {
+        "id": "6e996e3e-e3b1-47fc-8a34-50fc9918ee46",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-14T10:00:00",
+        "starts_at": "2026-05-14T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Shawn Arroyo",
+          "image_url": "https://placeholder.example.com/profile/770215.jpg"
+        }
+      }
+    },
+    {
+      "id": "069f14f1-4018-4c6e-9a8c-fa3c5283aac7",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "454914084",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-14T05:00:06.089Z",
+      "updated_at": "2026-04-14T05:00:06.361Z",
+      "ratable": false,
+      "class": {
+        "id": "ac9ed156-f63f-4e41-ba9a-ca5e176132ed",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-12T10:00:00",
+        "starts_at": "2026-05-12T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Pamela Anderson",
+          "image_url": "https://placeholder.example.com/profile/876567.jpg"
+        }
+      }
+    },
+    {
+      "id": "f366bad4-964d-403f-9340-3faddc4ad56b",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "643211853",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-11T05:00:06.083Z",
+      "updated_at": "2026-04-25T14:14:07.937Z",
+      "ratable": false,
+      "class": {
+        "id": "ac1aa554-c3c7-4611-bfe3-fa49054f92ff",
+        "name": "Strength 50 (Total)",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-05-09T10:30:00",
+        "starts_at": "2026-05-09T15:30:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Alec Hickman",
+          "image_url": "https://placeholder.example.com/profile/861323.jpg"
+        }
+      }
+    },
+    {
+      "id": "c35b1c8c-0a4c-4f7f-9384-ec2b44feacae",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "740839735",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-09T05:00:06.984Z",
+      "updated_at": "2026-04-09T05:00:07.249Z",
+      "ratable": false,
+      "class": {
+        "id": "84dad06a-7872-4deb-acd9-4cbbc19ad58c",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-07T10:00:00",
+        "starts_at": "2026-05-07T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Shawn Arroyo",
+          "image_url": "https://placeholder.example.com/profile/683158.jpg"
+        }
+      }
+    },
+    {
+      "id": "2e76128b-4735-44f9-aa83-bf007135f221",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "776793898",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-07T05:00:08.503Z",
+      "updated_at": "2026-04-07T05:00:09.615Z",
+      "ratable": false,
+      "class": {
+        "id": "a2814044-6f96-4882-95d8-2980ff37d19c",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-05-05T10:00:00",
+        "starts_at": "2026-05-05T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Pamela Anderson",
+          "image_url": "https://placeholder.example.com/profile/853798.jpg"
+        }
+      }
+    },
+    {
+      "id": "785299f4-175b-498d-b814-01027de1bdfe",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "730761141",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-04T05:00:13.155Z",
+      "updated_at": "2026-04-26T16:09:26.653Z",
+      "ratable": false,
+      "class": {
+        "id": "5230dfbd-5553-42fe-a889-803e5913f9d3",
+        "name": "Strength 50 (Total)",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-05-02T10:30:00",
+        "starts_at": "2026-05-02T15:30:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Edward Moore",
+          "image_url": "https://placeholder.example.com/profile/702686.jpg"
+        }
+      }
+    },
+    {
+      "id": "546e035a-292b-4156-9b94-65701ac70ec0",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "609294872",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-02T05:00:15.050Z",
+      "updated_at": "2026-04-06T09:16:45.040Z",
+      "ratable": false,
+      "class": {
+        "id": "49c8a43f-7ed7-4ed7-b194-990b6961929e",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-30T10:00:00",
+        "starts_at": "2026-04-30T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Shawn Arroyo",
+          "image_url": "https://placeholder.example.com/profile/694770.jpg"
+        }
+      }
+    },
+    {
+      "id": "c2b01cfd-d045-4d1c-a684-09e3f1f8343e",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "76328245",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-03-31T05:00:07.202Z",
+      "updated_at": "2026-04-06T09:16:44.412Z",
+      "ratable": false,
+      "class": {
+        "id": "168b1625-746f-4891-8964-fbbf8cd321b0",
+        "name": "Tread 50",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-28T10:00:00",
+        "starts_at": "2026-04-28T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Pamela Anderson",
+          "image_url": "https://placeholder.example.com/profile/329796.jpg"
+        }
+      }
+    },
+    {
+      "id": "26d794d3-0db9-4301-afbb-411aa1235a8c",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "326340903",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-03-24T12:00:17.067Z",
+      "updated_at": "2026-04-21T15:01:52.895Z",
+      "ratable": true,
+      "workout": {
+        "id": "47378190-96da-4dac-b2ff-5d2a386ecbe0",
+        "calories_burned": 409,
+        "splat_points": 16,
+        "step_count": 0,
+        "active_time_seconds": 2690,
+        "zone_time_minutes": {
+          "gray": 1,
+          "blue": 6,
+          "green": 21,
+          "orange": 16,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "1e52d770-3f89-4142-be71-6b1415ce6a66",
+        "name": "Tread 50",
+        "ot_base_class_uuid": "9b37a22b-6a8a-416f-83b2-90d08edddfcd",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-21T10:00:00",
+        "starts_at": "2026-04-21T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Pamela Anderson",
+          "image_url": "https://placeholder.example.com/profile/264660.jpg"
+        }
+      }
+    },
+    {
+      "id": "c693da11-39c6-41ca-9e50-aa42ca6dfda1",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "561207986",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-03-21T05:00:07.297Z",
+      "updated_at": "2026-04-18T15:31:36.817Z",
+      "ratable": true,
+      "workout": {
+        "id": "17fc695a-07a0-4a6e-8822-e8f36c031199",
+        "calories_burned": 122,
+        "splat_points": 1,
+        "step_count": 0,
+        "active_time_seconds": 880,
+        "zone_time_minutes": {
+          "gray": 0,
+          "blue": 3,
+          "green": 11,
+          "orange": 1,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "17fc695a-07a0-4a6e-8822-e8f36c031199",
+        "name": "Strength 50 (Total)",
+        "ot_base_class_uuid": "715629ee-e893-4e3d-b354-ea6f61607459",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-04-18T10:30:00",
+        "starts_at": "2026-04-18T15:30:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Edward Moore",
+          "image_url": "https://placeholder.example.com/profile/338978.jpg"
+        }
+      }
+    },
+    {
+      "id": "6dc7cac7-fd72-4050-96a9-954fdc33e1f9",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "327999537",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-03-14T05:00:07.212Z",
+      "updated_at": "2026-04-11T15:31:42.871Z",
+      "ratable": true,
+      "workout": {
+        "id": "c241330b-01a9-471f-9e8a-774bcf36d58b",
+        "calories_burned": 370,
+        "splat_points": 2,
+        "step_count": 0,
+        "active_time_seconds": 2745,
+        "zone_time_minutes": {
+          "gray": 1,
+          "blue": 12,
+          "green": 30,
+          "orange": 2,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "c241330b-01a9-471f-9e8a-774bcf36d58b",
+        "name": "Strength 50 (Total)",
+        "ot_base_class_uuid": "9c10c572-0f6b-40d0-9efb-a58b9191b363",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-04-11T10:30:00",
+        "starts_at": "2026-04-11T15:30:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Edward Moore",
+          "image_url": "https://placeholder.example.com/profile/121553.jpg"
+        }
+      }
+    },
+    {
+      "id": "3531968d-c342-4d2b-b295-456e19675f06",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "671741650",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-03-10T05:00:07.724Z",
+      "updated_at": "2026-04-07T14:56:45.492Z",
+      "ratable": true,
+      "workout": {
+        "id": "6b65a6a4-8b81-48f6-b38a-088ca65ed389",
+        "calories_burned": 415,
+        "splat_points": 14,
+        "step_count": 0,
+        "active_time_seconds": 2851,
+        "zone_time_minutes": {
+          "gray": 1,
+          "blue": 10,
+          "green": 22,
+          "orange": 13,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "14c8b3b4-a911-4192-83bf-d9313605bf54",
+        "name": "Tread 50",
+        "ot_base_class_uuid": "8d4f5d27-2c7f-4b79-bd67-cde92834e4c0",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-07T10:00:00",
+        "starts_at": "2026-04-07T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Pamela Anderson",
+          "image_url": "https://placeholder.example.com/profile/810076.jpg"
+        }
+      }
+    },
+    {
+      "id": "735435ea-6894-4b8d-80af-5b3a2812859a",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "740306617",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-03-07T06:00:05.659Z",
+      "updated_at": "2026-04-04T15:25:56.398Z",
+      "ratable": true,
+      "workout": {
+        "id": "b74d0fb1-32e7-4629-8fad-c1a606cb0fb3",
+        "calories_burned": 297,
+        "splat_points": 0,
+        "step_count": 0,
+        "active_time_seconds": 2614,
+        "zone_time_minutes": {
+          "gray": 7,
+          "blue": 21,
+          "green": 15,
+          "orange": 0,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "b74d0fb1-32e7-4629-8fad-c1a606cb0fb3",
+        "name": "Strength 50 (Total)",
+        "ot_base_class_uuid": "085b15fb-4a8f-4810-b84c-2f29980402a2",
+        "type": "STRENGTH_50",
+        "starts_at_local": "2026-04-04T10:30:00",
+        "starts_at": "2026-04-04T15:30:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Edward Moore",
+          "image_url": "https://placeholder.example.com/profile/423809.jpg"
+        }
+      }
+    },
+    {
+      "id": "b3f6fe0d-4860-4b32-b4fb-0eb949c13de7",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "923095699",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-04-02T03:07:14.019Z",
+      "updated_at": "2026-04-02T14:57:29.837Z",
+      "ratable": true,
+      "workout": {
+        "id": "9a1de644-815e-46d1-bb8f-aa1837f8a88b",
+        "calories_burned": 416,
+        "splat_points": 14,
+        "step_count": 0,
+        "active_time_seconds": 2783,
+        "zone_time_minutes": {
+          "gray": 0,
+          "blue": 8,
+          "green": 25,
+          "orange": 14,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "3bc1a987-aff8-454d-9238-d630743b65a2",
+        "name": "Tread 50",
+        "ot_base_class_uuid": "ca8f3653-c9af-48f8-83b9-da13ec856f37",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-04-02T10:00:00",
+        "starts_at": "2026-04-02T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Shawn Arroyo",
+          "image_url": "https://placeholder.example.com/profile/906925.jpg"
+        }
+      }
+    },
+    {
+      "id": "004b6fab-fcf5-4188-932e-6dcd83bc9478",
+      "paying_studio_id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "person_id": "f2f9e5fa-9016-4161-8fa7-01cd2631d00b",
+      "member_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+      "service_name": "Orange Premier Membership",
+      "checked_in": true,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "706257458",
+      "mbo_unique_id": "92026217",
+      "mbo_paying_unique_id": "92026217",
+      "canceled": false,
+      "created_at": "2026-03-26T14:59:02.749Z",
+      "updated_at": "2026-03-26T14:59:05.988Z",
+      "ratable": true,
+      "workout": {
+        "id": "6c307511-b2b9-437a-a8df-6ec4ce4a2bbd",
+        "calories_burned": 382,
+        "splat_points": 4,
+        "step_count": 0,
+        "active_time_seconds": 2754,
+        "zone_time_minutes": {
+          "gray": 0,
+          "blue": 11,
+          "green": 31,
+          "orange": 4,
+          "red": 0
+        }
+      },
+      "class": {
+        "id": "69ca97d2-7644-44fd-8ae7-69edde8ede0b",
+        "name": "Tread 50",
+        "ot_base_class_uuid": "5c9d927d-84b8-41bb-b005-68d20de051a6",
+        "type": "TREAD_50",
+        "starts_at_local": "2026-03-26T10:00:00",
+        "starts_at": "2026-03-26T15:00:00.000Z",
+        "studio": {
+          "id": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+          "name": "Wichita - West, KS",
+          "mbo_studio_id": "773969166",
+          "time_zone": "America/Chicago",
+          "email": "williamsjeremy@example.com",
+          "address": {
+            "line1": "43098 Julie Centers",
+            "city": "East Lydiamouth",
+            "state": "IA",
+            "country": "United States",
+            "postal_code": "55834"
+          },
+          "currency_code": "USD",
+          "phone_number": "3178988797",
+          "latitude": 37.735043,
+          "longitude": -97.463166
+        },
+        "coach": {
+          "first_name": "Shawn Arroyo",
+          "image_url": "https://placeholder.example.com/profile/652879.jpg"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "Status": 200,
+  "Message": "Success",
+  "Dto": [
+    {
+      "ChallengeCategoryId": 15,
+      "ChallengeSubCategoryId": null,
+      "EquipmentId": 4,
+      "EquipmentName": "Rower",
+      "MetricEntry": {
+        "Title": "200 METER",
+        "EquipmentId": 4,
+        "EntryType": "Time",
+        "MetricKey": "200METER",
+        "MinValue": "00:15.00",
+        "MaxValue": "01:50.00"
+      },
+      "ChallengeName": "200 METER Row",
+      "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/Rower.png",
+      "BestRecord": "00:33.50",
+      "LastRecord": "00:34.18",
+      "PreviousRecord": "00:33.50",
+      "Unit": null,
+      "Goals": null,
+      "ChallengeHistories": [
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 780685,
+          "StudioId": 1267,
+          "StudioName": "Wichita - West, KS",
+          "StartDate": "2025-07-31T00:00:00",
+          "EndDate": "2025-07-31T23:59:00",
+          "TotalResult": "00:00:34.18",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Wichita - West, KS",
+              "EquipmentId": 4,
+              "Result": "00:34.18",
+              "DateCreated": "2025-07-31T15:04:57",
+              "DateUpdated": "2025-07-31T15:04:57",
+              "ClassTime": "2025-07-31T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2431597892,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "Daniel Wagner",
+              "CoachImageUrl": "https://placeholder.example.com/profile/72934.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        },
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 669222,
+          "StudioId": 1267,
+          "StudioName": "Wichita - West, KS",
+          "StartDate": "2025-01-07T00:00:00",
+          "EndDate": "2025-01-07T23:59:00",
+          "TotalResult": "00:00:33.50",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Wichita - West, KS",
+              "EquipmentId": 4,
+              "Result": "00:33.50",
+              "DateCreated": "2025-01-07T16:12:23",
+              "DateUpdated": "2025-01-07T16:31:46",
+              "ClassTime": "2025-01-07T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2420690798,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "Angie Henderson",
+              "CoachImageUrl": "https://placeholder.example.com/profile/48051.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        },
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 629668,
+          "StudioId": 1267,
+          "StudioName": "Wichita - West, KS",
+          "StartDate": "2024-11-07T00:00:00",
+          "EndDate": "2024-11-07T23:59:00",
+          "TotalResult": "00:00:34.67",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Wichita - West, KS",
+              "EquipmentId": 4,
+              "Result": "00:34.67",
+              "DateCreated": "2024-11-07T16:04:17",
+              "DateUpdated": "2024-11-07T16:04:17",
+              "ClassTime": "2024-11-07T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2238320422,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "Noah Rhodes",
+              "CoachImageUrl": "https://placeholder.example.com/profile/693385.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        },
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 454008,
+          "StudioId": 1267,
+          "StudioName": "Wichita - West, KS",
+          "StartDate": "2024-03-12T00:00:00",
+          "EndDate": "2024-03-12T23:59:00",
+          "TotalResult": "00:00:36.70",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Wichita - West, KS",
+              "EquipmentId": 4,
+              "Result": "00:36.70",
+              "DateCreated": "2024-03-12T15:12:34",
+              "DateUpdated": "2024-03-12T15:13:01",
+              "ClassTime": "2024-03-12T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2238322712,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "Angie Henderson",
+              "CoachImageUrl": "https://placeholder.example.com/profile/238969.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "code": "SUCCESS",
+  "data": {
+    "isPromotionalSmsOptIn": true,
+    "isTransactionalSmsOptIn": true,
+    "isPromotionalPhoneOptIn": false,
+    "isTransactionalPhoneOptIn": false
+  }
+}

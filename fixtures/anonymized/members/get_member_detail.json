@@ -1,0 +1,115 @@
+{
+  "code": "SUCCESS",
+  "data": {
+    "memberId": 690356940,
+    "memberUUId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+    "cognitoId": "23b8c1e9-3924-46de-beb1-3b9046685257",
+    "homeStudioId": 850588739,
+    "mboStudioId": 773969166,
+    "mboId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+    "mboUniqueId": 92026217,
+    "mboStatus": "Active",
+    "userName": "Gail Welch",
+    "firstName": "Edward Fuller",
+    "lastName": "Heidi Lee",
+    "email": "blairamanda@example.com",
+    "profilePictureUrl": null,
+    "alternateEmails": null,
+    "addressLine1": null,
+    "addressLine2": null,
+    "city": null,
+    "state": null,
+    "postalCode": null,
+    "phoneNumber": "5908107668",
+    "homePhone": "5908107668",
+    "workPhone": null,
+    "phoneType": null,
+    "birthDay": "1977-01-17",
+    "ccLast4": "3954",
+    "ccType": "Discover",
+    "gender": "F",
+    "liability": null,
+    "locale": "en",
+    "weight": 304,
+    "weightMeasure": "LB",
+    "height": 136,
+    "heightMeasure": "IN",
+    "maxHr": 157,
+    "introNeccessary": false,
+    "onlineSignup": null,
+    "yearImported": 2026,
+    "isMemberVerified": false,
+    "leadProspect": false,
+    "createdBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+    "createdDate": "2022-07-31T02:17:46.000Z",
+    "updatedBy": "62801c45-1043-4a10-98ae-43346c12ace8",
+    "updatedDate": "2026-02-06T11:04:38.000Z",
+    "isDeleted": false,
+    "addresses": [
+      {
+        "memberAddressUUId": "cafda613-72bb-412d-bda6-7785b63b4dc3",
+        "type": "Bill",
+        "address1": null,
+        "address2": null,
+        "suburb": null,
+        "territory": "WI",
+        "postalCode": "48101",
+        "country": "US"
+      },
+      {
+        "memberAddressUUId": "38ba8abc-4b53-45e5-97d2-582e046a0df5",
+        "type": "Home",
+        "address1": "2202 Ebony Summit Apt. 326",
+        "address2": "2202 Ebony Summit Apt. 326",
+        "suburb": "North Calebfort",
+        "territory": "OH",
+        "postalCode": "07556",
+        "country": "US"
+      }
+    ],
+    "homeStudio": {
+      "studioId": 850588739,
+      "studioUUId": "bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+      "studioName": "Wichita - West, KS",
+      "studioNumber": "0590",
+      "mboStudioId": 773969166,
+      "timeZone": "America/Chicago",
+      "isIntegrated": true,
+      "studioStatus": "Active",
+      "studioLocation": {
+        "physicalCountryId": 1,
+        "physicalCountryDetails": {
+          "countryCode": "US",
+          "description": "United States"
+        }
+      },
+      "studioPartner": {
+        "studioAcsId": "4e6384bb-3e49-4f43-b118-f68d6786d506"
+      }
+    },
+    "memberProfile": {
+      "memberProfileUUId": "79279973-5e78-4fd7-94e0-d3baa9f948b2",
+      "unitOfMeasure": "Imperial",
+      "maxHrType": "AutomatedHr",
+      "manualMaxHr": 166,
+      "formulaMaxHr": 141,
+      "automatedHr": 220,
+      "memberOptinFlowTypeId": 0
+    },
+    "memberReferrer": null,
+    "otfAcsId": "b3ee4d3b-5a10-4129-94ae-bd1b8ce6424d",
+    "memberClassSummary": {
+      "totalClassesBooked": 154,
+      "totalClassesAttended": 121,
+      "totalIntro": 2,
+      "totalOTLiveClassesBooked": 0,
+      "totalOTLiveClassesAttended": 0,
+      "totalClassesUsedHRM": 121,
+      "totalStudiosVisited": 1,
+      "firstVisitDate": "2023-08-06T00:00:00.000Z",
+      "lastClassVisitedDate": "2025-01-25T00:00:00.000Z",
+      "lastClassBookedDate": "2025-01-27T00:00:00.000Z",
+      "lastClassStudioVisited": 867481
+    }
+  }
+}

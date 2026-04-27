@@ -1,0 +1,59 @@
+{
+  "Status": 200,
+  "Message": "Success",
+  "Dto": [
+    {
+      "ChallengeCategoryId": 19,
+      "ChallengeSubCategoryId": null,
+      "EquipmentId": 2,
+      "EquipmentName": "Treadmill",
+      "MetricEntry": {
+        "Title": "1 MILE",
+        "EquipmentId": 2,
+        "EntryType": "Time",
+        "MetricKey": "1MILE",
+        "MinValue": "",
+        "MaxValue": ""
+      },
+      "ChallengeName": "1 MILE Treadmill",
+      "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/Treadmill.png",
+      "BestRecord": "11:17",
+      "LastRecord": "11:17",
+      "PreviousRecord": "11:17",
+      "Unit": null,
+      "Goals": null,
+      "ChallengeHistories": [
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 724939,
+          "StudioId": 1267,
+          "StudioName": "Wichita - West, KS",
+          "StartDate": "2025-03-11T00:00:00",
+          "EndDate": "2025-03-11T23:59:00",
+          "TotalResult": "00:11:17.00",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Wichita - West, KS",
+              "EquipmentId": 2,
+              "Result": "11:17",
+              "DateCreated": "2025-03-11T15:27:59",
+              "DateUpdated": "2025-03-11T15:27:59",
+              "ClassTime": "2025-03-11T10:00:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2431597310,
+              "SubstituteId": 1,
+              "WeightLBS": 0,
+              "ClassName": "Tread 50",
+              "CoachName": "Angie Henderson",
+              "CoachImageUrl": "https://placeholder.example.com/profile/244099.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

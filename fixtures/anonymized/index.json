@@ -1,0 +1,596 @@
+[
+  {
+    "file": "members/get_member_detail.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/member/members/bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+    "params": "include=memberAddresses%2CmemberClassSummary",
+    "status": 200,
+    "description": "Member detail with addresses and class summary"
+  },
+  {
+    "file": "studios/get_studio_detail__bd9c66b3.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/mobile/v1/studios/bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+    "params": "",
+    "status": 200,
+    "description": "Studio detail for bd9c66b3"
+  },
+  {
+    "file": "members/get_member_membership.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/member/members/bdd640fb-0667-4ad1-9c80-317fa3b1799d/memberships",
+    "params": "",
+    "status": 200,
+    "description": "Member membership details"
+  },
+  {
+    "file": "members/get_member_purchases.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/member/members/bdd640fb-0667-4ad1-9c80-317fa3b1799d/purchases",
+    "params": "",
+    "status": 200,
+    "description": "Member purchases"
+  },
+  {
+    "file": "studios/get_studio_detail__972a8469.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/mobile/v1/studios/972a8469-1641-4f82-8b9d-2434e465e150",
+    "params": "",
+    "status": 200,
+    "description": "Studio detail for 972a8469"
+  },
+  {
+    "file": "members/get_sms_notification_settings.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/sms/v1/preferences",
+    "params": "phoneNumber=5908107668",
+    "status": 200,
+    "description": "SMS notification preferences"
+  },
+  {
+    "file": "members/get_email_notification_settings.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/otfmailing/v2/preferences",
+    "params": "email=blairamanda%40example.com",
+    "status": 200,
+    "description": "Email notification preferences"
+  },
+  {
+    "file": "studios/search_studios_by_geo.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/mobile/v1/studios",
+    "params": "latitude=37.735043&longitude=-97.463166&distance=50&pageIndex=1&pageSize=100",
+    "status": 200,
+    "description": "Studios by geographic search"
+  },
+  {
+    "file": "studios/get_favorite_studios.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/member/members/bdd640fb-0667-4ad1-9c80-317fa3b1799d/favorite-studios",
+    "params": "",
+    "status": 200,
+    "description": "Favorite studios"
+  },
+  {
+    "file": "studios/get_studio_services.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/member/studios/bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9/services",
+    "params": "",
+    "status": 200,
+    "description": "Studio services"
+  },
+  {
+    "file": "bookings/get_classes.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/classes",
+    "params": "studio_ids=bd9c66b3-ad3c-4d6d-9a3d-1fa7bc8960a9",
+    "status": 200,
+    "description": "Available classes"
+  },
+  {
+    "file": "bookings/get_bookings.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/member/members/bdd640fb-0667-4ad1-9c80-317fa3b1799d/bookings",
+    "params": "statuses=Booked",
+    "status": 200,
+    "description": "Member bookings (filtered by status)"
+  },
+  {
+    "file": "bookings/get_bookings_all.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/member/members/bdd640fb-0667-4ad1-9c80-317fa3b1799d/bookings",
+    "params": "",
+    "status": 200,
+    "description": "Member bookings (all statuses)"
+  },
+  {
+    "file": "bookings/get_bookings_new__2026-02-26.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/bookings/me",
+    "params": "ends_before=2026-06-10T00%3A00%3A00Z&starts_after=2026-02-26T00%3A00%3A00Z&include_canceled=false&expand=true",
+    "status": 200,
+    "description": "New bookings endpoint (from 2026-02-26)"
+  },
+  {
+    "file": "workouts/get_body_composition_list.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/member/members/23b8c1e9-3924-46de-beb1-3b9046685257/body-composition",
+    "params": "",
+    "status": 200,
+    "description": "Body composition history"
+  },
+  {
+    "file": "workouts/get_challenge_tracker.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3.1/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+    "params": "",
+    "status": 200,
+    "description": "Challenge tracker overview"
+  },
+  {
+    "file": "workouts/get_lifetime_stats__allTime.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/performance/v2/bdd640fb-0667-4ad1-9c80-317fa3b1799d/over-time/allTime",
+    "params": "",
+    "status": 200,
+    "description": "Lifetime stats: allTime"
+  },
+  {
+    "file": "workouts/get_lifetime_stats__thisMonth.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/performance/v2/bdd640fb-0667-4ad1-9c80-317fa3b1799d/over-time/thisMonth",
+    "params": "",
+    "status": 200,
+    "description": "Lifetime stats: thisMonth"
+  },
+  {
+    "file": "workouts/get_lifetime_stats__allTime__2.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/performance/v2/bdd640fb-0667-4ad1-9c80-317fa3b1799d/over-time/allTime",
+    "params": "",
+    "status": 200,
+    "description": "Lifetime stats: allTime"
+  },
+  {
+    "file": "workouts/get_out_of_studio_workout_history.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/member/members/bdd640fb-0667-4ad1-9c80-317fa3b1799d/out-of-studio-workout",
+    "params": "",
+    "status": 200,
+    "description": "Out-of-studio workout history"
+  },
+  {
+    "file": "workouts/get_hr_history.json",
+    "host": "api.yuzu.orangetheory.com",
+    "method": "GET",
+    "path": "/v1/physVars/maxHr/history",
+    "params": "memberUuid=bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+    "status": 200,
+    "description": "Heart rate history"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_equipment__treadmill.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=2&challengeTypeId=0&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: equipment treadmill"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_equipment__strider.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=3&challengeTypeId=0&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: equipment strider"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_equipment__rower.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=4&challengeTypeId=0&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: equipment rower"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_equipment__bike.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=5&challengeTypeId=0&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: equipment bike"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_equipment__weight_floor.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=6&challengeTypeId=0&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: equipment weight_floor"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_equipment__power_walker.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=7&challengeTypeId=0&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: equipment power_walker"
+  },
+  {
+    "file": "workouts/get_benchmarks.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=0&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks (all)"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__dri_tri.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=2&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge dri_tri"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__infinity.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=3&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge infinity"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__marathon_month.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=5&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge marathon_month"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__orange_everest.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=9&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge orange_everest"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__catch_me_if_you_can.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=10&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge catch_me_if_you_can"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__two_hundred_meter_row.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=15&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge two_hundred_meter_row"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__five_hundred_meter_row.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=16&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge five_hundred_meter_row"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__two_thousand_meter_row.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=17&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge two_thousand_meter_row"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__twelve_minute_treadmill.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=18&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge twelve_minute_treadmill"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__one_mile_treadmill.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=19&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge one_mile_treadmill"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__ten_minute_row.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=20&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge ten_minute_row"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__hell_week.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=52&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge hell_week"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__inferno.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=55&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge inferno"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__mayhem.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=58&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge mayhem"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__back_at_it.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=60&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge back_at_it"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__fourteen_minute_row.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=61&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge fourteen_minute_row"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__twelve_days_of_fitness.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=63&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge twelve_days_of_fitness"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__transformation_challenge.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=64&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge transformation_challenge"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__remix_in_six.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=65&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge remix_in_six"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__push.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=66&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge push"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__quarter_mile_treadmill.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=69&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge quarter_mile_treadmill"
+  },
+  {
+    "file": "workouts/get_benchmarks_by_challenge__one_thousand_meter_row.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v3/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/benchmarks",
+    "params": "equipmentId=0&challengeTypeId=70&challengeSubTypeId=0",
+    "status": 200,
+    "description": "Benchmarks: challenge one_thousand_meter_row"
+  },
+  {
+    "file": "workouts/get_challenge_tracker_detail__dri_tri.json",
+    "host": "api.orangetheory.co",
+    "method": "GET",
+    "path": "/challenges/v1/member/bdd640fb-0667-4ad1-9c80-317fa3b1799d/participation",
+    "params": "challengeTypeId=2",
+    "status": 200,
+    "description": "Challenge detail: dri_tri"
+  },
+  {
+    "file": "workouts/get_telemetry__6c307511.json",
+    "host": "api.yuzu.orangetheory.com",
+    "method": "GET",
+    "path": "/v1/performance/summary",
+    "params": "classHistoryUuid=6c307511-b2b9-437a-a8df-6ec4ce4a2bbd&maxDataPoints=150",
+    "status": 200,
+    "description": "Telemetry for class 6c307511"
+  },
+  {
+    "file": "bookings/get_bookings_new__2026-03-27.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/bookings/me",
+    "params": "ends_before=2026-04-26T23%3A59%3A59Z&starts_after=2026-03-27T00%3A00%3A00Z&include_canceled=false&expand=true",
+    "status": 200,
+    "description": "New bookings endpoint (from 2026-03-27)"
+  },
+  {
+    "file": "workouts/get_workout__9a1de644.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/performance-summaries/9a1de644-815e-46d1-bb8f-aa1837f8a88b",
+    "params": "",
+    "status": 200,
+    "description": "Workout performance summary 9a1de644"
+  },
+  {
+    "file": "workouts/get_workout__b74d0fb1.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/performance-summaries/b74d0fb1-32e7-4629-8fad-c1a606cb0fb3",
+    "params": "",
+    "status": 200,
+    "description": "Workout performance summary b74d0fb1"
+  },
+  {
+    "file": "workouts/get_workout__c241330b.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/performance-summaries/c241330b-01a9-471f-9e8a-774bcf36d58b",
+    "params": "",
+    "status": 200,
+    "description": "Workout performance summary c241330b"
+  },
+  {
+    "file": "workouts/get_workout__6b65a6a4.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/performance-summaries/6b65a6a4-8b81-48f6-b38a-088ca65ed389",
+    "params": "",
+    "status": 200,
+    "description": "Workout performance summary 6b65a6a4"
+  },
+  {
+    "file": "workouts/get_workout__17fc695a.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/performance-summaries/17fc695a-07a0-4a6e-8822-e8f36c031199",
+    "params": "",
+    "status": 200,
+    "description": "Workout performance summary 17fc695a"
+  },
+  {
+    "file": "workouts/get_workout__47378190.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/performance-summaries/47378190-96da-4dac-b2ff-5d2a386ecbe0",
+    "params": "",
+    "status": 200,
+    "description": "Workout performance summary 47378190"
+  },
+  {
+    "file": "workouts/get_telemetry__9a1de644.json",
+    "host": "api.yuzu.orangetheory.com",
+    "method": "GET",
+    "path": "/v1/performance/summary",
+    "params": "classHistoryUuid=9a1de644-815e-46d1-bb8f-aa1837f8a88b&maxDataPoints=150",
+    "status": 200,
+    "description": "Telemetry for class 9a1de644"
+  },
+  {
+    "file": "workouts/get_telemetry__6b65a6a4.json",
+    "host": "api.yuzu.orangetheory.com",
+    "method": "GET",
+    "path": "/v1/performance/summary",
+    "params": "classHistoryUuid=6b65a6a4-8b81-48f6-b38a-088ca65ed389&maxDataPoints=150",
+    "status": 200,
+    "description": "Telemetry for class 6b65a6a4"
+  },
+  {
+    "file": "workouts/get_telemetry__b74d0fb1.json",
+    "host": "api.yuzu.orangetheory.com",
+    "method": "GET",
+    "path": "/v1/performance/summary",
+    "params": "classHistoryUuid=b74d0fb1-32e7-4629-8fad-c1a606cb0fb3&maxDataPoints=150",
+    "status": 200,
+    "description": "Telemetry for class b74d0fb1"
+  },
+  {
+    "file": "workouts/get_telemetry__17fc695a.json",
+    "host": "api.yuzu.orangetheory.com",
+    "method": "GET",
+    "path": "/v1/performance/summary",
+    "params": "classHistoryUuid=17fc695a-07a0-4a6e-8822-e8f36c031199&maxDataPoints=150",
+    "status": 200,
+    "description": "Telemetry for class 17fc695a"
+  },
+  {
+    "file": "workouts/get_telemetry__c241330b.json",
+    "host": "api.yuzu.orangetheory.com",
+    "method": "GET",
+    "path": "/v1/performance/summary",
+    "params": "classHistoryUuid=c241330b-01a9-471f-9e8a-774bcf36d58b&maxDataPoints=150",
+    "status": 200,
+    "description": "Telemetry for class c241330b"
+  },
+  {
+    "file": "workouts/get_telemetry__47378190.json",
+    "host": "api.yuzu.orangetheory.com",
+    "method": "GET",
+    "path": "/v1/performance/summary",
+    "params": "classHistoryUuid=47378190-96da-4dac-b2ff-5d2a386ecbe0&maxDataPoints=150",
+    "status": 200,
+    "description": "Telemetry for class 47378190"
+  },
+  {
+    "file": "workouts/get_workouts.json",
+    "host": "api.orangetheory.io",
+    "method": "GET",
+    "path": "/v1/performance-summaries",
+    "params": "",
+    "status": 200,
+    "description": "Workout list (performance summaries)"
+  }
+]

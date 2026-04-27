@@ -1,0 +1,119 @@
+{
+  "Status": 200,
+  "Message": "Success",
+  "Dto": [
+    {
+      "ChallengeCategoryId": 16,
+      "ChallengeSubCategoryId": null,
+      "EquipmentId": 4,
+      "EquipmentName": "Rower",
+      "MetricEntry": {
+        "Title": "500 METER",
+        "EquipmentId": 4,
+        "EntryType": "Time",
+        "MetricKey": "500METER",
+        "MinValue": "00:50.00",
+        "MaxValue": "06:00.00"
+      },
+      "ChallengeName": "500 METER Row",
+      "LogoUrl": "https://otf-icons.s3.amazonaws.com/benchmarks/Rower.png",
+      "BestRecord": "01:36.32",
+      "LastRecord": "01:36.32",
+      "PreviousRecord": "01:40.26",
+      "Unit": null,
+      "Goals": null,
+      "ChallengeHistories": [
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 857861,
+          "StudioId": 1267,
+          "StudioName": "Wichita - West, KS",
+          "StartDate": "2025-11-20T00:00:00",
+          "EndDate": "2025-11-20T23:59:00",
+          "TotalResult": "00:01:36.32",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Wichita - West, KS",
+              "EquipmentId": 4,
+              "Result": "01:36.32",
+              "DateCreated": "2025-11-20T16:08:07",
+              "DateUpdated": "2025-11-20T16:08:07",
+              "ClassTime": "2025-11-20T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2431597877,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "Connie Lawrence",
+              "CoachImageUrl": "https://placeholder.example.com/profile/810621.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        },
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 753634,
+          "StudioId": 1267,
+          "StudioName": "Wichita - West, KS",
+          "StartDate": "2025-05-29T00:00:00",
+          "EndDate": "2025-05-29T23:59:00",
+          "TotalResult": "00:01:40.26",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Wichita - West, KS",
+              "EquipmentId": 4,
+              "Result": "01:40.26",
+              "DateCreated": "2025-05-29T15:07:13",
+              "DateUpdated": "2025-05-29T15:08:33",
+              "ClassTime": "2025-05-29T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2431597662,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "Abigail Shaffer",
+              "CoachImageUrl": "https://placeholder.example.com/profile/303446.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        },
+        {
+          "ChallengeObjective": "None",
+          "ChallengeId": 531779,
+          "StudioId": 1267,
+          "StudioName": "Wichita - West, KS",
+          "StartDate": "2024-06-04T00:00:00",
+          "EndDate": "2024-06-04T23:59:00",
+          "TotalResult": "00:01:45.38",
+          "IsFinished": true,
+          "BenchmarkHistories": [
+            {
+              "StudioName": "Wichita - West, KS",
+              "EquipmentId": 4,
+              "Result": "01:45.38",
+              "DateCreated": "2024-06-04T15:18:14",
+              "DateUpdated": "2024-06-04T15:18:14",
+              "ClassTime": "2024-06-04T09:45:00",
+              "ChallengeSubCategoryId": null,
+              "ClassId": 2238320525,
+              "SubstituteId": null,
+              "WeightLBS": 0,
+              "ClassName": "Orange 60 Min 2G",
+              "CoachName": "Angie Henderson",
+              "CoachImageUrl": "https://placeholder.example.com/profile/83668.jpg",
+              "WorkoutTypeId": null,
+              "WorkoutId": null,
+              "LinkedChallenges": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

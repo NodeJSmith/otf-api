@@ -1,0 +1,9 @@
+{
+  "code": "SUCCESS",
+  "data": {
+    "email": "blairamanda@example.com",
+    "isSystemEmailOptIn": true,
+    "isPromotionalEmailOptIn": false,
+    "isTransactionalEmailOptIn": false
+  }
+}
