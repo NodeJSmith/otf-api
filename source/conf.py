@@ -11,10 +11,12 @@ sys.path.insert(0, os.path.abspath("../src"))  # type: ignore # noqa
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+from importlib.metadata import version as _get_version
+
 project = "OrangeTheory API"
 copyright = "2025, Jessica Smith"
 author = "Jessica Smith"
-release = "0.15.4"
+release = _get_version("otf-api")
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
