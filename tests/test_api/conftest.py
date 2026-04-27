@@ -18,7 +18,7 @@ def _make_mock_user() -> MagicMock:
     mock_user = MagicMock()
     mock_user.member_uuid = MOCK_MEMBER_UUID
     mock_user.cognito_id = MOCK_COGNITO_ID
-    mock_user.email_address = "schmidtjill@example.net"
+    mock_user.email_address = "anthony86@example.org"
     mock_user.httpx_auth = None  # httpx.Client accepts None
     return mock_user
 

@@ -190,9 +190,15 @@ class FakeDataGenerators:
             return f"{city} - {direction}, {state}"
 
     def fake_geo_coordinate(self, original: float) -> float:
-        """Return a fake coordinate offset from the original by a random amount."""
+        """Return a fake coordinate offset from the original by a random amount.
+
+        Clamps to valid WGS-84 ranges: [-90, 90] for latitude, [-180, 180] for longitude.
+        """
         with self._lock:
-            return round(original + self._rng.uniform(-5.0, 5.0), 6)
+            fake = round(original + self._rng.uniform(-5.0, 5.0), 6)
+        if abs(original) <= 90:
+            return max(-90.0, min(90.0, fake))
+        return max(-180.0, min(180.0, fake))
 
     # ------------------------------------------------------------------
     # Media

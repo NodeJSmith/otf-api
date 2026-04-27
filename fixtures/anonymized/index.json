@@ -58,7 +58,7 @@
     "host": "api.orangetheory.co",
     "method": "GET",
     "path": "/otfmailing/v2/preferences",
-    "params": "email=schmidtjill%40example.net",
+    "params": "email=anthony86%40example.org",
     "status": 200,
     "description": "Email notification preferences"
   },

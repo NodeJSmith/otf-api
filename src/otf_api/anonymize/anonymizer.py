@@ -369,6 +369,9 @@ class Anonymizer:
             elif key in KNOWN_SAFE_FIELDS:
                 # Known safe fields pass through, but if the value is a string
                 # that matches a previously-mapped PII value, replace it.
+                # This catches e.g. studio names under the generic "name" key in
+                # v2 API responses.  Requires the canonical key (e.g. "studioName")
+                # to be processed first in the batch so the replacement map is seeded.
                 if isinstance(value, str):
                     existing = self._replacement_map.get_existing(value)
                     result[key] = existing if existing is not None else value
@@ -614,7 +617,9 @@ class Anonymizer:
             key_lower = key.lower()
             if "last" in key_lower:
                 return g.fake_last_name()
-            return g.fake_first_name()
+            if "first" in key_lower or key_lower in ("username", "user_name"):
+                return g.fake_first_name()
+            return f"{g.fake_first_name()} {g.fake_last_name()}"
         if category == "email":
             return g.fake_email()
         if category == "phone":

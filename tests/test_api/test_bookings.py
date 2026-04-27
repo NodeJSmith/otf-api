@@ -3,7 +3,6 @@
 from datetime import date, datetime
 
 import httpx
-import respx
 from conftest import load_fixture
 
 from otf_api.models.bookings import Booking, BookingV2, OtfClass

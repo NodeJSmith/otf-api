@@ -1,7 +1,7 @@
 {
   "code": "SUCCESS",
   "data": {
-    "email": "schmidtjill@example.net",
+    "email": "anthony86@example.org",
     "isSystemEmailOptIn": true,
     "isPromotionalEmailOptIn": false,
     "isTransactionalEmailOptIn": false

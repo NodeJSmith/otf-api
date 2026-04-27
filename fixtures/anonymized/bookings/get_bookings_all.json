@@ -24,9 +24,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "F",
         "ccLast4": "2980"
@@ -45,7 +45,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -54,14 +54,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -79,8 +79,8 @@
         "coach": {
           "coachUUId": "e4b1455b-84ad-4903-92cf-5d1dae103641",
           "name": "Bobby",
-          "firstName": "Christopher",
-          "lastName": "Dominguez",
+          "firstName": "Robert",
+          "lastName": "Sanchez",
           "imageUrl": "https://placeholder.example.com/profile/261034.jpg",
           "profilePictureUrl": "https://placeholder.example.com/profile/433325.jpg"
         },
@@ -88,11 +88,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -120,9 +120,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "M",
         "ccLast4": "9359"
@@ -141,7 +141,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -150,14 +150,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -174,9 +174,9 @@
         },
         "coach": {
           "coachUUId": "e4b1455b-84ad-4903-92cf-5d1dae103641",
-          "name": "Christopher",
-          "firstName": "Christopher",
-          "lastName": "Dominguez",
+          "name": "Robert",
+          "firstName": "Robert",
+          "lastName": "Sanchez",
           "imageUrl": "https://placeholder.example.com/profile/937387.jpg",
           "profilePictureUrl": "https://placeholder.example.com/profile/244571.jpg"
         },
@@ -184,11 +184,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -216,9 +216,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "M",
         "ccLast4": "4258"
@@ -237,7 +237,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -246,14 +246,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -270,9 +270,9 @@
         },
         "coach": {
           "coachUUId": "e4b1455b-84ad-4903-92cf-5d1dae103641",
-          "name": "Christopher",
-          "firstName": "Christopher",
-          "lastName": "Dominguez",
+          "name": "Robert",
+          "firstName": "Robert",
+          "lastName": "Sanchez",
           "imageUrl": "https://placeholder.example.com/profile/838054.jpg",
           "profilePictureUrl": "https://placeholder.example.com/profile/541786.jpg"
         },
@@ -280,11 +280,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -312,9 +312,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "M",
         "ccLast4": "2558"
@@ -333,7 +333,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -342,14 +342,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -367,8 +367,8 @@
         "coach": {
           "coachUUId": "71afc8ad-bf09-46bd-8661-d077090b3597",
           "name": "Blair",
-          "firstName": "Nathan",
-          "lastName": "Thompson",
+          "firstName": "Carlos",
+          "lastName": "Stevens",
           "imageUrl": "https://placeholder.example.com/profile/719220.jpg",
           "profilePictureUrl": null
         },
@@ -376,11 +376,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -408,9 +408,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "F",
         "ccLast4": "5109"
@@ -429,7 +429,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -438,14 +438,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -463,8 +463,8 @@
         "coach": {
           "coachUUId": "383a0301-0783-482e-b210-1a3f43df86ae",
           "name": "Erika",
-          "firstName": "Gregory",
-          "lastName": "Duncan",
+          "firstName": "James",
+          "lastName": "Howell",
           "imageUrl": "https://placeholder.example.com/profile/361834.jpg",
           "profilePictureUrl": null
         },
@@ -472,11 +472,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -504,9 +504,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "M",
         "ccLast4": "0501"
@@ -525,7 +525,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -534,14 +534,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -558,9 +558,9 @@
         },
         "coach": {
           "coachUUId": "383a0301-0783-482e-b210-1a3f43df86ae",
-          "name": "Gregory",
-          "firstName": "Gregory",
-          "lastName": "Duncan",
+          "name": "James",
+          "firstName": "James",
+          "lastName": "Howell",
           "imageUrl": "https://placeholder.example.com/profile/904867.jpg",
           "profilePictureUrl": null
         },
@@ -568,11 +568,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -600,9 +600,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "M",
         "ccLast4": "4917"
@@ -621,7 +621,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -630,14 +630,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -654,9 +654,9 @@
         },
         "coach": {
           "coachUUId": "383a0301-0783-482e-b210-1a3f43df86ae",
-          "name": "Gregory",
-          "firstName": "Gregory",
-          "lastName": "Duncan",
+          "name": "James",
+          "firstName": "James",
+          "lastName": "Howell",
           "imageUrl": "https://placeholder.example.com/profile/79151.jpg",
           "profilePictureUrl": null
         },
@@ -664,11 +664,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -696,9 +696,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "M",
         "ccLast4": "6869"
@@ -717,7 +717,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -726,14 +726,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -750,9 +750,9 @@
         },
         "coach": {
           "coachUUId": "383a0301-0783-482e-b210-1a3f43df86ae",
-          "name": "Gregory",
-          "firstName": "Gregory",
-          "lastName": "Duncan",
+          "name": "James",
+          "firstName": "James",
+          "lastName": "Howell",
           "imageUrl": "https://placeholder.example.com/profile/857270.jpg",
           "profilePictureUrl": null
         },
@@ -760,11 +760,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -792,9 +792,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "M",
         "ccLast4": "2455"
@@ -813,7 +813,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -822,14 +822,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -847,8 +847,8 @@
         "coach": {
           "coachUUId": "64631da1-574d-4811-bf45-ddffca9353f8",
           "name": "Lexi",
-          "firstName": "Madison",
-          "lastName": "Barry",
+          "firstName": "James",
+          "lastName": "Taylor",
           "imageUrl": "https://placeholder.example.com/profile/334862.jpg",
           "profilePictureUrl": "https://placeholder.example.com/profile/908574.jpg"
         },
@@ -856,11 +856,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -888,9 +888,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "M",
         "ccLast4": "4245"
@@ -909,7 +909,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -918,14 +918,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -942,9 +942,9 @@
         },
         "coach": {
           "coachUUId": "64631da1-574d-4811-bf45-ddffca9353f8",
-          "name": "Madison",
-          "firstName": "Madison",
-          "lastName": "Barry",
+          "name": "James",
+          "firstName": "James",
+          "lastName": "Taylor",
           "imageUrl": "https://placeholder.example.com/profile/777249.jpg",
           "profilePictureUrl": "https://placeholder.example.com/profile/297911.jpg"
         },
@@ -952,11 +952,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -984,9 +984,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "M",
         "ccLast4": "9002"
@@ -1005,7 +1005,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -1014,14 +1014,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -1038,9 +1038,9 @@
         },
         "coach": {
           "coachUUId": "64631da1-574d-4811-bf45-ddffca9353f8",
-          "name": "Madison",
-          "firstName": "Madison",
-          "lastName": "Barry",
+          "name": "James",
+          "firstName": "James",
+          "lastName": "Taylor",
           "imageUrl": "https://placeholder.example.com/profile/549443.jpg",
           "profilePictureUrl": "https://placeholder.example.com/profile/15953.jpg"
         },
@@ -1048,11 +1048,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }
@@ -1080,9 +1080,9 @@
       "isDeleted": false,
       "member": {
         "memberUUId": "d1f6f86c-029a-4245-bb91-433a6aa79987",
-        "firstName": "William",
-        "lastName": "Hernandez",
-        "email": "schmidtjill@example.net",
+        "firstName": "Adam",
+        "lastName": "Beck",
+        "email": "anthony86@example.org",
         "phoneNumber": "6152677550",
         "gender": "F",
         "ccLast4": "9635"
@@ -1101,7 +1101,7 @@
           "studioUUId": "452ec40a-3193-4a54-ae89-71105e503a67",
           "studioName": "Oconnorport - North, PR",
           "description": "",
-          "contactEmail": "leematthew@example.org",
+          "contactEmail": "kelliwhite@example.org",
           "status": "Active",
           "logoUrl": "",
           "timeZone": "America/Chicago",
@@ -1110,14 +1110,14 @@
           "allowsCRWaitlist": true,
           "crWaitlistFlagLastUpdated": "2020-07-09T02:43:55.000Z",
           "studioLocation": {
-            "physicalAddress": "0860 Shelby Ways Apt. 924",
+            "physicalAddress": "92638 Roman Fort Apt. 738",
             "physicalAddress2": null,
-            "physicalCity": "Lake Laurie",
-            "physicalState": "AL",
-            "physicalPostalCode": "48248",
+            "physicalCity": "North Brucemouth",
+            "physicalState": "OH",
+            "physicalPostalCode": "20180",
             "physicalRegion": "KS/MO-01",
             "physicalCountryId": 1,
-            "physicalCountry": "SO",
+            "physicalCountry": "PK",
             "phoneNumber": "5815382882",
             "latitude": "36.682794",
             "longitude": "-100.683327",
@@ -1134,9 +1134,9 @@
         },
         "coach": {
           "coachUUId": "64631da1-574d-4811-bf45-ddffca9353f8",
-          "name": "Madison",
-          "firstName": "Madison",
-          "lastName": "Barry",
+          "name": "James",
+          "firstName": "James",
+          "lastName": "Taylor",
           "imageUrl": "https://placeholder.example.com/profile/479697.jpg",
           "profilePictureUrl": "https://placeholder.example.com/profile/434726.jpg"
         },
@@ -1144,11 +1144,11 @@
           "phone": "5815382882",
           "latitude": "37.866133",
           "longitude": "-98.287368",
-          "address1": "0860 Shelby Ways Apt. 924",
+          "address1": "92638 Roman Fort Apt. 738",
           "address2": null,
-          "city": "Lake Laurie",
-          "state": "PW",
-          "postalCode": "48248"
+          "city": "North Brucemouth",
+          "state": "MT",
+          "postalCode": "20180"
         },
         "virtualClass": null
       }

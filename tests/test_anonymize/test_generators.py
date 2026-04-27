@@ -108,6 +108,26 @@ def test_fake_last_name_returns_string(gen: FakeDataGenerators) -> None:
     assert len(result) > 0
 
 
+def test_fake_studio_name_format(gen: FakeDataGenerators) -> None:
+    import re
+
+    result = gen.fake_studio_name()
+    assert isinstance(result, str)
+    assert re.match(r".+ - .+, [A-Z]{2}$", result), f"Unexpected format: {result!r}"
+
+
+def test_fake_geo_coordinate_offset(gen: FakeDataGenerators) -> None:
+    original = 37.7
+    result = gen.fake_geo_coordinate(original)
+    assert isinstance(result, float)
+    assert abs(result - original) <= 5.0
+
+
+def test_fake_geo_coordinate_clamps_latitude(gen: FakeDataGenerators) -> None:
+    result = gen.fake_geo_coordinate(89.0)
+    assert -90.0 <= result <= 90.0
+
+
 def test_fake_address_components_returns_dict(gen: FakeDataGenerators) -> None:
     """fake_address_components() must return a dict with expected address keys."""
     result = gen.fake_address_components()
