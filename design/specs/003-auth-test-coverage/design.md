@@ -1,7 +1,7 @@
 # Design: Auth Module Test Coverage
 
 **Date:** 2026-04-27
-**Status:** approved
+**Status:** archived
 
 ## Problem
 
