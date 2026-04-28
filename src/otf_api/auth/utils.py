@@ -28,7 +28,7 @@ def get_username_password() -> tuple[str, str]:
     if not username or not password:
         if not can_provide_input():
             LOGGER.error("Unable to prompt for credentials in a non-interactive shell")
-            raise
+            raise NoCredentialsError("Unable to prompt for credentials in a non-interactive shell")
         username, password = prompt_for_username_and_password()
         if not username or not password:
             raise NoCredentialsError("No credentials provided and no tokens cached, cannot authenticate")
