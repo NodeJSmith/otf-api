@@ -16,7 +16,7 @@ def _log_initial_auth_error(e: ClientError, username: str | None) -> None:
     elif code == "UserNotFoundException":
         LOGGER.warning("Authentication failed — no account found for %s", username)
     else:
-        LOGGER.error("Failed to authenticate with Cognito", exc_info=e)
+        LOGGER.exception("Failed to authenticate with Cognito")
 
 
 @attrs.define(init=False)
