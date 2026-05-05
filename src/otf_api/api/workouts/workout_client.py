@@ -141,7 +141,11 @@ class WorkoutClient:
                         e,
                     )
 
-        LOGGER.debug("Retrieved %d of %d performance summaries in threaded mode", len(perf_summaries_dict), len(performance_summary_ids))
+        LOGGER.debug(
+            "Retrieved %d of %d performance summaries in threaded mode",
+            len(perf_summaries_dict),
+            len(performance_summary_ids),
+        )
 
         return perf_summaries_dict
 
@@ -173,7 +177,11 @@ class WorkoutClient:
                         e,
                     )
 
-        LOGGER.debug("Retrieved %d of %d telemetry records in threaded mode", len(telemetry_dict), len(performance_summary_ids))
+        LOGGER.debug(
+            "Retrieved %d of %d telemetry records in threaded mode",
+            len(telemetry_dict),
+            len(performance_summary_ids),
+        )
 
         return telemetry_dict
 

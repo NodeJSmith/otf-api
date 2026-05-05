@@ -179,7 +179,10 @@ class StudioApi:
         try:
             res = self.client.get_studio_detail(studio_uuid)
         except exc.ResourceNotFoundError:
-            LOGGER.warning("Studio %s not found, using empty placeholder. Downstream data may be incomplete.", studio_uuid)
+            LOGGER.warning(
+                "Studio %s not found, using empty placeholder. Downstream data may be incomplete.",
+                studio_uuid,
+            )
             return models.StudioDetail.create_empty_model(studio_uuid)
 
         return models.StudioDetail.create(**res, api=self.otf)
