@@ -125,6 +125,10 @@ class BookingApi:
                 )
                 continue
 
+        dropped = len(bookings_resp) - len(results)
+        if dropped:
+            LOGGER.warning("Dropped %d of %d bookings due to parsing errors", dropped, len(bookings_resp))
+
         if not remove_duplicates:
             return results
 
@@ -249,6 +253,10 @@ class BookingApi:
             except ValueError as e:
                 LOGGER.warning(f"Failed to create OtfClass from response: {e}. Class data:\n{c}")
                 continue
+
+        dropped_classes = len(classes_resp) - len(classes)
+        if dropped_classes:
+            LOGGER.warning("Dropped %d of %d classes due to parsing errors", dropped_classes, len(classes_resp))
 
         # additional data filtering and enrichment
 
@@ -582,6 +590,10 @@ class BookingApi:
             except ValueError as e:
                 LOGGER.warning(f"Failed to create Booking from response: {e}. Booking data:\n{b}")
                 continue
+
+        dropped_bookings = len(resp) - len(bookings)
+        if dropped_bookings:
+            LOGGER.warning("Dropped %d of %d bookings due to parsing errors", dropped_bookings, len(resp))
 
         bookings = sorted(bookings, key=lambda x: x.otf_class.starts_at)
 

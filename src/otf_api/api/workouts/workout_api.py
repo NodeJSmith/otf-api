@@ -5,6 +5,7 @@ from logging import getLogger
 from typing import Any, Literal
 
 import pendulum
+from pydantic import ValidationError
 
 from otf_api import exceptions as exc
 from otf_api import models
@@ -274,15 +275,34 @@ class WorkoutApi:
         for booking, perf_summary_id in bookings_list:
             try:
                 perf_summary = perf_summaries_dict.get(perf_summary_id, {}) if perf_summary_id else {}
+                if perf_summary_id and not perf_summary:
+                    LOGGER.warning(
+                        "No performance summary data found for %s — workout will have limited data",
+                        perf_summary_id,
+                    )
                 telemetry = telemetry_dict.get(perf_summary_id, None) if perf_summary_id else None
                 class_uuid = perf_summary_to_class_uuid_map.get(perf_summary_id, None) if perf_summary_id else None
                 workout = models.Workout.create(
                     **perf_summary, v2_booking=booking, telemetry=telemetry, class_uuid=class_uuid, api=self.otf
                 )
                 workouts.append(workout)
+            except ValidationError:
+                LOGGER.exception(
+                    "Failed to parse workout data for performance summary %s — the OTF API response "
+                    "may have changed. Please open an issue at https://github.com/NodeJSmith/otf-api/issues",
+                    perf_summary_id,
+                )
             except ValueError:
                 LOGGER.exception("Failed to create Workout for performance summary %s", perf_summary_id)
 
+        dropped = len(bookings_list) - len(workouts)
+        if dropped:
+            LOGGER.warning(
+                "Returned %d of %d workouts (%d failed to parse)",
+                len(workouts),
+                len(bookings_list),
+                dropped,
+            )
         LOGGER.debug("Returning %d workouts", len(workouts))
 
         return workouts
