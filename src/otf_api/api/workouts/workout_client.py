@@ -159,7 +159,7 @@ class WorkoutClient:
             max_data_points (int): The max data points to use for the telemetry. Default is 150.
 
         Returns:
-            dict[str, Telemetry]: A dictionary of telemetry, keyed by performance summary ID.
+            dict[str, dict[str, Any]]: A dictionary of telemetry, keyed by performance summary ID.
         """
         partial_fn = partial(self.get_telemetry, max_data_points=max_data_points)
         telemetry_dict: dict[str, dict[str, Any]] = {}

@@ -9,6 +9,16 @@ from otf_api.auth.utils import get_username_password
 LOGGER = getLogger(__name__)
 
 
+def _log_initial_auth_error(e: ClientError, username: str | None) -> None:
+    code = e.response.get("Error", {}).get("Code", "")
+    if code == "NotAuthorizedException":
+        LOGGER.warning("Authentication failed — incorrect password for %s", username)
+    elif code == "UserNotFoundException":
+        LOGGER.warning("Authentication failed — no account found for %s", username)
+    else:
+        LOGGER.error("Failed to authenticate with Cognito", exc_info=e)
+
+
 @attrs.define(init=False)
 class OtfUser:
     """OtfUser is a thin wrapper around OtfCognito, meant to hide all of the gory details from end users."""
@@ -50,15 +60,16 @@ class OtfUser:
         except NoCredentialsError:
             LOGGER.debug("No credentials provided, attempting to get them from environment or prompt user")
             username, password = get_username_password()
-            self.cognito = OtfCognito(username=username, password=password)
-        except ClientError as e:
-            code = e.response.get("Error", {}).get("Code", "")
-            if code == "NotAuthorizedException":
-                LOGGER.warning("Authentication failed — incorrect password for %s", username)
-            elif code == "UserNotFoundException":
-                LOGGER.warning("Authentication failed — no account found for %s", username)
-            else:
+            try:
+                self.cognito = OtfCognito(username=username, password=password)
+            except ClientError as e:
+                _log_initial_auth_error(e, username)
+                raise
+            except Exception:
                 LOGGER.exception("Failed to authenticate with Cognito")
+                raise
+        except ClientError as e:
+            _log_initial_auth_error(e, username)
             raise
         except Exception:
             LOGGER.exception("Failed to authenticate with Cognito")
