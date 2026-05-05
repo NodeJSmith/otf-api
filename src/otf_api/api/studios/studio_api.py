@@ -44,6 +44,10 @@ class StudioApi:
                 LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
                 continue
 
+        dropped = len(results) - len(studios)
+        if dropped:
+            LOGGER.warning("Dropped %d of %d studios due to parsing errors", dropped, len(results))
+
         return studios
 
     def _get_studio_detail_threaded(self, studio_uuids: list[str]) -> dict[str, models.StudioDetail]:
@@ -67,6 +71,10 @@ class StudioApi:
             except ValueError as e:
                 LOGGER.error(f"Failed to create StudioDetail for studio {studio_uuid}: {e}")
                 continue
+
+        dropped = len(studio_dicts) - len(studios)
+        if dropped:
+            LOGGER.warning("Dropped %d of %d studios due to parsing errors", dropped, len(studio_dicts))
 
         return studios
 
@@ -108,6 +116,10 @@ class StudioApi:
             except ValueError as e:
                 LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
                 continue
+
+        dropped = len(new_faves) - len(studios)
+        if dropped:
+            LOGGER.warning("Dropped %d of %d studios due to parsing errors", dropped, len(new_faves))
 
         return studios
 
@@ -167,6 +179,10 @@ class StudioApi:
         try:
             res = self.client.get_studio_detail(studio_uuid)
         except exc.ResourceNotFoundError:
+            LOGGER.warning(
+                "Studio %s not found, using empty placeholder. Downstream data may be incomplete.",
+                studio_uuid,
+            )
             return models.StudioDetail.create_empty_model(studio_uuid)
 
         return models.StudioDetail.create(**res, api=self.otf)
@@ -202,5 +218,9 @@ class StudioApi:
             except ValueError as e:
                 LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
                 continue
+
+        dropped = len(results) - len(studios)
+        if dropped:
+            LOGGER.warning("Dropped %d of %d studios due to parsing errors", dropped, len(results))
 
         return studios

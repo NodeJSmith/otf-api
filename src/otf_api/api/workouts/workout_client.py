@@ -1,4 +1,4 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
 from logging import getLogger
 from typing import Any
@@ -60,11 +60,20 @@ class WorkoutClient:
     @CACHE.memoize(expire=600, tag="telemetry")
     def get_telemetry(self, performance_summary_id: str, max_data_points: int = 150) -> dict:
         """Retrieve raw telemetry data."""
-        return self.telemetry_request(
+        data = self.telemetry_request(
             "GET",
             "/v1/performance/summary",
             params={"classHistoryUuid": performance_summary_id, "maxDataPoints": max_data_points},
         )
+
+        if not data.get("telemetry"):
+            LOGGER.warning(
+                "Telemetry response for performance_summary_id=%s has no telemetry data. "
+                "This usually means the heart rate monitor was not connected during the workout.",
+                performance_summary_id,
+            )
+
+        return data
 
     def get_body_composition_list(self) -> dict:
         """Retrieve raw body composition list."""
@@ -117,15 +126,26 @@ class WorkoutClient:
         Returns:
             dict[str, dict[str, Any]]: A dictionary of performance summaries, keyed by performance summary ID.
         """
+        perf_summaries_dict: dict[str, dict[str, Any]] = {}
         with ThreadPoolExecutor(max_workers=10) as pool:
-            perf_summaries = pool.map(self.get_performance_summary, performance_summary_ids)
+            futures = {pool.submit(self.get_performance_summary, psid): psid for psid in performance_summary_ids}
+            for future in as_completed(futures):
+                psid = futures[future]
+                try:
+                    result = future.result()
+                    perf_summaries_dict[result["id"]] = result
+                except Exception as e:
+                    LOGGER.warning(
+                        "Failed to retrieve performance summary %s — this workout will be excluded: %s",
+                        psid,
+                        e,
+                    )
 
-        perf_summaries_list = list(perf_summaries)
-        LOGGER.debug("Retrieved %d performance summaries in threaded mode", len(perf_summaries_list))
-
-        perf_summaries_dict = {perf_summary["id"]: perf_summary for perf_summary in perf_summaries_list}
-
-        LOGGER.debug("Returning %d performance summaries", len(perf_summaries_dict))
+        LOGGER.debug(
+            "Retrieved %d of %d performance summaries in threaded mode",
+            len(perf_summaries_dict),
+            len(performance_summary_ids),
+        )
 
         return perf_summaries_dict
 
@@ -139,19 +159,29 @@ class WorkoutClient:
             max_data_points (int): The max data points to use for the telemetry. Default is 150.
 
         Returns:
-            dict[str, Telemetry]: A dictionary of telemetry, keyed by performance summary ID.
+            dict[str, dict[str, Any]]: A dictionary of telemetry, keyed by performance summary ID.
         """
         partial_fn = partial(self.get_telemetry, max_data_points=max_data_points)
+        telemetry_dict: dict[str, dict[str, Any]] = {}
         with ThreadPoolExecutor(max_workers=10) as pool:
-            telemetry = pool.map(partial_fn, performance_summary_ids)
+            futures = {pool.submit(partial_fn, psid): psid for psid in performance_summary_ids}
+            for future in as_completed(futures):
+                psid = futures[future]
+                try:
+                    result = future.result()
+                    telemetry_dict[result["classHistoryUuid"]] = result
+                except Exception as e:
+                    LOGGER.warning(
+                        "Failed to retrieve telemetry for performance summary %s — heart rate data will be missing: %s",
+                        psid,
+                        e,
+                    )
 
-        telemetry_list = list(telemetry)
-
-        LOGGER.debug("Retrieved %d telemetry records in threaded mode", len(telemetry_list))
-
-        telemetry_dict = {perf_summary["classHistoryUuid"]: perf_summary for perf_summary in telemetry_list}
-
-        LOGGER.debug("Returning %d telemetry records", len(telemetry_dict))
+        LOGGER.debug(
+            "Retrieved %d of %d telemetry records in threaded mode",
+            len(telemetry_dict),
+            len(performance_summary_ids),
+        )
 
         return telemetry_dict
 

@@ -266,6 +266,7 @@ class OtfCognito(Cognito):
             CACHE.write_device_data_to_cache(self.device_metadata)
         except Exception:
             LOGGER.exception("Failed to write device key cache")
+            LOGGER.warning("Device key was not persisted — next login may require full re-authentication")
 
     ##### OVERRIDDEN METHODS #####
 
