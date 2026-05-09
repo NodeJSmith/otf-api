@@ -6,6 +6,7 @@ import httpx
 from conftest import load_fixture
 
 from otf_api.models.bookings import Booking, BookingV2, OtfClass
+from otf_api.models.bookings.enums import BookingStatus
 
 _BOOKINGS_NEW_DATE_PARAMS = "2026-03-27"
 _BOOKINGS_NEW_URL = (
@@ -116,3 +117,33 @@ def test_get_class_from_booking(mock_otf) -> None:
 # get_class_from_booking_new / get_booking_from_class_new cannot be tested:
 # the new booking class IDs (from get_bookings_new fixtures) don't overlap with
 # any class IDs in the get_classes fixture, so the lookup always fails.
+
+WAITLISTED_BOOKING_ID = "a1e2f3d4-5678-4abc-9def-0123456789ab"
+
+
+def test_waitlisted_booking_returns_waitlisted_status(mock_otf) -> None:
+    result = mock_otf.bookings.get_bookings_new(
+        start_date=date(2026, 3, 27),
+        end_date=date(2026, 4, 26),
+    )
+
+    waitlisted = [b for b in result if b.booking_id == WAITLISTED_BOOKING_ID]
+    assert len(waitlisted) == 1
+
+    booking = waitlisted[0]
+    assert booking.waitlist_position == 3
+    assert booking.status == BookingStatus.Waitlisted
+
+
+def test_non_waitlisted_booking_never_returns_waitlisted(mock_otf) -> None:
+    result = mock_otf.bookings.get_bookings_new(
+        start_date=date(2026, 3, 27),
+        end_date=date(2026, 4, 26),
+    )
+
+    non_waitlisted = [b for b in result if b.waitlist_position is None]
+    assert len(non_waitlisted) > 0
+
+    for booking in non_waitlisted:
+        assert booking.waitlist_position is None
+        assert booking.status != BookingStatus.Waitlisted
