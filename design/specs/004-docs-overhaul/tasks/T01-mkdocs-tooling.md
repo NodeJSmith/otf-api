@@ -85,7 +85,7 @@ PUBLIC_MODULES: frozenset[str] = frozenset({
     "otf_api.models.mixins",
 })
 ```
-Generate per-module `.md` files under `reference/` and a `reference/SUMMARY.md` for literate-nav. Delete the old `scripts/gen_ref_pages.py`.
+Generate per-module `.md` files under `reference/` and a `reference/SUMMARY.md` for literate-nav. Delete the old `scripts/gen_ref_pages.py` (T08 should skip this deletion since it's already handled here).
 
 ### 3. Update `.readthedocs.yaml`
 Change the `sphinx:` block to:

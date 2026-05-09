@@ -62,7 +62,7 @@ Do NOT add docstrings to private methods (starting with `_`) unless they already
 - The `Otf` class at `src/otf_api/api/api.py` has comprehensive class-level and method docstrings but 3 properties missing docstrings.
 - Auth classes at `src/otf_api/auth/auth.py` have ~68% coverage — 5 methods/properties need docstrings.
 - `src/otf_api/api/client.py` is mostly internal but `OtfClient` and `default_request` are used by the domain APIs.
-- Do NOT touch `*_client.py` files in the domain directories (e.g., `booking_client.py`) — these are internal HTTP wrappers.
+- Do NOT touch `*_client.py` files in the domain directories (e.g., `booking_client.py`) — these are internal HTTP wrappers. Note: `src/otf_api/api/client.py` (the base `OtfClient` class) IS in scope — the constraint targets `booking_client.py`/`member_client.py`-style transport wrappers, not the base client.
 
 ## Verify
 - [ ] FR#14: Every public method and property on `Otf`, `BookingApi`, `MemberApi`, `StudioApi`, `WorkoutApi`, `OtfCognito`, `HttpxCognitoAuth`, and `OtfClient` has a docstring

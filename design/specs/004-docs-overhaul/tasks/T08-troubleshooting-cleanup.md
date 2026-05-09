@@ -48,7 +48,7 @@ Write a troubleshooting page covering these known issues:
 ### 2. Delete Sphinx artifacts
 Remove the following files and directories:
 - `source/` directory (all RST files, conf.py, _static/, _templates/)
-- `scripts/gen_ref_pages.py` (replaced by `tools/gen_ref_pages.py` in T01)
+- `scripts/gen_ref_pages.py` (if it still exists — T01 may have already deleted it)
 
 ### 3. Update project references
 - **README.md**: Verify the documentation link (`https://otf-api.readthedocs.io/en/stable/`) is still correct. Update if the URL structure changed.
