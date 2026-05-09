@@ -1,7 +1,7 @@
 # Design: Documentation Overhaul — Sphinx to MkDocs-Material
 
 **Date:** 2026-05-09
-**Status:** approved
+**Status:** archived
 **Scope-mode:** hold
 **Research:** /tmp/claude-mine-define-research-4LSHpm/brief.md
 
