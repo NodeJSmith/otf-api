@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.17.0](https://github.com/NodeJSmith/otf-api/compare/otf-api-v0.16.0...otf-api-v0.17.0) (2026-05-09)
+
+
+### Features
+
+* add diagnostic logging for silent failures and empty API responses ([#119](https://github.com/NodeJSmith/otf-api/issues/119)) ([bc4e853](https://github.com/NodeJSmith/otf-api/commit/bc4e853e5a08cf5b7f0ed48924f505e625296e34))
+* **bookings:** detect waitlisted V2 bookings via waitlist_position field ([#125](https://github.com/NodeJSmith/otf-api/issues/125)) ([461b517](https://github.com/NodeJSmith/otf-api/commit/461b517658cb9661a3acf5769b1e61f91631a003))
+
+
+### Bug Fixes
+
+* cancel_booking crash on BookingV2 and missing class_uuid in get_workout_from_booking ([#124](https://github.com/NodeJSmith/otf-api/issues/124)) ([f525d1a](https://github.com/NodeJSmith/otf-api/commit/f525d1a1defb3e7c454c87a98e8e267471d9f0ce))
+
 ## [0.16.0](https://github.com/NodeJSmith/otf-api/compare/otf-api-v0.15.4...otf-api-v0.16.0) (2026-04-28)
 
 
