@@ -15,6 +15,12 @@ LOGGER = getLogger(__name__)
 
 
 class StudioApi:
+    """API for managing OrangeTheory studio data.
+
+    Provides methods to search for studios, retrieve studio details and services,
+    and manage favorite studios.
+    """
+
     def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Studio API client.
 

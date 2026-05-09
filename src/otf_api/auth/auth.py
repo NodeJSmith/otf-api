@@ -76,12 +76,22 @@ class OtfCognito(Cognito):
 
     @property
     def acces_token_expiration(self) -> int:
-        """Returns the expiration time of the access token in seconds."""
+        """Returns the expiration time of the access token as a datetime.
+
+        Returns:
+            datetime: The datetime when the access token expires.
+        """
         return datetime.fromtimestamp(self.get_decoded_access_token()["exp"])  # type: ignore # noqa: DTZ006
 
     @property
     def tokens(self) -> dict[str, str]:
-        """Returns the tokens as a dictionary."""
+        """Returns the authentication tokens as a dictionary.
+
+        Only includes tokens that have a non-empty value.
+
+        Returns:
+            dict[str, str]: A dictionary containing the access_token, id_token, and refresh_token.
+        """
         tokens = {
             "access_token": self.access_token,
             "id_token": self.id_token,
@@ -91,7 +101,13 @@ class OtfCognito(Cognito):
 
     @property
     def device_metadata(self) -> dict[str, str]:
-        """Returns the device metadata as a dictionary."""
+        """Returns the device metadata as a dictionary.
+
+        Only includes metadata fields that have a non-empty value.
+
+        Returns:
+            dict[str, str]: A dictionary containing the device_key, device_group_key, and device_password.
+        """
         dm = {
             "device_key": self.device_key,
             "device_group_key": self.device_group_key,
@@ -211,7 +227,17 @@ class OtfCognito(Cognito):
         self.verify_tokens()
 
     def login_with_password(self, password: str) -> None:
-        """Called when logging in with a username and password. Will set the tokens and device metadata."""
+        """Log in with a username and password.
+
+        Authenticates using AWS SRP protocol, sets the tokens, and confirms the device
+        with Cognito. Retries once on UserLambdaValidationException errors.
+
+        Args:
+            password (str): The user's password.
+
+        Raises:
+            ClientError: If authentication fails for a non-retryable reason.
+        """
         LOGGER.debug("Logging in with username and password...")
 
         aws = AWSSRP(
@@ -352,6 +378,13 @@ class OtfCognito(Cognito):
 
 
 class HttpxCognitoAuth(httpx.Auth):
+    """HTTPX authentication handler for AWS Cognito.
+
+    Integrates with httpx's auth flow to automatically attach and refresh Cognito tokens
+    on outgoing requests. Supports optional AWS SigV4 request signing for endpoints that
+    require it.
+    """
+
     http_header: str = "Authorization"
     http_header_prefix: str = "Bearer "
 
@@ -364,7 +397,20 @@ class HttpxCognitoAuth(httpx.Auth):
         self.cognito = cognito
 
     def auth_flow(self, request: httpx.Request) -> Generator[httpx.Request, Any, None]:
-        """Add the Cognito access token to the request headers."""
+        """Add the Cognito ID token to the request headers.
+
+        Checks and renews the token if expired, then adds it as a Bearer token. If the
+        request has the SIGV4AUTH_REQUIRED header, the request is signed with AWS SigV4.
+
+        Args:
+            request (httpx.Request): The outgoing HTTP request.
+
+        Yields:
+            httpx.Request: The request with authentication headers applied.
+
+        Raises:
+            ValueError: If the token is not a string.
+        """
         self.cognito.check_token(renew=True)
 
         token = self.cognito.id_token
@@ -384,7 +430,20 @@ class HttpxCognitoAuth(httpx.Auth):
         yield request
 
     def sign_httpx_request(self, request: httpx.Request) -> Generator[httpx.Request, Any, None]:
-        """Sign an HTTP request using AWS SigV4 for use with httpx."""
+        """Sign an HTTP request using AWS SigV4 for use with httpx.
+
+        Retrieves temporary AWS credentials from the Cognito Identity Pool and uses them
+        to sign the request for the execute-api service.
+
+        Args:
+            request (httpx.Request): The HTTP request to sign.
+
+        Yields:
+            httpx.Request: A new request with SigV4 authentication headers.
+
+        Raises:
+            ValueError: If the request body is a streaming body.
+        """
         headers = request.headers.copy()
 
         # ensure this header is not included, it will break the signature

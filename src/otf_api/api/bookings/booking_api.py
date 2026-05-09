@@ -21,6 +21,12 @@ LOGGER = getLogger(__name__)
 
 
 class BookingApi:
+    """API for managing OrangeTheory class bookings.
+
+    Provides methods to list, create, and cancel bookings, as well as retrieve class schedules
+    and rate completed classes.
+    """
+
     def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Booking API client.
 

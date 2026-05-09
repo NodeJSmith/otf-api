@@ -295,12 +295,29 @@ def ensure_date(date_str: str | date | datetime | None) -> date | None:
 
 
 def is_error_response(data: dict[str, Any]) -> bool:
-    """Check if the response data indicates an error."""
+    """Check if the response data indicates an error.
+
+    Args:
+        data (dict[str, Any]): The parsed JSON response data.
+
+    Returns:
+        bool: True if the response contains an error code or error key.
+    """
     return isinstance(data, dict) and (data.get("code") == "ERROR" or "error" in data)
 
 
 def get_json_from_response(response: httpx.Response) -> dict[str, Any]:
-    """Extract JSON data from an HTTP response."""
+    """Extract JSON data from an HTTP response.
+
+    Falls back to a dictionary with a "raw" key containing the response text if the
+    response body is not valid JSON.
+
+    Args:
+        response (httpx.Response): The HTTP response to extract JSON from.
+
+    Returns:
+        dict[str, Any]: The parsed JSON data, or ``{"raw": response.text}`` on decode failure.
+    """
     try:
         return response.json()
     except JSONDecodeError:

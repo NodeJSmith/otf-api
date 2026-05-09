@@ -14,6 +14,12 @@ LOGGER = getLogger(__name__)
 
 
 class MemberApi:
+    """API for managing OrangeTheory member data.
+
+    Provides methods to retrieve and update member details, notification settings,
+    membership information, and purchase history.
+    """
+
     def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Member API client.
 
