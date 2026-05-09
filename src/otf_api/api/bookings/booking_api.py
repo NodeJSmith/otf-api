@@ -493,6 +493,7 @@ class BookingApi:
         if isinstance(booking, models.BookingV2):
             LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
             self.cancel_booking_new(booking)
+            return
 
         booking_uuid = utils.get_booking_uuid(booking)
 
@@ -514,6 +515,7 @@ class BookingApi:
         if isinstance(booking, models.Booking):
             LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
             self.cancel_booking(booking)
+            return
 
         booking_id = utils.get_booking_id(booking)
 
