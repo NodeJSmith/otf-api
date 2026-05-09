@@ -146,4 +146,4 @@ purchases = otf.members.get_member_purchases()
 - **[Booking Guide](../guides/bookings.md)** — detailed class search, filtering, and booking workflows
 - **[Workouts Guide](../guides/workouts.md)** — workout history, telemetry, and performance data
 - **[Studios Guide](../guides/studios.md)** — studio search and favorites management
-- **[API Reference](../reference/otf_api/index.md)** — complete reference for all classes and methods
+- **[API Reference](../reference/index.md)** — complete reference for all classes and methods
