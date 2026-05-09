@@ -480,11 +480,11 @@ class BookingApi:
 
         return new_booking
 
-    def cancel_booking(self, booking: str | models.Booking) -> None:
+    def cancel_booking(self, booking: str | models.Booking | models.BookingV2) -> None:
         """Cancel a booking by providing either the booking_uuid or the Booking object.
 
         Args:
-            booking (str | Booking): The booking UUID or the Booking object to cancel.
+            booking (str | Booking | BookingV2): The booking UUID or the Booking/BookingV2 object to cancel.
 
         Raises:
             ValueError: If booking_uuid is None or empty string
@@ -502,11 +502,11 @@ class BookingApi:
 
         self.client.delete_booking(booking_uuid)
 
-    def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
+    def cancel_booking_new(self, booking: str | models.Booking | models.BookingV2) -> None:
         """Cancel a booking by providing either the booking_id or the BookingV2 object.
 
         Args:
-            booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
+            booking (str | Booking | BookingV2): The booking ID or the Booking/BookingV2 object to cancel.
 
         Raises:
             ValueError: If booking_id is None or empty string
