@@ -15,12 +15,18 @@ if typing.TYPE_CHECKING:
 
 
 class OtfClass(ApiMixin, OtfItemBase):
+    """An OrangeTheory class available for booking, with schedule, capacity, and studio details."""
+
     class_uuid: str = Field(validation_alias="ot_base_class_uuid", description="The OTF class UUID")
     class_id: str | None = Field(None, validation_alias="id", description="Matches new booking endpoint class id")
 
     name: str = Field(..., description="The name of the class")
-    class_type: ClassType = Field(validation_alias="type")
-    coach: str | None = Field(None, validation_alias=AliasPath("coach", "first_name"))
+    class_type: ClassType = Field(validation_alias="type", description="The high-level class format category.")
+    coach: str | None = Field(
+        None,
+        validation_alias=AliasPath("coach", "first_name"),
+        description="First name of the coach leading the class.",
+    )
     ends_at: datetime = Field(
         validation_alias="ends_at_local",
         description="The end time of the class. Reflects local time, but the object does not have a timezone.",
@@ -32,13 +38,15 @@ class OtfClass(ApiMixin, OtfItemBase):
     studio: StudioDetail
 
     # capacity/status fields
-    booking_capacity: int | None = None
-    full: bool | None = None
-    max_capacity: int | None = None
-    waitlist_available: bool | None = None
+    booking_capacity: int | None = Field(None, description="Current number of bookings for this class.")
+    full: bool | None = Field(None, description="Whether the class is at full capacity.")
+    max_capacity: int | None = Field(None, description="Maximum number of participants allowed.")
+    waitlist_available: bool | None = Field(None, description="Whether the waitlist is open for this class.")
     waitlist_size: int | None = Field(None, description="The number of people on the waitlist")
     is_booked: bool | None = Field(None, description="Custom helper field to determine if class is already booked")
-    is_cancelled: bool | None = Field(None, validation_alias="canceled")
+    is_cancelled: bool | None = Field(
+        None, validation_alias="canceled", description="Whether the class has been cancelled by the studio."
+    )
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
     created_at: datetime | None = Field(None, exclude=True, repr=False)
@@ -51,7 +59,7 @@ class OtfClass(ApiMixin, OtfItemBase):
 
     @property
     def day_of_week(self) -> DoW:
-        """Returns the day of the week as an enum."""
+        """Returns the day of the week as a DoW enum based on the class start time."""
         dow = self.starts_at.strftime("%A")
         return DoW(dow)
 
@@ -71,12 +79,12 @@ class OtfClass(ApiMixin, OtfItemBase):
 
     @property
     def has_availability(self) -> bool:
-        """Represents if the class has availability."""
+        """Returns True if the class is not full and has open spots."""
         return not self.full
 
     @property
     def day_of_week_enum(self) -> DoW:
-        """Returns the day of the week as an enum."""
+        """Returns the day of the week as a DoW enum, using uppercase day name matching."""
         dow = self.starts_at.strftime("%A").upper()
         return DoW(dow)
 

@@ -2,6 +2,8 @@ from enum import StrEnum
 
 
 class StudioStatus(StrEnum):
+    """Operational status of an OrangeTheory studio."""
+
     OTHER = "OTHER"
     ACTIVE = "Active"
     INACTIVE = "Inactive"

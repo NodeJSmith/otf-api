@@ -3,6 +3,8 @@ from typing import Self
 
 
 class BookingStatus(StrEnum):
+    """Status of a class booking, from initial request through check-in or cancellation."""
+
     Pending = "Pending"
     Requested = "Requested"
     Booked = "Booked"
@@ -49,6 +51,8 @@ HISTORICAL_BOOKING_STATUSES = [
 
 
 class DoW(StrEnum):
+    """Day of the week, used for filtering classes by schedule day."""
+
     MONDAY = "Monday"
     TUESDAY = "Tuesday"
     WEDNESDAY = "Wednesday"
@@ -59,6 +63,8 @@ class DoW(StrEnum):
 
 
 class Orange60ClassType(StrEnum):
+    """Subtypes of the standard 60-minute Orange class format."""
+
     Enterprise60 = "Enterprise 60"
     ExplicitOrange60 = "Explicit Orange 60"
     OpenStudio60_3G = "Open Studio 60 3G"
@@ -73,16 +79,22 @@ class Orange60ClassType(StrEnum):
 
 
 class Strength50ClassType(StrEnum):
+    """Subtypes of the 50-minute Strength class format."""
+
     Strength50Lower = "Strength 50 (Lower)"
     Strength50Total = "Strength 50 (Total)"
     Strength50Upper = "Strength 50 (Upper)"
 
 
 class Tread50ClassType(StrEnum):
+    """Subtypes of the 50-minute Tread class format."""
+
     Tread50 = "Tread 50"
 
 
 class OtherClassType(StrEnum):
+    """Non-standard class types such as workshops, clinics, and special events."""
+
     InterpretingInbody = "Interpreting Inbody"
     OpenStudio60 = "Open Studio 60"
     Orangetheory101Workshop = "Orangetheory 101 Workshop"
@@ -95,12 +107,16 @@ class OtherClassType(StrEnum):
 
 
 class Orange90ClassType(StrEnum):
+    """Subtypes of the 90-minute Orange class format."""
+
     Orange90Min3G = "Orange 90 Min 3G"
     Orange90Min2G = "Orange 90 Min 2G"
     LifeIsWhyWeGive90 = "Life is Why We Give 90"
 
 
 class ClassType(StrEnum):
+    """High-level classification of OTF class formats."""
+
     ORANGE_60 = "ORANGE_60"
     ORANGE_90 = "ORANGE_90"
     OTHER = "OTHER"

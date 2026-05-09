@@ -10,9 +10,11 @@ from .enums import BookingStatus
 
 
 class Coach(OtfItemBase):
-    coach_uuid: str = Field(validation_alias="coachUUId")
-    first_name: str | None = Field(None, validation_alias="firstName")
-    last_name: str | None = Field(None, validation_alias="lastName")
+    """A coach at an OrangeTheory studio."""
+
+    coach_uuid: str = Field(validation_alias="coachUUId", description="Unique identifier for the coach.")
+    first_name: str | None = Field(None, validation_alias="firstName", description="The coach's first name.")
+    last_name: str | None = Field(None, validation_alias="lastName", description="The coach's last name.")
 
     # unused fields
     name: str = Field(exclude=True, repr=False)
@@ -24,12 +26,16 @@ class Coach(OtfItemBase):
 
 
 class BookingClass(OtfItemBase):
-    class_uuid: str = Field(validation_alias="classUUId")
-    name: str
+    """The class associated with a booking from the legacy bookings endpoint."""
+
+    class_uuid: str = Field(validation_alias="classUUId", description="Unique identifier for the class.")
+    name: str = Field(..., description="The name of the class.")
     starts_at: datetime = Field(validation_alias="startDateTime", description="Start time in local timezone")
     ends_at: datetime = Field(validation_alias="endDateTime", description="End time in local timezone")
-    is_available: bool = Field(validation_alias="isAvailable")
-    is_cancelled: bool = Field(validation_alias="isCancelled")
+    is_available: bool = Field(validation_alias="isAvailable", description="Whether the class has open spots.")
+    is_cancelled: bool = Field(
+        validation_alias="isCancelled", description="Whether the class has been cancelled by the studio."
+    )
     studio: StudioDetail
     coach: Coach
 
@@ -53,17 +59,27 @@ class BookingClass(OtfItemBase):
 
 
 class Booking(ApiMixin, OtfItemBase):
+    """A class booking from the legacy bookings endpoint."""
+
     booking_uuid: str = Field(validation_alias="classBookingUUId", description="ID used to cancel the booking")
-    is_intro: bool = Field(validation_alias="isIntro")
-    status: BookingStatus
-    booked_date: datetime | None = Field(None, validation_alias="bookedDate")
-    checked_in_date: datetime | None = Field(None, validation_alias="checkedInDate")
-    cancelled_date: datetime | None = Field(None, validation_alias="cancelledDate")
-    created_date: datetime = Field(validation_alias="createdDate")
-    updated_date: datetime = Field(validation_alias="updatedDate")
-    is_deleted: bool = Field(validation_alias="isDeleted")
-    waitlist_position: int | None = Field(None, validation_alias="waitlistPosition")
-    otf_class: BookingClass = Field(validation_alias="class")
+    is_intro: bool = Field(validation_alias="isIntro", description="Whether this is an introductory class booking.")
+    status: BookingStatus = Field(..., description="Current status of the booking.")
+    booked_date: datetime | None = Field(
+        None, validation_alias="bookedDate", description="When the booking was confirmed."
+    )
+    checked_in_date: datetime | None = Field(
+        None, validation_alias="checkedInDate", description="When the member checked in."
+    )
+    cancelled_date: datetime | None = Field(
+        None, validation_alias="cancelledDate", description="When the booking was cancelled."
+    )
+    created_date: datetime = Field(validation_alias="createdDate", description="When the booking was created.")
+    updated_date: datetime = Field(validation_alias="updatedDate", description="When the booking was last updated.")
+    is_deleted: bool = Field(validation_alias="isDeleted", description="Whether the booking has been deleted.")
+    waitlist_position: int | None = Field(
+        None, validation_alias="waitlistPosition", description="Position on the waitlist, if applicable."
+    )
+    otf_class: BookingClass = Field(validation_alias="class", description="The class associated with this booking.")
     is_home_studio: bool | None = Field(None, description="Custom helper field to determine if at home studio")
 
     # unused fields

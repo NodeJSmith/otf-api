@@ -13,7 +13,10 @@ from .enums import BookingStatus, ClassType
 LOGGER = getLogger(__name__)
 
 
-class Address(AddressMixin, OtfItemBase): ...
+class Address(AddressMixin, OtfItemBase):
+    """Address associated with a studio in the v2 bookings endpoint."""
+
+    ...
 
 
 def get_end_time(start_time: datetime, class_type: ClassType) -> datetime:
@@ -38,32 +41,42 @@ def get_end_time(start_time: datetime, class_type: ClassType) -> datetime:
 
 
 class Rating(OtfItemBase):
-    id: str
-    description: str
-    value: int
+    """A rating given by a member for a class or coach."""
+
+    id: str = Field(..., description="Unique identifier for the rating.")
+    description: str = Field(..., description="Human-readable label for the rating level.")
+    value: int = Field(..., description="Numeric rating value.")
 
 
 class BookingV2Studio(PhoneLongitudeLatitudeMixin, OtfItemBase):
-    studio_uuid: str = Field(validation_alias="id")
-    name: str | None = None
-    time_zone: str | None = None
-    email: str | None = None
-    address: Address | None = None
+    """Studio details from the v2 bookings endpoint."""
+
+    studio_uuid: str = Field(validation_alias="id", description="Unique identifier for the studio.")
+    name: str | None = Field(None, description="Name of the studio.")
+    time_zone: str | None = Field(None, description="IANA time zone of the studio.")
+    email: str | None = Field(None, description="Contact email for the studio.")
+    address: Address | None = Field(None, description="Physical address of the studio.")
 
     currency_code: str | None = Field(None, repr=False, exclude=True)
     mbo_studio_id: str | None = Field(None, description="MindBody attr", repr=False, exclude=True)
 
 
 class BookingV2Class(ApiMixin, OtfItemBase):
+    """Class details from the v2 bookings endpoint."""
+
     class_id: str = Field(validation_alias="id", description="Matches the `class_id` attribute of the OtfClass model")
-    name: str
-    class_type: ClassType = Field(validation_alias="type")
+    name: str = Field(..., description="The name of the class.")
+    class_type: ClassType = Field(validation_alias="type", description="The high-level class format category.")
     starts_at: datetime = Field(
         validation_alias="starts_at_local",
         description="The start time of the class. Reflects local time, but the object does not have a timezone.",
     )
-    studio: BookingV2Studio | None = None
-    coach: str | None = Field(None, validation_alias=AliasPath("coach", "first_name"))
+    studio: BookingV2Studio | None = Field(None, description="The studio where the class takes place.")
+    coach: str | None = Field(
+        None,
+        validation_alias=AliasPath("coach", "first_name"),
+        description="First name of the coach leading the class.",
+    )
 
     class_uuid: str | None = Field(
         None,
@@ -116,44 +129,54 @@ class BookingV2Class(ApiMixin, OtfItemBase):
 
 
 class BookingV2Workout(OtfItemBase):
-    id: str
+    """Workout summary data attached to a v2 booking, available after the class is completed."""
+
+    id: str = Field(..., description="Unique identifier for the workout.")
     performance_summary_id: str = Field(..., validation_alias="id", description="Alias to id, to simplify the API")
-    calories_burned: int
-    splat_points: int
-    step_count: int
-    active_time_seconds: int
+    calories_burned: int = Field(..., description="Total calories burned during the workout.")
+    splat_points: int = Field(..., description="Total splat points earned during the workout.")
+    step_count: int = Field(..., description="Total step count during the workout.")
+    active_time_seconds: int = Field(..., description="Total active time in seconds.")
     # zone_time_minutes: ZoneTimeMinutes
 
 
 class BookingV2(ApiMixin, OtfItemBase):
+    """A class booking from the v2 bookings endpoint, used by the current OTF app."""
+
     booking_id: str = Field(
         ...,
         validation_alias="id",
         description="The booking ID used to cancel the booking - must be canceled through new endpoint",
     )
 
-    member_uuid: str = Field(..., validation_alias="member_id")
+    member_uuid: str = Field(..., validation_alias="member_id", description="Unique identifier for the member.")
     service_name: str | None = Field(None, description="Represents tier of member")
 
-    cross_regional: bool | None = None
-    intro: bool | None = None
-    checked_in: bool
-    canceled: bool
-    late_canceled: bool | None = None
-    canceled_at: datetime | None = None
-    ratable: bool
-    waitlist_position: int | None = None
+    cross_regional: bool | None = Field(None, description="Whether the booking is at a non-home studio.")
+    intro: bool | None = Field(None, description="Whether this is an introductory class booking.")
+    checked_in: bool = Field(..., description="Whether the member has checked in.")
+    canceled: bool = Field(..., description="Whether the booking has been cancelled.")
+    late_canceled: bool | None = Field(None, description="Whether the booking was cancelled late.")
+    canceled_at: datetime | None = Field(None, description="When the booking was cancelled.")
+    ratable: bool = Field(..., description="Whether the class is eligible for rating.")
+    waitlist_position: int | None = Field(None, description="Position on the waitlist, if applicable.")
 
-    otf_class: BookingV2Class = Field(..., validation_alias="class")
-    workout: BookingV2Workout | None = None
-    coach_rating: Rating | None = Field(None, validation_alias=AliasPath("ratings", "coach"))
-    class_rating: Rating | None = Field(None, validation_alias=AliasPath("ratings", "class"))
+    otf_class: BookingV2Class = Field(
+        ..., validation_alias="class", description="The class associated with this booking."
+    )
+    workout: BookingV2Workout | None = Field(None, description="Workout summary, present after class is completed.")
+    coach_rating: Rating | None = Field(
+        None, validation_alias=AliasPath("ratings", "coach"), description="Rating given to the coach."
+    )
+    class_rating: Rating | None = Field(
+        None, validation_alias=AliasPath("ratings", "class"), description="Rating given to the class."
+    )
 
-    paying_studio_id: str | None = None
+    paying_studio_id: str | None = Field(None, description="Studio ID responsible for billing.")
     mbo_booking_id: str | None = None
     mbo_unique_id: str | None = None
     mbo_paying_unique_id: str | None = None
-    person_id: str
+    person_id: str = Field(..., description="Person identifier in the OTF system.")
 
     created_at: datetime | None = Field(
         default=None,

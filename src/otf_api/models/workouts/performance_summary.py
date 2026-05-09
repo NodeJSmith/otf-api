@@ -9,24 +9,30 @@ LOGGER = getLogger(__name__)
 
 
 class ZoneTimeMinutes(OtfItemBase):
-    gray: int
-    blue: int
-    green: int
-    orange: int
-    red: int
+    """Time spent in each heart rate zone during a workout, measured in minutes."""
+
+    gray: int = Field(..., description="Minutes in the gray (rest) zone.")
+    blue: int = Field(..., description="Minutes in the blue (light effort) zone.")
+    green: int = Field(..., description="Minutes in the green (base pace) zone.")
+    orange: int = Field(..., description="Minutes in the orange (push pace) zone.")
+    red: int = Field(..., description="Minutes in the red (all-out) zone.")
 
 
 class HeartRate(OtfItemBase):
-    max_hr: int
-    peak_hr: int
-    peak_hr_percent: int
-    avg_hr: int
-    avg_hr_percent: int
+    """Heart rate statistics from a workout."""
+
+    max_hr: int = Field(..., description="Member's configured max heart rate.")
+    peak_hr: int = Field(..., description="Highest heart rate reached during the workout.")
+    peak_hr_percent: int = Field(..., description="Peak HR as a percentage of max HR.")
+    avg_hr: int = Field(..., description="Average heart rate during the workout.")
+    avg_hr_percent: int = Field(..., description="Average HR as a percentage of max HR.")
 
 
 class PerformanceMetric(OtfItemBase):
-    display_value: Any
-    display_unit: str
+    """A single performance metric with display and raw values."""
+
+    display_value: Any = Field(..., description="Formatted value for display (e.g. '6:30').")
+    display_unit: str = Field(..., description="Unit label for display (e.g. 'min/mi', 'mph').")
     metric_value: float | int = Field(
         coerce_numbers_to_str=True,
         description="The raw value of the metric, as a float or int. When time this reflects seconds.",
@@ -38,24 +44,30 @@ class PerformanceMetric(OtfItemBase):
 
 
 class BaseEquipment(OtfItemBase):
-    avg_pace: PerformanceMetric
-    avg_speed: PerformanceMetric
-    max_pace: PerformanceMetric
-    max_speed: PerformanceMetric
-    moving_time: PerformanceMetric
-    total_distance: PerformanceMetric
+    """Base class for equipment performance data shared between treadmill and rower."""
+
+    avg_pace: PerformanceMetric = Field(..., description="Average pace during the workout segment.")
+    avg_speed: PerformanceMetric = Field(..., description="Average speed during the workout segment.")
+    max_pace: PerformanceMetric = Field(..., description="Fastest pace achieved.")
+    max_speed: PerformanceMetric = Field(..., description="Maximum speed achieved.")
+    moving_time: PerformanceMetric = Field(..., description="Total time spent actively moving.")
+    total_distance: PerformanceMetric = Field(..., description="Total distance covered.")
 
 
 class Treadmill(BaseEquipment):
-    avg_incline: PerformanceMetric
-    elevation_gained: PerformanceMetric
-    max_incline: PerformanceMetric
+    """Treadmill-specific performance data from a workout."""
+
+    avg_incline: PerformanceMetric = Field(..., description="Average incline during the treadmill segment.")
+    elevation_gained: PerformanceMetric = Field(..., description="Total elevation gained.")
+    max_incline: PerformanceMetric = Field(..., description="Maximum incline achieved.")
 
 
 class Rower(BaseEquipment):
-    avg_cadence: PerformanceMetric
-    avg_power: PerformanceMetric
-    max_cadence: PerformanceMetric
+    """Rower-specific performance data from a workout."""
+
+    avg_cadence: PerformanceMetric = Field(..., description="Average strokes per minute.")
+    avg_power: PerformanceMetric = Field(..., description="Average power output in watts.")
+    max_cadence: PerformanceMetric = Field(..., description="Maximum strokes per minute achieved.")
 
 
 class PerformanceSummary(OtfItemBase):
@@ -67,7 +79,7 @@ class PerformanceSummary(OtfItemBase):
     performance_summary_id: str = Field(
         ..., validation_alias="id", description="Unique identifier for this performance summary"
     )
-    ratable: bool | None = None
+    ratable: bool | None = Field(None, description="Whether this workout is eligible for rating.")
 
     @computed_field
     @property
@@ -75,11 +87,27 @@ class PerformanceSummary(OtfItemBase):
         """Alias for performance_summary_id."""
         return self.performance_summary_id
 
-    calories_burned: int | None = Field(None, validation_alias=AliasPath("details", "calories_burned"))
-    splat_points: int | None = Field(None, validation_alias=AliasPath("details", "splat_points"))
-    step_count: int | None = Field(None, validation_alias=AliasPath("details", "step_count"))
-    zone_time_minutes: ZoneTimeMinutes | None = Field(None, validation_alias=AliasPath("details", "zone_time_minutes"))
-    heart_rate: HeartRate | None = Field(None, validation_alias=AliasPath("details", "heart_rate"))
+    calories_burned: int | None = Field(
+        None, validation_alias=AliasPath("details", "calories_burned"), description="Total calories burned."
+    )
+    splat_points: int | None = Field(
+        None, validation_alias=AliasPath("details", "splat_points"), description="Total splat points earned."
+    )
+    step_count: int | None = Field(
+        None, validation_alias=AliasPath("details", "step_count"), description="Total step count."
+    )
+    zone_time_minutes: ZoneTimeMinutes | None = Field(
+        None, validation_alias=AliasPath("details", "zone_time_minutes"), description="Time spent in each HR zone."
+    )
+    heart_rate: HeartRate | None = Field(
+        None, validation_alias=AliasPath("details", "heart_rate"), description="Heart rate statistics."
+    )
 
-    rower_data: Rower | None = Field(None, validation_alias=AliasPath("details", "equipment_data", "rower"))
-    treadmill_data: Treadmill | None = Field(None, validation_alias=AliasPath("details", "equipment_data", "treadmill"))
+    rower_data: Rower | None = Field(
+        None, validation_alias=AliasPath("details", "equipment_data", "rower"), description="Rower performance data."
+    )
+    treadmill_data: Treadmill | None = Field(
+        None,
+        validation_alias=AliasPath("details", "equipment_data", "treadmill"),
+        description="Treadmill performance data.",
+    )
