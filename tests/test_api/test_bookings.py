@@ -141,7 +141,7 @@ def test_non_waitlisted_booking_never_returns_waitlisted(mock_otf) -> None:
         end_date=date(2026, 4, 26),
     )
 
-    non_waitlisted = [b for b in result if b.booking_id != WAITLISTED_BOOKING_ID]
+    non_waitlisted = [b for b in result if b.waitlist_position is None]
     assert len(non_waitlisted) > 0
 
     for booking in non_waitlisted:
