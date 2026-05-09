@@ -9,7 +9,7 @@ import os
 
 import coloredlogs
 
-from otf_api import models
+from otf_api import exceptions, models
 from otf_api.anonymize.anonymizer import AnonymizeConfig, Anonymizer
 from otf_api.api import Otf
 from otf_api.auth import OtfUser
@@ -48,4 +48,4 @@ def _setup_logging() -> None:
 
 _setup_logging()
 
-__all__ = ["AnonymizeConfig", "Anonymizer", "Otf", "OtfUser", "models"]
+__all__ = ["AnonymizeConfig", "Anonymizer", "Otf", "OtfUser", "exceptions", "models"]

@@ -50,19 +50,14 @@ dev = [
     "twine==5.1.1",
 ]
 docs = [
-    "autodoc-pydantic>=2.2.0",
-    "furo>=2024.8.6",
-    "sphinx>=8.3.0",
-    "sphinx-autobuild==2024.10.3",
-    "sphinx-autodoc-typehints==3.2.0",
-    "sphinx-autodoc2==0.5.0",
-    "sphinx-basic-ng==1.0.0b2",
-    "sphinxcontrib-applehelp==2.0.0",
-    "sphinxcontrib-devhelp==2.0.0",
-    "sphinxcontrib-htmlhelp==2.1.0",
-    "sphinxcontrib-jsmath==1.0.1",
-    "sphinxcontrib-qthelp==2.0.0",
-    "sphinxcontrib-serializinghtml==2.0.0",
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.6.0",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-literate-nav>=0.6.1",
+    "mkdocs-autorefs>=0.5.0",
+    "mkdocstrings[python]>=0.25.0",
+    "griffe-pydantic>=1.0.0",
+    "pymdown-extensions>=10.8.1",
 ]
 
 [tool.uv]

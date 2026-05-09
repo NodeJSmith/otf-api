@@ -3,6 +3,20 @@ import typing
 if typing.TYPE_CHECKING:
     from httpx import Request, Response
 
+__all__ = [
+    "AlreadyBookedError",
+    "AlreadyRatedError",
+    "BookingAlreadyCancelledError",
+    "BookingError",
+    "ClassNotRatableError",
+    "ConflictingBookingError",
+    "OtfError",
+    "OtfRequestError",
+    "OutsideSchedulingWindowError",
+    "ResourceNotFoundError",
+    "RetryableOtfRequestError",
+]
+
 
 class OtfError(Exception):
     """Base class for all exceptions in this package."""

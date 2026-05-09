@@ -1,0 +1,83 @@
+site_name: otf-api
+site_url: https://otf-api.readthedocs.io/
+repo_name: NodeJSmith/otf-api
+repo_url: https://github.com/NodeJSmith/otf-api
+docs_dir: docs
+use_directory_urls: true
+watch:
+  - src/otf_api
+
+extra_css:
+  - _static/custom.css
+
+extra:
+  social: []
+
+copyright: >
+  This project is not affiliated with, endorsed by, or supported by Orangetheory Fitness.
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tracking
+    - navigation.indexes
+    - navigation.footer
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+    - content.code.select
+    - search.suggest
+    - search.highlight
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started/index.md
+  - Guides:
+      - Authentication: guides/authentication.md
+      - Bookings & Classes: guides/bookings.md
+      - Workouts & Stats: guides/workouts.md
+      - Studios: guides/studios.md
+      - Challenges & Benchmarks: guides/challenges.md
+      - Members: guides/members.md
+      - Error Handling: guides/error-handling.md
+  - Architecture: architecture/index.md
+  - Troubleshooting: troubleshooting.md
+  - Changelog: CHANGELOG.md
+  - API Reference: reference/
+
+plugins:
+  - search
+  - gen-files:
+      scripts:
+        - tools/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - autorefs
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_root_full_path: false
+            members_order: source
+            show_signature_annotations: true
+            filters: ["!^_", "!^model_"]
+            inherited_members: false
+            extensions:
+              - griffe_pydantic:
+                  schema: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
