@@ -371,6 +371,54 @@
           "image_url": "https://placeholder.example.com/profile/712936.jpg"
         }
       }
+    },
+    {
+      "id": "a1e2f3d4-5678-4abc-9def-0123456789ab",
+      "paying_studio_id": "452ec40a-3193-4a54-ae89-71105e503a67",
+      "person_id": "35f724cc-595b-4045-8219-9445a74c0c5b",
+      "member_id": "d1f6f86c-029a-4245-bb91-433a6aa79987",
+      "service_name": "Orange Premier Membership",
+      "checked_in": false,
+      "cross_regional": false,
+      "late_canceled": false,
+      "intro": false,
+      "mbo_booking_id": "892145673",
+      "mbo_unique_id": "518304835",
+      "mbo_paying_unique_id": "518304835",
+      "canceled": false,
+      "created_at": "2026-04-05T14:30:00.000Z",
+      "updated_at": "2026-04-05T14:30:00.000Z",
+      "ratable": false,
+      "waitlist_position": 3,
+      "class": {
+        "id": "f9e8d7c6-b5a4-4321-fedc-ba9876543210",
+        "name": "Orange 60",
+        "type": "ORANGE_60",
+        "starts_at_local": "2026-04-08T17:00:00",
+        "starts_at": "2026-04-08T22:00:00.000Z",
+        "studio": {
+          "id": "452ec40a-3193-4a54-ae89-71105e503a67",
+          "name": "Oconnorport - North, PR",
+          "mbo_studio_id": "29387072",
+          "time_zone": "America/Chicago",
+          "email": "kelliwhite@example.org",
+          "address": {
+            "line1": "40118 Andrea Shoals Suite 808",
+            "city": "North Brucemouth",
+            "state": "OH",
+            "country": "PK",
+            "postal_code": "20180"
+          },
+          "currency_code": "USD",
+          "phone_number": "5815382882",
+          "latitude": 42.046502,
+          "longitude": -93.615804
+        },
+        "coach": {
+          "first_name": "Sarah",
+          "image_url": "https://placeholder.example.com/profile/999999.jpg"
+        }
+      }
     }
   ]
 }

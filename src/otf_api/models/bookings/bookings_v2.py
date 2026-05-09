@@ -142,6 +142,7 @@ class BookingV2(ApiMixin, OtfItemBase):
     late_canceled: bool | None = None
     canceled_at: datetime | None = None
     ratable: bool
+    waitlist_position: int | None = None
 
     otf_class: BookingV2Class = Field(..., validation_alias="class")
     workout: BookingV2Workout | None = None
@@ -178,6 +179,9 @@ class BookingV2(ApiMixin, OtfItemBase):
 
         if self.canceled:
             return BookingStatus.Cancelled
+
+        if self.waitlist_position is not None:
+            return BookingStatus.Waitlisted
 
         return BookingStatus.Booked
 
