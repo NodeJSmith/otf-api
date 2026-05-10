@@ -46,6 +46,57 @@ Tests require real OrangeTheory credentials. Set `OTF_EMAIL` and `OTF_PASSWORD` 
 - **Caching**: Disk-based response caching via `diskcache`, persists across sessions
 - **Logging**: Auto-initialized on module import via `coloredlogs`; controlled by `OTF_LOG_LEVEL` env var (default: INFO)
 
+## API Versioning and Dual Endpoints
+
+OTF has two parallel API surfaces that return overlapping but structurally different data. Understanding which is which is critical before making changes.
+
+### V1 ("member" API) vs V2 ("classes" API)
+
+| Concept | V1 | V2 |
+|---|---|---|
+| Base URL | `api.orangetheory.co` | `api.orangetheory.io` |
+| Client method | `default_request()` | `classes_request()` |
+| Booking model | `Booking` | `BookingV2` |
+| Booking ID field | `booking_uuid` (from `classBookingUUId`) | `booking_id` |
+| Class ID field | `class_uuid` | `class_id` |
+| Cancel endpoint | `DELETE /member/members/{uuid}/bookings/{booking_uuid}` | `DELETE /v1/bookings/me/{booking_id}` |
+| Book endpoint | `PUT /member/members/{uuid}/bookings` (takes `class_uuid`) | `POST /v1/bookings/me` (takes `class_id`) |
+| Get bookings | `GET /member/members/{uuid}/bookings` → `list[Booking]` | `GET /v1/bookings/me` → `list[BookingV2]` |
+
+### Key gotchas
+
+- **`class_uuid` ≠ `class_id`**: These are different identifiers for the same class. `OtfClass` has both fields. Passing a `class_uuid` to `book_class_new` (v2) will 404.
+- **`booking_uuid` ≠ `booking_id`**: Different identifiers for the same booking. The v1 and v2 APIs may or may not accept each other's IDs — behavior is inconsistent and undocumented.
+- **Eventual consistency**: The booking list endpoints (`get_bookings`, `get_bookings_new`) are eventually consistent. A cancel or book call returns success immediately, but the listing endpoints may still show stale status for a short period. The cancel/book response itself is authoritative — don't re-fetch to "verify" immediately after a mutation.
+- **Cross-version booking visibility**: A booking made via `book_class` (v1) may not appear in `get_bookings_new` (v2) immediately, and vice versa. Both endpoints eventually converge — the same bookings appear in both with different IDs (`booking_uuid` vs `booking_id`).
+- **Studio data varies by endpoint**: The v1 bookings endpoint returns a minimal studio object. `get_classes` and `get_bookings` enrich it by fetching full `StudioDetail` via threaded calls to `/mobile/v1/studios/{uuid}`.
+- **`OtfClass` comes from the classes endpoint, not the bookings endpoint**: It's enriched with studio data post-fetch. The raw API response has a different studio shape than what the model exposes.
+
+### Two-layer architecture (Client → Api)
+
+Each domain has a `*Client` (raw HTTP, returns dicts) and a `*Api` (business logic, returns models):
+
+- `BookingClient` / `BookingApi` — raw HTTP calls vs typed booking operations
+- `StudioClient` / `StudioApi` — raw HTTP calls vs typed studio operations
+- `WorkoutClient` / `WorkoutApi` — raw HTTP calls vs typed workout operations
+- `MemberClient` / `MemberApi` — raw HTTP calls vs typed member operations
+
+The `*Client` classes are internal; the `*Api` classes are what users interact with via `Otf.bookings`, `Otf.studios`, etc.
+
+### Testing with live API
+
+`examples/baseline_runner.py` captures structured JSON output from all read-only API calls. Use it for regression testing:
+
+```bash
+# Capture baseline (requires OTF_EMAIL and OTF_PASSWORD)
+uv run python examples/baseline_runner.py > /tmp/otf-baseline.json 2>/dev/null
+
+# After changes, capture again and diff
+uv run python examples/baseline_runner.py > /tmp/otf-after.json 2>/dev/null
+```
+
+The fixture-based test suite (`tests/`) uses `respx` to mock HTTP — no credentials needed. Fixtures live in `fixtures/anonymized/`.
+
 ## Git Workflow
 
 - Feature branches for new work
