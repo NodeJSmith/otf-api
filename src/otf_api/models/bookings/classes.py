@@ -95,9 +95,7 @@ class OtfClass(ApiMixin, OtfItemBase):
             OtfError: If there is an error booking the class.
         """
         self.raise_if_api_not_set()
-        new_booking = self._api.bookings.book_class(self.class_uuid)
-        self.is_booked = True
-        return new_booking
+        return self._api.bookings.book_class(self.class_uuid)
 
     def cancel_booking(self) -> None:
         """Cancels the class booking.

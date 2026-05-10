@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from typing import Any
 
 from pydantic import AliasPath, Field, field_serializer
 
@@ -89,9 +88,7 @@ class Telemetry(OtfItemBase):
     )
     telemetry: list[TelemetryItem] = Field(default_factory=list, description="Time-series telemetry data points.")
 
-    def __init__(self, **data: dict[str, Any]):
-        super().__init__(**data)
-
+    def model_post_init(self, __context: object) -> None:  # noqa: D102
         if self.class_start_time is None:
             return
 
