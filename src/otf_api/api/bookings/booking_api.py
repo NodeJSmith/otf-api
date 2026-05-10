@@ -523,10 +523,6 @@ class BookingApi:
             ResourceNotFoundError: If the booking does not exist.
         """
         booking_id = utils.get_booking_id(booking)
-
-        if isinstance(booking, str):
-            _ = self.get_booking_new(booking_id)
-
         self.client.delete_booking_new(booking_id)
 
     def get_bookings(

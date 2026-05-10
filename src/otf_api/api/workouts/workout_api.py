@@ -234,12 +234,11 @@ class WorkoutApi:
         if isinstance(booking, models.Booking):
             raise TypeError("This method cannot be used with the old Booking model")
 
-        booking_id = utils.get_booking_id(booking)
-
-        booking = self.otf.bookings.get_booking_new(booking_id)
+        if isinstance(booking, str):
+            booking = self.otf.bookings.get_booking_new(booking)
 
         if not booking.workout or not booking.workout.performance_summary_id:
-            raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
+            raise exc.ResourceNotFoundError(f"Workout for booking {booking.booking_id} not found.")
 
         perf_summary = self.client.get_performance_summary(booking.workout.performance_summary_id)
         telemetry = self.get_telemetry(booking.workout.performance_summary_id)
