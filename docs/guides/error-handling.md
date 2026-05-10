@@ -143,13 +143,15 @@ except OutsideSchedulingWindowError:
 ### Cancelling a booking safely
 
 ```python
-from otf_api.exceptions import BookingAlreadyCancelledError
+from otf_api.exceptions import BookingAlreadyCancelledError, ResourceNotFoundError
 
 try:
-    otf.bookings.cancel_booking(booking)
+    otf.bookings.cancel_booking_new(booking)
     print("Booking cancelled")
 except BookingAlreadyCancelledError:
     print("Booking was already cancelled")
+except ResourceNotFoundError:
+    print("Booking not found — it may have already been cancelled")
 ```
 
 ### Catching all API errors

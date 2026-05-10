@@ -28,7 +28,10 @@ You can also get a workout from a specific booking:
 ```python
 import pendulum
 
-bookings = otf.bookings.get_bookings_new(pendulum.today().subtract(months=1))
+bookings = otf.bookings.get_bookings_new(
+    start_date=pendulum.today().subtract(months=1),
+    end_date=pendulum.today(),
+)
 booking = next(b for b in bookings if b.workout is not None)
 workout = otf.workouts.get_workout_from_booking(booking)
 ```
