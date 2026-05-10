@@ -21,6 +21,7 @@ from pycognito import AWSSRP, Cognito
 from pycognito.aws_srp import generate_hash_device
 
 from otf_api.cache import get_cache
+from otf_api.exceptions import NoCredentialsError
 
 if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_identity import CognitoIdentityClient
@@ -37,10 +38,6 @@ ID_POOL_ID = f"{REGION}:4943c880-fb02-4fd7-bc37-2f4c32ecb2a3"
 PROVIDER_KEY = f"cognito-idp.{REGION}.amazonaws.com/{USER_POOL_ID}"
 BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
 CACHE = get_cache()
-
-
-class NoCredentialsError(Exception):
-    """Raised when no credentials are found."""
 
 
 class OtfCognito(Cognito):
@@ -75,7 +72,7 @@ class OtfCognito(Cognito):
         return self.get_decoded_access_token()["exp"] - int(datetime.now().timestamp())  # noqa: DTZ005
 
     @property
-    def acces_token_expiration(self) -> int:
+    def acces_token_expiration(self) -> datetime:
         """Returns the expiration time of the access token as a datetime.
 
         Returns:

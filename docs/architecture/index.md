@@ -4,21 +4,44 @@ The `otf-api` library is organized into four layers: API clients, models, authen
 
 ## Layer Diagram
 
-```
-┌─────────────────────────────────────────────┐
-│              Your Application                │
-├─────────────────────────────────────────────┤
-│         Otf (main client facade)            │
-├──────────┬──────────┬──────────┬────────────┤
-│ Bookings │ Members  │ Studios  │ Workouts   │
-├──────────┴──────────┴──────────┴────────────┤
-│         OtfClient (HTTP layer)              │
-├─────────────────────┬───────────────────────┤
-│   HttpxCognitoAuth  │     OtfCache          │
-│   (request signing) │  (disk persistence)   │
-├─────────────────────┴───────────────────────┤
-│         OtfCognito (AWS Cognito)            │
-└─────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph app["Your Application"]
+        OTF["Otf"]
+    end
+
+    subgraph domains["Domain APIs"]
+        BOOK["BookingApi"]
+        MEM["MemberApi"]
+        STUDIO["StudioApi"]
+        WORK["WorkoutApi"]
+    end
+
+    subgraph transport["HTTP Transport"]
+        CLIENT["OtfClient<br/><i>httpx</i>"]
+    end
+
+    subgraph infra["Infrastructure"]
+        AUTH["HttpxCognitoAuth<br/><i>request signing</i>"]
+        CACHE["OtfCache<br/><i>diskcache</i>"]
+    end
+
+    subgraph cognito["AWS"]
+        COG["OtfCognito<br/><i>SRP login + device keys</i>"]
+    end
+
+    OTF --> BOOK & MEM & STUDIO & WORK
+    BOOK & MEM & STUDIO & WORK --> CLIENT
+    CLIENT --> AUTH
+    AUTH --> COG
+    AUTH --> CACHE
+    COG --> CACHE
+
+    style app fill:#e8f0ff,stroke:#6688cc
+    style domains fill:#f0f8f0,stroke:#66aa66
+    style transport fill:#fff8e8,stroke:#ccaa44
+    style infra fill:#fff0e8,stroke:#cc8844
+    style cognito fill:#f0f0f0,stroke:#999
 ```
 
 ## API Domain Structure

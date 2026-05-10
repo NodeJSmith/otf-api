@@ -13,6 +13,7 @@ OtfError
 │   ├── ConflictingBookingError
 │   ├── BookingAlreadyCancelledError
 │   └── OutsideSchedulingWindowError
+├── NoCredentialsError
 ├── ResourceNotFoundError
 ├── AlreadyRatedError
 └── ClassNotRatableError
@@ -30,6 +31,7 @@ from otf_api.exceptions import (
     ConflictingBookingError,
     BookingAlreadyCancelledError,
     OutsideSchedulingWindowError,
+    NoCredentialsError,
     ResourceNotFoundError,
     AlreadyRatedError,
     ClassNotRatableError,
@@ -128,7 +130,7 @@ from otf_api.exceptions import (
 )
 
 try:
-    booking = otf.bookings.book_class(class_uuid=target_class.class_uuid)
+    booking = otf.bookings.book_class(target_class)
     print(f"Booked successfully: {booking.booking_uuid}")
 except AlreadyBookedError as e:
     print(f"Already booked for this class (booking: {e.booking_uuid})")
@@ -144,7 +146,7 @@ except OutsideSchedulingWindowError:
 from otf_api.exceptions import BookingAlreadyCancelledError
 
 try:
-    otf.bookings.cancel_booking(booking_uuid=booking.booking_uuid)
+    otf.bookings.cancel_booking(booking)
     print("Booking cancelled")
 except BookingAlreadyCancelledError:
     print("Booking was already cancelled")
@@ -158,7 +160,7 @@ Use the base `OtfError` class to catch any library exception:
 from otf_api.exceptions import OtfError
 
 try:
-    result = otf.workouts.get_workout_list()
+    result = otf.workouts.get_workouts()
 except OtfError as e:
     print(f"OTF API error: {e}")
 ```
@@ -180,6 +182,3 @@ except OtfRequestError as e:
 
 !!! tip
     When reporting bugs, include the `response.status_code`, `request.url`, and the response body (`response.text`) from `OtfRequestError`. This helps narrow down whether the issue is in the library or the upstream API.
-
-!!! note
-    `OutsideSchedulingWindowError` inherits directly from `OtfError`, not `BookingError`, because it does not carry a booking UUID — the booking was never created.

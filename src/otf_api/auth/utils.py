@@ -4,7 +4,7 @@ from functools import partial
 from getpass import getpass
 from logging import getLogger
 
-from otf_api.auth.auth import NoCredentialsError
+from otf_api.exceptions import NoCredentialsError
 
 LOGGER = getLogger(__name__)
 USERNAME_PROMPT = "Enter your Orangetheory Fitness username/email: "

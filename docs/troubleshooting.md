@@ -89,13 +89,13 @@ target updated endpoints that your cached state or older code paths don't match.
 The library uses [`diskcache`](https://grantjenks.com/docs/diskcache/) for persistent caching
 of authentication tokens and device registration data. The cache directory is determined by
 [`platformdirs.user_cache_dir`](https://platformdirs.readthedocs.io/en/latest/) and is
-versioned by the library's major version (e.g., `otf-api/v1/`).
+versioned by the library's major version (e.g., `otf-api/v0/` for the current 0.x series).
 
 **Typical locations:**
 
-- Linux: `~/.cache/otf-api/v1/`
-- macOS: `~/Library/Caches/otf-api/v1/`
-- Windows: `C:\Users\<user>\AppData\Local\otf-api\Cache\v1\`
+- Linux: `~/.cache/otf-api/v0/`
+- macOS: `~/Library/Caches/otf-api/v0/`
+- Windows: `C:\Users\<user>\AppData\Local\otf-api\Cache\v0\`
 
 **Clearing the cache:**
 

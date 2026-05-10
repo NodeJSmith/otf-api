@@ -39,7 +39,10 @@ for benchmark in rower_benchmarks:
 |---------------|-------------|
 | `EquipmentType.Treadmill` | Treadmill challenges (1-mile run, 12-minute distance, etc.) |
 | `EquipmentType.Rower` | Rower challenges (200m, 500m, 2000m row, etc.) |
-| `EquipmentType.Other` | Other equipment or bodyweight challenges |
+| `EquipmentType.Strider` | Strider challenges |
+| `EquipmentType.Bike` | Bike challenges |
+| `EquipmentType.WeightFloor` | Weight floor challenges |
+| `EquipmentType.PowerWalker` | Power walker challenges |
 
 Each benchmark includes:
 

@@ -48,6 +48,7 @@ PUBLIC_MODULES: frozenset[str] = frozenset(
         "otf_api.models.workouts.out_of_studio_workout_history",
         "otf_api.models.workouts.enums",
         # --- Base / Utilities ---
+        "otf_api.cache",
         "otf_api.exceptions",
         "otf_api.models.base",
         "otf_api.models.mixins",
@@ -132,5 +133,6 @@ def main() -> None:
         nav_file.writelines(nav.build_literate_nav())
 
 
+# mkdocs-gen-files executes this via runpy; __name__ is "<run_path>" in that context
 if __name__ in {"__main__", "<run_path>"}:
     main()

@@ -61,7 +61,7 @@ All of this happens transparently — you never need to manage tokens yourself.
 
 ## Token Caching
 
-Tokens are persisted to disk using `diskcache`, stored in a platform-appropriate cache directory (e.g., `~/.cache/otf-api/v2/` on Linux). This means:
+Tokens are persisted to disk using `diskcache`, stored in a platform-appropriate cache directory with a version prefix based on the library's major version (e.g., `~/.cache/otf-api/v0/` for the current 0.x series). This means:
 
 - Subsequent script runs reuse existing tokens without re-authenticating
 - Tokens automatically expire from the cache when they become invalid

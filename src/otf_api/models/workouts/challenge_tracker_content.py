@@ -20,7 +20,8 @@ class Year(OtfItemBase):
 class Program(OtfItemBase):
     """A program represents multi-day/week challenges that members can participate in.
 
-    NOTE: These ones do seem to match the ChallengeType enums in the OTF app.
+    NOTE: The category/sub-category IDs appear to match the ChallengeType enums in the OTF app,
+    but are kept as int rather than enum in case older data or other users' data doesn't match.
     """
 
     challenge_category_id: int | None = Field(

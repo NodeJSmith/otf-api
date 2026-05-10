@@ -180,7 +180,11 @@ class LeanBodyMassPercent(OtfItemBase):
 class BodyFatMass(OtfItemBase):
     """Body fat mass measurements by body segment, in pounds."""
 
-    control: float = Field(..., validation_alias="bfmControl", description="Body fat mass control value.")
+    control: float = Field(
+        ...,
+        validation_alias="bfmControl",
+        description="Target body fat mass for the member's profile, used as a reference point on the InBody graph.",
+    )
     left_arm: float = Field(..., validation_alias="bfmOfLeftArm", description="Body fat mass of left arm.")
     left_leg: float = Field(..., validation_alias="bfmOfLeftLeg", description="Body fat mass of left leg.")
     right_arm: float = Field(..., validation_alias="bfmOfRightArm", description="Body fat mass of right arm.")
@@ -206,8 +210,8 @@ class BodyFatMassPercent(OtfItemBase):
     trunk: float = Field(..., validation_alias="bfmPercentOfTrunk", description="Body fat mass percent of trunk.")
 
 
-class TotalBodyWeight(OtfItemBase):
-    """Total body water measurements by body segment."""
+class TotalBodyWater(OtfItemBase):
+    """Total body water measurements by body segment (TBW from InBody scanner)."""
 
     right_arm: float = Field(..., validation_alias="tbwOfRightArm", description="Total body water of right arm.")
     left_arm: float = Field(..., validation_alias="tbwOfLeftArm", description="Total body water of left arm.")
@@ -276,8 +280,8 @@ class BodyCompositionData(OtfItemBase):
         ..., description="Lean body mass percentages by body segment."
     )
 
-    total_body_weight: float = Field(
-        ..., validation_alias="tbw", description="Total body weight in pounds, based on scan results"
+    total_body_water: float = Field(
+        ..., validation_alias="tbw", description="Total body water in liters, from InBody scan."
     )
     dry_lean_mass: float = Field(..., validation_alias="dlm", description="Dry lean mass in pounds.")
     body_fat_mass: float = Field(..., validation_alias="bfm", description="Body fat mass in pounds.")
@@ -301,7 +305,7 @@ class BodyCompositionData(OtfItemBase):
     # excluded due to 0 values
     body_fat_mass_details: BodyFatMass = Field(..., exclude=True, repr=False)
     body_fat_mass_percent_details: BodyFatMassPercent = Field(..., exclude=True, repr=False)
-    total_body_weight_details: TotalBodyWeight = Field(..., exclude=True, repr=False)
+    total_body_water_details: TotalBodyWater = Field(..., exclude=True, repr=False)
     intra_cellular_water_details: IntraCellularWater = Field(..., exclude=True, repr=False)
     extra_cellular_water_details: ExtraCellularWater = Field(..., exclude=True, repr=False)
     extra_cellular_water_over_total_body_water_details: ExtraCellularWaterOverTotalBodyWater = Field(
@@ -310,7 +314,7 @@ class BodyCompositionData(OtfItemBase):
     visceral_fat_level: float = Field(..., validation_alias="vfl", exclude=True, repr=False)
     visceral_fat_area: float = Field(..., validation_alias="vfa", exclude=True, repr=False)
     body_comp_measurement: float = Field(..., validation_alias="bcm", exclude=True, repr=False)
-    total_body_weight_over_lean_body_mass: float = Field(..., validation_alias="tbwOverLBM", exclude=True, repr=False)
+    total_body_water_over_lean_body_mass: float = Field(..., validation_alias="tbwOverLBM", exclude=True, repr=False)
     intracellular_water: float = Field(..., validation_alias="icw", exclude=True, repr=False)
     extracellular_water: float = Field(..., validation_alias="ecw", exclude=True, repr=False)
     lean_body_mass_control: float = Field(..., validation_alias="lbmControl", exclude=True, repr=False)
@@ -322,7 +326,7 @@ class BodyCompositionData(OtfItemBase):
             "lean_body_mass_percent_details": LeanBodyMassPercent,
             "body_fat_mass_details": BodyFatMass,
             "body_fat_mass_percent_details": BodyFatMassPercent,
-            "total_body_weight_details": TotalBodyWeight,
+            "total_body_water_details": TotalBodyWater,
             "intra_cellular_water_details": IntraCellularWater,
             "extra_cellular_water_details": ExtraCellularWater,
             "extra_cellular_water_over_total_body_water_details": ExtraCellularWaterOverTotalBodyWater,
@@ -346,18 +350,18 @@ class BodyCompositionData(OtfItemBase):
         """
         return [float(i) for i in v.split(";")]
 
-    @field_validator("total_body_weight", mode="before")
+    @field_validator("total_body_water", mode="before")
     @classmethod
-    def convert_body_weight_from_kg_to_pounds(cls, v: float) -> float:
-        """Convert the body weight from kg to pounds.
+    def convert_body_water_from_kg_to_liters(cls, v: float) -> float:
+        """Convert total body water from kg to liters.
 
         Args:
-            v (float): The body weight in kg.
+            v (float): Total body water in kg.
 
         Returns:
-            float: The body weight in pounds.
+            float: Total body water in liters (1 kg water ≈ 1 liter).
         """
-        return ureg.Quantity(v, ureg.kilogram).to(ureg.pound).magnitude
+        return float(v)
 
     @property
     def body_fat_mass_relative_descriptor(self) -> AverageType:

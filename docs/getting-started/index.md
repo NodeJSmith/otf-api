@@ -93,7 +93,7 @@ bookings = otf.bookings.get_bookings_new()
 otf.bookings.book_class(classes[0])
 
 # Cancel a booking
-otf.bookings.cancel_booking(bookings[0])
+otf.bookings.cancel_booking_new(bookings[0])
 ```
 
 ### `otf.workouts` — Workout History

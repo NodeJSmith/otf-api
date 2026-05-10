@@ -137,7 +137,7 @@ if unrated:
 
 When you pass an `OtfClass` object to `book_class`, the library automatically checks for
 time conflicts with your existing bookings. If a conflict is detected, a
-`BookingConflictError` is raised before the request is sent to the server.
+`ConflictingBookingError` is raised before the request is sent to the server.
 
 ```python
 from otf_api.exceptions import AlreadyBookedError, OutsideSchedulingWindowError

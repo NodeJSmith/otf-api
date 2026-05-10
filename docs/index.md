@@ -44,7 +44,7 @@ otf.bookings.book_class(classes[0])
 
     Installation, authentication, and your first API call.
 
-- :material-book-open-variant: **[Guides](guides/index.md)**
+- :material-book-open-variant: **[Guides](guides/authentication.md)**
 
     In-depth guides for bookings, workouts, studios, and members.
 
@@ -52,7 +52,7 @@ otf.bookings.book_class(classes[0])
 
     Internal design, caching, and extension points.
 
-- :material-api: **[API Reference](reference/otf_api/index.md)**
+- :material-api: **[API Reference](reference/index.md)**
 
     Auto-generated reference for all modules and classes.
 
