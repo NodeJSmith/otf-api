@@ -117,8 +117,8 @@ class OtfClient:
             Any: The response data from the API request.
 
         Raises:
-            OtfRequestError: If the request fails or the response is invalid.
-            HTTPStatusError: If the response status code indicates an error.
+            OtfRequestError: If the request fails or the response is invalid (includes subclasses
+                like ResourceNotFoundError, RetryableOtfRequestError, etc.).
         """
         full_url = str(URL.build(scheme="https", host=base_url, path=path))
         request = self._build_request(method, full_url, params, headers, **kwargs)

@@ -6,13 +6,14 @@ Usage: uv run python examples/baseline_runner.py > /tmp/otf-baseline.json
 import json
 import sys
 import traceback
+from collections.abc import Callable
 from contextlib import suppress
 
 from otf_api import Otf
 from otf_api.models.workouts import ChallengeCategory, EquipmentType, StatsTime
 
 
-def capture(label: str, func: callable, results: dict) -> None:  # noqa: D103
+def capture(label: str, func: Callable[[], object], results: dict) -> None:  # noqa: D103
     try:
         val = func()
         if hasattr(val, "model_dump"):

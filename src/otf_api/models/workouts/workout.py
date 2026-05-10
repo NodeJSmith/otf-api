@@ -1,4 +1,4 @@
-from typing import Any, Literal
+from typing import Literal
 
 from pydantic import AliasPath, Field, computed_field
 
@@ -76,13 +76,18 @@ class Workout(ApiMixin, OtfItemBase):
         if v2_workout:
             data["active_time_seconds"] = v2_workout.active_time_seconds
 
-        telemetry: dict[str, Any] | None = data.get("telemetry")
-        if telemetry and "maxHr" in telemetry:
-            # max_hr seems to be left out of the heart rate data - it has peak_hr but they do not match
-            # so if we have telemetry data, we can get the max_hr from there
+        # max_hr is missing from heart rate data — extract it from telemetry if available
+        telemetry_data = data.get("telemetry")
+        max_hr: int | None = None
+        if isinstance(telemetry_data, dict):
+            max_hr = telemetry_data.get("maxHr")
+        elif isinstance(telemetry_data, Telemetry):
+            max_hr = telemetry_data.max_hr
+
+        if max_hr is not None:
             heart_rate = data.get("details", {}).get("heart_rate")
             if isinstance(heart_rate, dict):
-                heart_rate["max_hr"] = telemetry["maxHr"]
+                heart_rate["max_hr"] = max_hr
 
         super().__init__(**data)
 
