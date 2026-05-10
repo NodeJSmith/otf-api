@@ -1,6 +1,6 @@
 import typing
 import warnings
-from datetime import date, datetime
+from datetime import date
 from logging import getLogger
 from typing import Any, Literal
 
@@ -263,7 +263,7 @@ class WorkoutApi:
             list[Workout]: The member's workouts.
         """
         start_date = utils.ensure_date(start_date) or pendulum.today().subtract(days=30).date()
-        end_date = utils.ensure_date(end_date) or datetime.today().date()
+        end_date = utils.ensure_date(end_date) or pendulum.today().date()
 
         start_dtme = pendulum.datetime(start_date.year, start_date.month, start_date.day, 0, 0, 0)
         end_dtme = pendulum.datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
@@ -271,6 +271,7 @@ class WorkoutApi:
         bookings = self.otf.bookings.get_bookings_new(
             start_dtme, end_dtme, exclude_cancelled=True, remove_duplicates=True
         )
+        # starts_at is naive in the studio's local time; compare against naive local now
         filtered_bookings = [b for b in bookings if not (b.starts_at and b.starts_at > pendulum.now().naive())]
         bookings_list = [(b, b.workout.performance_summary_id if b.workout else None) for b in filtered_bookings]
 
