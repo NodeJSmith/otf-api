@@ -222,7 +222,7 @@ class WorkoutApi:
         """Get a workout for a specific booking.
 
         Args:
-            booking (str | Booking): The booking ID or BookingV2 object to get the workout for.
+            booking (str | BookingV2): The booking ID or BookingV2 object to get the workout for.
 
         Returns:
             Workout: The member's workout.

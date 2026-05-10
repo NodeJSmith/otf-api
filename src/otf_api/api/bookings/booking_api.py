@@ -504,6 +504,7 @@ class BookingApi:
 
         Raises:
             TypeError: If booking is not a string or Booking object.
+            ValueError: If the booking UUID is empty.
             ResourceNotFoundError: If the booking does not exist.
         """
         booking_uuid = utils.get_booking_uuid(booking)
