@@ -64,7 +64,8 @@ def test_workout_from_booking_has_class_uuid(mock_otf) -> None:
     expected_class_uuid = booking_with_workout.otf_class.class_uuid
     assert expected_class_uuid is not None
 
-    with patch.object(mock_otf.bookings, "get_booking_new", return_value=booking_with_workout):
+    with patch.object(mock_otf.bookings, "get_booking_new") as mock_get:
         workout = mock_otf.workouts.get_workout_from_booking(booking_with_workout)
 
+    mock_get.assert_not_called()
     assert workout.class_uuid == expected_class_uuid
