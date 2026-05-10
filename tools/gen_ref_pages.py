@@ -9,7 +9,7 @@ import mkdocs_gen_files
 ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = ROOT / "src"
 VIRTUAL_REF_ROOT = Path("reference")
-DEBUG = bool(os.environ.get("GEN_REF_DEBUG"))
+DEBUG = os.environ.get("GEN_REF_DEBUG", "").lower() in ("1", "true", "yes")
 
 # Public API allowlist — only modules in this set will have reference stubs generated.
 PUBLIC_MODULES: frozenset[str] = frozenset(

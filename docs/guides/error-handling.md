@@ -58,7 +58,7 @@ Raised when an HTTP request to the OTF API fails. Carries context about the fail
 from otf_api.exceptions import OtfRequestError
 
 try:
-    otf.studios.get_studio_detail(studio_uuid="invalid-uuid")
+    otf.workouts.get_workouts()
 except OtfRequestError as e:
     print(f"Request failed: {e}")
     print(f"Status code: {e.response.status_code}")

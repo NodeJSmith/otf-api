@@ -144,7 +144,7 @@ Track how your heart rate zones have shifted over time:
 ```python
 hr_history = otf.workouts.get_hr_history()
 for item in hr_history:
-    print(f"Max HR: {item.max_hr}, Change: {item.change}")
+    print(f"Max HR: {item.max_hr_value}, Change: {item.change_from_previous}")
 ```
 
 !!! note
