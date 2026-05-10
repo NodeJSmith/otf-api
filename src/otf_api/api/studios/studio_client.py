@@ -1,7 +1,10 @@
 from concurrent.futures import ThreadPoolExecutor
+from logging import getLogger
 from typing import Any
 
-from otf_api.api.client import CACHE, LOGGER, OtfClient
+from otf_api.api.client import CACHE, OtfClient
+
+LOGGER = getLogger(__name__)
 
 
 class StudioClient:

@@ -137,7 +137,7 @@ class WorkoutApi:
             dict[str, Any]: The performance summary details.
         """
         warnings.warn(
-            "`This endpoint does not return all data, consider using `get_workouts` instead.",
+            "This endpoint does not return all data, consider using `get_workouts` instead.",
             DeprecationWarning,
             stacklevel=2,
         )

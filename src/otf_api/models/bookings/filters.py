@@ -52,11 +52,13 @@ class ClassFilter(BaseModel):
             self.end_date = self.end_date.date()
 
         if self.start_date:
-            assert isinstance(self.start_date, date), "start_date must be a date object"
+            if not isinstance(self.start_date, date):
+                raise TypeError(f"start_date must be a date object, got {type(self.start_date)}")
             classes = [c for c in classes if c.starts_at.date() >= self.start_date]
 
         if self.end_date:
-            assert isinstance(self.end_date, date), "end_date must be a date object"
+            if not isinstance(self.end_date, date):
+                raise TypeError(f"end_date must be a date object, got {type(self.end_date)}")
             classes = [c for c in classes if c.starts_at.date() <= self.end_date]
 
         if self.class_type:
@@ -66,7 +68,8 @@ class ClassFilter(BaseModel):
             classes = [c for c in classes if c.day_of_week in self.day_of_week]
 
         if self.start_time:
-            assert isinstance(self.start_time, list), "start_time must be a list of time objects"
+            if not isinstance(self.start_time, list):
+                raise TypeError(f"start_time must be a list of time objects, got {type(self.start_time)}")
             classes = [c for c in classes if c.starts_at.time() in self.start_time]
 
         return classes

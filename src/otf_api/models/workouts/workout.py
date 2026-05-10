@@ -56,11 +56,13 @@ class Workout(ApiMixin, OtfItemBase):
         if not v2_booking:
             raise ValueError("v2_booking is required")
 
-        assert isinstance(v2_booking, BookingV2), "v2_booking must be an instance of BookingV2"
+        if not isinstance(v2_booking, BookingV2):
+            raise TypeError(f"v2_booking must be an instance of BookingV2, got {type(v2_booking)}")
 
         otf_class = v2_booking.otf_class
         v2_workout = v2_booking.workout
-        assert isinstance(otf_class, BookingV2Class), "otf_class must be an instance of BookingV2Class"
+        if not isinstance(otf_class, BookingV2Class):
+            raise TypeError(f"otf_class must be an instance of BookingV2Class, got {type(otf_class)}")
 
         data["otf_class"] = otf_class
         data["studio"] = otf_class.studio

@@ -24,17 +24,9 @@ def _setup_logging() -> None:
     logger = logging.getLogger("otf_api")
 
     if logger.handlers:
-        return  # Already set up
+        return
 
-    # 2) Set the logger level to INFO (or whatever you need).
     logger.setLevel(LOG_LEVEL)
-
-    # 3) Create a handler (e.g., console) and set its formatter.
-    handler = logging.StreamHandler()
-    handler.setFormatter(logging.Formatter(fmt=LOG_FMT, datefmt=DATE_FMT, style="%"))
-
-    # 4) Add this handler to your package logger.
-    logger.addHandler(handler)
 
     coloredlogs.install(
         level=LOG_LEVEL,
@@ -42,7 +34,6 @@ def _setup_logging() -> None:
         fmt=LOG_FMT,
         datefmt=DATE_FMT,
         style="%",
-        isatty=True,  # Use colored output only if the output is a terminal
     )
 
 
