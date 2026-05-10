@@ -131,8 +131,7 @@ class BookingV2Class(ApiMixin, OtfItemBase):
 class BookingV2Workout(OtfItemBase):
     """Workout summary data attached to a v2 booking, available after the class is completed."""
 
-    id: str = Field(..., description="Unique identifier for the workout.")
-    performance_summary_id: str = Field(..., validation_alias="id", description="Alias to id, to simplify the API")
+    performance_summary_id: str = Field(..., validation_alias="id", description="Unique identifier for the workout.")
     calories_burned: int = Field(..., description="Total calories burned during the workout.")
     splat_points: int = Field(..., description="Total splat points earned during the workout.")
     step_count: int = Field(..., description="Total step count during the workout.")

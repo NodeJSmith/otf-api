@@ -46,6 +46,8 @@ class OtfCognito(Cognito):
     Without this being set the renew_access_token call will always fail with NOT_AUTHORIZED.
     """
 
+    _UNPICKLABLE_ATTRS = ("idp_client", "id_client")
+
     user_pool_id: ClassVar[str] = USER_POOL_ID
     client_id: ClassVar[str] = CLIENT_ID
     user_pool_region: ClassVar[str] = REGION
@@ -134,6 +136,12 @@ class OtfCognito(Cognito):
         self.pool_domain_url: str | None = None
 
         self.handle_login(password)
+
+    def __getstate__(self) -> dict:  # noqa: D105
+        return {k: v for k, v in self.__dict__.items() if k not in self._UNPICKLABLE_ATTRS}
+
+    def __setstate__(self, state: dict) -> None:  # noqa: D105
+        self.__dict__.update(state)
 
     @cached_property
     def idp_client(self) -> "CognitoIdentityProviderClient":

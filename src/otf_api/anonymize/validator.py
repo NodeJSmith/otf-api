@@ -82,6 +82,7 @@ class ValidationResult:
 #
 # Model import paths are resolved lazily so that importing this module never
 # fails due to circular imports or heavy model modules.
+# New endpoints also require FIELD_MAPPINGS and KNOWN_SAFE_FIELDS updates in mappings.py.
 
 _ENDPOINT_MODEL_MAP: list[tuple[str, str, str | None]] = [
     # Member detail

@@ -80,7 +80,9 @@ class Workout(ApiMixin, OtfItemBase):
         if telemetry and "maxHr" in telemetry:
             # max_hr seems to be left out of the heart rate data - it has peak_hr but they do not match
             # so if we have telemetry data, we can get the max_hr from there
-            data["details"]["heart_rate"]["max_hr"] = telemetry["maxHr"]
+            heart_rate = data.get("details", {}).get("heart_rate")
+            if isinstance(heart_rate, dict):
+                heart_rate["max_hr"] = telemetry["maxHr"]
 
         super().__init__(**data)
 

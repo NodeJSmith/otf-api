@@ -50,6 +50,7 @@ class AddressMixin:
     """Mixin for models that require address fields.
 
     This mixin exists to make it easier to handle the various names these fields can have in different APIs.
+    Keep alias lists in sync with _ADDRESS_ALIAS_TO_CANONICAL in anonymize/anonymizer.py.
     """
 
     address_line1: str | None = Field(

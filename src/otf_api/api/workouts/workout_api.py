@@ -273,9 +273,9 @@ class WorkoutApi:
             start_dtme, end_dtme, exclude_cancelled=True, remove_duplicates=True
         )
         filtered_bookings = [b for b in bookings if not (b.starts_at and b.starts_at > pendulum.now().naive())]
-        bookings_list = [(b, b.workout.id if b.workout else None) for b in filtered_bookings]
+        bookings_list = [(b, b.workout.performance_summary_id if b.workout else None) for b in filtered_bookings]
 
-        workout_ids = [b.workout.id for b in filtered_bookings if b.workout]
+        workout_ids = [b.workout.performance_summary_id for b in filtered_bookings if b.workout]
         perf_summaries_dict = self.client.get_perf_summaries_threaded(workout_ids)
         telemetry_dict = self.client.get_telemetry_threaded(list(perf_summaries_dict.keys()), max_data_points)
         perf_summary_to_class_uuid_map = self.client.get_perf_summary_to_class_uuid_mapping()
