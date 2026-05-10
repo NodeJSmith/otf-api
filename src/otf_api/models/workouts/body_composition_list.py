@@ -2,13 +2,9 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Literal
 
-import pint
 from pydantic import Field, field_validator
 
 from otf_api.models.base import OtfItemBase
-
-ureg = pint.UnitRegistry()
-
 
 DEFAULT_WEIGHT_DIVIDERS = [55.0, 70.0, 85.0, 100.0, 115.0, 130.0, 145.0, 160.0, 175.0, 190.0, 205.0]
 DEFAULT_SKELETAL_MUSCLE_MASS_DIVIDERS = [70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 130.0, 140.0, 150.0, 160.0, 170.0]

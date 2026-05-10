@@ -175,7 +175,7 @@ When debugging API issues, `OtfRequestError` gives you access to the full HTTP c
 from otf_api.exceptions import OtfRequestError
 
 try:
-    otf.studios.get_studio_detail(studio_uuid="bad-uuid")
+    otf.workouts.get_workouts()
 except OtfRequestError as e:
     print(f"HTTP {e.response.status_code} from {e.request.method} {e.request.url}")
     if e.original_exception:
