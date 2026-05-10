@@ -141,6 +141,48 @@ purchases = otf.members.get_member_purchases()
 !!! warning "Rate Limiting"
     The OrangeTheory API is not a public API. Be respectful with request frequency — avoid tight loops or polling. The library caches responses where appropriate to minimize unnecessary requests.
 
+## Configuration
+
+### Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `OTF_EMAIL` | OrangeTheory Fitness account email address |
+| `OTF_PASSWORD` | OrangeTheory Fitness account password |
+| `OTF_LOG_LEVEL` | Logging verbosity (default: `INFO`) |
+| `OTF_ANONYMIZE_RESPONSES` | Set to `true` to capture and anonymize all API responses to disk |
+| `OTF_ANONYMIZE_OUTPUT_DIR` | Override the anonymized capture output directory |
+| `OTF_ANONYMIZE_SEED` | Integer seed for reproducible anonymization (auto-derived from member UUID if unset) |
+| `OTF_ANONYMIZE_STRICTNESS` | Strictness level: `permissive`, `mask` (default), or `drop` |
+
+### Cache Management
+
+The library caches authentication tokens and device registration data to disk using [`diskcache`](https://grantjenks.com/docs/diskcache/). The cache directory is determined by [`platformdirs`](https://platformdirs.readthedocs.io/en/latest/) and versioned by major library version.
+
+**Typical locations:**
+
+- Linux: `~/.cache/otf-api/v0/`
+- macOS: `~/Library/Caches/otf-api/v0/`
+- Windows: `C:\Users\<user>\AppData\Local\otf-api\Cache\v0\`
+
+**Clearing the cache:**
+
+```python
+from otf_api.cache import clear_cache
+
+# Clear everything (tokens + device data)
+clear_cache()
+```
+
+!!! tip "Selective cache clearing"
+    ```python
+    from otf_api.cache import get_cache
+
+    cache = get_cache()
+    cache.clear_tokens()       # Remove only auth tokens
+    cache.clear_device_data()  # Remove only device registration
+    ```
+
 ## Next Steps
 
 - **[Booking Guide](../guides/bookings.md)** — detailed class search, filtering, and booking workflows

@@ -14,7 +14,7 @@ required fields can still trigger validation errors.
 **Solution:**
 
 1. Update to the latest version: `pip install --upgrade otf-api`
-2. If the error persists, [open a GitHub issue](https://github.com/NodeJSmith/otf-api/issues/new) with the full traceback so the models can be updated.
+2. If the error persists, [open a GitHub issue](https://github.com/NodeJSmith/otf-api/issues/new) with the full traceback and [anonymized response data](#filing-a-bug-report-with-anonymized-data) so the models can be updated.
 
 ## Authentication Failures
 
@@ -46,6 +46,8 @@ required fields can still trigger validation errors.
     cache.clear_tokens()
     ```
 
+If the problem persists after clearing the cache, [file a bug report](#filing-a-bug-report-with-anonymized-data) with the full traceback.
+
 ## Workout Count Discrepancies
 
 !!! warning "Symptom"
@@ -57,6 +59,8 @@ required fields can still trigger validation errors.
 
 - Use date range filtering to query specific periods.
 - The API response is the source of truth for what the backend exposes; the mobile app may display locally cached or aggregated data.
+
+If you believe the data is incorrect, [file a bug report](#filing-a-bug-report-with-anonymized-data) with the date range and expected vs. actual count.
 
 ## 404 Errors After Version Upgrades
 
@@ -76,41 +80,62 @@ target updated endpoints that your cached state or older code paths don't match.
     clear_cache()
     ```
 
-## Environment Variables
+If the error persists, [file a bug report](#filing-a-bug-report-with-anonymized-data) with the URL from the `OtfRequestError` and the library version.
 
-| Variable | Description |
-|----------|-------------|
-| `OTF_EMAIL` | OrangeTheory Fitness account email address |
-| `OTF_PASSWORD` | OrangeTheory Fitness account password |
-| `OTF_LOG_LEVEL` | Logging verbosity (default: `INFO`) |
+## Filing a Bug Report with Anonymized Data
 
-## Cache Management
+When reporting issues — especially validation errors or unexpected API responses — including the raw data dramatically speeds up debugging. The library has a built-in anonymization pipeline that strips all PII (names, emails, member IDs, biometrics, etc.) while preserving the data structure.
 
-The library uses [`diskcache`](https://grantjenks.com/docs/diskcache/) for persistent caching
-of authentication tokens and device registration data. The cache directory is determined by
-[`platformdirs.user_cache_dir`](https://platformdirs.readthedocs.io/en/latest/) and is
-versioned by the library's major version (e.g., `otf-api/v0/` for the current 0.x series).
+### Capture mode
 
-**Typical locations:**
+Set `OTF_ANONYMIZE_RESPONSES=true` to automatically capture and anonymize every API response to disk as you use the library:
 
-- Linux: `~/.cache/otf-api/v0/`
-- macOS: `~/Library/Caches/otf-api/v0/`
-- Windows: `C:\Users\<user>\AppData\Local\otf-api\Cache\v0\`
-
-**Clearing the cache:**
-
-```python
-from otf_api.cache import clear_cache
-
-# Clear everything (tokens + device data)
-clear_cache()
+```bash
+export OTF_ANONYMIZE_RESPONSES=true
 ```
 
-!!! tip "Selective cache clearing"
-    ```python
-    from otf_api.cache import get_cache
+```python
+from otf_api import Otf
 
-    cache = get_cache()
-    cache.clear_tokens()       # Remove only auth tokens
-    cache.clear_device_data()  # Remove only device registration
-    ```
+otf = Otf()
+# Use the library normally — all responses are captured and anonymized
+workouts = otf.workouts.get_workouts()
+```
+
+Anonymized JSON files are written to your platform's cache directory under `otf-api/debug/` (e.g., `~/.cache/otf-api/debug/` on Linux). Override with `OTF_ANONYMIZE_OUTPUT_DIR`. Attach the relevant files to your GitHub issue.
+
+### Manual anonymization
+
+For finer control, use the `Anonymizer` directly:
+
+```python
+from otf_api import AnonymizeConfig, Anonymizer
+from otf_api.anonymize.generators import FakeDataGenerators
+from otf_api.anonymize.mappings import FIELD_MAPPINGS
+
+config = AnonymizeConfig(seed=42, strictness="mask")
+generators = FakeDataGenerators(seed=42)
+anonymizer = Anonymizer(config=config, generators=generators, mappings=FIELD_MAPPINGS)
+
+# Anonymize a single response dict
+anonymized = anonymizer.anonymize_dict(raw_response_data)
+```
+
+### What gets anonymized
+
+The pipeline handles 110+ field types across these categories:
+
+| Category | Examples |
+|----------|----------|
+| Identity | member UUIDs, cognito IDs, person IDs |
+| Contact | names, emails, phone numbers, addresses |
+| Personal | birthdate, gender, age |
+| Biometric | weight, height, body composition, heart rate |
+| Financial | credit card last 4, payment references |
+| Studio | studio names, addresses, coordinates |
+| Security | auth tokens (replaced with `REDACTED`) |
+
+The anonymizer maintains **referential integrity** — the same real value always maps to the same fake value, so relationships in the data are preserved. Body composition fields are scaled together to keep physiological ratios consistent, and heart rate zones are recalculated from the anonymized max HR.
+
+!!! tip
+    Use `strictness="mask"` to replace any unknown fields with `__MASKED__`. This is the safest option for bug reports since it catches fields the anonymizer doesn't explicitly know about.

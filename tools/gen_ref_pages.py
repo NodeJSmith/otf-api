@@ -61,6 +61,49 @@ def format_title(part: str) -> str:
     return " ".join(word.capitalize() for word in part.split("_"))
 
 
+# 2-level nav: group → leaf label. Avoids deep nesting in the sidebar.
+NAV_LABELS: dict[str, tuple[str, str]] = {
+    # --- API ---
+    "otf_api.api.api": ("API", "Otf (Main Client)"),
+    "otf_api.api.bookings.booking_api": ("API", "BookingApi"),
+    "otf_api.api.members.member_api": ("API", "MemberApi"),
+    "otf_api.api.studios.studio_api": ("API", "StudioApi"),
+    "otf_api.api.workouts.workout_api": ("API", "WorkoutApi"),
+    # --- Auth ---
+    "otf_api.auth.user": ("Auth", "OtfUser"),
+    # --- Models: Bookings ---
+    "otf_api.models.bookings.bookings": ("Models - Bookings", "Booking"),
+    "otf_api.models.bookings.bookings_v2": ("Models - Bookings", "BookingV2"),
+    "otf_api.models.bookings.classes": ("Models - Bookings", "Classes"),
+    "otf_api.models.bookings.enums": ("Models - Bookings", "Enums"),
+    "otf_api.models.bookings.filters": ("Models - Bookings", "Filters"),
+    # --- Models: Members ---
+    "otf_api.models.members.member_detail": ("Models - Members", "Member Detail"),
+    "otf_api.models.members.member_membership": ("Models - Members", "Membership"),
+    "otf_api.models.members.member_purchases": ("Models - Members", "Purchases"),
+    "otf_api.models.members.notifications": ("Models - Members", "Notifications"),
+    # --- Models: Studios ---
+    "otf_api.models.studios.studio_detail": ("Models - Studios", "Studio Detail"),
+    "otf_api.models.studios.studio_services": ("Models - Studios", "Studio Services"),
+    "otf_api.models.studios.enums": ("Models - Studios", "Enums"),
+    # --- Models: Workouts ---
+    "otf_api.models.workouts.workout": ("Models - Workouts", "Workout"),
+    "otf_api.models.workouts.performance_summary": ("Models - Workouts", "Performance Summary"),
+    "otf_api.models.workouts.telemetry": ("Models - Workouts", "Telemetry"),
+    "otf_api.models.workouts.body_composition_list": ("Models - Workouts", "Body Composition"),
+    "otf_api.models.workouts.challenge_tracker_content": ("Models - Workouts", "Challenge Content"),
+    "otf_api.models.workouts.challenge_tracker_detail": ("Models - Workouts", "Challenge Detail"),
+    "otf_api.models.workouts.lifetime_stats": ("Models - Workouts", "Lifetime Stats"),
+    "otf_api.models.workouts.out_of_studio_workout_history": ("Models - Workouts", "Out Of Studio"),
+    "otf_api.models.workouts.enums": ("Models - Workouts", "Enums"),
+    # --- Utilities ---
+    "otf_api.cache": ("Utilities", "Cache"),
+    "otf_api.exceptions": ("Utilities", "Exceptions"),
+    "otf_api.models.base": ("Utilities", "Base Model"),
+    "otf_api.models.mixins": ("Utilities", "Mixins"),
+}
+
+
 def main() -> None:
     """Generate API reference pages for all public modules."""
     nav = mkdocs_gen_files.Nav()
@@ -117,7 +160,15 @@ def main() -> None:
                 print(f"[gen-ref] skipping {module_path} (not in allowlist)")
             continue
 
-        nav_entry = [format_title(part) for part in parts]
+        if module_path in NAV_LABELS:
+            group, label = NAV_LABELS[module_path]
+            nav_entry = [group, label]
+            # Write to a flat path so literate-nav doesn't create intermediate dir entries
+            flat_name = module_path.replace(".", "_") + ".md"
+            doc_path = Path(flat_name)
+            full_doc_path = VIRTUAL_REF_ROOT / doc_path
+        else:
+            nav_entry = [format_title(part) for part in parts]
         nav[nav_entry] = doc_path.as_posix()
 
         if DEBUG:
@@ -128,7 +179,7 @@ def main() -> None:
 
         mkdocs_gen_files.set_edit_path(full_doc_path, path.relative_to(ROOT))
 
-    summary_path = VIRTUAL_REF_ROOT / "SUMMARY.md"
+    summary_path = VIRTUAL_REF_ROOT / "SUMMARY.txt"
     with mkdocs_gen_files.open(summary_path, "w") as nav_file:
         nav_file.writelines(nav.build_literate_nav())
 

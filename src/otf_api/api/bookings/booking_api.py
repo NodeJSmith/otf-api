@@ -185,6 +185,10 @@ class BookingApi:
         of a list. Because this returns a dictionary, it will only return the most recent booking for each class_id.
         It will also include cancelled bookings.
 
+        Args:
+            start_date (datetime | date | str | None): The start date for the bookings. Default is None.
+            end_date (datetime | date | str | None): The end date for the bookings. Default is None.
+
         Returns:
             dict[datetime, BookingV2]: A dictionary of bookings keyed by their start datetime.
         """
