@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.18.0](https://github.com/NodeJSmith/otf-api/compare/otf-api-v0.17.0...otf-api-v0.18.0) (2026-05-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* TotalBodyWeight renamed to TotalBodyWater, total_body_weight field renamed to total_body_water, total_body_weight_details renamed to total_body_water_details, OutsideSchedulingWindowError now inherits from BookingError instead of OtfError
+
+### Documentation
+
+* complete documentation overhaul with MkDocs-Material ([#127](https://github.com/NodeJSmith/otf-api/issues/127)) ([daef89e](https://github.com/NodeJSmith/otf-api/commit/daef89ededff7a6d59d1d42a24afbd0983f08136))
+
 ## [0.17.0](https://github.com/NodeJSmith/otf-api/compare/otf-api-v0.16.0...otf-api-v0.17.0) (2026-05-09)
 
 
