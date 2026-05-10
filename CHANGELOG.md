@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.19.0](https://github.com/NodeJSmith/otf-api/compare/otf-api-v0.18.0...otf-api-v0.19.0) (2026-05-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* cancel_booking no longer accepts BookingV2 objects and cancel_booking_new no longer accepts Booking objects.
+
+### Code Refactoring
+
+* comprehensive code quality cleanup from WTF audit ([#130](https://github.com/NodeJSmith/otf-api/issues/130)) ([2271881](https://github.com/NodeJSmith/otf-api/commit/227188160e4226aa3fb8786104d4d28ba2c06b2b))
+
 ## [0.18.0](https://github.com/NodeJSmith/otf-api/compare/otf-api-v0.17.0...otf-api-v0.18.0) (2026-05-10)
 
 
