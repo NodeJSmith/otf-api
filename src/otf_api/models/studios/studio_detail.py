@@ -9,18 +9,28 @@ from .enums import StudioStatus
 
 
 class StudioLocation(AddressMixin, OtfItemBase):
-    phone_number: str | None = Field(None, validation_alias=AliasChoices("phone", "phoneNumber"))
-    latitude: float | None = Field(None, validation_alias=AliasChoices("latitude"))
-    longitude: float | None = Field(None, validation_alias=AliasChoices("longitude"))
+    """Physical location details for an OrangeTheory studio."""
+
+    phone_number: str | None = Field(
+        None, validation_alias=AliasChoices("phone", "phoneNumber"), description="Studio phone number."
+    )
+    latitude: float | None = Field(None, validation_alias=AliasChoices("latitude"), description="Geographic latitude.")
+    longitude: float | None = Field(
+        None, validation_alias=AliasChoices("longitude"), description="Geographic longitude."
+    )
 
     physical_region: str | None = Field(None, validation_alias="physicalRegion", exclude=True, repr=False)
     physical_country_id: int | None = Field(None, validation_alias="physicalCountryId", exclude=True, repr=False)
 
 
 class StudioDetail(ApiMixin, OtfItemBase):
+    """Detailed information about an OrangeTheory studio."""
+
     studio_uuid: str = Field(..., validation_alias="studioUUId", description="The OTF studio UUID")
 
-    contact_email: str | None = Field(None, validation_alias="contactEmail")
+    contact_email: str | None = Field(
+        None, validation_alias="contactEmail", description="Studio contact email address."
+    )
     distance: float | None = Field(
         None,
         description="Distance from latitude and longitude provided to `search_studios_by_geo` method,\
@@ -28,12 +38,14 @@ class StudioDetail(ApiMixin, OtfItemBase):
         exclude=True,
         repr=False,
     )
-    location: StudioLocation = Field(..., validation_alias="studioLocation", default_factory=StudioLocation)  # type: ignore
-    name: str | None = Field(None, validation_alias="studioName")
+    location: StudioLocation = Field(
+        ..., validation_alias="studioLocation", default_factory=StudioLocation, description="Physical location details."
+    )  # type: ignore
+    name: str | None = Field(None, validation_alias="studioName", description="Name of the studio.")
     status: StudioStatus | None = Field(
         None, validation_alias="studioStatus", description="Active, Temporarily Closed, Coming Soon"
     )
-    time_zone: str | None = Field(None, validation_alias="timeZone")
+    time_zone: str | None = Field(None, validation_alias="timeZone", description="IANA time zone of the studio.")
 
     # flags
     accepts_ach: bool | None = Field(None, validation_alias="acceptsAch", exclude=True, repr=False)
@@ -78,16 +90,31 @@ class StudioDetail(ApiMixin, OtfItemBase):
 
     @classmethod
     def create_empty_model(cls, studio_uuid: str) -> "StudioDetail":
-        """Create an empty model with the given studio_uuid."""
+        """Create a placeholder model when studio details are unavailable.
+
+        Args:
+            studio_uuid: The studio UUID to use in the placeholder.
+
+        Returns:
+            A StudioDetail with the given UUID and 'Studio Not Found' as the name.
+        """
         # pylance doesn't know that the rest of the fields default to None, so we use type: ignore
         return StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")  # type: ignore
 
     def add_to_favorites(self) -> None:
-        """Adds the studio to the user's favorites."""
+        """Add this studio to the member's list of favorite studios.
+
+        Raises:
+            ValueError: If the API instance is not set.
+        """
         self.raise_if_api_not_set()
         self._api.studios.add_favorite_studio(self.studio_uuid)
 
     def remove_from_favorites(self) -> None:
-        """Removes the studio from the user's favorites."""
+        """Remove this studio from the member's list of favorite studios.
+
+        Raises:
+            ValueError: If the API instance is not set.
+        """
         self.raise_if_api_not_set()
         self._api.studios.remove_favorite_studio(self.studio_uuid)

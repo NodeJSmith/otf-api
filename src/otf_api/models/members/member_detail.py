@@ -8,16 +8,30 @@ from otf_api.models.studios.studio_detail import StudioDetail
 
 
 class Address(AddressMixin, OtfItemBase):
+    """A member's physical address."""
+
     member_address_uuid: str | None = Field(None, validation_alias="memberAddressUUId", exclude=True, repr=False)
-    type: str | None = None
+    type: str | None = Field(None, description="Address type (e.g. home, work).")
 
 
 class MemberProfile(OtfItemBase):
-    unit_of_measure: str | None = Field(None, validation_alias="unitOfMeasure")
-    max_hr_type: str | None = Field(None, validation_alias="maxHrType")
-    manual_max_hr: int | None = Field(None, validation_alias="manualMaxHr")
-    formula_max_hr: int | None = Field(None, validation_alias="formulaMaxHr")
-    automated_hr: int | None = Field(None, validation_alias="automatedHr")
+    """Heart rate and measurement preferences for a member."""
+
+    unit_of_measure: str | None = Field(
+        None, validation_alias="unitOfMeasure", description="Preferred unit of measure (e.g. Imperial, Metric)."
+    )
+    max_hr_type: str | None = Field(
+        None, validation_alias="maxHrType", description="Method used to determine max heart rate."
+    )
+    manual_max_hr: int | None = Field(
+        None, validation_alias="manualMaxHr", description="Manually entered max heart rate."
+    )
+    formula_max_hr: int | None = Field(
+        None, validation_alias="formulaMaxHr", description="Formula-calculated max heart rate."
+    )
+    automated_hr: int | None = Field(
+        None, validation_alias="automatedHr", description="Automatically detected heart rate."
+    )
 
     member_profile_uuid: str | None = Field(None, validation_alias="memberProfileUUId", exclude=True, repr=False)
     member_optin_flow_type_id: int | None = Field(
@@ -26,16 +40,38 @@ class MemberProfile(OtfItemBase):
 
 
 class MemberClassSummary(OtfItemBase):
-    total_classes_booked: int | None = Field(None, validation_alias="totalClassesBooked")
-    total_classes_attended: int | None = Field(None, validation_alias="totalClassesAttended")
-    total_intro_classes: int | None = Field(None, validation_alias="totalIntro")
-    total_ot_live_classes_booked: int | None = Field(None, validation_alias="totalOTLiveClassesBooked")
-    total_ot_live_classes_attended: int | None = Field(None, validation_alias="totalOTLiveClassesAttended")
-    total_classes_used_hrm: int | None = Field(None, validation_alias="totalClassesUsedHRM")
-    total_studios_visited: int | None = Field(None, validation_alias="totalStudiosVisited")
-    first_visit_date: date | None = Field(None, validation_alias="firstVisitDate")
-    last_class_visited_date: date | None = Field(None, validation_alias="lastClassVisitedDate")
-    last_class_booked_date: date | None = Field(None, validation_alias="lastClassBookedDate")
+    """Aggregate statistics about a member's class attendance history."""
+
+    total_classes_booked: int | None = Field(
+        None, validation_alias="totalClassesBooked", description="Total number of classes booked."
+    )
+    total_classes_attended: int | None = Field(
+        None, validation_alias="totalClassesAttended", description="Total number of classes attended."
+    )
+    total_intro_classes: int | None = Field(
+        None, validation_alias="totalIntro", description="Total number of intro classes taken."
+    )
+    total_ot_live_classes_booked: int | None = Field(
+        None, validation_alias="totalOTLiveClassesBooked", description="Total OT Live classes booked."
+    )
+    total_ot_live_classes_attended: int | None = Field(
+        None, validation_alias="totalOTLiveClassesAttended", description="Total OT Live classes attended."
+    )
+    total_classes_used_hrm: int | None = Field(
+        None, validation_alias="totalClassesUsedHRM", description="Total classes where a heart rate monitor was used."
+    )
+    total_studios_visited: int | None = Field(
+        None, validation_alias="totalStudiosVisited", description="Number of unique studios visited."
+    )
+    first_visit_date: date | None = Field(
+        None, validation_alias="firstVisitDate", description="Date of the member's first studio visit."
+    )
+    last_class_visited_date: date | None = Field(
+        None, validation_alias="lastClassVisitedDate", description="Date of the member's most recent class visit."
+    )
+    last_class_booked_date: date | None = Field(
+        None, validation_alias="lastClassBookedDate", description="Date of the member's most recent booking."
+    )
 
     last_class_studio_visited: int | None = Field(
         None, validation_alias="lastClassStudioVisited", exclude=True, repr=False
@@ -43,7 +79,9 @@ class MemberClassSummary(OtfItemBase):
 
 
 class MemberDetail(ApiMixin, OtfItemBase):
-    member_uuid: str = Field(..., validation_alias="memberUUId")
+    """Detailed information about an OrangeTheory member, including profile, address, and class summary."""
+
+    member_uuid: str = Field(..., validation_alias="memberUUId", description="Unique identifier for the member.")
     cognito_id: str = Field(
         ...,
         validation_alias="cognitoId",
@@ -52,27 +90,31 @@ class MemberDetail(ApiMixin, OtfItemBase):
         description="Cognito user ID, not necessary for end users. Also on OtfUser object.",
     )
 
-    home_studio: StudioDetail
-    profile: MemberProfile = Field(..., validation_alias="memberProfile")
-    class_summary: MemberClassSummary | None = Field(None, validation_alias="memberClassSummary")
-    addresses: list[Address] | None = Field(default_factory=list)
+    home_studio: StudioDetail = Field(..., description="The member's home studio.")
+    profile: MemberProfile = Field(
+        ..., validation_alias="memberProfile", description="Heart rate and measurement preferences."
+    )
+    class_summary: MemberClassSummary | None = Field(
+        None, validation_alias="memberClassSummary", description="Aggregate class attendance statistics."
+    )
+    addresses: list[Address] | None = Field(default_factory=list, description="List of member addresses.")
 
     studio_display_name: str | None = Field(
         None,
         validation_alias="userName",
         description="The value that is displayed on tread/rower tablets and OTBeat screens",
     )
-    first_name: str | None = Field(None, validation_alias="firstName")
-    last_name: str | None = Field(None, validation_alias="lastName")
-    email: str | None = Field(None, validation_alias="email")
-    phone_number: str | None = Field(None, validation_alias="phoneNumber")
-    birth_day: date | None = Field(None, validation_alias="birthDay")
-    gender: str | None = Field(None, validation_alias="gender")
-    locale: str | None = Field(None, validation_alias="locale")
-    weight: int | None = Field(None, validation_alias="weight")
-    weight_units: str | None = Field(None, validation_alias="weightMeasure")
-    height: int | None = Field(None, validation_alias="height")
-    height_units: str | None = Field(None, validation_alias="heightMeasure")
+    first_name: str | None = Field(None, validation_alias="firstName", description="The member's first name.")
+    last_name: str | None = Field(None, validation_alias="lastName", description="The member's last name.")
+    email: str | None = Field(None, validation_alias="email", description="The member's email address.")
+    phone_number: str | None = Field(None, validation_alias="phoneNumber", description="The member's phone number.")
+    birth_day: date | None = Field(None, validation_alias="birthDay", description="The member's date of birth.")
+    gender: str | None = Field(None, validation_alias="gender", description="The member's gender.")
+    locale: str | None = Field(None, validation_alias="locale", description="The member's locale setting.")
+    weight: int | None = Field(None, validation_alias="weight", description="The member's weight.")
+    weight_units: str | None = Field(None, validation_alias="weightMeasure", description="Unit of measure for weight.")
+    height: int | None = Field(None, validation_alias="height", description="The member's height.")
+    height_units: str | None = Field(None, validation_alias="heightMeasure", description="Unit of measure for height.")
 
     # unused fields - leaving these in for now in case someone finds a purpose for them
     # but they will potentially (likely?) be removed in the future

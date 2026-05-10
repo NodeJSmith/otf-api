@@ -141,7 +141,23 @@ class OtfClient:
         headers: dict[str, Any] | None = None,
         **kwargs,
     ) -> Any:  # noqa: ANN401
-        """Perform an API request to the default API."""
+        """Perform an API request to the default OTF API base URL.
+
+        This is a convenience wrapper around ``do()`` that uses ``API_BASE_URL`` as the base URL.
+
+        Args:
+            method (str): The HTTP method to use (e.g., 'GET', 'POST').
+            path (str): The specific endpoint to request.
+            params (dict[str, Any] | None): Query parameters to include in the request.
+            headers (dict[str, Any] | None): Additional headers to include in the request.
+            **kwargs: Additional keyword arguments to pass to the request.
+
+        Returns:
+            Any: The response data from the API request.
+
+        Raises:
+            OtfRequestError: If the request fails or the response is invalid.
+        """
         return self.do(method, API_BASE_URL, path, params, headers=headers, **kwargs)
 
     def _map_http_error(

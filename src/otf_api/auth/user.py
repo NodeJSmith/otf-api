@@ -3,8 +3,9 @@ from logging import getLogger
 import attrs
 from botocore.exceptions import ClientError
 
-from otf_api.auth.auth import HttpxCognitoAuth, NoCredentialsError, OtfCognito
+from otf_api.auth.auth import HttpxCognitoAuth, OtfCognito
 from otf_api.auth.utils import get_username_password
+from otf_api.exceptions import NoCredentialsError
 
 LOGGER = getLogger(__name__)
 

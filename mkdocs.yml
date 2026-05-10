@@ -1,0 +1,98 @@
+site_name: otf-api
+site_url: https://otf-api.readthedocs.io/
+repo_name: NodeJSmith/otf-api
+repo_url: https://github.com/NodeJSmith/otf-api
+docs_dir: docs
+use_directory_urls: true
+watch:
+  - src/otf_api
+
+extra_css:
+  - _static/custom.css
+
+extra:
+  social: []
+
+copyright: >
+  This project is not affiliated with, endorsed by, or supported by Orangetheory Fitness.
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tracking
+    - navigation.indexes
+    - navigation.footer
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - toc.integrate
+    - content.code.copy
+    - content.code.select
+    - search.suggest
+    - search.highlight
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started/index.md
+  - Guides:
+      - Authentication: guides/authentication.md
+      - Bookings & Classes: guides/bookings.md
+      - Workouts & Stats: guides/workouts.md
+      - Studios: guides/studios.md
+      - Challenges & Benchmarks: guides/challenges.md
+      - Members: guides/members.md
+      - Error Handling: guides/error-handling.md
+  - Troubleshooting: troubleshooting.md
+  - API Reference: reference/
+  - Changelog: CHANGELOG.md
+  - Architecture: architecture/index.md
+
+plugins:
+  - search
+  - gen-files:
+      scripts:
+        - tools/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.txt
+  - autorefs
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_root_full_path: false
+            show_root_heading: false
+            members_order: source
+            show_signature_annotations: false
+            separate_signature: true
+            signature_crossrefs: true
+            show_source: false
+            filters: ["!^_", "!^model_"]
+            inherited_members: false
+            heading_level: 2
+            extensions:
+              - griffe_pydantic:
+                  schema: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - toc:
+      permalink: true

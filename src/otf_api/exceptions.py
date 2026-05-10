@@ -3,6 +3,21 @@ import typing
 if typing.TYPE_CHECKING:
     from httpx import Request, Response
 
+__all__ = [
+    "AlreadyBookedError",
+    "AlreadyRatedError",
+    "BookingAlreadyCancelledError",
+    "BookingError",
+    "ClassNotRatableError",
+    "ConflictingBookingError",
+    "NoCredentialsError",
+    "OtfError",
+    "OtfRequestError",
+    "OutsideSchedulingWindowError",
+    "ResourceNotFoundError",
+    "RetryableOtfRequestError",
+]
+
 
 class OtfError(Exception):
     """Base class for all exceptions in this package."""
@@ -53,7 +68,7 @@ class BookingAlreadyCancelledError(BookingError):
     """Raised when attempting to cancel a booking that is already cancelled."""
 
 
-class OutsideSchedulingWindowError(OtfError):
+class OutsideSchedulingWindowError(BookingError):
     """Raised when attempting to book a class outside the scheduling window."""
 
 
@@ -67,3 +82,7 @@ class AlreadyRatedError(OtfError):
 
 class ClassNotRatableError(OtfError):
     """Raised when attempting to rate a class that is not ratable."""
+
+
+class NoCredentialsError(OtfError):
+    """Raised when no credentials are provided and no cached tokens are available."""

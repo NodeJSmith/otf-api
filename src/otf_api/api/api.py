@@ -42,7 +42,11 @@ class Otf:
 
     @property
     def member_uuid(self) -> str:
-        """Get the member UUID."""
+        """Get the member UUID.
+
+        Returns:
+            str: The authenticated member's UUID.
+        """
         return self.member.member_uuid
 
     @property
@@ -57,12 +61,20 @@ class Otf:
 
     @property
     def home_studio(self) -> models.StudioDetail:
-        """Get the home studio details."""
+        """Get the home studio details.
+
+        Returns:
+            StudioDetail: The member's home studio details.
+        """
         return self.member.home_studio
 
     @property
     def home_studio_uuid(self) -> str:
-        """Get the home studio UUID."""
+        """Get the home studio UUID.
+
+        Returns:
+            str: The UUID of the member's home studio.
+        """
         return self.home_studio.studio_uuid
 
     def refresh_member(self) -> models.MemberDetail:

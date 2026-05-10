@@ -21,6 +21,8 @@ uv run ruff check --fix --show-fixes   # lint only
 uv run ruff format                     # format only
 uv build                               # build wheel and sdist
 uv run python scripts/generate_openapi.py  # generate OpenAPI schema from Pydantic models
+uv run mkdocs serve                    # local docs dev server with live reload
+uv run mkdocs build --strict           # build docs and verify (fails on warnings)
 ```
 
 ## Testing

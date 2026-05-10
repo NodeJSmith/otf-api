@@ -7,17 +7,25 @@ from otf_api.models.studios import StudioDetail
 
 
 class StudioService(OtfItemBase):
+    """A service or class package offered by a studio, such as class packs or memberships."""
+
     studio: StudioDetail = Field(..., exclude=True, repr=False)
-    service_uuid: str = Field(..., validation_alias="serviceUUId")
-    name: str | None = None
-    price: str | None = None
-    qty: int | None = None
-    online_price: str | None = Field(None, validation_alias="onlinePrice")
-    tax_rate: str | None = Field(None, validation_alias="taxRate")
-    current: bool | None = None
-    is_deleted: bool | None = Field(None, validation_alias="isDeleted")
-    created_date: datetime | None = Field(None, validation_alias="createdDate")
-    updated_date: datetime | None = Field(None, validation_alias="updatedDate")
+    service_uuid: str = Field(..., validation_alias="serviceUUId", description="Unique identifier for the service.")
+    name: str | None = Field(None, description="Name of the service.")
+    price: str | None = Field(None, description="Price of the service.")
+    qty: int | None = Field(None, description="Quantity included in the service.")
+    online_price: str | None = Field(None, validation_alias="onlinePrice", description="Online purchase price.")
+    tax_rate: str | None = Field(None, validation_alias="taxRate", description="Tax rate applied to the service.")
+    current: bool | None = Field(None, description="Whether the service is currently active.")
+    is_deleted: bool | None = Field(
+        None, validation_alias="isDeleted", description="Whether the service has been deleted."
+    )
+    created_date: datetime | None = Field(
+        None, validation_alias="createdDate", description="When the service record was created."
+    )
+    updated_date: datetime | None = Field(
+        None, validation_alias="updatedDate", description="When the service record was last updated."
+    )
 
     # unused fields
 

@@ -15,6 +15,12 @@ LOGGER = getLogger(__name__)
 
 
 class StudioApi:
+    """API for managing OrangeTheory studio data.
+
+    Provides methods to search for studios, retrieve studio details and services,
+    and manage favorite studios.
+    """
+
     def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Studio API client.
 
@@ -190,7 +196,15 @@ class StudioApi:
     def get_studios_by_geo(
         self, latitude: float | None = None, longitude: float | None = None
     ) -> list[models.StudioDetail]:
-        """Alias for search_studios_by_geo."""
+        """Alias for search_studios_by_geo.
+
+        Args:
+            latitude (float | None): Latitude to search around. Default is None (uses home studio).
+            longitude (float | None): Longitude to search around. Default is None (uses home studio).
+
+        Returns:
+            list[StudioDetail]: List of studios that match the search criteria.
+        """
         return self.search_studios_by_geo(latitude, longitude)
 
     def search_studios_by_geo(

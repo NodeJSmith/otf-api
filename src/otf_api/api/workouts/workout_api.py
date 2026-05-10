@@ -21,6 +21,12 @@ LOGGER = getLogger(__name__)
 
 
 class WorkoutApi:
+    """API for managing OrangeTheory workout data.
+
+    Provides methods to retrieve workouts, performance summaries, telemetry, body composition,
+    benchmarks, and lifetime stats. Also supports rating completed classes.
+    """
+
     def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Workout API client.
 

@@ -177,3 +177,4 @@ model_generator.py
 scratch*.py
 docs/reference/
 .vscode
+.playwright-mcp/

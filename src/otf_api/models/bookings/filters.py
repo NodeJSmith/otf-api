@@ -21,12 +21,12 @@ class ClassFilter(BaseModel):
 
     All arguments are optional and default to None.
 
-    Args:
-        start_date (date): Filter classes that start on or after this date.
-        end_date (date): Filter classes that start on or before this date.
-        class_type (list[ClassType]): Filter classes by class type.
-        day_of_week (list[DoW]): Filter classes by day of the week.
-        start_time (list[time]): Filter classes by start time.
+    Attributes:
+        start_date: Filter classes that start on or after this date.
+        end_date: Filter classes that start on or before this date.
+        class_type: Filter classes by class type.
+        day_of_week: Filter classes by day of the week.
+        start_time: Filter classes by start time.
     """
 
     start_date: date | str | None = None

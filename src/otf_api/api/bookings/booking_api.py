@@ -21,6 +21,12 @@ LOGGER = getLogger(__name__)
 
 
 class BookingApi:
+    """API for managing OrangeTheory class bookings.
+
+    Provides methods to list, create, and cancel bookings, as well as retrieve class schedules
+    and rate completed classes.
+    """
+
     def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         """Initialize the Booking API client.
 
@@ -178,6 +184,10 @@ class BookingApi:
         This is a convenience method that calls `get_bookings_new` and returns a dictionary instead\
         of a list. Because this returns a dictionary, it will only return the most recent booking for each class_id.
         It will also include cancelled bookings.
+
+        Args:
+            start_date (datetime | date | str | None): The start date for the bookings. Default is None.
+            end_date (datetime | date | str | None): The end date for the bookings. Default is None.
 
         Returns:
             dict[datetime, BookingV2]: A dictionary of bookings keyed by their start datetime.
