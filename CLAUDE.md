@@ -83,17 +83,7 @@ Each domain has a `*Client` (raw HTTP, returns dicts) and a `*Api` (business log
 
 The `*Client` classes are internal; the `*Api` classes are what users interact with via `Otf.bookings`, `Otf.studios`, etc.
 
-### Testing with live API
-
-`examples/baseline_runner.py` captures structured JSON output from all read-only API calls. Use it for regression testing:
-
-```bash
-# Capture baseline (requires OTF_EMAIL and OTF_PASSWORD)
-uv run python examples/baseline_runner.py > /tmp/otf-baseline.json 2>/dev/null
-
-# After changes, capture again and diff
-uv run python examples/baseline_runner.py > /tmp/otf-after.json 2>/dev/null
-```
+### Testing with fixtures
 
 The fixture-based test suite (`tests/`) uses `respx` to mock HTTP — no credentials needed. Fixtures live in `fixtures/anonymized/`.
 
