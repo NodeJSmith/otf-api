@@ -256,8 +256,13 @@ class BookingApi:
         classes: list[models.OtfClass] = []
 
         for c in classes_resp:
-            c["studio"] = studio_dict[c["studio"]["id"]]  # the one (?) place where ID actually means UUID
-            c["is_home_studio"] = c["studio"].studio_uuid == self.otf.home_studio_uuid
+            studio_uuid = c["studio"]["id"]  # the one (?) place where ID actually means UUID
+            studio = studio_dict.get(studio_uuid)
+            if studio:
+                c["studio"] = studio
+                c["is_home_studio"] = studio.studio_uuid == self.otf.home_studio_uuid
+            else:
+                c["is_home_studio"] = False
             try:
                 classes.append(models.OtfClass.create(**c, api=self.otf))
             except ValueError as e:
@@ -587,12 +592,17 @@ class BookingApi:
         resp = self.client.get_bookings(start_date, end_date, status_value)
 
         # add studio details for each booking, instead of using the different studio model returned by this endpoint
-        studio_uuids = {b["class"]["studio"]["studioUUId"] for b in resp}
-        studios = {studio_uuid: self.otf.studios.get_studio_detail(studio_uuid) for studio_uuid in studio_uuids}
+        studio_uuids = list({b["class"]["studio"]["studioUUId"] for b in resp})
+        studios = self.otf.studios._get_studio_detail_threaded(studio_uuids)
 
         for b in resp:
-            b["class"]["studio"] = studios[b["class"]["studio"]["studioUUId"]]
-            b["is_home_studio"] = b["class"]["studio"].studio_uuid == self.otf.home_studio_uuid
+            studio_uuid = b["class"]["studio"]["studioUUId"]
+            studio = studios.get(studio_uuid)
+            if studio:
+                b["class"]["studio"] = studio
+                b["is_home_studio"] = studio.studio_uuid == self.otf.home_studio_uuid
+            else:
+                b["is_home_studio"] = False
 
         bookings: list[models.Booking] = []
 

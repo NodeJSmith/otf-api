@@ -1,4 +1,4 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from logging import getLogger
 from typing import Any
 
@@ -116,8 +116,15 @@ class StudioClient:
         Returns:
             dict[str, dict[str, Any]]: A dictionary of studio details, keyed by studio UUID.
         """
+        studios_dict: dict[str, dict[str, Any]] = {}
         with ThreadPoolExecutor(max_workers=10) as pool:
-            studios = pool.map(self.get_studio_detail, studio_uuids)
+            futures = {pool.submit(self.get_studio_detail, uuid): uuid for uuid in studio_uuids}
+            for future in as_completed(futures):
+                uuid = futures[future]
+                try:
+                    result = future.result()
+                    studios_dict[result["studioUUId"]] = result
+                except Exception as e:
+                    LOGGER.warning("Failed to retrieve studio detail %s — studio data will be incomplete: %s", uuid, e)
 
-        studios_dict = {studio["studioUUId"]: studio for studio in studios}
         return studios_dict
