@@ -43,10 +43,10 @@ nav:
       - Challenges & Benchmarks: guides/challenges.md
       - Members: guides/members.md
       - Error Handling: guides/error-handling.md
-  - Architecture: architecture/index.md
   - Troubleshooting: troubleshooting.md
-  - Changelog: CHANGELOG.md
   - API Reference: reference/
+  - Changelog: CHANGELOG.md
+  - Architecture: architecture/index.md
 
 plugins:
   - search
