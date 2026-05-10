@@ -7,9 +7,10 @@ from typing import Any
 import httpx
 
 from otf_api import exceptions as exc
+from otf_api.models.bookings import Booking, BookingV2, BookingV2Class
 
 if typing.TYPE_CHECKING:
-    from otf_api.models.bookings import Booking, BookingV2, BookingV2Class, ClassFilter, OtfClass
+    from otf_api.models.bookings import ClassFilter, OtfClass
 
 LOGGER = getLogger(__name__)
 
@@ -128,7 +129,7 @@ def filter_classes_by_date(
     return classes
 
 
-def get_booking_uuid(booking_or_uuid: "str | Booking") -> str:
+def get_booking_uuid(booking_or_uuid: str | Booking) -> str:
     """Gets the booking UUID from the input, which can be a string or Booking object.
 
     Args:
@@ -140,8 +141,6 @@ def get_booking_uuid(booking_or_uuid: "str | Booking") -> str:
     Raises:
         TypeError: If the input is not a string or Booking object.
     """
-    from otf_api.models.bookings import Booking
-
     if isinstance(booking_or_uuid, str):
         return booking_or_uuid
 
@@ -151,7 +150,7 @@ def get_booking_uuid(booking_or_uuid: "str | Booking") -> str:
     raise TypeError(f"Expected Booking or str, got {type(booking_or_uuid)}")
 
 
-def get_booking_id(booking_or_id: "str | BookingV2") -> str:
+def get_booking_id(booking_or_id: str | BookingV2) -> str:
     """Gets the booking ID from the input, which can be a string or BookingV2 object.
 
     Args:
@@ -163,8 +162,6 @@ def get_booking_id(booking_or_id: "str | BookingV2") -> str:
     Raises:
         TypeError: If the input is not a string or BookingV2 object.
     """
-    from otf_api.models.bookings import BookingV2
-
     if isinstance(booking_or_id, str):
         return booking_or_id
 
@@ -200,7 +197,7 @@ def get_class_uuid(class_or_uuid: "str | OtfClass | BookingV2Class") -> str:
     raise TypeError(f"Expected OtfClass, BookingV2Class, or str, got {type(class_or_uuid)}")
 
 
-def get_class_id(class_or_id: "str | BookingV2Class") -> str:
+def get_class_id(class_or_id: str | BookingV2Class) -> str:
     """Gets the class ID from the input, which can be a string or BookingV2Class.
 
     Args:
@@ -212,8 +209,6 @@ def get_class_id(class_or_id: "str | BookingV2Class") -> str:
     Raises:
         TypeError: If the input is not a string or BookingV2Class.
     """
-    from otf_api.models.bookings import BookingV2Class
-
     if isinstance(class_or_id, str):
         return class_or_id
 
@@ -239,7 +234,7 @@ def ensure_list(obj: list | Any | None) -> list:  # noqa: ANN401
     return obj
 
 
-def ensure_datetime(date_str: str | date | datetime | date | None, combine_with: time = MIN_TIME) -> datetime | None:
+def ensure_datetime(date_str: str | date | datetime | None, combine_with: time = MIN_TIME) -> datetime | None:
     """Ensures the input is a date/datetime object or a string that can be converted to a datetime.
 
     Args:

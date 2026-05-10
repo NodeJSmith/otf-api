@@ -5,7 +5,7 @@ import os
 import re
 from json import JSONDecodeError
 from logging import getLogger
-from typing import Any
+from typing import Any, NoReturn
 
 import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
@@ -89,7 +89,7 @@ class OtfClient:
         return self.session.build_request(method, full_url, headers=headers, params=params, **kwargs)
 
     @retry(
-        retry=retry_if_exception_type((exc.RetryableOtfRequestError, httpx.HTTPStatusError)),
+        retry=retry_if_exception_type((exc.RetryableOtfRequestError, httpx.TimeoutException, httpx.ConnectError)),
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=4, max=10),
         reraise=True,
@@ -117,8 +117,8 @@ class OtfClient:
             Any: The response data from the API request.
 
         Raises:
-            OtfRequestError: If the request fails or the response is invalid.
-            HTTPStatusError: If the response status code indicates an error.
+            OtfRequestError: If the request fails or the response is invalid (includes subclasses
+                like ResourceNotFoundError, RetryableOtfRequestError, etc.).
         """
         full_url = str(URL.build(scheme="https", host=base_url, path=path))
         request = self._build_request(method, full_url, params, headers, **kwargs)
@@ -127,8 +127,11 @@ class OtfClient:
         try:
             response = self.session.send(request)
             response.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            json_data = get_json_from_response(e.response)
+            self._map_http_error(json_data, e, e.response, request)
         except Exception as e:
-            self._handle_transport_error(e, request)
+            LOGGER.exception("Unexpected error during %r %r: %s - %s", request.method, request.url, type(e).__name__, e)
             raise
 
         return self._handle_response(method, response, request)
@@ -162,7 +165,7 @@ class OtfClient:
 
     def _map_http_error(
         self, data: dict, error: httpx.HTTPStatusError, response: httpx.Response, request: httpx.Request
-    ) -> None:
+    ) -> NoReturn:
         code = data.get("code")
         path = request.url.path
         error_code = data.get("data", {}).get("errorCode")
@@ -194,28 +197,6 @@ class OtfClient:
             request=request,
             response=response,
         )
-
-    def _handle_transport_error(self, error: Exception, request: httpx.Request) -> None:
-        """Handle transport errors during API requests.
-
-        Generally we let these bubble up to the caller so they get retried, but there are a few
-        cases where we want to log the error and raise a specific exception.
-
-        Args:
-            error (Exception): The exception raised during the request.
-            request (httpx.Request): The request that caused the error.
-        """
-        method = request.method
-        url = request.url
-
-        if not isinstance(error, httpx.HTTPStatusError):
-            LOGGER.exception("Unexpected error during %r %r: %s - %s", method, url, type(error).__name__, error)
-            return
-
-        json_data = get_json_from_response(error.response)
-        self._map_http_error(json_data, error, error.response, request)
-
-        return
 
     def _map_logical_error(self, data: dict, response: httpx.Response, request: httpx.Request) -> None:
         # not actually sure this is necessary, so far all of them have been HttpStatusError

@@ -80,15 +80,15 @@ class BookingClient:
         starts_after: datetime,
         include_canceled: bool = True,
         expand: bool = False,
-    ) -> dict:
+    ) -> list[dict[str, Any]]:
         """Retrieve raw bookings data."""
         params: dict[str, bool | str] = {
             "ends_before": pendulum.instance(ends_before).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "starts_after": pendulum.instance(starts_after).strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
 
-        params["include_canceled"] = include_canceled if include_canceled is not None else True
-        params["expand"] = expand if expand is not None else False
+        params["include_canceled"] = include_canceled
+        params["expand"] = expand
 
         return self.classes_request("GET", "/v1/bookings/me", params=params)["items"]
 

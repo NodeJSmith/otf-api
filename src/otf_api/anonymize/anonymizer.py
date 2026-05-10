@@ -50,6 +50,7 @@ _OTF_ZONE_PERCENTAGES: dict[str, tuple[float, float]] = {
 # Normalize address alias keys to the canonical keys returned by
 # fake_address_components() so that aliases like "addressLine1" or "line1"
 # get the correct component instead of falling back to city.
+# Keep in sync with AddressMixin alias definitions in models/mixins.py.
 _ADDRESS_ALIAS_TO_CANONICAL: dict[str, str] = {
     "addressLine1": "address1",
     "physicalAddress": "address1",
@@ -141,7 +142,7 @@ class ReplacementMap:
         """
         # Never map empty strings — would cause infinite substitution loops
         if not real_value:
-            return generator()
+            return real_value
 
         with self._lock:
             if real_value in self._map:
@@ -168,11 +169,16 @@ class ReplacementMap:
     def from_json(cls, data: dict[str, str]) -> "ReplacementMap":
         """Restore a ReplacementMap from a previously serialized ``to_json()`` dict.
 
-        WARNING: This expects the ``{real_value: fake_value}`` format produced by
+        This expects the ``{real_value: fake_value}`` format produced by
         ``to_json()``.  The on-disk ``_anonymization_map.json`` written by
         ``anonymize_batch`` uses an inverted ``{fake_value: position_hint}`` format
         to avoid persisting real PII — it is NOT compatible with this method.
         """
+        if data and all(str(v).startswith("position:") for v in data.values()):
+            raise ValueError(
+                "Data appears to be in the on-disk {fake: position} format from _anonymization_map.json. "
+                "from_json() expects the {real: fake} format from to_json()."
+            )
         instance = cls()
         with instance._lock:
             instance._map.update(data)

@@ -50,6 +50,7 @@ class AddressMixin:
     """Mixin for models that require address fields.
 
     This mixin exists to make it easier to handle the various names these fields can have in different APIs.
+    Keep alias lists in sync with _ADDRESS_ALIAS_TO_CANONICAL in anonymize/anonymizer.py.
     """
 
     address_line1: str | None = Field(
@@ -73,10 +74,10 @@ class AddressMixin:
     @classmethod
     def validate_model(cls, values: Any) -> Any:  # noqa: ANN401
         """Validates address fields and country format, handling specific cases."""
-        if set(values.keys()) == set(
-            ["phone", "latitude", "longitude", "address1", "address2", "city", "state", "postalCode"]
-        ):
-            values = {k: v for k, v in values.items() if v and str(v) != "0.00000000"}
+        # Null out bogus zero coordinates that some endpoints return as placeholders
+        for coord_key in ("latitude", "longitude"):
+            if coord_key in values and str(values[coord_key]) == "0.00000000":
+                values[coord_key] = None
 
         if "country" in values and isinstance(values["country"], dict):
             values["country_currency"] = values.pop("country")

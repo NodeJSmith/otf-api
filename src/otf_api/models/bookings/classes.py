@@ -82,12 +82,6 @@ class OtfClass(ApiMixin, OtfItemBase):
         """Returns True if the class is not full and has open spots."""
         return not self.full
 
-    @property
-    def day_of_week_enum(self) -> DoW:
-        """Returns the day of the week as a DoW enum, using uppercase day name matching."""
-        dow = self.starts_at.strftime("%A").upper()
-        return DoW(dow)
-
     def book_class(self) -> "Booking":
         """Book a class by providing either the class_uuid or the OtfClass object.
 
@@ -101,9 +95,7 @@ class OtfClass(ApiMixin, OtfItemBase):
             OtfError: If there is an error booking the class.
         """
         self.raise_if_api_not_set()
-        new_booking = self._api.bookings.book_class(self.class_uuid)
-        self.is_booked = True
-        return new_booking
+        return self._api.bookings.book_class(self.class_uuid)
 
     def cancel_booking(self) -> None:
         """Cancels the class booking.

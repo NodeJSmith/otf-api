@@ -256,8 +256,14 @@ class BookingApi:
         classes: list[models.OtfClass] = []
 
         for c in classes_resp:
-            c["studio"] = studio_dict[c["studio"]["id"]]  # the one (?) place where ID actually means UUID
-            c["is_home_studio"] = c["studio"].studio_uuid == self.otf.home_studio_uuid
+            studio_uuid = c["studio"]["id"]  # the one (?) place where ID actually means UUID
+            studio = studio_dict.get(studio_uuid)
+            if studio:
+                c["studio"] = studio
+                c["is_home_studio"] = studio.studio_uuid == self.otf.home_studio_uuid
+            else:
+                c["studio"] = models.StudioDetail.create_empty_model(studio_uuid)
+                c["is_home_studio"] = False
             try:
                 classes.append(models.OtfClass.create(**c, api=self.otf))
             except ValueError as e:
@@ -490,48 +496,35 @@ class BookingApi:
 
         return new_booking
 
-    def cancel_booking(self, booking: str | models.Booking | models.BookingV2) -> None:
+    def cancel_booking(self, booking: str | models.Booking) -> None:
         """Cancel a booking by providing either the booking_uuid or the Booking object.
 
         Args:
-            booking (str | Booking | BookingV2): The booking UUID or the Booking/BookingV2 object to cancel.
+            booking (str | Booking): The booking UUID or the Booking object to cancel.
 
         Raises:
-            ValueError: If booking_uuid is None or empty string
+            TypeError: If booking is not a string or Booking object.
+            ValueError: If the booking UUID is empty.
             ResourceNotFoundError: If the booking does not exist.
         """
-        if isinstance(booking, models.BookingV2):
-            LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
-            self.cancel_booking_new(booking)
-            return
-
         booking_uuid = utils.get_booking_uuid(booking)
 
-        if booking == booking_uuid:  # ensure this booking exists by calling the booking endpoint
-            _ = self.get_booking(booking_uuid)  # allow the exception to be raised if it doesn't exist
+        if isinstance(booking, str):
+            _ = self.get_booking(booking_uuid)
 
         self.client.delete_booking(booking_uuid)
 
-    def cancel_booking_new(self, booking: str | models.Booking | models.BookingV2) -> None:
+    def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
         """Cancel a booking by providing either the booking_id or the BookingV2 object.
 
         Args:
-            booking (str | Booking | BookingV2): The booking ID or the Booking/BookingV2 object to cancel.
+            booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
 
         Raises:
-            ValueError: If booking_id is None or empty string
+            TypeError: If booking is not a string or BookingV2 object.
             ResourceNotFoundError: If the booking does not exist.
         """
-        if isinstance(booking, models.Booking):
-            LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
-            self.cancel_booking(booking)
-            return
-
         booking_id = utils.get_booking_id(booking)
-
-        if booking == booking_id:
-            _ = self.get_booking_new(booking_id)  # allow the exception to be raised if it doesn't exist
-
         self.client.delete_booking_new(booking_id)
 
     def get_bookings(
@@ -587,12 +580,18 @@ class BookingApi:
         resp = self.client.get_bookings(start_date, end_date, status_value)
 
         # add studio details for each booking, instead of using the different studio model returned by this endpoint
-        studio_uuids = {b["class"]["studio"]["studioUUId"] for b in resp}
-        studios = {studio_uuid: self.otf.studios.get_studio_detail(studio_uuid) for studio_uuid in studio_uuids}
+        studio_uuids = list({b["class"]["studio"]["studioUUId"] for b in resp})
+        studios = self.otf.studios._get_studio_detail_threaded(studio_uuids)
 
         for b in resp:
-            b["class"]["studio"] = studios[b["class"]["studio"]["studioUUId"]]
-            b["is_home_studio"] = b["class"]["studio"].studio_uuid == self.otf.home_studio_uuid
+            studio_uuid = b["class"]["studio"]["studioUUId"]
+            studio = studios.get(studio_uuid)
+            if studio:
+                b["class"]["studio"] = studio
+                b["is_home_studio"] = studio.studio_uuid == self.otf.home_studio_uuid
+            else:
+                b["class"]["studio"] = models.StudioDetail.create_empty_model(studio_uuid)
+                b["is_home_studio"] = False
 
         bookings: list[models.Booking] = []
 

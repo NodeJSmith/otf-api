@@ -1,6 +1,6 @@
 import typing
 import warnings
-from datetime import date, datetime
+from datetime import date
 from logging import getLogger
 from typing import Any, Literal
 
@@ -137,7 +137,7 @@ class WorkoutApi:
             dict[str, Any]: The performance summary details.
         """
         warnings.warn(
-            "`This endpoint does not return all data, consider using `get_workouts` instead.",
+            "This endpoint does not return all data, consider using `get_workouts` instead.",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -222,7 +222,7 @@ class WorkoutApi:
         """Get a workout for a specific booking.
 
         Args:
-            booking (str | Booking): The booking ID or BookingV2 object to get the workout for.
+            booking (str | BookingV2): The booking ID or BookingV2 object to get the workout for.
 
         Returns:
             Workout: The member's workout.
@@ -234,12 +234,11 @@ class WorkoutApi:
         if isinstance(booking, models.Booking):
             raise TypeError("This method cannot be used with the old Booking model")
 
-        booking_id = utils.get_booking_id(booking)
-
-        booking = self.otf.bookings.get_booking_new(booking_id)
+        if isinstance(booking, str):
+            booking = self.otf.bookings.get_booking_new(booking)
 
         if not booking.workout or not booking.workout.performance_summary_id:
-            raise exc.ResourceNotFoundError(f"Workout for booking {booking_id} not found.")
+            raise exc.ResourceNotFoundError(f"Workout for booking {booking.booking_id} not found.")
 
         perf_summary = self.client.get_performance_summary(booking.workout.performance_summary_id)
         telemetry = self.get_telemetry(booking.workout.performance_summary_id)
@@ -264,7 +263,7 @@ class WorkoutApi:
             list[Workout]: The member's workouts.
         """
         start_date = utils.ensure_date(start_date) or pendulum.today().subtract(days=30).date()
-        end_date = utils.ensure_date(end_date) or datetime.today().date()
+        end_date = utils.ensure_date(end_date) or pendulum.today().date()
 
         start_dtme = pendulum.datetime(start_date.year, start_date.month, start_date.day, 0, 0, 0)
         end_dtme = pendulum.datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
@@ -272,10 +271,11 @@ class WorkoutApi:
         bookings = self.otf.bookings.get_bookings_new(
             start_dtme, end_dtme, exclude_cancelled=True, remove_duplicates=True
         )
+        # starts_at is naive in the studio's local time; compare against naive local now
         filtered_bookings = [b for b in bookings if not (b.starts_at and b.starts_at > pendulum.now().naive())]
-        bookings_list = [(b, b.workout.id if b.workout else None) for b in filtered_bookings]
+        bookings_list = [(b, b.workout.performance_summary_id if b.workout else None) for b in filtered_bookings]
 
-        workout_ids = [b.workout.id for b in filtered_bookings if b.workout]
+        workout_ids = [b.workout.performance_summary_id for b in filtered_bookings if b.workout]
         perf_summaries_dict = self.client.get_perf_summaries_threaded(workout_ids)
         telemetry_dict = self.client.get_telemetry_threaded(list(perf_summaries_dict.keys()), max_data_points)
         perf_summary_to_class_uuid_map = self.client.get_perf_summary_to_class_uuid_mapping()

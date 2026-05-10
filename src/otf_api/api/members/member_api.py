@@ -135,8 +135,10 @@ class MemberApi:
             LOGGER.warning("No changes to names, nothing to update.")
             return self.otf.member
 
-        assert first_name is not None, "First name is required"
-        assert last_name is not None, "Last name is required"
+        if first_name is None:
+            raise ValueError("First name is required")
+        if last_name is None:
+            raise ValueError("Last name is required")
 
         res = self.client.put_member_name(first_name, last_name)
 

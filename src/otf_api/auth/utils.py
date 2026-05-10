@@ -115,7 +115,7 @@ def get_credentials_from_env() -> tuple[str, str]:
     password = os.getenv("OTF_PASSWORD")
 
     if not username or not password:
-        _show_error_message("Environment variables OTF_EMAIL and OTF_PASSWORD are required")
+        LOGGER.debug("OTF_EMAIL and/or OTF_PASSWORD not set in environment")
         return "", ""
 
     return username, password

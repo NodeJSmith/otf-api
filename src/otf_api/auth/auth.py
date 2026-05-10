@@ -3,7 +3,7 @@ import platform
 import typing
 from collections.abc import Generator
 from datetime import datetime
-from functools import lru_cache
+from functools import cached_property
 from logging import getLogger
 from time import sleep
 from typing import Any, ClassVar
@@ -46,6 +46,8 @@ class OtfCognito(Cognito):
     Without this being set the renew_access_token call will always fail with NOT_AUTHORIZED.
     """
 
+    _UNPICKLABLE_ATTRS = ("idp_client", "id_client")
+
     user_pool_id: ClassVar[str] = USER_POOL_ID
     client_id: ClassVar[str] = CLIENT_ID
     user_pool_region: ClassVar[str] = REGION
@@ -72,7 +74,7 @@ class OtfCognito(Cognito):
         return self.get_decoded_access_token()["exp"] - int(datetime.now().timestamp())  # noqa: DTZ005
 
     @property
-    def acces_token_expiration(self) -> datetime:
+    def access_token_expiration(self) -> datetime:
         """Returns the expiration time of the access token as a datetime.
 
         Returns:
@@ -135,15 +137,19 @@ class OtfCognito(Cognito):
 
         self.handle_login(password)
 
-    @property
-    @lru_cache(maxsize=1)
+    def __getstate__(self) -> dict:  # noqa: D105
+        return {k: v for k, v in self.__dict__.items() if k not in self._UNPICKLABLE_ATTRS}
+
+    def __setstate__(self, state: dict) -> None:  # noqa: D105
+        self.__dict__.update(state)
+
+    @cached_property
     def idp_client(self) -> "CognitoIdentityProviderClient":
         """Returns the Cognito Identity Provider client."""
         LOGGER.debug("Creating Cognito Identity Provider client")
         return Session().client("cognito-idp", config=BOTO_CONFIG, region_name=REGION)  # type: ignore
 
-    @property
-    @lru_cache(maxsize=1)
+    @cached_property
     def id_client(self) -> "CognitoIdentityClient":
         """Returns the Cognito Identity client."""
         LOGGER.debug("Creating Cognito Identity client")
