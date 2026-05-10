@@ -262,6 +262,7 @@ class BookingApi:
                 c["studio"] = studio
                 c["is_home_studio"] = studio.studio_uuid == self.otf.home_studio_uuid
             else:
+                c["studio"] = models.StudioDetail.create_empty_model(studio_uuid)
                 c["is_home_studio"] = False
             try:
                 classes.append(models.OtfClass.create(**c, api=self.otf))
@@ -588,6 +589,7 @@ class BookingApi:
                 b["class"]["studio"] = studio
                 b["is_home_studio"] = studio.studio_uuid == self.otf.home_studio_uuid
             else:
+                b["class"]["studio"] = models.StudioDetail.create_empty_model(studio_uuid)
                 b["is_home_studio"] = False
 
         bookings: list[models.Booking] = []
