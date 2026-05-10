@@ -495,47 +495,37 @@ class BookingApi:
 
         return new_booking
 
-    def cancel_booking(self, booking: str | models.Booking | models.BookingV2) -> None:
+    def cancel_booking(self, booking: str | models.Booking) -> None:
         """Cancel a booking by providing either the booking_uuid or the Booking object.
 
         Args:
-            booking (str | Booking | BookingV2): The booking UUID or the Booking/BookingV2 object to cancel.
+            booking (str | Booking): The booking UUID or the Booking object to cancel.
 
         Raises:
-            ValueError: If booking_uuid is None or empty string
+            TypeError: If booking is not a string or Booking object.
             ResourceNotFoundError: If the booking does not exist.
         """
-        if isinstance(booking, models.BookingV2):
-            LOGGER.warning("BookingV2 object provided, using the new cancel booking endpoint (`cancel_booking_new`)")
-            self.cancel_booking_new(booking)
-            return
-
         booking_uuid = utils.get_booking_uuid(booking)
 
-        if booking == booking_uuid:  # ensure this booking exists by calling the booking endpoint
-            _ = self.get_booking(booking_uuid)  # allow the exception to be raised if it doesn't exist
+        if isinstance(booking, str):
+            _ = self.get_booking(booking_uuid)
 
         self.client.delete_booking(booking_uuid)
 
-    def cancel_booking_new(self, booking: str | models.Booking | models.BookingV2) -> None:
+    def cancel_booking_new(self, booking: str | models.BookingV2) -> None:
         """Cancel a booking by providing either the booking_id or the BookingV2 object.
 
         Args:
-            booking (str | Booking | BookingV2): The booking ID or the Booking/BookingV2 object to cancel.
+            booking (str | BookingV2): The booking ID or the BookingV2 object to cancel.
 
         Raises:
-            ValueError: If booking_id is None or empty string
+            TypeError: If booking is not a string or BookingV2 object.
             ResourceNotFoundError: If the booking does not exist.
         """
-        if isinstance(booking, models.Booking):
-            LOGGER.warning("Booking object provided, using the old cancel booking endpoint (`cancel_booking`)")
-            self.cancel_booking(booking)
-            return
-
         booking_id = utils.get_booking_id(booking)
 
-        if booking == booking_id:
-            _ = self.get_booking_new(booking_id)  # allow the exception to be raised if it doesn't exist
+        if isinstance(booking, str):
+            _ = self.get_booking_new(booking_id)
 
         self.client.delete_booking_new(booking_id)
 
