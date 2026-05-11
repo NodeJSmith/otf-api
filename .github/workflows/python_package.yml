@@ -11,19 +11,14 @@ on:
         required: true
 
 jobs:
-  build-pypi-dists:
-    name: Build Python package & OpenAPI schema
-
+  build:
+    name: Build package & schema
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.ref || github.ref }}
-          fetch-depth: 0
-          fetch-tags: true
           persist-credentials: false
 
       - name: Set up Python
@@ -48,24 +43,61 @@ jobs:
       - name: Generate OpenAPI schema
         run: uv run python scripts/generate_openapi.py
 
-      - name: Publish build artifacts
+      - name: Upload package artifacts
         uses: actions/upload-artifact@v4
         with:
           name: pypi-dists
           path: "./dist"
 
-      - name: Publish schema artifacts
+      - name: Upload schema artifacts
         uses: actions/upload-artifact@v4
+        with:
+          name: openapi-schema
+          path: "./schema"
+
+  publish-pypi:
+    name: Publish to PyPI
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+      url: https://pypi.org/p/otf-api
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download package artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: pypi-dists
+          path: "./dist"
+
+      - name: Publish distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  upload-schema:
+    name: Upload schema to release
+    needs: [build]
+    if: >-
+      startsWith(github.ref, 'refs/tags/v')
+      || (github.event_name == 'workflow_dispatch' && startsWith(github.event.inputs.ref, 'v'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download schema artifacts
+        uses: actions/download-artifact@v4
         with:
           name: openapi-schema
           path: "./schema"
 
       - name: Upload schema to release
         run: |
-          TAG=$(git describe --tags --exact-match HEAD 2>/dev/null || true)
-          if [[ -z "$TAG" ]]; then
-            echo "No tag at HEAD — skipping schema upload (only uploads on tagged releases)"
-            exit 0
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            TAG="${{ github.event.inputs.ref }}"
+          else
+            TAG="${{ github.ref_name }}"
           fi
           echo "Uploading schema files to release ${TAG}..."
 
@@ -89,23 +121,3 @@ jobs:
           echo "Schema files uploaded successfully!"
         env:
           GH_TOKEN: ${{ github.token }}
-
-  publish-pypi-dists:
-    name: Publish to PyPI
-    environment:
-      name: release
-      url: https://pypi.org/p/otf-api
-    needs: [build-pypi-dists]
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
-
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: pypi-dists
-          path: "./dist"
-
-      - name: Publish distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
