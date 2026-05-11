@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: "Git ref to build and publish (tag, branch, or SHA)"
+        description: "Git ref to build and publish. Schema upload only runs if HEAD has a version tag."
         required: true
 
 jobs:
@@ -23,6 +23,7 @@ jobs:
         with:
           ref: ${{ github.event.inputs.ref || github.ref }}
           fetch-depth: 0
+          fetch-tags: true
           persist-credentials: false
 
       - name: Set up Python
@@ -53,22 +54,37 @@ jobs:
           name: pypi-dists
           path: "./dist"
 
+      - name: Publish schema artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-schema
+          path: "./schema"
+
       - name: Upload schema to release
-        continue-on-error: true
         run: |
-          REF_NAME="${{ github.event.inputs.ref || github.ref_name }}"
-          echo "Uploading schema files to release ${REF_NAME}..."
+          TAG=$(git describe --tags --exact-match HEAD 2>/dev/null || true)
+          if [[ -z "$TAG" ]]; then
+            echo "No tag at HEAD — skipping schema upload (only uploads on tagged releases)"
+            exit 0
+          fi
+          echo "Uploading schema files to release ${TAG}..."
 
-          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${REF_NAME} --jq '.id')
-          UPLOAD_URL=$(gh api repos/${{ github.repository }}/releases/$RELEASE_ID --jq '.upload_url' | sed 's/{?name,label}//')
+          for i in 1 2 3; do
+            if gh release view "$TAG" --repo ${{ github.repository }} > /dev/null 2>&1; then
+              break
+            fi
+            echo "Release not found yet (attempt $i/3), waiting 10s..."
+            sleep 10
+          done
 
-          gh api --method POST "$UPLOAD_URL?name=openapi.yaml" \
-            --header "Content-Type: application/x-yaml" \
-            --input ./schema/openapi.yaml
+          if ! gh release view "$TAG" --repo ${{ github.repository }} > /dev/null 2>&1; then
+            echo "Release ${TAG} not found after 3 attempts — cannot upload schema"
+            exit 1
+          fi
 
-          gh api --method POST "$UPLOAD_URL?name=openapi.json" \
-            --header "Content-Type: application/json" \
-            --input ./schema/openapi.json
+          gh release upload "$TAG" ./schema/openapi.yaml ./schema/openapi.json \
+            --repo ${{ github.repository }} \
+            --clobber
 
           echo "Schema files uploaded successfully!"
         env:
