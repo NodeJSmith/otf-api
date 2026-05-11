@@ -7,22 +7,18 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: "Git ref to build and publish (tag, branch, or SHA)"
+        description: "Git ref to build and publish. Schema upload only runs if HEAD has a version tag."
         required: true
 
 jobs:
-  build-pypi-dists:
-    name: Build Python package & OpenAPI schema
-
+  build:
+    name: Build package & schema
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.ref || github.ref }}
-          fetch-depth: 0
           persist-credentials: false
 
       - name: Set up Python
@@ -47,45 +43,30 @@ jobs:
       - name: Generate OpenAPI schema
         run: uv run python scripts/generate_openapi.py
 
-      - name: Publish build artifacts
+      - name: Upload package artifacts
         uses: actions/upload-artifact@v4
         with:
           name: pypi-dists
           path: "./dist"
 
-      - name: Upload schema to release
-        continue-on-error: true
-        run: |
-          REF_NAME="${{ github.event.inputs.ref || github.ref_name }}"
-          echo "Uploading schema files to release ${REF_NAME}..."
+      - name: Upload schema artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-schema
+          path: "./schema"
 
-          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${REF_NAME} --jq '.id')
-          UPLOAD_URL=$(gh api repos/${{ github.repository }}/releases/$RELEASE_ID --jq '.upload_url' | sed 's/{?name,label}//')
-
-          gh api --method POST "$UPLOAD_URL?name=openapi.yaml" \
-            --header "Content-Type: application/x-yaml" \
-            --input ./schema/openapi.yaml
-
-          gh api --method POST "$UPLOAD_URL?name=openapi.json" \
-            --header "Content-Type: application/json" \
-            --input ./schema/openapi.json
-
-          echo "Schema files uploaded successfully!"
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-  publish-pypi-dists:
+  publish-pypi:
     name: Publish to PyPI
+    needs: [build]
+    runs-on: ubuntu-latest
     environment:
       name: release
       url: https://pypi.org/p/otf-api
-    needs: [build-pypi-dists]
-    runs-on: ubuntu-latest
     permissions:
-      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
 
     steps:
-      - name: Download build artifacts
+      - name: Download package artifacts
         uses: actions/download-artifact@v4
         with:
           name: pypi-dists
@@ -93,3 +74,50 @@ jobs:
 
       - name: Publish distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  upload-schema:
+    name: Upload schema to release
+    needs: [build]
+    if: >-
+      startsWith(github.ref, 'refs/tags/v')
+      || (github.event_name == 'workflow_dispatch' && startsWith(github.event.inputs.ref, 'v'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download schema artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: openapi-schema
+          path: "./schema"
+
+      - name: Upload schema to release
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            TAG="${{ github.event.inputs.ref }}"
+          else
+            TAG="${{ github.ref_name }}"
+          fi
+          echo "Uploading schema files to release ${TAG}..."
+
+          for i in 1 2 3; do
+            if gh release view "$TAG" --repo ${{ github.repository }} > /dev/null 2>&1; then
+              break
+            fi
+            echo "Release not found yet (attempt $i/3), waiting 10s..."
+            sleep 10
+          done
+
+          if ! gh release view "$TAG" --repo ${{ github.repository }} > /dev/null 2>&1; then
+            echo "Release ${TAG} not found after 3 attempts — cannot upload schema"
+            exit 1
+          fi
+
+          gh release upload "$TAG" ./schema/openapi.yaml ./schema/openapi.json \
+            --repo ${{ github.repository }} \
+            --clobber
+
+          echo "Schema files uploaded successfully!"
+        env:
+          GH_TOKEN: ${{ github.token }}
