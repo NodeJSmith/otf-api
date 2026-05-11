@@ -5,6 +5,10 @@ on:
     tags:
       - "v*.*.*"
   workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to build and publish (tag, branch, or SHA)"
+        required: true
 
 jobs:
   build-pypi-dists:
@@ -17,8 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.commit }}
-          # Versioneer only generates correct versions with a full fetch
+          ref: ${{ github.event.inputs.ref || github.ref }}
           fetch-depth: 0
           persist-credentials: false
 
@@ -51,10 +54,12 @@ jobs:
           path: "./dist"
 
       - name: Upload schema to release
+        continue-on-error: true
         run: |
-          echo "Uploading schema files to release ${{ github.ref_name }}..."
+          REF_NAME="${{ github.event.inputs.ref || github.ref_name }}"
+          echo "Uploading schema files to release ${REF_NAME}..."
 
-          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq '.id')
+          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${REF_NAME} --jq '.id')
           UPLOAD_URL=$(gh api repos/${{ github.repository }}/releases/$RELEASE_ID --jq '.upload_url' | sed 's/{?name,label}//')
 
           gh api --method POST "$UPLOAD_URL?name=openapi.yaml" \
