@@ -1,6 +1,5 @@
 import typing
 from datetime import date
-from logging import getLogger
 
 import pendulum
 
@@ -11,16 +10,16 @@ from otf_api.models.trends import (
     WorkoutStatsResponse,
 )
 
-from .trend_client import TrendsClient
+from .trend_client import TrendClient
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf
     from otf_api.api.client import OtfClient
 
-LOGGER = getLogger(__name__)
+DEFAULT_PREVIEW_WORKOUT_COUNT = 10
 
 
-class TrendsApi:
+class TrendApi:
     """API for retrieving workout trend data from OrangeTheory.
 
     Provides methods to get per-metric trend data (splat points, heart rate,
@@ -29,7 +28,7 @@ class TrendsApi:
 
     def __init__(self, otf: "Otf", otf_client: "OtfClient"):
         self.otf = otf
-        self.client = TrendsClient(otf_client)
+        self.client = TrendClient(otf_client)
 
     def get_workout_stats(
         self,
@@ -57,7 +56,9 @@ class TrendsApi:
         data = self.client.get_workout_stats(stats_key, start_str, end_str)
         return WorkoutStatsResponse(**data)
 
-    def get_workout_stats_preview(self, workout_count: int = 10) -> WorkoutStatsPreviewResponse:
+    def get_workout_stats_preview(
+        self, workout_count: int = DEFAULT_PREVIEW_WORKOUT_COUNT
+    ) -> WorkoutStatsPreviewResponse:
         """Get a preview of workout stats across all trend metrics.
 
         Args:

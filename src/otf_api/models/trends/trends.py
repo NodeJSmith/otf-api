@@ -1,42 +1,13 @@
 from datetime import datetime
-from enum import StrEnum
 
 from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
 
 
-class TrendCategory(StrEnum):
-    Effort = "effort"
-    Treadmill = "treadmill"
-    Rower = "rower"
-
-
-class TrendType(StrEnum):
-    SplatPoints = "splat_points"
-    AverageHeartRate = "average_hr"
-    PeakHeartRate = "peak_hr"
-    TreadmillTopSpeed = "tread_top_speed"
-    RowerSplitTime = "rower_500m_split_time"
-    RowerTopPower = "rower_top_power"
-
-    @property
-    def category(self) -> TrendCategory:
-        """Get the category this trend type belongs to."""
-        return _TREND_CATEGORY_MAP[self]
-
-
-_TREND_CATEGORY_MAP: dict[TrendType, TrendCategory] = {
-    TrendType.SplatPoints: TrendCategory.Effort,
-    TrendType.AverageHeartRate: TrendCategory.Effort,
-    TrendType.PeakHeartRate: TrendCategory.Effort,
-    TrendType.TreadmillTopSpeed: TrendCategory.Treadmill,
-    TrendType.RowerSplitTime: TrendCategory.Rower,
-    TrendType.RowerTopPower: TrendCategory.Rower,
-}
-
-
 class StatPoint(OtfItemBase):
+    """A single data point in a workout stats time series."""
+
     date: datetime | None = None
     value: float | None = None
     workout_id: str | None = None
@@ -45,6 +16,8 @@ class StatPoint(OtfItemBase):
 
 
 class WorkoutStatsResponse(OtfItemBase):
+    """Response from the workout stats endpoint for a single metric over a date range."""
+
     start_date_time: datetime | None = Field(None, validation_alias="start")
     end_date_time: datetime | None = Field(None, validation_alias="end")
     stat_key: str | None = None
@@ -54,6 +27,8 @@ class WorkoutStatsResponse(OtfItemBase):
 
 
 class PreviewStat(OtfItemBase):
+    """A single metric's data within a workout stats preview response."""
+
     points: list[StatPoint] = Field(default_factory=list)
     stat_key: str | None = None
     unit: str | None = None
@@ -61,6 +36,8 @@ class PreviewStat(OtfItemBase):
 
 
 class WorkoutStatsPreviewResponse(OtfItemBase):
+    """Response from the workout stats preview endpoint, containing all metrics."""
+
     start_date_time: datetime | None = Field(None, validation_alias="start")
     end_date_time: datetime | None = Field(None, validation_alias="end")
     stats: list[PreviewStat] = Field(default_factory=list)

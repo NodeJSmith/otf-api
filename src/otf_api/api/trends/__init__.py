@@ -1,3 +1,3 @@
-from .trend_api import TrendsApi
+from .trend_api import TrendApi
 
-__all__ = ["TrendsApi"]
+__all__ = ["TrendApi"]

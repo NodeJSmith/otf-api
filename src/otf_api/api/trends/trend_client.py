@@ -3,7 +3,7 @@ from typing import Any
 from otf_api.api.client import API_GATEWAY_BASE_URL, OtfClient
 
 
-class TrendsClient:
+class TrendClient:
     """Client for retrieving workout trends/stats data from the OTF Gateway API."""
 
     def __init__(self, client: OtfClient):
