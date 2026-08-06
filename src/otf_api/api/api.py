@@ -5,6 +5,7 @@ from .bookings import BookingApi
 from .client import OtfClient
 from .members import MemberApi
 from .studios import StudioApi
+from .trends import TrendsApi
 from .workouts import WorkoutApi
 
 
@@ -24,6 +25,7 @@ class Otf:
     members: MemberApi
     workouts: WorkoutApi
     studios: StudioApi
+    trends: TrendsApi
 
     def __init__(self, user: OtfUser | None = None):
         """Initialize the OTF API client.
@@ -37,6 +39,7 @@ class Otf:
         self.members = MemberApi(self, client)
         self.workouts = WorkoutApi(self, client)
         self.studios = StudioApi(self, client)
+        self.trends = TrendsApi(self, client)
 
         self._member: models.MemberDetail | None = None
 

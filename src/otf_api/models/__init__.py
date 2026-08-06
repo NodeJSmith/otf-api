@@ -13,6 +13,14 @@ from .bookings import (
 from .members import MemberDetail, MemberMembership, MemberPurchase
 from .members.notifications import EmailNotificationSettings, SmsNotificationSettings
 from .studios import StudioDetail, StudioService, StudioStatus
+from .trends import (
+    PreviewStat,
+    StatPoint,
+    TrendCategory,
+    TrendType,
+    WorkoutStatsPreviewResponse,
+    WorkoutStatsResponse,
+)
 from .workouts import (
     BodyCompositionData,
     ChallengeCategory,
@@ -53,7 +61,9 @@ __all__ = [
     "OutOfStudioWorkoutHistory",
     "OutStudioStatsData",
     "PerformanceSummary",
+    "PreviewStat",
     "SmsNotificationSettings",
+    "StatPoint",
     "StatsResponse",
     "StatsTime",
     "StudioDetail",
@@ -62,7 +72,11 @@ __all__ = [
     "Telemetry",
     "TelemetryHistoryItem",
     "TimeStats",
+    "TrendCategory",
+    "TrendType",
     "Workout",
+    "WorkoutStatsPreviewResponse",
+    "WorkoutStatsResponse",
     "get_class_rating_value",
     "get_coach_rating_value",
 ]
