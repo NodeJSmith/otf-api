@@ -20,6 +20,7 @@ from otf_api.cache import get_cache
 API_BASE_URL = "api.orangetheory.co"
 API_IO_BASE_URL = "api.orangetheory.io"
 API_TELEMETRY_BASE_URL = "api.yuzu.orangetheory.com"
+API_GATEWAY_BASE_URL = "api.gateway.orangetheory.com"
 HEADERS = {
     "content-type": "application/json",
     "accept": "application/json",

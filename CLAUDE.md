@@ -48,7 +48,7 @@ Tests require real OrangeTheory credentials. Set `OTF_EMAIL` and `OTF_PASSWORD` 
 
 ## API Versioning and Dual Endpoints
 
-OTF has two parallel API surfaces that return overlapping but structurally different data. Understanding which is which is critical before making changes.
+OTF has multiple API surfaces that return overlapping but structurally different data. Understanding which is which is critical before making changes.
 
 ### V1 ("member" API) vs V2 ("classes" API)
 
@@ -72,6 +72,19 @@ OTF has two parallel API surfaces that return overlapping but structurally diffe
 - **Studio data varies by endpoint**: The v1 bookings endpoint returns a minimal studio object. `get_classes` and `get_bookings` enrich it by fetching full `StudioDetail` via threaded calls to `/mobile/v1/studios/{uuid}`.
 - **`OtfClass` comes from the classes endpoint, not the bookings endpoint**: It's enriched with studio data post-fetch. The raw API response has a different studio shape than what the model exposes.
 
+### Gateway API ("consumer-mobile" / trends)
+
+A third API surface added in app v5.6.0, serving workout trends data.
+
+| Concept | Gateway |
+|---|---|
+| Base URL | `api.gateway.orangetheory.com` |
+| Client method | `gateway_request()` |
+| Endpoints | `GET /consumer-mobile/v1/users/me/workout-stats/{statsKey}`, `GET /consumer-mobile/v1/users/me/workout-stats/preview` |
+| Auth | Same Cognito bearer token as v1/v2 |
+| Response format | snake_case JSON (unlike the camelCase used by some v1/v2 endpoints) |
+| Available stat keys | `splat_points`, `average_hr`, `peak_hr`, `tread_top_speed`, `rower_500m_split_time`, `rower_top_power` |
+
 ### Two-layer architecture (Client → Api)
 
 Each domain has a `*Client` (raw HTTP, returns dicts) and a `*Api` (business logic, returns models):
@@ -80,8 +93,9 @@ Each domain has a `*Client` (raw HTTP, returns dicts) and a `*Api` (business log
 - `StudioClient` / `StudioApi` — raw HTTP calls vs typed studio operations
 - `WorkoutClient` / `WorkoutApi` — raw HTTP calls vs typed workout operations
 - `MemberClient` / `MemberApi` — raw HTTP calls vs typed member operations
+- `TrendClient` / `TrendApi` — raw HTTP calls vs typed workout trends/stats operations
 
-The `*Client` classes are internal; the `*Api` classes are what users interact with via `Otf.bookings`, `Otf.studios`, etc.
+The `*Client` classes are internal; the `*Api` classes are what users interact with via `Otf.bookings`, `Otf.studios`, `Otf.trends`, etc.
 
 ### Testing with fixtures
 
