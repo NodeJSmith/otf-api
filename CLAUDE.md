@@ -93,7 +93,7 @@ Each domain has a `*Client` (raw HTTP, returns dicts) and a `*Api` (business log
 - `StudioClient` / `StudioApi` — raw HTTP calls vs typed studio operations
 - `WorkoutClient` / `WorkoutApi` — raw HTTP calls vs typed workout operations
 - `MemberClient` / `MemberApi` — raw HTTP calls vs typed member operations
-- `TrendsClient` / `TrendsApi` — raw HTTP calls vs typed workout trends/stats operations
+- `TrendClient` / `TrendApi` — raw HTTP calls vs typed workout trends/stats operations
 
 The `*Client` classes are internal; the `*Api` classes are what users interact with via `Otf.bookings`, `Otf.studios`, `Otf.trends`, etc.
 
