@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.20.0](https://github.com/NodeJSmith/otf-api/compare/v0.19.0...v0.20.0) (2026-08-07)
+
+
+### Features
+
+* add workout trends API (gateway endpoints) ([#136](https://github.com/NodeJSmith/otf-api/issues/136)) ([a001cd6](https://github.com/NodeJSmith/otf-api/commit/a001cd6a6ab259ee828b4b2443cb1e72cefe55e0))
+
+
+### Bug Fixes
+
+* **ci:** resolve schema upload 404 on workflow_dispatch ([#134](https://github.com/NodeJSmith/otf-api/issues/134)) ([8d05954](https://github.com/NodeJSmith/otf-api/commit/8d059541a641246d569cff310e48390ffbb043f3))
+* remove component prefix from release-please tags and fix publish workflow ([#132](https://github.com/NodeJSmith/otf-api/issues/132)) ([56f7997](https://github.com/NodeJSmith/otf-api/commit/56f79978300cbdec4c595c41c97fd6a36ba955e8))
+
 ## [0.19.0](https://github.com/NodeJSmith/otf-api/compare/otf-api-v0.18.0...otf-api-v0.19.0) (2026-05-10)
 
 
