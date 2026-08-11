@@ -34,6 +34,7 @@ class Otf:
             user (OtfUser): The user to authenticate as.
         """
         client = OtfClient(user)
+        self._client = client
 
         self.bookings = BookingApi(self, client)
         self.members = MemberApi(self, client)
@@ -42,6 +43,21 @@ class Otf:
         self.trends = TrendApi(self, client)
 
         self._member: models.MemberDetail | None = None
+
+    def close(self) -> None:
+        """Close the underlying HTTP session.
+
+        Safe to call multiple times — subsequent calls are no-ops.
+        """
+        self._client.close()
+
+    def __enter__(self) -> "Otf":
+        """Enter the context manager."""
+        return self
+
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: object) -> None:
+        """Exit the context manager and close the HTTP session."""
+        self.close()
 
     @property
     def member_uuid(self) -> str:

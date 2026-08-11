@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 
 from otf_api.auth.auth import HttpxCognitoAuth, OtfCognito
 from otf_api.auth.utils import get_username_password
-from otf_api.exceptions import NoCredentialsError
+from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError
 
 LOGGER = getLogger(__name__)
 
@@ -18,6 +18,19 @@ def _log_initial_auth_error(e: ClientError, username: str | None) -> None:
         LOGGER.warning("Authentication failed — no account found for %s", username)
     else:
         LOGGER.exception("Failed to authenticate with Cognito")
+
+
+def _create_cognito(username: str | None, password: str | None, **kwargs: str | None) -> OtfCognito:
+    try:
+        return OtfCognito(username=username, password=password, **kwargs)
+    except NoCredentialsError:
+        raise
+    except ClientError as e:
+        _log_initial_auth_error(e, username)
+        raise OtfAuthenticationError(str(e)) from e
+    except Exception:
+        LOGGER.exception("Failed to authenticate with Cognito")
+        raise
 
 
 @attrs.define(init=False)
@@ -51,7 +64,7 @@ class OtfUser:
             NoCredentialsError: If neither username/password nor id/access tokens are provided.
         """
         try:
-            self.cognito = OtfCognito(
+            self.cognito = _create_cognito(
                 username=username,
                 password=password,
                 id_token=id_token,
@@ -61,20 +74,7 @@ class OtfUser:
         except NoCredentialsError:
             LOGGER.debug("No credentials provided, attempting to get them from environment or prompt user")
             username, password = get_username_password()
-            try:
-                self.cognito = OtfCognito(username=username, password=password)
-            except ClientError as e:
-                _log_initial_auth_error(e, username)
-                raise
-            except Exception:
-                LOGGER.exception("Failed to authenticate with Cognito")
-                raise
-        except ClientError as e:
-            _log_initial_auth_error(e, username)
-            raise
-        except Exception:
-            LOGGER.exception("Failed to authenticate with Cognito")
-            raise
+            self.cognito = _create_cognito(username=username, password=password)
 
         self.cognito_id = self.cognito.access_claims["sub"]
         self.member_uuid = self.cognito.id_claims["cognito:username"]

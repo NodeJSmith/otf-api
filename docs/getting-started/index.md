@@ -62,17 +62,18 @@ otf = Otf()  # Prompts for email and password if OTF_EMAIL/OTF_PASSWORD are not 
 ```python
 from otf_api import Otf
 
-otf = Otf()
+with Otf() as otf:
+    # Member info is loaded lazily on first access
+    print(f"Welcome, {otf.member.first_name}!")
+    print(f"Home studio: {otf.home_studio.name}")
 
-# Member info is loaded lazily on first access
-print(f"Welcome, {otf.member.first_name}!")
-print(f"Home studio: {otf.home_studio.name}")
-
-# Get upcoming classes at your home studio
-classes = otf.bookings.get_classes()
-for otf_class in classes[:5]:
-    print(f"  {otf_class.name} - {otf_class.starts_at}")
+    # Get upcoming classes at your home studio
+    classes = otf.bookings.get_classes()
+    for otf_class in classes[:5]:
+        print(f"  {otf_class.name} - {otf_class.starts_at}")
 ```
+
+`Otf` supports context management (`with` statement) for automatic cleanup of HTTP resources. You can also call `otf.close()` manually, or let the `atexit` handler clean up at process exit.
 
 ## Exploring the API
 

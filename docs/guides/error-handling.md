@@ -8,6 +8,8 @@ All exceptions raised by `otf-api` inherit from a single base class, making it s
 OtfError
 ├── OtfRequestError
 │   └── RetryableOtfRequestError
+├── OtfAuthenticationError
+├── OtfTransportError
 ├── BookingError
 │   ├── AlreadyBookedError
 │   ├── ConflictingBookingError
@@ -26,6 +28,8 @@ from otf_api.exceptions import (
     OtfError,
     OtfRequestError,
     RetryableOtfRequestError,
+    OtfAuthenticationError,
+    OtfTransportError,
     BookingError,
     AlreadyBookedError,
     ConflictingBookingError,
@@ -77,6 +81,35 @@ try:
 except RetryableOtfRequestError as e:
     # The request was retried but still failed
     print(f"Transient failure after retries: {e}")
+```
+
+### OtfAuthenticationError
+
+Raised when authentication with OTF fails — for example, invalid credentials. Wraps the underlying Cognito/botocore error so consumers don't need to import `botocore`.
+
+```python
+from otf_api import OtfUser
+from otf_api.exceptions import OtfAuthenticationError
+
+try:
+    user = OtfUser(username="bad@example.com", password="wrong")
+except OtfAuthenticationError as e:
+    print(f"Authentication failed: {e}")
+    # The original botocore.exceptions.ClientError is available as e.__cause__
+```
+
+### OtfTransportError
+
+Raised when a network-level error occurs (timeout, connection refused, DNS failure). The library retries transport errors automatically before raising. Wraps the underlying `httpx` exception so consumers don't need to import `httpx`.
+
+```python
+from otf_api.exceptions import OtfTransportError
+
+try:
+    otf.workouts.get_workouts()
+except OtfTransportError as e:
+    print(f"Network error: {e}")
+    # The original httpx exception is available as e.__cause__
 ```
 
 ### BookingError
