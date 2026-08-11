@@ -3,9 +3,10 @@
 from unittest.mock import MagicMock, PropertyMock, patch
 
 import pytest
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError, EndpointConnectionError, ParamValidationError
 
 from otf_api.auth.auth import NoCredentialsError, OtfCognito
+from otf_api.exceptions import OtfAuthenticationError, OtfConfigurationError, OtfTransportError
 
 from .conftest import fake_tokens
 
@@ -229,6 +230,64 @@ def test_check_token_not_authorized(mock_cache, mock_verify_token):
         cognito.check_token()
 
     mock_clear.assert_called_once()
+
+
+def test_check_token_other_client_error_raises_auth_error(mock_cache, mock_verify_token):
+    """check_token raises OtfAuthenticationError with a fixed, safe message for non-auth-expiry ClientErrors."""
+    mock_cache.write_token_data_to_cache({"access_token": _ACCESS_TOKEN, "id_token": "id", "refresh_token": "rt"})
+    mock_cache.write_device_data_to_cache({"device_key": "dk", "device_group_key": "dgk", "device_password": "dp"})
+
+    with patch("pycognito.Cognito.check_token", return_value=False):
+        cognito = OtfCognito(username="user@test.com")
+
+    error = _client_error("InternalErrorException", message="secret provider detail")
+    with (
+        patch("pycognito.Cognito.check_token", side_effect=error),
+        pytest.raises(OtfAuthenticationError) as exc_info,
+    ):
+        cognito.check_token()
+
+    assert str(exc_info.value) == "OTF authentication failed"
+    assert "secret provider detail" not in str(exc_info.value)
+    assert exc_info.value.__cause__ is error
+
+
+def test_check_token_connectivity_failure_raises_transport_error(mock_cache, mock_verify_token):
+    """check_token raises OtfTransportError with a fixed, safe message on refresh-time connectivity failures."""
+    mock_cache.write_token_data_to_cache({"access_token": _ACCESS_TOKEN, "id_token": "id", "refresh_token": "rt"})
+    mock_cache.write_device_data_to_cache({"device_key": "dk", "device_group_key": "dgk", "device_password": "dp"})
+
+    with patch("pycognito.Cognito.check_token", return_value=False):
+        cognito = OtfCognito(username="user@test.com")
+
+    error = EndpointConnectionError(endpoint_url="https://cognito-idp.example.com")
+    with (
+        patch("pycognito.Cognito.check_token", side_effect=error),
+        pytest.raises(OtfTransportError) as exc_info,
+    ):
+        cognito.check_token()
+
+    assert str(exc_info.value) == "OTF transport error"
+    assert exc_info.value.__cause__ is error
+
+
+def test_check_token_configuration_error_raises_configuration_error(mock_cache, mock_verify_token):
+    """check_token raises OtfConfigurationError with a fixed, safe message on non-transport BotoCoreErrors."""
+    mock_cache.write_token_data_to_cache({"access_token": _ACCESS_TOKEN, "id_token": "id", "refresh_token": "rt"})
+    mock_cache.write_device_data_to_cache({"device_key": "dk", "device_group_key": "dgk", "device_password": "dp"})
+
+    with patch("pycognito.Cognito.check_token", return_value=False):
+        cognito = OtfCognito(username="user@test.com")
+
+    error = ParamValidationError(report="bad params")
+    with (
+        patch("pycognito.Cognito.check_token", side_effect=error),
+        pytest.raises(OtfConfigurationError) as exc_info,
+    ):
+        cognito.check_token()
+
+    assert str(exc_info.value) == "OTF configuration error"
+    assert exc_info.value.__cause__ is error
 
 
 # ---------------------------------------------------------------------------

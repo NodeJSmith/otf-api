@@ -6,7 +6,7 @@ from datetime import datetime
 from functools import cached_property
 from logging import getLogger
 from time import sleep
-from typing import Any, ClassVar
+from typing import Any, ClassVar, NoReturn
 
 import httpx
 import jwt
@@ -16,12 +16,18 @@ from botocore.auth import SigV4Auth
 from botocore.awsrequest import AWSRequest
 from botocore.config import Config
 from botocore.credentials import Credentials
-from botocore.exceptions import ClientError
+from botocore.exceptions import BotoCoreError, ClientError, HTTPClientError
+from botocore.exceptions import ConnectionError as BotoConnectionError
 from pycognito import AWSSRP, Cognito
 from pycognito.aws_srp import generate_hash_device
 
 from otf_api.cache import get_cache
-from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError
+from otf_api.exceptions import (
+    NoCredentialsError,
+    OtfAuthenticationError,
+    OtfConfigurationError,
+    OtfTransportError,
+)
 
 if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_identity import CognitoIdentityClient
@@ -38,6 +44,33 @@ ID_POOL_ID = f"{REGION}:4943c880-fb02-4fd7-bc37-2f4c32ecb2a3"
 PROVIDER_KEY = f"cognito-idp.{REGION}.amazonaws.com/{USER_POOL_ID}"
 BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
 CACHE = get_cache()
+
+
+def raise_for_botocore_error(e: BotoCoreError, action: str) -> NoReturn:
+    """Log and re-raise a caught BotoCoreError as the correct public Otf* exception.
+
+    ClientError is a sibling of BotoCoreError, not a subclass, so this is never called for
+    API-level failures. ConnectionError and HTTPClientError are the two transport-failure
+    branches of BotoCoreError's hierarchy (connectivity, timeout, failure to reach an
+    already-resolved endpoint) — genuinely retryable, so they're reported as
+    OtfTransportError. Everything else under BotoCoreError (ParamValidationError,
+    ProfileNotFound, NoRegionError, etc.) is a configuration/validation failure that a
+    retry cannot fix, so it's reported as OtfConfigurationError.
+
+    Args:
+        e: The caught BotoCoreError.
+        action: Present-tense description of what was happening, for the log message
+            (e.g. "authenticating with Cognito").
+
+    Raises:
+        OtfTransportError: If e is a connectivity, timeout, or endpoint-connection failure.
+        OtfConfigurationError: If e is any other BotoCoreError.
+    """
+    if isinstance(e, BotoConnectionError | HTTPClientError):
+        LOGGER.exception("Transport error while %s", action)
+        raise OtfTransportError("OTF transport error") from e
+    LOGGER.exception("Configuration error while %s", action)
+    raise OtfConfigurationError("OTF configuration error") from e
 
 
 class OtfCognito(Cognito):
@@ -319,6 +352,9 @@ class OtfCognito(Cognito):
         Raises:
             AttributeError: If access_token is not set
             NoCredentialsError: If refresh token has expired
+            OtfAuthenticationError: If token refresh fails for another Cognito-reported reason
+            OtfTransportError: If a connectivity, timeout, or endpoint failure occurs during refresh
+            OtfConfigurationError: If a boto3/botocore configuration or validation failure occurs during refresh
 
         Returns:
             bool: True if the access_token has expired, False otherwise
@@ -330,7 +366,10 @@ class OtfCognito(Cognito):
                 LOGGER.warning("Tokens expired, attempting to login with username and password")
                 CACHE.clear()
                 raise NoCredentialsError("Cached tokens expired, please login again") from e
-            raise OtfAuthenticationError(str(e)) from e
+            LOGGER.exception("Failed to refresh Cognito tokens")
+            raise OtfAuthenticationError("OTF authentication failed") from e
+        except BotoCoreError as e:
+            raise_for_botocore_error(e, "refreshing Cognito tokens")
 
     def renew_access_token(self) -> None:
         """Sets a new access token on the User using the cached refresh token and device metadata.

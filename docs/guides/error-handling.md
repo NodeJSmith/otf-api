@@ -10,6 +10,7 @@ OtfError
 │   └── RetryableOtfRequestError
 ├── OtfAuthenticationError
 ├── OtfTransportError
+├── OtfConfigurationError
 ├── BookingError
 │   ├── AlreadyBookedError
 │   ├── ConflictingBookingError
@@ -30,6 +31,7 @@ from otf_api.exceptions import (
     RetryableOtfRequestError,
     OtfAuthenticationError,
     OtfTransportError,
+    OtfConfigurationError,
     BookingError,
     AlreadyBookedError,
     ConflictingBookingError,
@@ -110,6 +112,21 @@ try:
 except OtfTransportError as e:
     print(f"Network error: {e}")
     # The original httpx exception is available as e.__cause__
+```
+
+### OtfConfigurationError
+
+Raised when the underlying boto3/botocore client is misconfigured or invoked with invalid parameters — for example, an invalid `AWS_PROFILE` or a parameter validation failure. Unlike `OtfTransportError`, these failures are not retryable: retrying won't fix a bad configuration. Wraps the underlying `botocore` error so consumers don't need to import `botocore`.
+
+```python
+from otf_api import OtfUser
+from otf_api.exceptions import OtfConfigurationError
+
+try:
+    user = OtfUser(username="user@example.com", password="correct")
+except OtfConfigurationError as e:
+    print(f"Configuration error: {e}")
+    # The original botocore.exceptions.BotoCoreError is available as e.__cause__
 ```
 
 ### BookingError

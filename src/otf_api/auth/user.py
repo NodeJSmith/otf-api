@@ -1,9 +1,9 @@
 from logging import getLogger
 
 import attrs
-from botocore.exceptions import ClientError
+from botocore.exceptions import BotoCoreError, ClientError
 
-from otf_api.auth.auth import HttpxCognitoAuth, OtfCognito
+from otf_api.auth.auth import HttpxCognitoAuth, OtfCognito, raise_for_botocore_error
 from otf_api.auth.utils import get_username_password
 from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError
 
@@ -27,7 +27,9 @@ def _create_cognito(username: str | None, password: str | None, **kwargs: str | 
         raise
     except ClientError as e:
         _log_initial_auth_error(e, username)
-        raise OtfAuthenticationError(str(e)) from e
+        raise OtfAuthenticationError("OTF authentication failed") from e
+    except BotoCoreError as e:
+        raise_for_botocore_error(e, "authenticating with Cognito")
     except Exception:
         LOGGER.exception("Failed to authenticate with Cognito")
         raise

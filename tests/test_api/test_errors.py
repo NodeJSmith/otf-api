@@ -6,11 +6,17 @@ from unittest.mock import patch
 import httpx
 import pytest
 import respx
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError, EndpointConnectionError, ParamValidationError
 
 from otf_api.api.client import API_BASE_URL, OtfClient
 from otf_api.auth.user import OtfUser
-from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError, OtfError, OtfTransportError
+from otf_api.exceptions import (
+    NoCredentialsError,
+    OtfAuthenticationError,
+    OtfConfigurationError,
+    OtfError,
+    OtfTransportError,
+)
 
 
 def _make_client_error(code: str = "NotAuthorizedException", message: str = "bad creds") -> ClientError:
@@ -50,6 +56,17 @@ class TestOtfAuthenticationError:
             OtfUser()
 
         assert exc_info.value.__cause__ is error
+
+    def test_auth_error_message_is_fixed_and_safe(self):
+        error = _make_client_error(message="secret provider detail")
+        with (
+            patch("otf_api.auth.user.OtfCognito", side_effect=error),
+            pytest.raises(OtfAuthenticationError) as exc_info,
+        ):
+            OtfUser(username="test@example.com", password="wrong")
+
+        assert str(exc_info.value) == "OTF authentication failed"
+        assert "secret provider detail" not in str(exc_info.value)
 
     def test_auth_error_is_subclass_of_otf_error(self):
         assert issubclass(OtfAuthenticationError, OtfError)
@@ -94,3 +111,30 @@ class TestOtfTransportError:
 
     def test_transport_error_is_subclass_of_otf_error(self):
         assert issubclass(OtfTransportError, OtfError)
+
+    def test_construction_time_connectivity_failure_raises_transport_error(self):
+        error = EndpointConnectionError(endpoint_url="https://cognito-idp.example.com")
+        with (
+            patch("otf_api.auth.user.OtfCognito", side_effect=error),
+            pytest.raises(OtfTransportError) as exc_info,
+        ):
+            OtfUser(username="test@example.com", password="wrong")
+
+        assert str(exc_info.value) == "OTF transport error"
+        assert exc_info.value.__cause__ is error
+
+
+class TestOtfConfigurationError:
+    def test_construction_time_config_failure_raises_configuration_error(self):
+        error = ParamValidationError(report="bad params")
+        with (
+            patch("otf_api.auth.user.OtfCognito", side_effect=error),
+            pytest.raises(OtfConfigurationError) as exc_info,
+        ):
+            OtfUser(username="test@example.com", password="wrong")
+
+        assert str(exc_info.value) == "OTF configuration error"
+        assert exc_info.value.__cause__ is error
+
+    def test_configuration_error_is_subclass_of_otf_error(self):
+        assert issubclass(OtfConfigurationError, OtfError)
