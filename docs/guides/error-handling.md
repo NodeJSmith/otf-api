@@ -85,13 +85,14 @@ except RetryableOtfRequestError as e:
 
 ### OtfAuthenticationError
 
-Raised when authentication with OTF fails — for example, invalid credentials or an expired refresh token that can't be renewed. Wraps the underlying Cognito/botocore error so consumers don't need to import `botocore`.
+Raised when authentication with OTF fails — for example, invalid credentials. Wraps the underlying Cognito/botocore error so consumers don't need to import `botocore`.
 
 ```python
+from otf_api import OtfUser
 from otf_api.exceptions import OtfAuthenticationError
 
 try:
-    otf = Otf(username="bad@example.com", password="wrong")
+    user = OtfUser(username="bad@example.com", password="wrong")
 except OtfAuthenticationError as e:
     print(f"Authentication failed: {e}")
     # The original botocore.exceptions.ClientError is available as e.__cause__

@@ -1,5 +1,6 @@
 """Tests for public error wrapping (OtfAuthenticationError, OtfTransportError)."""
 
+from typing import Never
 from unittest.mock import patch
 
 import httpx
@@ -34,7 +35,7 @@ class TestOtfAuthenticationError:
         call_count = 0
         error = _make_client_error()
 
-        def cognito_side_effect(*args, **kwargs):
+        def cognito_side_effect(**kwargs: object) -> Never:
             nonlocal call_count
             call_count += 1
             if call_count == 1:
@@ -60,12 +61,10 @@ class TestOtfTransportError:
             client = OtfClient(user=mock_user)
 
         timeout_error = httpx.ReadTimeout("timed out")
-        with (
-            respx.mock(assert_all_called=False, assert_all_mocked=True) as router,
-            pytest.raises(OtfTransportError) as exc_info,
-        ):
+        with respx.mock(assert_all_called=False, assert_all_mocked=True) as router:
             router.get(f"https://{API_BASE_URL}/test").mock(side_effect=timeout_error)
-            client.do("GET", API_BASE_URL, "/test")
+            with pytest.raises(OtfTransportError) as exc_info:
+                client.do("GET", API_BASE_URL, "/test")
 
         assert exc_info.value.__cause__ is timeout_error
 
@@ -74,12 +73,10 @@ class TestOtfTransportError:
             client = OtfClient(user=mock_user)
 
         connect_error = httpx.ConnectError("connection refused")
-        with (
-            respx.mock(assert_all_called=False, assert_all_mocked=True) as router,
-            pytest.raises(OtfTransportError) as exc_info,
-        ):
+        with respx.mock(assert_all_called=False, assert_all_mocked=True) as router:
             router.get(f"https://{API_BASE_URL}/test").mock(side_effect=connect_error)
-            client.do("GET", API_BASE_URL, "/test")
+            with pytest.raises(OtfTransportError) as exc_info:
+                client.do("GET", API_BASE_URL, "/test")
 
         assert exc_info.value.__cause__ is connect_error
 
@@ -88,12 +85,10 @@ class TestOtfTransportError:
             client = OtfClient(user=mock_user)
 
         read_error = httpx.ReadError("connection reset")
-        with (
-            respx.mock(assert_all_called=False, assert_all_mocked=True) as router,
-            pytest.raises(OtfTransportError) as exc_info,
-        ):
+        with respx.mock(assert_all_called=False, assert_all_mocked=True) as router:
             router.get(f"https://{API_BASE_URL}/test").mock(side_effect=read_error)
-            client.do("GET", API_BASE_URL, "/test")
+            with pytest.raises(OtfTransportError) as exc_info:
+                client.do("GET", API_BASE_URL, "/test")
 
         assert exc_info.value.__cause__ is read_error
 

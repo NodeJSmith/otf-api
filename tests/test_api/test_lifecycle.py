@@ -2,6 +2,8 @@
 
 from unittest.mock import patch
 
+import pytest
+
 from otf_api.api.api import Otf
 
 
@@ -24,21 +26,20 @@ def test_otf_close_is_idempotent(mock_user):
 
 
 def test_otf_context_manager(mock_user):
-    with patch("otf_api.api.client.OtfUser", return_value=mock_user):
-        with Otf(user=mock_user) as otf:
-            session = otf._client.session
-            assert not session.is_closed
+    with patch("otf_api.api.client.OtfUser", return_value=mock_user), Otf(user=mock_user) as otf:
+        session = otf._client.session
+        assert not session.is_closed
 
     assert session.is_closed
 
 
 def test_otf_context_manager_closes_on_exception(mock_user):
-    with patch("otf_api.api.client.OtfUser", return_value=mock_user):
-        try:
-            with Otf(user=mock_user) as otf:
-                session = otf._client.session
-                raise ValueError("boom")
-        except ValueError:
-            pass
+    with (
+        patch("otf_api.api.client.OtfUser", return_value=mock_user),
+        pytest.raises(ValueError, match="boom"),
+        Otf(user=mock_user) as otf,
+    ):
+        session = otf._client.session
+        raise ValueError("boom")
 
     assert session.is_closed

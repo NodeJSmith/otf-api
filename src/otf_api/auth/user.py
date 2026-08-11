@@ -20,7 +20,7 @@ def _log_initial_auth_error(e: ClientError, username: str | None) -> None:
         LOGGER.exception("Failed to authenticate with Cognito")
 
 
-def _create_cognito(username: str | None, password: str | None, **kwargs) -> OtfCognito:
+def _create_cognito(username: str | None, password: str | None, **kwargs: str | None) -> OtfCognito:
     try:
         return OtfCognito(username=username, password=password, **kwargs)
     except NoCredentialsError:
