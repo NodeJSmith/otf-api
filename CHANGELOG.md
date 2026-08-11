@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.1](https://github.com/NodeJSmith/otf-api/compare/v0.21.0...v0.21.1) (2026-08-11)
+
+
+### Bug Fixes
+
+* **auth:** complete public error boundary in _create_cognito ([#142](https://github.com/NodeJSmith/otf-api/issues/142)) ([1c8321d](https://github.com/NodeJSmith/otf-api/commit/1c8321d6c58b7060be893fb2178af8414845922f))
+
 ## [0.21.0](https://github.com/NodeJSmith/otf-api/compare/v0.20.0...v0.21.0) (2026-08-11)
 
 
