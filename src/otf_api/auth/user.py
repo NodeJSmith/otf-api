@@ -1,11 +1,11 @@
 from logging import getLogger
 
 import attrs
-from botocore.exceptions import ClientError
+from botocore.exceptions import BotoCoreError, ClientError
 
 from otf_api.auth.auth import HttpxCognitoAuth, OtfCognito
 from otf_api.auth.utils import get_username_password
-from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError
+from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError, OtfTransportError
 
 LOGGER = getLogger(__name__)
 
@@ -27,7 +27,12 @@ def _create_cognito(username: str | None, password: str | None, **kwargs: str | 
         raise
     except ClientError as e:
         _log_initial_auth_error(e, username)
-        raise OtfAuthenticationError(str(e)) from e
+        raise OtfAuthenticationError("OTF authentication failed") from e
+    except BotoCoreError as e:
+        # ClientError is a sibling of BotoCoreError, not a subclass, so this branch only ever
+        # sees non-API failures (connectivity, timeout, endpoint resolution) during construction.
+        LOGGER.exception("Transport error while authenticating with Cognito")
+        raise OtfTransportError("OTF transport error") from e
     except Exception:
         LOGGER.exception("Failed to authenticate with Cognito")
         raise
