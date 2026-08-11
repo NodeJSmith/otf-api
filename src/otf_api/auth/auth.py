@@ -16,12 +16,12 @@ from botocore.auth import SigV4Auth
 from botocore.awsrequest import AWSRequest
 from botocore.config import Config
 from botocore.credentials import Credentials
-from botocore.exceptions import ClientError
+from botocore.exceptions import BotoCoreError, ClientError
 from pycognito import AWSSRP, Cognito
 from pycognito.aws_srp import generate_hash_device
 
 from otf_api.cache import get_cache
-from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError
+from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError, OtfTransportError
 
 if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_identity import CognitoIdentityClient
@@ -319,6 +319,8 @@ class OtfCognito(Cognito):
         Raises:
             AttributeError: If access_token is not set
             NoCredentialsError: If refresh token has expired
+            OtfAuthenticationError: If token refresh fails for another Cognito-reported reason
+            OtfTransportError: If a connectivity, timeout, or endpoint failure occurs during refresh
 
         Returns:
             bool: True if the access_token has expired, False otherwise
@@ -330,7 +332,13 @@ class OtfCognito(Cognito):
                 LOGGER.warning("Tokens expired, attempting to login with username and password")
                 CACHE.clear()
                 raise NoCredentialsError("Cached tokens expired, please login again") from e
-            raise OtfAuthenticationError(str(e)) from e
+            LOGGER.exception("Failed to refresh Cognito tokens")
+            raise OtfAuthenticationError("OTF authentication failed") from e
+        except BotoCoreError as e:
+            # ClientError is a sibling of BotoCoreError, not a subclass, so this branch only ever
+            # sees non-API failures (connectivity, timeout, endpoint resolution) during refresh.
+            LOGGER.exception("Transport error while refreshing Cognito tokens")
+            raise OtfTransportError("OTF transport error") from e
 
     def renew_access_token(self) -> None:
         """Sets a new access token on the User using the cached refresh token and device metadata.
