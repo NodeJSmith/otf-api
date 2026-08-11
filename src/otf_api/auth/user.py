@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 
 from otf_api.auth.auth import HttpxCognitoAuth, OtfCognito
 from otf_api.auth.utils import get_username_password
-from otf_api.exceptions import NoCredentialsError
+from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError
 
 LOGGER = getLogger(__name__)
 
@@ -65,13 +65,13 @@ class OtfUser:
                 self.cognito = OtfCognito(username=username, password=password)
             except ClientError as e:
                 _log_initial_auth_error(e, username)
-                raise
+                raise OtfAuthenticationError(str(e)) from e
             except Exception:
                 LOGGER.exception("Failed to authenticate with Cognito")
                 raise
         except ClientError as e:
             _log_initial_auth_error(e, username)
-            raise
+            raise OtfAuthenticationError(str(e)) from e
         except Exception:
             LOGGER.exception("Failed to authenticate with Cognito")
             raise

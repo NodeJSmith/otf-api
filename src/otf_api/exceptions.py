@@ -11,8 +11,10 @@ __all__ = [
     "ClassNotRatableError",
     "ConflictingBookingError",
     "NoCredentialsError",
+    "OtfAuthenticationError",
     "OtfError",
     "OtfRequestError",
+    "OtfTransportError",
     "OutsideSchedulingWindowError",
     "ResourceNotFoundError",
     "RetryableOtfRequestError",
@@ -82,6 +84,20 @@ class AlreadyRatedError(OtfError):
 
 class ClassNotRatableError(OtfError):
     """Raised when attempting to rate a class that is not ratable."""
+
+
+class OtfAuthenticationError(OtfError):
+    """Raised when Cognito authentication fails (e.g., invalid credentials).
+
+    The original error is available via ``__cause__``.
+    """
+
+
+class OtfTransportError(OtfError):
+    """Raised when a network-level error occurs (timeout, connection refused, etc.).
+
+    The original error is available via ``__cause__``.
+    """
 
 
 class NoCredentialsError(OtfError):

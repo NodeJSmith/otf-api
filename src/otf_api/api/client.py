@@ -53,7 +53,8 @@ class OtfClient:
             headers=HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
         )
         self.log_raw_response = os.getenv("OTF_LOG_RAW_RESPONSE", "false").lower() == "true"
-        atexit.register(self.session.close)
+        self._closed = False
+        atexit.register(self.close)
 
         if os.getenv("OTF_ANONYMIZE_RESPONSES", "false").lower() == "true":
             if not os.getenv("OTF_ANONYMIZE_SEED") and self.member_uuid:
@@ -61,6 +62,15 @@ class OtfClient:
                     os.environ["OTF_ANONYMIZE_SEED"] = str(int(self.member_uuid.replace("-", ""), 16) % (2**32))
             self._anonymize_hook = create_capture_hook()
             self.session.event_hooks["response"].append(self._anonymize_hook)
+
+    def close(self) -> None:
+        """Close the underlying HTTP session.
+
+        Safe to call multiple times — subsequent calls are no-ops.
+        """
+        if not self._closed:
+            self.session.close()
+            self._closed = True
 
     def __getstate__(self):
         """Get the state of the OtfClient instance for serialization."""
@@ -75,7 +85,8 @@ class OtfClient:
         self.session = httpx.Client(
             headers=HEADERS, auth=self.user.httpx_auth, timeout=httpx.Timeout(20.0, connect=60.0)
         )
-        atexit.register(self.session.close)
+        self._closed = False
+        atexit.register(self.close)
 
     def _build_request(
         self,
@@ -90,7 +101,7 @@ class OtfClient:
         return self.session.build_request(method, full_url, headers=headers, params=params, **kwargs)
 
     @retry(
-        retry=retry_if_exception_type((exc.RetryableOtfRequestError, httpx.TimeoutException, httpx.ConnectError)),
+        retry=retry_if_exception_type((exc.RetryableOtfRequestError, exc.OtfTransportError)),
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=4, max=10),
         reraise=True,
@@ -131,6 +142,9 @@ class OtfClient:
         except httpx.HTTPStatusError as e:
             json_data = get_json_from_response(e.response)
             self._map_http_error(json_data, e, e.response, request)
+        except httpx.TransportError as e:
+            LOGGER.warning("Transport error on %r %r: %s", request.method, request.url, e)
+            raise exc.OtfTransportError(str(e)) from e
         except Exception as e:
             LOGGER.exception("Unexpected error during %r %r: %s - %s", request.method, request.url, type(e).__name__, e)
             raise

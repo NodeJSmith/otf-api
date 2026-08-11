@@ -21,7 +21,7 @@ from pycognito import AWSSRP, Cognito
 from pycognito.aws_srp import generate_hash_device
 
 from otf_api.cache import get_cache
-from otf_api.exceptions import NoCredentialsError
+from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError
 
 if typing.TYPE_CHECKING:
     from mypy_boto3_cognito_identity import CognitoIdentityClient
@@ -330,7 +330,7 @@ class OtfCognito(Cognito):
                 LOGGER.warning("Tokens expired, attempting to login with username and password")
                 CACHE.clear()
                 raise NoCredentialsError("Cached tokens expired, please login again") from e
-            raise
+            raise OtfAuthenticationError(str(e)) from e
 
     def renew_access_token(self) -> None:
         """Sets a new access token on the User using the cached refresh token and device metadata.
