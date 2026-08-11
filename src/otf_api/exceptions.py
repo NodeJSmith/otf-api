@@ -12,6 +12,7 @@ __all__ = [
     "ConflictingBookingError",
     "NoCredentialsError",
     "OtfAuthenticationError",
+    "OtfConfigurationError",
     "OtfError",
     "OtfRequestError",
     "OtfTransportError",
@@ -97,6 +98,15 @@ class OtfTransportError(OtfError):
     """Raised when a network-level error occurs (timeout, connection refused, etc.).
 
     The original error is available via ``__cause__``.
+    """
+
+
+class OtfConfigurationError(OtfError):
+    """Raised when the boto3/botocore client is misconfigured or invoked with invalid parameters.
+
+    Covers non-network BotoCoreError failures (e.g. a missing AWS profile, an unresolvable region,
+    or a parameter validation error) that a retry cannot fix. The original error is available via
+    ``__cause__``.
     """
 
 
