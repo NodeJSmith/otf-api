@@ -1,6 +1,6 @@
 """Tests for public error wrapping (OtfAuthenticationError, OtfTransportError)."""
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import httpx
 import pytest
@@ -8,14 +8,8 @@ import respx
 from botocore.exceptions import ClientError
 
 from otf_api.api.client import API_BASE_URL, OtfClient
-from otf_api.exceptions import OtfAuthenticationError, OtfTransportError
-
-
-def _make_mock_user() -> MagicMock:
-    mock_user = MagicMock()
-    mock_user.member_uuid = "test-uuid"
-    mock_user.httpx_auth = None
-    return mock_user
+from otf_api.auth.user import OtfUser
+from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError, OtfError, OtfTransportError
 
 
 def _make_client_error(code: str = "NotAuthorizedException", message: str = "bad creds") -> ClientError:
@@ -32,8 +26,6 @@ class TestOtfAuthenticationError:
             patch("otf_api.auth.user.OtfCognito", side_effect=error),
             pytest.raises(OtfAuthenticationError) as exc_info,
         ):
-            from otf_api.auth.user import OtfUser
-
             OtfUser(username="test@example.com", password="wrong")
 
         assert exc_info.value.__cause__ is error
@@ -46,8 +38,6 @@ class TestOtfAuthenticationError:
             nonlocal call_count
             call_count += 1
             if call_count == 1:
-                from otf_api.exceptions import NoCredentialsError
-
                 raise NoCredentialsError("no creds")
             raise error
 
@@ -56,21 +46,16 @@ class TestOtfAuthenticationError:
             patch("otf_api.auth.user.get_username_password", return_value=("env@test.com", "pass")),
             pytest.raises(OtfAuthenticationError) as exc_info,
         ):
-            from otf_api.auth.user import OtfUser
-
             OtfUser()
 
         assert exc_info.value.__cause__ is error
 
     def test_auth_error_is_subclass_of_otf_error(self):
-        from otf_api.exceptions import OtfError
-
         assert issubclass(OtfAuthenticationError, OtfError)
 
 
 class TestOtfTransportError:
-    def test_timeout_raises_transport_error(self):
-        mock_user = _make_mock_user()
+    def test_timeout_raises_transport_error(self, mock_user):
         with patch("otf_api.api.client.OtfUser", return_value=mock_user):
             client = OtfClient(user=mock_user)
 
@@ -84,8 +69,7 @@ class TestOtfTransportError:
 
         assert exc_info.value.__cause__ is timeout_error
 
-    def test_connect_error_raises_transport_error(self):
-        mock_user = _make_mock_user()
+    def test_connect_error_raises_transport_error(self, mock_user):
         with patch("otf_api.api.client.OtfUser", return_value=mock_user):
             client = OtfClient(user=mock_user)
 
@@ -99,8 +83,7 @@ class TestOtfTransportError:
 
         assert exc_info.value.__cause__ is connect_error
 
-    def test_read_error_raises_transport_error(self):
-        mock_user = _make_mock_user()
+    def test_read_error_raises_transport_error(self, mock_user):
         with patch("otf_api.api.client.OtfUser", return_value=mock_user):
             client = OtfClient(user=mock_user)
 
@@ -115,6 +98,4 @@ class TestOtfTransportError:
         assert exc_info.value.__cause__ is read_error
 
     def test_transport_error_is_subclass_of_otf_error(self):
-        from otf_api.exceptions import OtfError
-
         assert issubclass(OtfTransportError, OtfError)

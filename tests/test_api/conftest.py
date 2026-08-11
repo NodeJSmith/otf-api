@@ -69,6 +69,12 @@ _MEMOIZED_METHODS: list[tuple[type, str]] = [
 
 
 @pytest.fixture()
+def mock_user():
+    """Yield a mock OtfUser that bypasses Cognito auth."""
+    return _make_mock_user()
+
+
+@pytest.fixture()
 def mock_router():
     """Yield a started respx MockRouter with all fixture routes registered."""
     router = respx.MockRouter(assert_all_called=False, assert_all_mocked=True)

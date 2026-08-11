@@ -20,6 +20,19 @@ def _log_initial_auth_error(e: ClientError, username: str | None) -> None:
         LOGGER.exception("Failed to authenticate with Cognito")
 
 
+def _create_cognito(username: str | None, password: str | None, **kwargs) -> OtfCognito:
+    try:
+        return OtfCognito(username=username, password=password, **kwargs)
+    except NoCredentialsError:
+        raise
+    except ClientError as e:
+        _log_initial_auth_error(e, username)
+        raise OtfAuthenticationError(str(e)) from e
+    except Exception:
+        LOGGER.exception("Failed to authenticate with Cognito")
+        raise
+
+
 @attrs.define(init=False)
 class OtfUser:
     """OtfUser is a thin wrapper around OtfCognito, meant to hide all of the gory details from end users."""
@@ -51,7 +64,7 @@ class OtfUser:
             NoCredentialsError: If neither username/password nor id/access tokens are provided.
         """
         try:
-            self.cognito = OtfCognito(
+            self.cognito = _create_cognito(
                 username=username,
                 password=password,
                 id_token=id_token,
@@ -61,20 +74,7 @@ class OtfUser:
         except NoCredentialsError:
             LOGGER.debug("No credentials provided, attempting to get them from environment or prompt user")
             username, password = get_username_password()
-            try:
-                self.cognito = OtfCognito(username=username, password=password)
-            except ClientError as e:
-                _log_initial_auth_error(e, username)
-                raise OtfAuthenticationError(str(e)) from e
-            except Exception:
-                LOGGER.exception("Failed to authenticate with Cognito")
-                raise
-        except ClientError as e:
-            _log_initial_auth_error(e, username)
-            raise OtfAuthenticationError(str(e)) from e
-        except Exception:
-            LOGGER.exception("Failed to authenticate with Cognito")
-            raise
+            self.cognito = _create_cognito(username=username, password=password)
 
         self.cognito_id = self.cognito.access_claims["sub"]
         self.member_uuid = self.cognito.id_claims["cognito:username"]
