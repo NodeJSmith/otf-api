@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.0](https://github.com/NodeJSmith/otf-api/compare/v0.20.0...v0.21.0) (2026-08-11)
+
+
+### Features
+
+* add client lifecycle management and stable auth/transport errors ([#139](https://github.com/NodeJSmith/otf-api/issues/139)) ([17e6aed](https://github.com/NodeJSmith/otf-api/commit/17e6aedf3dd6c23eee844f3425fe6f05fcdacf18))
+
 ## [0.20.0](https://github.com/NodeJSmith/otf-api/compare/v0.19.0...v0.20.0) (2026-08-07)
 
 
