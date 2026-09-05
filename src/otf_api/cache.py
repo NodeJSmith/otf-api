@@ -1,5 +1,7 @@
+import stat
 from importlib.metadata import version
 from logging import getLogger
+from pathlib import Path
 
 from diskcache import Cache
 from packaging.version import Version
@@ -118,8 +120,30 @@ def get_cache_dir() -> str:
     return cache_dir
 
 
+def _ensure_secure_directory(path: str) -> None:
+    """Create the cache directory with restrictive permissions (owner-only access).
+
+    On systems that support it, sets the directory to mode 0700. On Windows
+    or other systems where chmod is a no-op, this is best-effort.
+
+    Args:
+        path: The directory path to create and secure.
+    """
+    Path(path).mkdir(mode=0o700, parents=True, exist_ok=True)
+
+    # Ensure permissions are correct even if the directory already existed
+    # with more permissive settings (e.g., from a previous version).
+    try:
+        Path(path).chmod(stat.S_IRWXU)  # 0700: owner read/write/execute only
+    except OSError:
+        LOGGER.warning("Could not set restrictive permissions on cache directory: %s", path)
+
+
 def get_cache() -> OtfCache:
     """Returns the cache instance, creating it if it does not exist.
+
+    Creates the cache directory with owner-only permissions (0700) to prevent
+    other local users from reading cached authentication tokens.
 
     Returns:
         Cache: The cache instance.
@@ -127,6 +151,7 @@ def get_cache() -> OtfCache:
     global _CACHE
     if _CACHE is None:
         cache_dir = get_cache_dir()
+        _ensure_secure_directory(cache_dir)
         LOGGER.debug("Using cache directory: %s", cache_dir)
         _CACHE = OtfCache(cache_dir)
     return _CACHE

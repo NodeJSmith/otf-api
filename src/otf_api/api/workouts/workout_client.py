@@ -4,6 +4,7 @@ from logging import getLogger
 from typing import Any
 
 from otf_api.api.client import API_IO_BASE_URL, API_TELEMETRY_BASE_URL, CACHE, OtfClient
+from otf_api.api.utils import validate_identifier
 
 LOGGER = getLogger(__name__)
 
@@ -49,6 +50,7 @@ class WorkoutClient:
     @CACHE.memoize(expire=600, tag="performance_summary")
     def get_performance_summary(self, performance_summary_id: str) -> dict:
         """Retrieve raw performance summary data."""
+        performance_summary_id = validate_identifier(performance_summary_id, "performance_summary_id")
         return self.performance_summary_request("GET", f"/v1/performance-summaries/{performance_summary_id}")
 
     def get_hr_history_raw(self) -> dict:
@@ -60,6 +62,7 @@ class WorkoutClient:
     @CACHE.memoize(expire=600, tag="telemetry")
     def get_telemetry(self, performance_summary_id: str, max_data_points: int = 150) -> dict:
         """Retrieve raw telemetry data."""
+        performance_summary_id = validate_identifier(performance_summary_id, "performance_summary_id")
         data = self.telemetry_request(
             "GET",
             "/v1/performance/summary",

@@ -2,6 +2,7 @@ import typing
 from logging import getLogger
 from typing import Any
 
+from otf_api import exceptions as exc
 from otf_api import models
 
 from .member_client import MemberClient
@@ -114,6 +115,34 @@ class MemberApi:
         new_settings = self.get_email_notification_settings()
         return new_settings
 
+    @staticmethod
+    def _validate_name(value: str, field_name: str) -> str:
+        """Validate a name field before sending to the API.
+
+        Guards against control characters, HTML injection, and unreasonable
+        lengths that the API's weak validation layer may accept.
+
+        Args:
+            value: The name string to validate.
+            field_name: Human-readable field name for error messages.
+
+        Returns:
+            The stripped, validated name string.
+
+        Raises:
+            ValueError: If the name is invalid.
+        """
+        value = value.strip()
+        if not value:
+            raise ValueError(f"{field_name} must not be empty after stripping whitespace")
+        if len(value) > 50:
+            raise ValueError(f"{field_name} is too long ({len(value)} chars, max 50)")
+        if any(c < " " and c not in ("\t",) for c in value):
+            raise ValueError(f"{field_name} contains control characters")
+        if "<" in value or ">" in value:
+            raise ValueError(f"{field_name} contains HTML-like characters")
+        return value
+
     def update_member_name(self, first_name: str | None = None, last_name: str | None = None) -> models.MemberDetail:
         """Update the member's name. Will return the original member details if no names are provided.
 
@@ -140,6 +169,9 @@ class MemberApi:
         if last_name is None:
             raise ValueError("Last name is required")
 
+        first_name = self._validate_name(first_name, "first_name")
+        last_name = self._validate_name(last_name, "last_name")
+
         res = self.client.put_member_name(first_name, last_name)
 
         return models.MemberDetail.create(**res, api=self.otf)
@@ -156,7 +188,26 @@ class MemberApi:
         home_studio_uuid = data["homeStudio"]["studioUUId"]
         data["home_studio"] = self.otf.studios.get_studio_detail(home_studio_uuid)
 
-        return models.MemberDetail.create(**data, api=self.otf)
+        member = models.MemberDetail.create(**data, api=self.otf)
+
+        # Verify the API returned data for the authenticated user, not someone else.
+        # This guards against potential IDOR vulnerabilities in the v1 API which uses
+        # explicit member UUIDs in request paths rather than token-derived identity.
+        expected_uuid = self.client.member_uuid
+        if hasattr(member, "member_uuid") and member.member_uuid != expected_uuid:
+            LOGGER.error(
+                "API returned member data for %s but authenticated as %s — possible IDOR",
+                member.member_uuid,
+                expected_uuid,
+            )
+            raise exc.OtfRequestError(
+                "API returned data for a different member than authenticated",
+                original_exception=None,
+                response=None,  # type: ignore[arg-type]
+                request=None,  # type: ignore[arg-type]
+            )
+
+        return member
 
     def get_member_membership(self) -> models.MemberMembership:
         """Get the member's membership details.

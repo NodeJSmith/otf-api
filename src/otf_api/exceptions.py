@@ -33,11 +33,38 @@ class OtfRequestError(OtfError):
     response: "Response"
     request: "Request"
 
+    # Headers to redact from stored request objects to prevent credential leakage
+    # when exceptions are logged or sent to error-reporting services.
+    _SENSITIVE_HEADERS = frozenset({"authorization", "x-amz-security-token", "x-amz-date"})
+
     def __init__(self, message: str, original_exception: Exception | None, response: "Response", request: "Request"):
         super().__init__(message)
         self.original_exception = original_exception
         self.response = response
-        self.request = request
+        self.request = self._sanitize_request(request)
+
+    @classmethod
+    def _sanitize_request(cls, request: "Request | None") -> "Request | None":
+        """Return a copy of the request with sensitive headers redacted.
+
+        This prevents credential leakage when exceptions are logged or sent
+        to error-reporting services. Returns None if no request is provided.
+        """
+        if request is None:
+            return None
+
+        import httpx
+
+        sanitized_headers = dict(request.headers)
+        for header in cls._SENSITIVE_HEADERS:
+            if header in sanitized_headers:
+                sanitized_headers[header] = "[REDACTED]"
+
+        return httpx.Request(
+            method=request.method,
+            url=request.url,
+            headers=sanitized_headers,
+        )
 
 
 class RetryableOtfRequestError(OtfRequestError):

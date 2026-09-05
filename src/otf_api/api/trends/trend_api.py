@@ -32,7 +32,7 @@ class TrendApi:
 
     def get_workout_stats(
         self,
-        trend_type: TrendType | str,
+        trend_type: TrendType,
         start_date: date | str | None = None,
         end_date: date | str | None = None,
     ) -> WorkoutStatsResponse:

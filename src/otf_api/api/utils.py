@@ -1,3 +1,4 @@
+import re
 import typing
 from datetime import date, datetime, time, timedelta
 from json import JSONDecodeError
@@ -15,6 +16,35 @@ if typing.TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 MIN_TIME = datetime.min.time()
+
+_UNSAFE_PATH_CHARS = re.compile(r"[/\\\x00%\s]")
+
+
+def validate_identifier(value: str, name: str) -> str:
+    """Validate that a string is safe to use as a URL path segment.
+
+    Rejects values containing path separators, traversal sequences, null bytes,
+    percent-encoding, and whitespace to prevent path injection.
+
+    Args:
+        value: The identifier string to validate.
+        name: Human-readable name of the parameter (for error messages).
+
+    Returns:
+        The validated string, unchanged.
+
+    Raises:
+        ValueError: If the string is empty, too long, or contains unsafe characters.
+    """
+    if not value:
+        raise ValueError(f"{name} must not be empty")
+    if len(value) > 200:
+        raise ValueError(f"{name} is too long ({len(value)} chars, max 200)")
+    if ".." in value:
+        raise ValueError(f"{name} contains path traversal sequence")
+    if _UNSAFE_PATH_CHARS.search(value):
+        raise ValueError(f"{name} contains unsafe characters for a URL path segment")
+    return value
 
 
 def get_studio_uuid_list(
@@ -142,10 +172,10 @@ def get_booking_uuid(booking_or_uuid: str | Booking) -> str:
         TypeError: If the input is not a string or Booking object.
     """
     if isinstance(booking_or_uuid, str):
-        return booking_or_uuid
+        return validate_identifier(booking_or_uuid, "booking_uuid")
 
     if isinstance(booking_or_uuid, Booking):
-        return booking_or_uuid.booking_uuid
+        return validate_identifier(booking_or_uuid.booking_uuid, "booking_uuid")
 
     raise TypeError(f"Expected Booking or str, got {type(booking_or_uuid)}")
 
@@ -163,10 +193,10 @@ def get_booking_id(booking_or_id: str | BookingV2) -> str:
         TypeError: If the input is not a string or BookingV2 object.
     """
     if isinstance(booking_or_id, str):
-        return booking_or_id
+        return validate_identifier(booking_or_id, "booking_id")
 
     if isinstance(booking_or_id, BookingV2):
-        return booking_or_id.booking_id
+        return validate_identifier(booking_or_id.booking_id, "booking_id")
 
     raise TypeError(f"Expected BookingV2 or str, got {type(booking_or_id)}")
 
@@ -186,12 +216,12 @@ def get_class_uuid(class_or_uuid: "str | OtfClass | BookingV2Class") -> str:
 
     """
     if isinstance(class_or_uuid, str):
-        return class_or_uuid
+        return validate_identifier(class_or_uuid, "class_uuid")
 
     if hasattr(class_or_uuid, "class_uuid"):
         class_uuid = getattr(class_or_uuid, "class_uuid", None)
         if class_uuid:
-            return class_uuid
+            return validate_identifier(class_uuid, "class_uuid")
         raise ValueError("Class does not have a class_uuid")
 
     raise TypeError(f"Expected OtfClass, BookingV2Class, or str, got {type(class_or_uuid)}")
@@ -210,10 +240,10 @@ def get_class_id(class_or_id: str | BookingV2Class) -> str:
         TypeError: If the input is not a string or BookingV2Class.
     """
     if isinstance(class_or_id, str):
-        return class_or_id
+        return validate_identifier(class_or_id, "class_id")
 
     if isinstance(class_or_id, BookingV2Class):
-        return class_or_id.class_id
+        return validate_identifier(class_or_id.class_id, "class_id")
 
     raise TypeError(f"Expected BookingV2Class or str, got {type(class_or_id)}")
 

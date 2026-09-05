@@ -29,6 +29,10 @@ HEADERS = {
 CACHE = get_cache()
 LOGGER = getLogger(__name__)
 
+# Maximum response body size (bytes) the library will attempt to parse.
+# Protects against OOM from unexpectedly large API responses.
+MAX_RESPONSE_SIZE = 10 * 1024 * 1024  # 10 MB
+
 
 class OtfClient:
     """Client for interacting with the OTF API - generally to be used by the Otf class.
@@ -232,6 +236,22 @@ class OtfClient:
 
             LOGGER.debug("No content returned from %s %s", method, response.url)
             return None
+
+        content_length = len(response.content)
+        if content_length > MAX_RESPONSE_SIZE:
+            LOGGER.error(
+                "Response from %s %s exceeds size limit (%d bytes, max %d)",
+                method,
+                response.url,
+                content_length,
+                MAX_RESPONSE_SIZE,
+            )
+            raise exc.OtfRequestError(
+                f"Response too large ({content_length} bytes, max {MAX_RESPONSE_SIZE})",
+                original_exception=None,
+                response=response,
+                request=request,
+            )
 
         try:
             json_data = response.json()
