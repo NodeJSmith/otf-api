@@ -32,7 +32,7 @@ class TrendApi:
 
     def get_workout_stats(
         self,
-        trend_type: TrendType,
+        trend_type: TrendType | str,
         start_date: date | str | None = None,
         end_date: date | str | None = None,
     ) -> WorkoutStatsResponse:
@@ -46,16 +46,13 @@ class TrendApi:
         Returns:
             WorkoutStatsResponse: The stat data with individual data points per workout.
         """
-        if not isinstance(trend_type, TrendType):
-            raise TypeError(f"trend_type must be a TrendType enum member, got {type(trend_type).__name__}")
-
         start = utils.ensure_date(start_date) or pendulum.today().subtract(days=90).date()
         end = utils.ensure_date(end_date) or pendulum.today().date()
 
         start_str = pendulum.instance(pendulum.datetime(start.year, start.month, start.day)).to_iso8601_string()
         end_str = pendulum.instance(pendulum.datetime(end.year, end.month, end.day, 23, 59, 59)).to_iso8601_string()
 
-        stats_key = str(trend_type)
+        stats_key = utils.validate_identifier(str(trend_type), "stats_key")
         data = self.client.get_workout_stats(stats_key, start_str, end_str)
         return WorkoutStatsResponse(**data)
 

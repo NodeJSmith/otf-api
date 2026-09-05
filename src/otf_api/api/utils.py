@@ -17,6 +17,7 @@ LOGGER = getLogger(__name__)
 
 MIN_TIME = datetime.min.time()
 
+_MAX_IDENTIFIER_LENGTH = 200
 _UNSAFE_PATH_CHARS = re.compile(r"[/\\\x00%\s]")
 
 
@@ -38,8 +39,8 @@ def validate_identifier(value: str, name: str) -> str:
     """
     if not value:
         raise ValueError(f"{name} must not be empty")
-    if len(value) > 200:
-        raise ValueError(f"{name} is too long ({len(value)} chars, max 200)")
+    if len(value) > _MAX_IDENTIFIER_LENGTH:
+        raise ValueError(f"{name} is too long ({len(value)} chars, max {_MAX_IDENTIFIER_LENGTH})")
     if ".." in value:
         raise ValueError(f"{name} contains path traversal sequence")
     if _UNSAFE_PATH_CHARS.search(value):

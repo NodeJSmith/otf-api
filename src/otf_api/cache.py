@@ -1,4 +1,3 @@
-import stat
 from importlib.metadata import version
 from logging import getLogger
 from pathlib import Path
@@ -12,6 +11,7 @@ DEVICE_KEYS = ["device_key", "device_group_key", "device_password"]
 TOKEN_KEYS = ["access_token", "id_token", "refresh_token"]
 
 LOGGER = getLogger(__name__)
+_CACHE_DIR_MODE = 0o700
 
 
 class OtfCache(Cache):
@@ -120,7 +120,7 @@ def get_cache_dir() -> str:
     return cache_dir
 
 
-def _ensure_secure_directory(path: str) -> None:
+def ensure_secure_directory(path: str) -> None:
     """Create the cache directory with restrictive permissions (owner-only access).
 
     On systems that support it, sets the directory to mode 0700. On Windows
@@ -129,12 +129,12 @@ def _ensure_secure_directory(path: str) -> None:
     Args:
         path: The directory path to create and secure.
     """
-    Path(path).mkdir(mode=0o700, parents=True, exist_ok=True)
+    Path(path).mkdir(mode=_CACHE_DIR_MODE, parents=True, exist_ok=True)
 
     # Ensure permissions are correct even if the directory already existed
     # with more permissive settings (e.g., from a previous version).
     try:
-        Path(path).chmod(stat.S_IRWXU)  # 0700: owner read/write/execute only
+        Path(path).chmod(_CACHE_DIR_MODE)
     except OSError:
         LOGGER.warning("Could not set restrictive permissions on cache directory: %s", path)
 
@@ -151,7 +151,7 @@ def get_cache() -> OtfCache:
     global _CACHE
     if _CACHE is None:
         cache_dir = get_cache_dir()
-        _ensure_secure_directory(cache_dir)
+        ensure_secure_directory(cache_dir)
         LOGGER.debug("Using cache directory: %s", cache_dir)
         _CACHE = OtfCache(cache_dir)
     return _CACHE

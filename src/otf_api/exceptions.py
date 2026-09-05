@@ -1,9 +1,4 @@
-import typing
-
 import httpx
-
-if typing.TYPE_CHECKING:
-    from httpx import Request, Response
 
 __all__ = [
     "AlreadyBookedError",
@@ -32,8 +27,8 @@ class OtfRequestError(OtfError):
     """Raised when an error occurs while making a request to the OTF API."""
 
     original_exception: Exception | None
-    response: "Response | None"
-    request: "Request | None"
+    response: httpx.Response
+    request: httpx.Request
 
     # Headers to redact from stored request objects to prevent credential leakage
     # when exceptions are logged or sent to error-reporting services.
@@ -43,8 +38,8 @@ class OtfRequestError(OtfError):
         self,
         message: str,
         original_exception: Exception | None,
-        response: "Response | None",
-        request: "Request | None",
+        response: httpx.Response,
+        request: httpx.Request,
     ):
         super().__init__(message)
         self.original_exception = original_exception
@@ -52,15 +47,12 @@ class OtfRequestError(OtfError):
         self.request = self._sanitize_request(request)
 
     @classmethod
-    def _sanitize_request(cls, request: "Request | None") -> "Request | None":
+    def _sanitize_request(cls, request: httpx.Request) -> httpx.Request:
         """Return a copy of the request with sensitive headers redacted.
 
         This prevents credential leakage when exceptions are logged or sent
-        to error-reporting services. Returns None if no request is provided.
+        to error-reporting services.
         """
-        if request is None:
-            return None
-
         sanitized_headers = dict(request.headers)
         for header in cls._SENSITIVE_HEADERS:
             if header in sanitized_headers:

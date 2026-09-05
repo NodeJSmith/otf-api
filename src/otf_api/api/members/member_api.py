@@ -2,10 +2,11 @@ import typing
 from logging import getLogger
 from typing import Any
 
-from otf_api import exceptions as exc
 from otf_api import models
 
 from .member_client import MemberClient
+
+_MAX_NAME_LENGTH = 50
 
 if typing.TYPE_CHECKING:
     from otf_api import Otf
@@ -116,15 +117,15 @@ class MemberApi:
         return new_settings
 
     @staticmethod
-    def _validate_name(value: str, field_name: str) -> str:
+    def validate_name(value: str, name: str) -> str:
         """Validate a name field before sending to the API.
 
-        Guards against control characters, HTML injection, and unreasonable
-        lengths that the API's weak validation layer may accept.
+        Guards against control characters and unreasonable lengths that the
+        API's weak validation layer may accept.
 
         Args:
             value: The name string to validate.
-            field_name: Human-readable field name for error messages.
+            name: Human-readable name of the parameter (for error messages).
 
         Returns:
             The stripped, validated name string.
@@ -134,13 +135,12 @@ class MemberApi:
         """
         value = value.strip()
         if not value:
-            raise ValueError(f"{field_name} must not be empty after stripping whitespace")
-        if len(value) > 50:
-            raise ValueError(f"{field_name} is too long ({len(value)} chars, max 50)")
+            raise ValueError(f"{name} must not be empty after stripping whitespace")
+        if len(value) > _MAX_NAME_LENGTH:
+            raise ValueError(f"{name} is too long ({len(value)} chars, max {_MAX_NAME_LENGTH})")
+        # ASCII control characters (below space, except tab)
         if any(ord(c) < 32 and c != "\t" for c in value):
-            raise ValueError(f"{field_name} contains control characters")
-        if "<" in value or ">" in value:
-            raise ValueError(f"{field_name} contains HTML-like characters")
+            raise ValueError(f"{name} contains control characters")
         return value
 
     def update_member_name(self, first_name: str | None = None, last_name: str | None = None) -> models.MemberDetail:
@@ -169,8 +169,8 @@ class MemberApi:
         if last_name is None:
             raise ValueError("Last name is required")
 
-        first_name = self._validate_name(first_name, "first_name")
-        last_name = self._validate_name(last_name, "last_name")
+        first_name = self.validate_name(first_name, "first_name")
+        last_name = self.validate_name(last_name, "last_name")
 
         res = self.client.put_member_name(first_name, last_name)
 
@@ -190,22 +190,16 @@ class MemberApi:
 
         member = models.MemberDetail.create(**data, api=self.otf)
 
-        # Verify the API returned data for the authenticated user, not someone else.
-        # This guards against potential IDOR vulnerabilities in the v1 API which uses
-        # explicit member UUIDs in request paths rather than token-derived identity.
+        # Sanity-check that the response matches the request — the v1 API uses
+        # explicit member UUIDs in paths rather than token-derived identity.
         expected_uuid = self.client.member_uuid
         if member.member_uuid != expected_uuid:
             LOGGER.error(
-                "API returned member data for %s but authenticated as %s — possible IDOR",
+                "API returned member data for %s but authenticated as %s",
                 member.member_uuid,
                 expected_uuid,
             )
-            raise exc.OtfRequestError(
-                "API returned data for a different member than authenticated",
-                original_exception=None,
-                response=None,
-                request=None,
-            )
+            raise ValueError(f"API returned data for member {member.member_uuid}, expected {expected_uuid}")
 
         return member
 
