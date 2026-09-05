@@ -20,15 +20,27 @@ directly-callable method) does not call `utils.get_booking_uuid` before forwardi
 specific method when reviewing future diffs — if still unpatched, it's a real gap, not a false
 positive.
 
-**Also flagged in the same diff:** `TrendClient.get_workout_stats` closes the same class of gap
-by narrowing `TrendApi.get_workout_stats`'s `trend_type` param from `TrendType | str` to
-`TrendType` instead of calling `validate_identifier` — a different (breaking) technique for the
-same problem. Worth checking whether this was reconciled to the `validate_identifier` pattern or
-left as an enum-only breaking change.
+**Resolved (as of 2026-09-05, branch `security/client-hardening`):** `TrendApi.get_workout_stats`
+now does both — enforces `isinstance(trend_type, TrendType)` (raising `TypeError`, matching the
+`get_booking_id`/`get_class_uuid`-style "Expected X or str" convention in `api/utils.py`) *and*
+still runs `trend_type.value` through `utils.validate_identifier` before it reaches the client.
+Reconciled, not a parallel technique.
 
-**Also flagged:** `OtfRequestError.response`/`.request` are typed non-Optional and one existing
-catch site (`booking_api.py` `post_class_rating`, `except OtfRequestError as e: e.response.status_code`)
-relies on that being true. `MemberApi.get_member_detail`'s new IDOR guard raises
-`OtfRequestError(response=None, request=None)`, violating that invariant. Check whether the type
-was ever changed to `Response | None` / `Request | None` with consumers updated, or whether this
-call site was given a synthetic Response/Request instead.
+**Resolved:** `OtfRequestError(response=None, request=None)` call site is gone — grep for
+`response=None` / `request=None` across `src/otf_api` turns up nothing. `response`/`request`
+stay typed non-Optional.
+
+**New in the same hardening pass:** `OtfRequestError.__init__` now mutates the *caller-supplied*
+`response`/`original_exception` objects in place (`self.response.request = sanitized_request`,
+`self.original_exception.request = sanitized_request`) so that downstream code holding the same
+reference (e.g. `anonymize/hooks.py`, which reads `response.request` for logging) doesn't see the
+unsanitized request. This is a deliberate, load-bearing exception to the "never mutate existing
+objects" rule — the leak isn't closed otherwise, since `self.request` alone doesn't cover
+`response.request`/`original_exception.request`. Flag it as intentional if seen again, not a fresh
+violation.
+
+**Tooling gap:** `ruff.toml` excludes `tests/` entirely (`exclude = [..., "tests"]`), so
+`ruff check .` / the `ruff-check` pre-commit hook never lints test files — unused imports,
+missing annotations, etc. in `tests/` pass CI silently. Running `ruff check <path>` with an
+explicit test file path bypasses the exclude and does catch these; use that when reviewing test
+diffs in this repo, since the standard hook won't.

@@ -4,11 +4,13 @@ import os
 import stat
 import tempfile
 from pathlib import Path
+from unittest.mock import PropertyMock, patch
 
 import httpx
 import pytest
 
 from otf_api.api.members.member_api import MemberApi
+from otf_api.api.trends.trend_api import TrendApi
 from otf_api.api.utils import validate_identifier
 from otf_api.cache import ensure_secure_directory
 from otf_api.exceptions import OtfRequestError
@@ -94,6 +96,35 @@ class TestSanitizeRequest:
         err = self._make(req)
         assert err.request.content == b'{"key": "value"}'
 
+    def test_redacts_koji_member_email(self):
+        req = httpx.Request("GET", "https://example.com", headers={"koji-member-email": "user@example.com"})
+        err = self._make(req)
+        assert err.request.headers["koji-member-email"] == "[REDACTED]"
+
+    def test_redacts_koji_member_id(self):
+        req = httpx.Request("GET", "https://example.com", headers={"koji-member-id": "some-uuid"})
+        err = self._make(req)
+        assert err.request.headers["koji-member-id"] == "[REDACTED]"
+
+    def test_sanitizes_response_request_reference(self):
+        req = httpx.Request("GET", "https://example.com", headers={"Authorization": "Bearer secret"})
+        err = self._make(req)
+        assert err.response.request.headers["authorization"] == "[REDACTED]"
+
+    def test_sanitizes_original_exception_request(self):
+        req = httpx.Request("GET", "https://example.com", headers={"Authorization": "Bearer secret"})
+        resp = httpx.Response(500, request=req)
+        original = httpx.HTTPStatusError("fail", request=req, response=resp)
+        err = OtfRequestError("test", original, resp, req)
+        assert err.original_exception.request.headers["authorization"] == "[REDACTED]"
+
+    def test_handles_unread_request_body(self):
+        req = httpx.Request("POST", "https://example.com", headers={"Authorization": "Bearer secret"})
+        with patch.object(type(req), "content", new_callable=PropertyMock, side_effect=httpx.RequestNotRead()):
+            err = self._make(req)
+        assert err.request.content == b""
+        assert err.request.headers["authorization"] == "[REDACTED]"
+
     def test_does_not_modify_original_request(self):
         req = httpx.Request("GET", "https://example.com", headers={"Authorization": "Bearer secret"})
         self._make(req)
@@ -164,3 +195,25 @@ class TestEnsureSecureDirectory:
             ensure_secure_directory(path)
             mode = stat.S_IMODE(Path(path).stat().st_mode)
             assert mode == 0o700, f"Expected 0700, got {oct(mode)}"
+
+    def test_raises_on_chmod_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = f"{tmp}/test_cache"
+            os.makedirs(path, mode=0o700)
+            with patch("otf_api.cache.Path.chmod", side_effect=OSError("permission denied")):
+                with pytest.raises(OSError, match="permission denied"):
+                    ensure_secure_directory(path)
+
+
+class TestTrendTypeValidation:
+    """Tests for runtime TrendType enforcement."""
+
+    def test_rejects_raw_string(self):
+        api = TrendApi.__new__(TrendApi)
+        with pytest.raises(TypeError, match="must be a TrendType enum member"):
+            api.get_workout_stats("splat_points")
+
+    def test_rejects_path_traversal_string(self):
+        api = TrendApi.__new__(TrendApi)
+        with pytest.raises(TypeError, match="must be a TrendType enum member"):
+            api.get_workout_stats("../preview")

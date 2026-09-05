@@ -123,8 +123,8 @@ def get_cache_dir() -> str:
 def ensure_secure_directory(path: str) -> None:
     """Create the cache directory with restrictive permissions (owner-only access).
 
-    On systems that support it, sets the directory to mode 0700. On Windows
-    or other systems where chmod is a no-op, this is best-effort.
+    Sets the directory to mode 0700. Raises OSError if permissions cannot be
+    applied, to prevent storing tokens in a world-readable directory.
 
     Args:
         path: The directory path to create and secure.
@@ -136,7 +136,8 @@ def ensure_secure_directory(path: str) -> None:
     try:
         Path(path).chmod(_CACHE_DIR_MODE)
     except OSError:
-        LOGGER.warning("Could not set restrictive permissions on cache directory: %s", path)
+        LOGGER.error("Could not set restrictive permissions on cache directory: %s", path)
+        raise
 
 
 def get_cache() -> OtfCache:
@@ -149,9 +150,9 @@ def get_cache() -> OtfCache:
         Cache: The cache instance.
     """
     global _CACHE
+    cache_dir = get_cache_dir()
+    ensure_secure_directory(cache_dir)
     if _CACHE is None:
-        cache_dir = get_cache_dir()
-        ensure_secure_directory(cache_dir)
         LOGGER.debug("Using cache directory: %s", cache_dir)
         _CACHE = OtfCache(cache_dir)
     return _CACHE

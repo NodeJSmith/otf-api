@@ -32,7 +32,15 @@ class OtfRequestError(OtfError):
 
     # Headers to redact from stored request objects to prevent credential leakage
     # when exceptions are logged or sent to error-reporting services.
-    _SENSITIVE_HEADERS = frozenset({"authorization", "x-amz-security-token", "x-amz-date"})
+    _SENSITIVE_HEADERS = frozenset(
+        {
+            "authorization",
+            "x-amz-security-token",
+            "x-amz-date",
+            "koji-member-email",
+            "koji-member-id",
+        }
+    )
 
     def __init__(
         self,
@@ -42,9 +50,17 @@ class OtfRequestError(OtfError):
         request: httpx.Request,
     ):
         super().__init__(message)
+        sanitized_request = self._sanitize_request(request)
         self.original_exception = original_exception
         self.response = response
-        self.request = self._sanitize_request(request)
+        self.request = sanitized_request
+
+        # The response and original exception hold references to the raw request
+        # with unsanitized auth headers. Mutating these shared objects is intentional —
+        # error-reporting tools serialize them, and we must close every leak path.
+        self.response.request = sanitized_request
+        if isinstance(self.original_exception, httpx.HTTPStatusError):
+            self.original_exception.request = sanitized_request
 
     @classmethod
     def _sanitize_request(cls, request: httpx.Request) -> httpx.Request:
@@ -58,11 +74,16 @@ class OtfRequestError(OtfError):
             if header in sanitized_headers:
                 sanitized_headers[header] = "[REDACTED]"
 
+        try:
+            content = request.content
+        except httpx.RequestNotRead:
+            content = b""
+
         return httpx.Request(
             method=request.method,
             url=request.url,
             headers=sanitized_headers,
-            content=request.content,
+            content=content,
         )
 
 
