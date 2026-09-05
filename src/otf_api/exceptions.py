@@ -1,5 +1,7 @@
 import typing
 
+import httpx
+
 if typing.TYPE_CHECKING:
     from httpx import Request, Response
 
@@ -30,14 +32,20 @@ class OtfRequestError(OtfError):
     """Raised when an error occurs while making a request to the OTF API."""
 
     original_exception: Exception | None
-    response: "Response"
-    request: "Request"
+    response: "Response | None"
+    request: "Request | None"
 
     # Headers to redact from stored request objects to prevent credential leakage
     # when exceptions are logged or sent to error-reporting services.
     _SENSITIVE_HEADERS = frozenset({"authorization", "x-amz-security-token", "x-amz-date"})
 
-    def __init__(self, message: str, original_exception: Exception | None, response: "Response", request: "Request"):
+    def __init__(
+        self,
+        message: str,
+        original_exception: Exception | None,
+        response: "Response | None",
+        request: "Request | None",
+    ):
         super().__init__(message)
         self.original_exception = original_exception
         self.response = response
@@ -53,8 +61,6 @@ class OtfRequestError(OtfError):
         if request is None:
             return None
 
-        import httpx
-
         sanitized_headers = dict(request.headers)
         for header in cls._SENSITIVE_HEADERS:
             if header in sanitized_headers:
@@ -64,6 +70,7 @@ class OtfRequestError(OtfError):
             method=request.method,
             url=request.url,
             headers=sanitized_headers,
+            content=request.content,
         )
 
 

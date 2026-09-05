@@ -311,6 +311,8 @@ class BookingApi:
         if not booking_uuid:
             raise ValueError("booking_uuid is required")
 
+        utils.validate_identifier(booking_uuid, "booking_uuid")
+
         data = self.client.get_booking(booking_uuid)
         return models.Booking.create(**data, api=self.otf)
 

@@ -137,7 +137,7 @@ class MemberApi:
             raise ValueError(f"{field_name} must not be empty after stripping whitespace")
         if len(value) > 50:
             raise ValueError(f"{field_name} is too long ({len(value)} chars, max 50)")
-        if any(c < " " and c not in ("\t",) for c in value):
+        if any(ord(c) < 32 and c != "\t" for c in value):
             raise ValueError(f"{field_name} contains control characters")
         if "<" in value or ">" in value:
             raise ValueError(f"{field_name} contains HTML-like characters")
@@ -194,7 +194,7 @@ class MemberApi:
         # This guards against potential IDOR vulnerabilities in the v1 API which uses
         # explicit member UUIDs in request paths rather than token-derived identity.
         expected_uuid = self.client.member_uuid
-        if hasattr(member, "member_uuid") and member.member_uuid != expected_uuid:
+        if member.member_uuid != expected_uuid:
             LOGGER.error(
                 "API returned member data for %s but authenticated as %s — possible IDOR",
                 member.member_uuid,
@@ -203,8 +203,8 @@ class MemberApi:
             raise exc.OtfRequestError(
                 "API returned data for a different member than authenticated",
                 original_exception=None,
-                response=None,  # type: ignore[arg-type]
-                request=None,  # type: ignore[arg-type]
+                response=None,
+                request=None,
             )
 
         return member

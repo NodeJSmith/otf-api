@@ -29,8 +29,9 @@ HEADERS = {
 CACHE = get_cache()
 LOGGER = getLogger(__name__)
 
-# Maximum response body size (bytes) the library will attempt to parse.
-# Protects against OOM from unexpectedly large API responses.
+# Maximum response body size (bytes) the library will attempt to parse as JSON.
+# The response is already buffered by this point — this prevents wasting CPU on
+# parsing an unexpectedly large payload, not the memory cost of the read itself.
 MAX_RESPONSE_SIZE = 10 * 1024 * 1024  # 10 MB
 
 

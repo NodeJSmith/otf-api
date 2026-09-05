@@ -46,6 +46,9 @@ class TrendApi:
         Returns:
             WorkoutStatsResponse: The stat data with individual data points per workout.
         """
+        if not isinstance(trend_type, TrendType):
+            raise TypeError(f"trend_type must be a TrendType enum member, got {type(trend_type).__name__}")
+
         start = utils.ensure_date(start_date) or pendulum.today().subtract(days=90).date()
         end = utils.ensure_date(end_date) or pendulum.today().date()
 
