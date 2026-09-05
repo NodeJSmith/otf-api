@@ -1,0 +1,219 @@
+"""Tests for client-side security hardening."""
+
+import os
+import stat
+import tempfile
+from pathlib import Path
+from unittest.mock import PropertyMock, patch
+
+import httpx
+import pytest
+
+from otf_api.api.members.member_api import MemberApi
+from otf_api.api.trends.trend_api import TrendApi
+from otf_api.api.utils import validate_identifier
+from otf_api.cache import ensure_secure_directory
+from otf_api.exceptions import OtfRequestError
+
+
+class TestValidateIdentifier:
+    """Tests for the path segment validation helper."""
+
+    def test_valid_uuid(self):
+        result = validate_identifier("abc-123-def-456-ghi", "test")
+        assert result == "abc-123-def-456-ghi"
+
+    def test_valid_alphanumeric(self):
+        result = validate_identifier("abc123", "test")
+        assert result == "abc123"
+
+    def test_rejects_empty(self):
+        with pytest.raises(ValueError, match="must not be empty"):
+            validate_identifier("", "test_field")
+
+    def test_rejects_path_traversal(self):
+        with pytest.raises(ValueError, match="path traversal"):
+            validate_identifier("../../admin", "test_field")
+
+    def test_rejects_slash(self):
+        with pytest.raises(ValueError, match="unsafe characters"):
+            validate_identifier("abc/def", "test_field")
+
+    def test_rejects_backslash(self):
+        with pytest.raises(ValueError, match="unsafe characters"):
+            validate_identifier("abc\\def", "test_field")
+
+    def test_rejects_null_byte(self):
+        with pytest.raises(ValueError, match="unsafe characters"):
+            validate_identifier("abc\x00def", "test_field")
+
+    def test_rejects_percent_encoding(self):
+        with pytest.raises(ValueError, match="unsafe characters"):
+            validate_identifier("abc%2Fdef", "test_field")
+
+    def test_rejects_whitespace(self):
+        with pytest.raises(ValueError, match="unsafe characters"):
+            validate_identifier("abc def", "test_field")
+
+    def test_rejects_oversized(self):
+        with pytest.raises(ValueError, match="too long"):
+            validate_identifier("a" * 201, "test_field")
+
+    def test_accepts_max_length(self):
+        result = validate_identifier("a" * 200, "test")
+        assert len(result) == 200
+
+    def test_error_message_includes_field_name(self):
+        with pytest.raises(ValueError, match="booking_uuid"):
+            validate_identifier("", "booking_uuid")
+
+
+class TestSanitizeRequest:
+    """Tests for credential redaction in OtfRequestError."""
+
+    @staticmethod
+    def _make(req):
+        resp = httpx.Response(200, request=req)
+        return OtfRequestError("test", None, resp, req)
+
+    def test_redacts_authorization_header(self):
+        req = httpx.Request("GET", "https://example.com", headers={"Authorization": "Bearer secret"})
+        err = self._make(req)
+        assert err.request.headers["authorization"] == "[REDACTED]"
+
+    def test_redacts_aws_security_token(self):
+        req = httpx.Request("GET", "https://example.com", headers={"x-amz-security-token": "tok"})
+        err = self._make(req)
+        assert err.request.headers["x-amz-security-token"] == "[REDACTED]"
+
+    def test_preserves_non_sensitive_headers(self):
+        req = httpx.Request("GET", "https://example.com", headers={"content-type": "application/json"})
+        err = self._make(req)
+        assert err.request.headers["content-type"] == "application/json"
+
+    def test_preserves_request_body(self):
+        req = httpx.Request("POST", "https://example.com", content=b'{"key": "value"}')
+        err = self._make(req)
+        assert err.request.content == b'{"key": "value"}'
+
+    def test_redacts_koji_member_email(self):
+        req = httpx.Request("GET", "https://example.com", headers={"koji-member-email": "user@example.com"})
+        err = self._make(req)
+        assert err.request.headers["koji-member-email"] == "[REDACTED]"
+
+    def test_redacts_koji_member_id(self):
+        req = httpx.Request("GET", "https://example.com", headers={"koji-member-id": "some-uuid"})
+        err = self._make(req)
+        assert err.request.headers["koji-member-id"] == "[REDACTED]"
+
+    def test_sanitizes_response_request_reference(self):
+        req = httpx.Request("GET", "https://example.com", headers={"Authorization": "Bearer secret"})
+        err = self._make(req)
+        assert err.response.request.headers["authorization"] == "[REDACTED]"
+
+    def test_sanitizes_original_exception_request(self):
+        req = httpx.Request("GET", "https://example.com", headers={"Authorization": "Bearer secret"})
+        resp = httpx.Response(500, request=req)
+        original = httpx.HTTPStatusError("fail", request=req, response=resp)
+        err = OtfRequestError("test", original, resp, req)
+        assert err.original_exception.request.headers["authorization"] == "[REDACTED]"
+
+    def test_handles_unread_request_body(self):
+        req = httpx.Request("POST", "https://example.com", headers={"Authorization": "Bearer secret"})
+        with patch.object(type(req), "content", new_callable=PropertyMock, side_effect=httpx.RequestNotRead()):
+            err = self._make(req)
+        assert err.request.content == b""
+        assert err.request.headers["authorization"] == "[REDACTED]"
+
+    def test_does_not_modify_original_request(self):
+        req = httpx.Request("GET", "https://example.com", headers={"Authorization": "Bearer secret"})
+        self._make(req)
+        assert req.headers["authorization"] == "Bearer secret"
+
+    def test_preserves_method_and_url(self):
+        req = httpx.Request("POST", "https://api.example.com/v1/bookings")
+        resp = httpx.Response(500, request=req)
+        err = OtfRequestError("test", None, resp, req)
+        assert err.request.method == "POST"
+        assert str(err.request.url) == "https://api.example.com/v1/bookings"
+
+
+class TestValidateName:
+    """Tests for name field validation in MemberApi."""
+
+    def test_rejects_empty(self):
+        with pytest.raises(ValueError, match="must not be empty"):
+            MemberApi.validate_name("", "first_name")
+
+    def test_rejects_whitespace_only(self):
+        with pytest.raises(ValueError, match="must not be empty"):
+            MemberApi.validate_name("   ", "first_name")
+
+    def test_rejects_too_long(self):
+        with pytest.raises(ValueError, match="too long"):
+            MemberApi.validate_name("A" * 51, "first_name")
+
+    def test_rejects_control_characters(self):
+        with pytest.raises(ValueError, match="control characters"):
+            MemberApi.validate_name("abc\x01def", "first_name")
+
+    def test_allows_angle_brackets_in_name(self):
+        result = MemberApi.validate_name("O<Brien", "first_name")
+        assert result == "O<Brien"
+
+    def test_strips_whitespace(self):
+        result = MemberApi.validate_name("  Jessica  ", "first_name")
+        assert result == "Jessica"
+
+    def test_allows_valid_name(self):
+        result = MemberApi.validate_name("Jessica", "first_name")
+        assert result == "Jessica"
+
+    def test_allows_hyphenated_name(self):
+        result = MemberApi.validate_name("Mary-Jane", "first_name")
+        assert result == "Mary-Jane"
+
+    def test_allows_accented_characters(self):
+        result = MemberApi.validate_name("José", "first_name")
+        assert result == "José"
+
+
+class TestEnsureSecureDirectory:
+    """Tests for cache directory permission hardening."""
+
+    def test_creates_directory_with_0700(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = f"{tmp}/test_cache"
+            ensure_secure_directory(path)
+            mode = stat.S_IMODE(Path(path).stat().st_mode)
+            assert mode == 0o700, f"Expected 0700, got {oct(mode)}"
+
+    def test_tightens_existing_loose_permissions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = f"{tmp}/test_cache"
+            os.makedirs(path, mode=0o755)
+            ensure_secure_directory(path)
+            mode = stat.S_IMODE(Path(path).stat().st_mode)
+            assert mode == 0o700, f"Expected 0700, got {oct(mode)}"
+
+    def test_raises_on_chmod_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = f"{tmp}/test_cache"
+            os.makedirs(path, mode=0o700)
+            with patch("otf_api.cache.Path.chmod", side_effect=OSError("permission denied")):
+                with pytest.raises(OSError, match="permission denied"):
+                    ensure_secure_directory(path)
+
+
+class TestTrendTypeValidation:
+    """Tests for runtime TrendType enforcement."""
+
+    def test_rejects_raw_string(self):
+        api = TrendApi.__new__(TrendApi)
+        with pytest.raises(TypeError, match="must be a TrendType enum member"):
+            api.get_workout_stats("splat_points")
+
+    def test_rejects_path_traversal_string(self):
+        api = TrendApi.__new__(TrendApi)
+        with pytest.raises(TypeError, match="must be a TrendType enum member"):
+            api.get_workout_stats("../preview")

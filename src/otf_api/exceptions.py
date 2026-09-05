@@ -1,7 +1,4 @@
-import typing
-
-if typing.TYPE_CHECKING:
-    from httpx import Request, Response
+import httpx
 
 __all__ = [
     "AlreadyBookedError",
@@ -30,14 +27,64 @@ class OtfRequestError(OtfError):
     """Raised when an error occurs while making a request to the OTF API."""
 
     original_exception: Exception | None
-    response: "Response"
-    request: "Request"
+    response: httpx.Response
+    request: httpx.Request
 
-    def __init__(self, message: str, original_exception: Exception | None, response: "Response", request: "Request"):
+    # Headers to redact from stored request objects to prevent credential leakage
+    # when exceptions are logged or sent to error-reporting services.
+    _SENSITIVE_HEADERS = frozenset(
+        {
+            "authorization",
+            "x-amz-security-token",
+            "x-amz-date",
+            "koji-member-email",
+            "koji-member-id",
+        }
+    )
+
+    def __init__(
+        self,
+        message: str,
+        original_exception: Exception | None,
+        response: httpx.Response,
+        request: httpx.Request,
+    ):
         super().__init__(message)
+        sanitized_request = self._sanitize_request(request)
         self.original_exception = original_exception
         self.response = response
-        self.request = request
+        self.request = sanitized_request
+
+        # The response and original exception hold references to the raw request
+        # with unsanitized auth headers. Mutating these shared objects is intentional —
+        # error-reporting tools serialize them, and we must close every leak path.
+        self.response.request = sanitized_request
+        if isinstance(self.original_exception, httpx.HTTPStatusError):
+            self.original_exception.request = sanitized_request
+
+    @classmethod
+    def _sanitize_request(cls, request: httpx.Request) -> httpx.Request:
+        """Return a copy of the request with sensitive headers redacted.
+
+        This prevents credential leakage when exceptions are logged or sent
+        to error-reporting services.
+        """
+        sanitized_headers = dict(request.headers)
+        for header in cls._SENSITIVE_HEADERS:
+            if header in sanitized_headers:
+                sanitized_headers[header] = "[REDACTED]"
+
+        try:
+            content = request.content
+        except httpx.RequestNotRead:
+            content = b""
+
+        return httpx.Request(
+            method=request.method,
+            url=request.url,
+            headers=sanitized_headers,
+            content=content,
+        )
 
 
 class RetryableOtfRequestError(OtfRequestError):

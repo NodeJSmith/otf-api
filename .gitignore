@@ -178,3 +178,4 @@ scratch*.py
 docs/reference/
 .vscode
 .playwright-mcp/
+.claude/worktrees/
