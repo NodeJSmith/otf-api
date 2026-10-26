@@ -119,7 +119,6 @@ class StudioClient:
         Returns:
             dict[str, dict[str, Any]]: A dictionary of studio details, keyed by studio UUID.
         """
-        studio_uuids = [validate_identifier(uuid, "studio_uuid") for uuid in studio_uuids]
         studios_dict: dict[str, dict[str, Any]] = {}
         with ThreadPoolExecutor(max_workers=10) as pool:
             futures = {pool.submit(self.get_studio_detail, uuid): uuid for uuid in studio_uuids}
