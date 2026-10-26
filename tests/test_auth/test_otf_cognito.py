@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, PropertyMock, patch
 
 import jwt
 import pytest
-from botocore.exceptions import ClientError, EndpointConnectionError, ParamValidationError
+from botocore.exceptions import ClientError, EndpointConnectionError, ParamValidationError, ProfileNotFound
 
 from otf_api.auth.auth import NoCredentialsError, OtfCognito
 from otf_api.exceptions import OtfAuthenticationError, OtfConfigurationError, OtfTransportError
@@ -450,10 +450,10 @@ def test_login_with_password_lambda_validation_retry(mock_cache, mock_verify_tok
 # ---------------------------------------------------------------------------
 
 
-def _login_with_side_effects(mock_idp_client, auth_side_effect):
-    """Construct OtfCognito with a password, feeding auth_side_effect to AWSSRP.authenticate_user."""
+def _construct_with_password(mock_idp_client, authenticate_user_side_effect):
+    """Construct OtfCognito with a password; AWSSRP.authenticate_user yields authenticate_user_side_effect."""
     mock_aws = MagicMock()
-    mock_aws.authenticate_user.side_effect = auth_side_effect
+    mock_aws.authenticate_user.side_effect = authenticate_user_side_effect
 
     with (
         patch("otf_api.auth.auth.AWSSRP", return_value=mock_aws),
@@ -468,7 +468,7 @@ def test_login_with_password_non_retryable_error(mock_cache, mock_verify_token, 
     error = _client_error("NotAuthorizedException", "Wrong password")
 
     with pytest.raises(OtfAuthenticationError) as exc_info:
-        _login_with_side_effects(mock_idp_client, error)
+        _construct_with_password(mock_idp_client, error)
 
     assert str(exc_info.value) == "OTF authentication failed"
     assert "Wrong password" not in str(exc_info.value)
@@ -481,7 +481,7 @@ def test_login_with_password_retry_failure_raises_auth_error(mock_cache, mock_ve
     side_effects = [_client_error("UserLambdaValidationException", "UserLambdaValidationException"), retry_error]
 
     with pytest.raises(OtfAuthenticationError) as exc_info:
-        _login_with_side_effects(mock_idp_client, side_effects)
+        _construct_with_password(mock_idp_client, side_effects)
 
     assert exc_info.value.__cause__ is retry_error
 
@@ -502,7 +502,7 @@ def test_login_with_password_botocore_error(
 ):
     """login_with_password maps BotoCoreErrors to OtfTransportError or OtfConfigurationError."""
     with pytest.raises(expected_type) as exc_info:
-        _login_with_side_effects(mock_idp_client, error)
+        _construct_with_password(mock_idp_client, error)
 
     assert str(exc_info.value) == expected_message
     assert exc_info.value.__cause__ is error
@@ -514,7 +514,20 @@ def test_login_with_password_device_confirmation_error(mock_cache, mock_verify_t
     mock_idp_client.confirm_device.side_effect = error
 
     with pytest.raises(OtfAuthenticationError) as exc_info:
-        _login_with_side_effects(mock_idp_client, [fake_tokens()])
+        _construct_with_password(mock_idp_client, [fake_tokens()])
+
+    assert exc_info.value.__cause__ is error
+
+
+def test_login_with_password_client_construction_error(mock_cache, mock_verify_token):
+    """A BotoCoreError from building the real idp_client during login is mapped to OtfConfigurationError."""
+    error = ProfileNotFound(profile="missing")
+
+    with (
+        patch("otf_api.auth.auth.Session", side_effect=error),
+        pytest.raises(OtfConfigurationError) as exc_info,
+    ):
+        OtfCognito(username="user@test.com", password="pw")
 
     assert exc_info.value.__cause__ is error
 

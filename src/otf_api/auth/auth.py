@@ -73,6 +73,32 @@ def raise_for_botocore_error(e: BotoCoreError, action: str) -> NoReturn:
     raise OtfConfigurationError("OTF configuration error") from e
 
 
+def log_login_error(e: ClientError, username: str | None) -> None:
+    """Log a login ClientError, as a plain warning for the common wrong-password and unknown-user cases."""
+    code = e.response.get("Error", {}).get("Code", "")
+    if code == "NotAuthorizedException":
+        LOGGER.warning("Authentication failed — incorrect password for %s", username)
+    elif code == "UserNotFoundException":
+        LOGGER.warning("Authentication failed — no account found for %s", username)
+    else:
+        LOGGER.exception("Failed to authenticate with Cognito")
+
+
+def authenticate_with_retry(aws: AWSSRP) -> "InitiateAuthResponseTypeDef":
+    """Run SRP authentication, retrying once after a UserLambdaValidationException."""
+    try:
+        return aws.authenticate_user()
+    except ClientError as e:
+        error = e.response.get("Error", {})
+        is_lambda_validation = "UserLambdaValidation" in error.get("Code", "") or (
+            "UserLambdaValidationException" in error.get("Message", "")
+        )
+        if not is_lambda_validation:
+            raise
+        sleep(5)
+        return aws.authenticate_user()
+
+
 class OtfCognito(Cognito):
     """A subclass of the pycognito Cognito class that adds the device_key to the auth_params.
 
@@ -272,30 +298,38 @@ class OtfCognito(Cognito):
             password (str): The user's password.
 
         Raises:
-            ClientError: If authentication fails for a non-retryable reason.
+            OtfAuthenticationError: If Cognito rejects the login or device confirmation.
+            OtfTransportError: If a connectivity, timeout, or endpoint failure occurs.
+            OtfConfigurationError: If a boto3/botocore configuration or validation failure occurs.
+            ValueError: If the token response is malformed or no device key is available.
         """
         LOGGER.debug("Logging in with username and password...")
 
-        aws = AWSSRP(
-            username=self.username,
-            password=password,
-            pool_id=USER_POOL_ID,
-            client_id=CLIENT_ID,
-            client=self.idp_client,
-        )
+        # idp_client is built lazily, so constructing AWSSRP can itself raise a BotoCoreError
         try:
-            tokens: InitiateAuthResponseTypeDef = aws.authenticate_user()
+            aws = AWSSRP(
+                username=self.username,
+                password=password,
+                pool_id=USER_POOL_ID,
+                client_id=CLIENT_ID,
+                client=self.idp_client,
+            )
+            tokens = authenticate_with_retry(aws)
         except ClientError as e:
-            code = e.response["Error"]["Code"]
-            msg = e.response["Error"]["Message"]
-            if "UserLambdaValidationException" in msg or "UserLambdaValidation" in code:
-                sleep(5)
-                tokens = aws.authenticate_user()
-            else:
-                raise
+            log_login_error(e, self.username)
+            raise OtfAuthenticationError("OTF authentication failed") from e
+        except BotoCoreError as e:
+            raise_for_botocore_error(e, "authenticating with Cognito")
 
         self._set_tokens(tokens)
-        self._handle_device_setup()
+
+        try:
+            self._handle_device_setup()
+        except ClientError as e:
+            LOGGER.exception("Failed to confirm device with Cognito")
+            raise OtfAuthenticationError("OTF authentication failed") from e
+        except BotoCoreError as e:
+            raise_for_botocore_error(e, "confirming device with Cognito")
 
     def _handle_device_setup(self) -> None:
         """Confirms the device with Cognito and caches the device metadata.
@@ -343,42 +377,21 @@ class OtfCognito(Cognito):
         self.verify_token(self.access_token, "access_token", "access")
         CACHE.write_token_data_to_cache(self.tokens, self.expiration_seconds)
 
-    def check_token(self, renew: bool = True) -> bool:
-        """Checks the exp attribute of the access_token and refreshes it if it has expired and renew is True.
-
-        Args:
-            renew (bool): whether to refresh on expiration
-
-        Raises:
-            AttributeError: If access_token is not set
-            NoCredentialsError: If refresh token has expired
-            OtfAuthenticationError: If token refresh fails for another Cognito-reported reason
-            OtfTransportError: If a connectivity, timeout, or endpoint failure occurs during refresh
-            OtfConfigurationError: If a boto3/botocore configuration or validation failure occurs during refresh
-
-        Returns:
-            bool: True if the access_token has expired, False otherwise
-        """
-        try:
-            return super().check_token(renew=renew)
-        except ClientError as e:
-            if e.response["Error"]["Code"] == "NotAuthorizedException":
-                LOGGER.warning("Tokens expired, attempting to login with username and password")
-                CACHE.clear()
-                raise NoCredentialsError("Cached tokens expired, please login again") from e
-            LOGGER.exception("Failed to refresh Cognito tokens")
-            raise OtfAuthenticationError("OTF authentication failed") from e
-        except BotoCoreError as e:
-            raise_for_botocore_error(e, "refreshing Cognito tokens")
-
     def renew_access_token(self) -> None:
         """Sets a new access token on the User using the cached refresh token and device metadata.
 
         Overridden to add the device key to the auth_params if it is set. Without this all calls to renew_access_token
         will fail with NOT_AUTHORIZED. Also skips the call to _add_secret_hash since we don't have a client secret.
+        pycognito's check_token calls this on expiry, so these errors are also what check_token raises.
 
         # https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_InitiateAuth.html#CognitoUserPools-InitiateAuth-request-AuthFlow
 
+        Raises:
+            ValueError: If the device key or refresh token is not set.
+            NoCredentialsError: If Cognito rejects the refresh token; the token cache is cleared first.
+            OtfAuthenticationError: If token refresh fails for another Cognito-reported reason.
+            OtfTransportError: If a connectivity, timeout, or endpoint failure occurs during refresh.
+            OtfConfigurationError: If a boto3/botocore configuration or validation failure occurs during refresh.
         """
         if not self.device_key:
             raise ValueError("Device key not set - device key is required by this Cognito pool")
@@ -386,11 +399,21 @@ class OtfCognito(Cognito):
         if not self.refresh_token:
             raise ValueError("No refresh token set - cannot renew access token")
 
-        refresh_response = self.idp_client.initiate_auth(
-            ClientId=self.client_id,
-            AuthFlow="REFRESH_TOKEN_AUTH",
-            AuthParameters={"REFRESH_TOKEN": self.refresh_token, "DEVICE_KEY": self.device_key},
-        )
+        try:
+            refresh_response = self.idp_client.initiate_auth(
+                ClientId=self.client_id,
+                AuthFlow="REFRESH_TOKEN_AUTH",
+                AuthParameters={"REFRESH_TOKEN": self.refresh_token, "DEVICE_KEY": self.device_key},
+            )
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NotAuthorizedException":
+                LOGGER.warning("Refresh token rejected by Cognito, clearing cached tokens")
+                CACHE.clear()
+                raise NoCredentialsError("Cached tokens expired, please login again") from e
+            LOGGER.exception("Failed to refresh Cognito tokens")
+            raise OtfAuthenticationError("OTF authentication failed") from e
+        except BotoCoreError as e:
+            raise_for_botocore_error(e, "refreshing Cognito tokens")
         self._set_tokens(refresh_response)
 
     def _set_tokens(self, tokens: "InitiateAuthResponseTypeDef") -> None:
