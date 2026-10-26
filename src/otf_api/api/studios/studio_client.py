@@ -3,6 +3,7 @@ from logging import getLogger
 from typing import Any
 
 from otf_api.api.client import CACHE, OtfClient
+from otf_api.api.utils import validate_identifier
 
 LOGGER = getLogger(__name__)
 
@@ -21,6 +22,7 @@ class StudioClient:
     @CACHE.memoize(expire=600, tag="studio_detail")
     def get_studio_detail(self, studio_uuid: str) -> dict:
         """Retrieve raw studio details."""
+        studio_uuid = validate_identifier(studio_uuid, "studio_uuid")
         return self.client.default_request("GET", f"/mobile/v1/studios/{studio_uuid}")["data"]
 
     def _get_studios_by_geo(
@@ -93,6 +95,7 @@ class StudioClient:
 
     def get_studio_services(self, studio_uuid: str) -> dict:
         """Retrieve raw studio services data."""
+        studio_uuid = validate_identifier(studio_uuid, "studio_uuid")
         return self.client.default_request("GET", f"/member/studios/{studio_uuid}/services")["data"]
 
     def post_favorite_studio(self, studio_uuids: list[str]) -> dict:
@@ -116,6 +119,7 @@ class StudioClient:
         Returns:
             dict[str, dict[str, Any]]: A dictionary of studio details, keyed by studio UUID.
         """
+        studio_uuids = [validate_identifier(uuid, "studio_uuid") for uuid in studio_uuids]
         studios_dict: dict[str, dict[str, Any]] = {}
         with ThreadPoolExecutor(max_workers=10) as pool:
             futures = {pool.submit(self.get_studio_detail, uuid): uuid for uuid in studio_uuids}

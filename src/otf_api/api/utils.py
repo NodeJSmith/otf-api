@@ -1,3 +1,4 @@
+import re
 import typing
 from datetime import date, datetime, time, timedelta
 from json import JSONDecodeError
@@ -15,6 +16,36 @@ if typing.TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 MIN_TIME = datetime.min.time()
+
+_MAX_IDENTIFIER_LENGTH = 200
+_UNSAFE_PATH_CHARS = re.compile(r"[/\\\x00%\s]")
+
+
+def validate_identifier(value: str, name: str) -> str:
+    """Validate that a string is safe to use as a URL path segment.
+
+    Rejects ``.`` and ``..`` segments and values containing path separators, null bytes,
+    percent-encoding, and whitespace to prevent path injection.
+
+    Args:
+        value: The identifier string to validate.
+        name: Human-readable name of the parameter (for error messages).
+
+    Returns:
+        The validated string, unchanged.
+
+    Raises:
+        ValueError: If the string is empty, too long, or contains unsafe characters.
+    """
+    if not value:
+        raise ValueError(f"{name} must not be empty")
+    if len(value) > _MAX_IDENTIFIER_LENGTH:
+        raise ValueError(f"{name} is too long ({len(value)} chars, max {_MAX_IDENTIFIER_LENGTH})")
+    if value in {".", ".."}:
+        raise ValueError(f"{name} must not be a relative path segment")
+    if _UNSAFE_PATH_CHARS.search(value):
+        raise ValueError(f"{name} contains unsafe characters for a URL path segment")
+    return value
 
 
 def get_studio_uuid_list(

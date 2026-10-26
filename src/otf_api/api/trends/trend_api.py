@@ -39,13 +39,18 @@ class TrendApi:
         """Get detailed workout stats for a specific metric over a date range.
 
         Args:
-            trend_type: The trend metric to retrieve (e.g. TrendType.SplatPoints).
+            trend_type: The trend metric to retrieve (e.g. TrendType.SplatPoints or "splat_points").
             start_date: Start of the date range. Defaults to 90 days ago.
             end_date: End of the date range. Defaults to today.
 
         Returns:
             WorkoutStatsResponse: The stat data with individual data points per workout.
+
+        Raises:
+            ValueError: If trend_type is not a known TrendType value.
         """
+        trend_type = TrendType(trend_type)
+
         start = utils.ensure_date(start_date) or pendulum.today().subtract(days=90).date()
         end = utils.ensure_date(end_date) or pendulum.today().date()
 
