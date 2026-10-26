@@ -259,11 +259,23 @@ class OtfCognito(Cognito):
 
         Returns:
             CredentialsTypeDef: The AWS credentials for the user.
+
+        Raises:
+            OtfAuthenticationError: If the Cognito Identity Pool rejects the request.
+            OtfTransportError: If a connectivity, timeout, or endpoint failure occurs.
+            OtfConfigurationError: If a boto3/botocore configuration or validation failure occurs.
         """
-        cognito_id = self.id_client.get_id(IdentityPoolId=ID_POOL_ID, Logins={PROVIDER_KEY: self.id_token})
-        creds = self.id_client.get_credentials_for_identity(
-            IdentityId=cognito_id["IdentityId"], Logins={PROVIDER_KEY: self.id_token}
-        )
+        # id_client is built lazily, so the property access itself can raise a BotoCoreError
+        try:
+            cognito_id = self.id_client.get_id(IdentityPoolId=ID_POOL_ID, Logins={PROVIDER_KEY: self.id_token})
+            creds = self.id_client.get_credentials_for_identity(
+                IdentityId=cognito_id["IdentityId"], Logins={PROVIDER_KEY: self.id_token}
+            )
+        except ClientError as e:
+            LOGGER.exception("Failed to fetch Cognito identity credentials")
+            raise OtfAuthenticationError("OTF authentication failed") from e
+        except BotoCoreError as e:
+            raise_for_botocore_error(e, "fetching Cognito identity credentials")
         return creds["Credentials"]
 
     def get_decoded_access_token(self) -> dict[str, Any]:
