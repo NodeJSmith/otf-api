@@ -117,6 +117,8 @@ class Orange90ClassType(StrEnum):
 class ClassType(StrEnum):
     """High-level classification of OTF class formats."""
 
+    HYROX_60 = "HYROX_60"
+    OPEN_STUDIO = "OPEN_STUDIO"
     ORANGE_60 = "ORANGE_60"
     ORANGE_90 = "ORANGE_90"
     OTHER = "OTHER"

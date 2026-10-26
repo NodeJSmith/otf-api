@@ -126,9 +126,7 @@ class BookingApi:
             try:
                 results.append(models.BookingV2.create(**b, api=self.otf))
             except Exception as e:
-                LOGGER.error(
-                    "Failed to create BookingV2 from response: %s - %s. Booking data:\n%s", type(e).__name__, e, b
-                )
+                LOGGER.error("Failed to create BookingV2 %s from response: %s - %s", b.get("id"), type(e).__name__, e)
                 continue
 
         dropped = len(bookings_resp) - len(results)
@@ -267,7 +265,7 @@ class BookingApi:
             try:
                 classes.append(models.OtfClass.create(**c, api=self.otf))
             except ValueError as e:
-                LOGGER.warning(f"Failed to create OtfClass from response: {e}. Class data:\n{c}")
+                LOGGER.warning(f"Failed to create OtfClass {c.get('ot_base_class_uuid')} from response: {e}")
                 continue
 
         dropped_classes = len(classes_resp) - len(classes)
@@ -599,7 +597,7 @@ class BookingApi:
             try:
                 bookings.append(models.Booking.create(**b, api=self.otf))
             except ValueError as e:
-                LOGGER.warning(f"Failed to create Booking from response: {e}. Booking data:\n{b}")
+                LOGGER.warning(f"Failed to create Booking {b.get('classBookingUUId')} from response: {e}")
                 continue
 
         dropped_bookings = len(resp) - len(bookings)

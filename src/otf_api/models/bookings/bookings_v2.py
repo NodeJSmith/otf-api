@@ -24,7 +24,7 @@ def get_end_time(start_time: datetime, class_type: ClassType) -> datetime:
     start_time = pendulum.instance(start_time)
 
     match class_type:
-        case ClassType.ORANGE_60:
+        case ClassType.ORANGE_60 | ClassType.HYROX_60 | ClassType.OPEN_STUDIO:
             return start_time.add(minutes=60)
         case ClassType.ORANGE_90:
             return start_time.add(minutes=90)

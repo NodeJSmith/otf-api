@@ -47,7 +47,7 @@ class StudioApi:
             try:
                 studios.append(models.StudioDetail.create(**studio, api=self.otf))
             except ValueError as e:
-                LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
+                LOGGER.error(f"Failed to create StudioDetail for studio {studio.get('studioUUId')}: {e}")
                 continue
 
         dropped = len(results) - len(studios)
@@ -120,7 +120,7 @@ class StudioApi:
             try:
                 studios.append(models.StudioDetail.create(**studio, api=self.otf))
             except ValueError as e:
-                LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
+                LOGGER.error(f"Failed to create StudioDetail for studio {studio.get('studioUUId')}: {e}")
                 continue
 
         dropped = len(new_faves) - len(studios)
@@ -230,7 +230,7 @@ class StudioApi:
             try:
                 studios.append(models.StudioDetail.create(**studio, api=self.otf))
             except ValueError as e:
-                LOGGER.error(f"Failed to create StudioDetail for studio {studio}: {e}")
+                LOGGER.error(f"Failed to create StudioDetail for studio {studio.get('studioUUId')}: {e}")
                 continue
 
         dropped = len(results) - len(studios)
