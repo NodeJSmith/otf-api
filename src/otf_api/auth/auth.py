@@ -43,6 +43,7 @@ USER_POOL_ID = "us-east-1_dYDxUeyL1"
 ID_POOL_ID = f"{REGION}:4943c880-fb02-4fd7-bc37-2f4c32ecb2a3"
 PROVIDER_KEY = f"cognito-idp.{REGION}.amazonaws.com/{USER_POOL_ID}"
 BOTO_CONFIG = Config(region_name=REGION, signature_version=UNSIGNED)
+LAMBDA_VALIDATION_RETRY_DELAY_SECONDS = 5
 CACHE = get_cache()
 
 
@@ -95,7 +96,7 @@ def authenticate_with_retry(aws: AWSSRP) -> "InitiateAuthResponseTypeDef":
         )
         if not is_lambda_validation:
             raise
-        sleep(5)
+        sleep(LAMBDA_VALIDATION_RETRY_DELAY_SECONDS)
         return aws.authenticate_user()
 
 
