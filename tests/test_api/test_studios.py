@@ -59,3 +59,11 @@ def test_get_studio_services(mock_otf) -> None:
     assert isinstance(first.name, str)
     assert first.studio is not None
     assert isinstance(first.studio.studio_uuid, str)
+
+
+def test_get_studio_detail_threaded_skips_invalid_uuid(mock_otf) -> None:
+    valid_uuid = mock_otf.studios.get_studio_detail().studio_uuid
+
+    result = mock_otf.studios.client.get_studio_detail_threaded([valid_uuid, "../invalid"])
+
+    assert list(result) == [valid_uuid]

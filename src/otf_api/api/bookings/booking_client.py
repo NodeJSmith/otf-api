@@ -4,6 +4,7 @@ from typing import Any
 import pendulum
 
 from otf_api.api.client import API_IO_BASE_URL, OtfClient
+from otf_api.api.utils import validate_identifier
 
 
 class BookingClient:
@@ -33,6 +34,7 @@ class BookingClient:
 
     def delete_booking(self, booking_uuid: str) -> dict:
         """Cancel a booking by booking_uuid."""
+        booking_uuid = validate_identifier(booking_uuid, "booking_uuid")
         resp = self.client.default_request(
             "DELETE", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}", params={"confirmed": "true"}
         )
@@ -61,6 +63,7 @@ class BookingClient:
 
     def get_booking(self, booking_uuid: str) -> dict:
         """Retrieve raw booking data."""
+        booking_uuid = validate_identifier(booking_uuid, "booking_uuid")
         return self.client.default_request("GET", f"/member/members/{self.member_uuid}/bookings/{booking_uuid}")["data"]
 
     def get_bookings(self, start_date: str | None, end_date: str | None, status: str | list[str] | None) -> dict:
@@ -94,6 +97,7 @@ class BookingClient:
 
     def delete_booking_new(self, booking_id: str) -> None:
         """Cancel a booking by booking_id."""
+        booking_id = validate_identifier(booking_id, "booking_id")
         self.classes_request("DELETE", f"/v1/bookings/me/{booking_id}")
 
     def post_class_rating(
