@@ -15,7 +15,7 @@ The question is which representation to use for an unknown value: a `_missing_` 
 ## How We Do It Today
 
 - Response-facing enums are closed `StrEnum`s: `ClassType` (on `OtfClass` and `BookingV2`), `BookingStatus` and `StudioStatus`.
-- Unknown values raise during validation. List endpoints catch the error per record, log a WARNING containing the full raw dict, and drop the record. See `booking_api.py:128-135`, `:266-275` and `:602`, and `studio_api.py:46-50`.
+- Unknown values raise during validation. List endpoints catch the error per record, log the record's id and the validation error, and drop the record. See `booking_api.py:128-135`, `:266-275` and `:602`, and `studio_api.py:46-50`.
 - `BookingV2.get_end_time` matches on `ClassType`, with a `case _` WARNING branch.
 - `StudioStatus` already has a real member named `UNKNOWN = "Unknown"`.
 - There is no `_missing_` hook anywhere in `src/`.
@@ -61,7 +61,7 @@ The question is which representation to use for an unknown value: a `_missing_` 
 
 **Used by**: Speakeasy Python, with `Union[Literal[...], UnrecognizedStr]` on by default. ring-doorbell's `RingEventKind | str`. openai-python uses `Literal` but builds responses without validation, so unknowns pass through as untyped strs and its types claim a closed set.
 
-**How it works**: Pydantic smart-union returns the enum member on an exact match and the raw str otherwise. Unknowns are detected with `x not in Enum`.
+**How it works**: The field accepts any string. For a plain string input, Pydantic smart-union picks the `str` branch even when the value is a known member (verified on pydantic 2.7.3, for both Python and JSON input), so callers get `"ORANGE_60"`, not `ClassType.ORANGE_60`. Returning members for known values needs a before-validator that tries `ClassType(v)` and keeps `v` on `ValueError`. Unknowns are detected with `not isinstance(x, ClassType)` once normalized.
 
 **Strengths**: No custom enum machinery. The raw value is preserved. This is the best-established approach in generators.
 
