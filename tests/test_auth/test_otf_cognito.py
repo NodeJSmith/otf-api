@@ -552,3 +552,42 @@ def test_get_identity_credentials(mock_cache, mock_verify_token, mock_id_client)
     assert creds["AccessKeyId"] == "AKIA_TEST"
     assert creds["SecretKey"] == "secret-test"
     assert creds["SessionToken"] == "session-test"
+
+
+@pytest.mark.parametrize(
+    ("error", "expected_type", "expected_message"),
+    [
+        (_client_error("NotAuthorizedException", "secret provider detail"), OtfAuthenticationError, "OTF authentication failed"),
+        (EndpointConnectionError(endpoint_url="https://cognito-identity.example.com"), OtfTransportError, "OTF transport error"),
+        (ParamValidationError(report="bad params"), OtfConfigurationError, "OTF configuration error"),
+    ],
+)
+def test_get_identity_credentials_error(
+    mock_cache, mock_verify_token, mock_id_client, error, expected_type, expected_message
+):
+    """get_identity_credentials maps ClientError and BotoCoreError to fixed-message Otf* errors."""
+    cognito = _cognito_with_cached_tokens(mock_cache)
+    mock_id_client.get_id.side_effect = error
+
+    with (
+        patch.object(OtfCognito, "id_client", new_callable=PropertyMock, return_value=mock_id_client),
+        pytest.raises(expected_type) as exc_info,
+    ):
+        cognito.get_identity_credentials()
+
+    assert str(exc_info.value) == expected_message
+    assert exc_info.value.__cause__ is error
+
+
+def test_get_identity_credentials_client_construction_error(mock_cache, mock_verify_token):
+    """A BotoCoreError from building the real id_client is mapped to OtfConfigurationError."""
+    cognito = _cognito_with_cached_tokens(mock_cache)
+    error = ProfileNotFound(profile="missing")
+
+    with (
+        patch("otf_api.auth.auth.Session", side_effect=error),
+        pytest.raises(OtfConfigurationError) as exc_info,
+    ):
+        cognito.get_identity_credentials()
+
+    assert exc_info.value.__cause__ is error
