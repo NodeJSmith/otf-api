@@ -3,11 +3,15 @@
 from datetime import date, datetime
 
 import httpx
+import pendulum
+import pytest
 from conftest import load_fixture
 
 from otf_api.models.bookings import Booking, BookingV2, OtfClass
-from otf_api.models.bookings.enums import BookingStatus
+from otf_api.models.bookings.bookings_v2 import get_end_time
+from otf_api.models.bookings.enums import BookingStatus, ClassType
 
+_CLASSES_URL = "https://api.orangetheory.io/v1/classes?studio_ids=452ec40a-3193-4a54-ae89-71105e503a67"
 _BOOKINGS_NEW_DATE_PARAMS = "2026-03-27"
 _BOOKINGS_NEW_URL = (
     "https://api.orangetheory.io/v1/bookings/me"
@@ -81,6 +85,32 @@ def test_get_classes(mock_otf) -> None:
     assert isinstance(first.name, str)
     assert first.studio is not None
     assert isinstance(first.studio.studio_uuid, str)
+
+
+@pytest.mark.parametrize("class_type", ["HYROX_60", "OPEN_STUDIO"])
+def test_get_classes_keeps_new_class_types(mock_otf, mock_router, class_type: str) -> None:
+    """Classes whose type is HYROX_60 or OPEN_STUDIO are returned, not dropped (#147)."""
+    target_uuid = mock_otf.bookings.get_classes()[0].class_uuid
+
+    fixture_data = load_fixture("bookings/get_classes")
+    for item in fixture_data["items"]:
+        if item["ot_base_class_uuid"] == target_uuid:
+            item["type"] = class_type
+    mock_router.request("GET", _CLASSES_URL).mock(return_value=httpx.Response(200, json=fixture_data))
+
+    matching = [c for c in mock_otf.bookings.get_classes() if c.class_uuid == target_uuid]
+
+    assert len(matching) == 1
+    assert matching[0].class_type == class_type
+
+
+@pytest.mark.parametrize("class_type", ["HYROX_60", "OPEN_STUDIO"])
+def test_get_end_time_new_class_types_last_60_minutes(class_type: str) -> None:
+    start = datetime(2026, 3, 27, 9, 0)
+
+    end = get_end_time(start, ClassType(class_type))
+
+    assert (end - pendulum.instance(start)).in_minutes() == 60
 
 
 def test_get_bookings_with_default_filters(mock_otf) -> None:
