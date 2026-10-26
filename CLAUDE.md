@@ -1,3 +1,10 @@
+---
+audience: open-source library
+developers: solo
+data-sensitivity: personal
+peers: cyberjunky/python-garminconnect, stravalib/stravalib, python-ring-doorbell/python-ring-doorbell
+---
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
