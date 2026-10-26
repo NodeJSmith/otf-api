@@ -1,35 +1,20 @@
 from logging import getLogger
 
 import attrs
-from botocore.exceptions import BotoCoreError, ClientError
 
-from otf_api.auth.auth import HttpxCognitoAuth, OtfCognito, raise_for_botocore_error
+from otf_api.auth.auth import HttpxCognitoAuth, OtfCognito
 from otf_api.auth.utils import get_username_password
-from otf_api.exceptions import NoCredentialsError, OtfAuthenticationError
+from otf_api.exceptions import NoCredentialsError, OtfError
 
 LOGGER = getLogger(__name__)
 
 
-def _log_initial_auth_error(e: ClientError, username: str | None) -> None:
-    code = e.response.get("Error", {}).get("Code", "")
-    if code == "NotAuthorizedException":
-        LOGGER.warning("Authentication failed — incorrect password for %s", username)
-    elif code == "UserNotFoundException":
-        LOGGER.warning("Authentication failed — no account found for %s", username)
-    else:
-        LOGGER.exception("Failed to authenticate with Cognito")
-
-
 def _create_cognito(username: str | None, password: str | None, **kwargs: str | None) -> OtfCognito:
+    # OtfCognito maps and logs its own Cognito/botocore failures; only errors it leaves unmapped are logged here.
     try:
         return OtfCognito(username=username, password=password, **kwargs)
-    except NoCredentialsError:
+    except OtfError:
         raise
-    except ClientError as e:
-        _log_initial_auth_error(e, username)
-        raise OtfAuthenticationError("OTF authentication failed") from e
-    except BotoCoreError as e:
-        raise_for_botocore_error(e, "authenticating with Cognito")
     except Exception:
         LOGGER.exception("Failed to authenticate with Cognito")
         raise
@@ -64,6 +49,9 @@ class OtfUser:
 
         Raises:
             NoCredentialsError: If neither username/password nor id/access tokens are provided.
+            OtfAuthenticationError: If Cognito rejects the login or token refresh.
+            OtfTransportError: If a connectivity, timeout, or endpoint failure occurs.
+            OtfConfigurationError: If a boto3/botocore configuration or validation failure occurs.
         """
         try:
             self.cognito = _create_cognito(
