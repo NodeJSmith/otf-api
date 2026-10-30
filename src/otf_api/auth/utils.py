@@ -1,10 +1,14 @@
 import os
 import sys
-from functools import partial
 from getpass import getpass
 from logging import getLogger
 
 from otf_api.exceptions import NoCredentialsError
+
+try:
+    from rich import get_console
+except ImportError:
+    get_console = None
 
 LOGGER = getLogger(__name__)
 USERNAME_PROMPT = "Enter your Orangetheory Fitness username/email: "
@@ -37,36 +41,25 @@ def get_username_password() -> tuple[str, str]:
 
 
 def _show_error_message(message: str) -> None:
-    try:
-        from rich import get_console  # type: ignore
-
-        get_console().print(message, style="bold red")
-    except ImportError:
+    if get_console is None:
         print(message)
+        return
+
+    get_console().print(message, style="bold red")
 
 
 def _get_password_input(prompt: str) -> str:
-    try:
-        from rich import get_console  # type: ignore
+    if get_console is None:
+        return getpass(prompt)
 
-        otf_input = partial(get_console().input, password=True)
-        prompt = f"[bold blue]{prompt}[/bold blue]"
-    except ImportError:
-        otf_input = getpass
-
-    return otf_input(prompt)
+    return get_console().input(f"[bold blue]{prompt}[/bold blue]", password=True)
 
 
 def _get_input(prompt: str) -> str:
-    try:
-        from rich import get_console  # type: ignore
+    if get_console is None:
+        return input(prompt)
 
-        otf_input = get_console().input
-        prompt = f"[bold blue]{prompt}[/bold blue]"
-    except ImportError:
-        otf_input = input
-
-    return otf_input(prompt)
+    return get_console().input(f"[bold blue]{prompt}[/bold blue]")
 
 
 def _prompt_for_username() -> str:

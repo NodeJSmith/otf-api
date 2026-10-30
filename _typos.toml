@@ -1,0 +1,15 @@
+[files]
+extend-exclude = [
+    "CHANGELOG.md",
+    "*.lock",
+    "design/",
+    # Anonymized API responses reproduce OTF's own field names and generated names.
+    "fixtures/",
+]
+
+[default.extend-words]
+# OrangeTheory's abbreviation (OT Live, totalOTLiveClassesBooked, ...)
+ot = "ot"
+# Misspellings in OTF's API field names: memberOptinFlowTypeId, introNeccessary
+optin = "optin"
+neccessary = "neccessary"

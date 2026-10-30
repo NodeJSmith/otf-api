@@ -1,4 +1,4 @@
-"""Tests for the PII validator (WP04)."""
+"""Tests for the PII validator."""
 
 import pytest
 
@@ -9,10 +9,6 @@ from otf_api.anonymize.validator import (
     ValidationResult,
     collect_real_values,
 )
-
-# ---------------------------------------------------------------------------
-# Fixtures
-# ---------------------------------------------------------------------------
 
 
 @pytest.fixture
@@ -39,11 +35,6 @@ def validator(real_name: str, real_email: str, real_uuid: str) -> PiiValidator:
     return PiiValidator(known_real_values={real_name, real_email, real_uuid})
 
 
-# ---------------------------------------------------------------------------
-# ValidationResult / LeakReport dataclass smoke tests
-# ---------------------------------------------------------------------------
-
-
 def test_validation_result_defaults() -> None:
     """ValidationResult defaults are correctly initialised."""
     result = ValidationResult(passed=True, leaks=[], structural_errors=[], model_parse_errors=[])
@@ -62,11 +53,6 @@ def test_leak_report_fields() -> None:
     assert report.category == "name"
 
 
-# ---------------------------------------------------------------------------
-# test_catches_leaked_name
-# ---------------------------------------------------------------------------
-
-
 def test_catches_leaked_name(validator: PiiValidator, real_name: str) -> None:
     """Inject a real name into anonymized output — validator must flag it."""
     original = {"data": {"firstName": real_name, "email": "old@old.com"}}
@@ -77,11 +63,6 @@ def test_catches_leaked_name(validator: PiiValidator, real_name: str) -> None:
     assert not result.passed
     leak_values = [lr.real_value for lr in result.leaks]
     assert real_name in leak_values
-
-
-# ---------------------------------------------------------------------------
-# test_catches_leaked_email
-# ---------------------------------------------------------------------------
 
 
 def test_catches_leaked_email(validator: PiiValidator, real_email: str) -> None:
@@ -96,11 +77,6 @@ def test_catches_leaked_email(validator: PiiValidator, real_email: str) -> None:
     assert real_email in leak_values
 
 
-# ---------------------------------------------------------------------------
-# test_catches_leaked_uuid
-# ---------------------------------------------------------------------------
-
-
 def test_catches_leaked_uuid(validator: PiiValidator, real_uuid: str) -> None:
     """Inject a real UUID into anonymized output — validator must flag it."""
     original = {"memberUUId": real_uuid}
@@ -111,11 +87,6 @@ def test_catches_leaked_uuid(validator: PiiValidator, real_uuid: str) -> None:
     assert not result.passed
     leak_values = [lr.real_value for lr in result.leaks]
     assert real_uuid in leak_values
-
-
-# ---------------------------------------------------------------------------
-# test_catches_leak_in_filename
-# ---------------------------------------------------------------------------
 
 
 def test_catches_leak_in_filename(real_uuid: str) -> None:
@@ -132,11 +103,6 @@ def test_catches_leak_in_filename(real_uuid: str) -> None:
     assert real_uuid in leak_values
 
 
-# ---------------------------------------------------------------------------
-# test_passes_clean_output
-# ---------------------------------------------------------------------------
-
-
 def test_passes_clean_output(validator: PiiValidator) -> None:
     """Fully anonymized data with no real values passes validation."""
     original = {"firstName": "Jessica", "email": "jessica@example.com"}
@@ -147,11 +113,6 @@ def test_passes_clean_output(validator: PiiValidator) -> None:
     assert result.passed
     assert result.leaks == []
     assert result.structural_errors == []
-
-
-# ---------------------------------------------------------------------------
-# test_structural_mismatch_missing_key
-# ---------------------------------------------------------------------------
 
 
 def test_structural_mismatch_missing_key() -> None:
@@ -166,11 +127,6 @@ def test_structural_mismatch_missing_key() -> None:
     assert result.structural_errors  # at least one error
 
 
-# ---------------------------------------------------------------------------
-# test_structural_mismatch_type_change
-# ---------------------------------------------------------------------------
-
-
 def test_structural_mismatch_type_change() -> None:
     """Changing a string to int in anonymized output is flagged."""
     validator = PiiValidator(known_real_values=set())
@@ -181,11 +137,6 @@ def test_structural_mismatch_type_change() -> None:
 
     assert not result.passed
     assert result.structural_errors
-
-
-# ---------------------------------------------------------------------------
-# test_null_preservation_check
-# ---------------------------------------------------------------------------
 
 
 def test_null_preservation_check() -> None:
@@ -207,11 +158,6 @@ def test_null_preservation_check() -> None:
     assert result2.structural_errors
 
 
-# ---------------------------------------------------------------------------
-# test_collect_real_values_includes_variants
-# ---------------------------------------------------------------------------
-
-
 def test_collect_real_values_includes_variants() -> None:
     """Email collected in both '@' and '%40' forms."""
     email = "user@example.com"
@@ -223,11 +169,6 @@ def test_collect_real_values_includes_variants() -> None:
 
     assert email in values
     assert "user%40example.com" in values
-
-
-# ---------------------------------------------------------------------------
-# test_case_insensitive_leak_detection
-# ---------------------------------------------------------------------------
 
 
 def test_case_insensitive_leak_detection() -> None:

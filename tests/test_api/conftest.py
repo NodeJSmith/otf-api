@@ -13,6 +13,16 @@ from otf_api.api.studios.studio_client import StudioClient
 from otf_api.api.workouts.workout_client import WorkoutClient
 
 
+# Methods decorated with @CACHE.memoize() whose closures hold the import-time cache.
+# We bypass the memoize layer for tests by replacing them with their __wrapped__ originals.
+_MEMOIZED_METHODS: list[tuple[type, str]] = [
+    (MemberClient, "get_member_detail"),
+    (StudioClient, "get_studio_detail"),
+    (WorkoutClient, "get_performance_summary"),
+    (WorkoutClient, "get_telemetry"),
+]
+
+
 def _make_mock_user() -> MagicMock:
     """Create a mock OtfUser that bypasses Cognito auth."""
     mock_user = MagicMock()
@@ -56,16 +66,6 @@ def _register_routes(router: respx.MockRouter) -> None:
         router.request(method, url).mock(
             return_value=httpx.Response(status, json=fixture_data)
         )
-
-
-# Methods decorated with @CACHE.memoize() whose closures hold the import-time cache.
-# We bypass the memoize layer for tests by replacing them with their __wrapped__ originals.
-_MEMOIZED_METHODS: list[tuple[type, str]] = [
-    (MemberClient, "get_member_detail"),
-    (StudioClient, "get_studio_detail"),
-    (WorkoutClient, "get_performance_summary"),
-    (WorkoutClient, "get_telemetry"),
-]
 
 
 @pytest.fixture

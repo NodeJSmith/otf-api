@@ -39,6 +39,7 @@ Documentation = "https://otf-api.readthedocs.io/en/stable/"
 [dependency-groups]
 dev = [
     "build==1.2.1",
+    "house-lint>=0.3.0",
     "mypy-boto3-cognito-identity>=1.38.0",
     "mypy-boto3-cognito-idp>=1.35.93,<2",
     "pytest==8.2.2",
@@ -69,3 +70,12 @@ pythonpath = ["src"]
 [build-system]
 requires = ["setuptools >= 80.0"]
 build-backend = "setuptools.build_meta"
+
+# HSL001 section-divider comments and AI-writing filler
+# HSL002 imports inside function bodies
+# HSL003 a TYPE_CHECKING guard followed by a later top-level import
+# HSL004 module constants defined after the first class or function
+# HSL101 leaked spec-artifact tokens (AC#/FR#/WP#/T##)
+[tool.house-lint]
+include = ["src", "tests", "tools", "examples"]
+select = ["HSL001", "HSL002", "HSL003", "HSL004", "HSL101"]

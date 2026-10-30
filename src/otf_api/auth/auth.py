@@ -377,8 +377,6 @@ class OtfCognito(Cognito):
             LOGGER.exception("Failed to write device key cache")
             LOGGER.warning("Device key was not persisted — next login may require full re-authentication")
 
-    ##### OVERRIDDEN METHODS #####
-
     def verify_tokens(self) -> None:
         """Verifies the current id_token and access_token.
 

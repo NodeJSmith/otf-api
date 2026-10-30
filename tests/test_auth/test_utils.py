@@ -1,13 +1,16 @@
 """Tests for src/otf_api/auth/utils.py."""
 
-from unittest.mock import patch
+from unittest.mock import MagicMock, call, patch
 
 import pytest
 
 from otf_api.auth.auth import NoCredentialsError
 from otf_api.auth.utils import (
+    _get_input,
+    _get_password_input,
     _prompt_for_password,
     _prompt_for_username,
+    _show_error_message,
     can_provide_input,
     get_credentials_from_env,
     get_username_password,
@@ -136,3 +139,34 @@ def test_prompt_for_password_retry_on_empty():
     with patch("otf_api.auth.utils._get_password_input", side_effect=["", "mypassword"]):
         result = _prompt_for_password()
     assert result == "mypassword"
+
+
+def test_input_helpers_fall_back_to_stdlib_without_rich() -> None:
+    with (
+        patch("otf_api.auth.utils.get_console", None),
+        patch("builtins.input", return_value="typed") as mock_input,
+        patch("otf_api.auth.utils.getpass", return_value="secret") as mock_getpass,
+        patch("builtins.print") as mock_print,
+    ):
+        assert _get_input("name: ") == "typed"
+        assert _get_password_input("pass: ") == "secret"
+        _show_error_message("boom")
+
+    mock_input.assert_called_once_with("name: ")
+    mock_getpass.assert_called_once_with("pass: ")
+    mock_print.assert_called_once_with("boom")
+
+
+def test_input_helpers_use_rich_when_available() -> None:
+    console = MagicMock()
+    console.input.side_effect = ["typed", "secret"]
+    with patch("otf_api.auth.utils.get_console", return_value=console):
+        assert _get_input("name: ") == "typed"
+        assert _get_password_input("pass: ") == "secret"
+        _show_error_message("boom")
+
+    assert console.input.call_args_list == [
+        call("[bold blue]name: [/bold blue]"),
+        call("[bold blue]pass: [/bold blue]", password=True),
+    ]
+    console.print.assert_called_once_with("boom", style="bold red")

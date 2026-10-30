@@ -27,10 +27,10 @@ hooks = [
 ]
 
 [[repos]]
-repo = "https://github.com/codespell-project/codespell"
-rev = "v2.4.1"
+repo = "https://github.com/crate-ci/typos"
+rev = "v1.51.1"
 hooks = [
-    { id = "codespell", args = ["--config", ".codespellrc"] },
+    { id = "typos", args = ["--force-exclude"], require_serial = true },
 ]
 
 [[repos]]
@@ -64,6 +64,15 @@ language = "system"
 entry = "uv run ruff format --force-exclude"
 require_serial = true
 types_or = ["python", "pyi"]
+
+[[repos.hooks]]
+id = "house-lint"
+name = "house-lint"
+language = "system"
+entry = "uv run house-lint check"
+require_serial = true
+types = ["python"]
+files = '^(src|tests|tools|examples)/.*\.py$'
 
 [[repos.hooks]]
 id = "no-future-annotations"
