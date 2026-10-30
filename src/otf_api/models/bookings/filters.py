@@ -1,9 +1,14 @@
+from collections.abc import Sequence
 from datetime import date, datetime, time
+from logging import getLogger
 
 import pendulum
 from pydantic import BaseModel, field_validator
 
 from otf_api.models.bookings import ClassType, DoW, OtfClass
+from otf_api.models.bookings.enums import class_type_key
+
+LOGGER = getLogger(__name__)
 
 
 class ClassFilter(BaseModel):
@@ -14,6 +19,10 @@ class ClassFilter(BaseModel):
 
     The `class_type` and `day_of_week` fields can be provided as strings or as the corresponding Enum values. The
     class will attempt to match the string to the Enum value, regardless of case.
+
+    A `class_type` string that matches no Enum value is kept, with a warning, so a class type newer than this library
+    can still be filtered on. It compares the same way, ignoring case and treating spaces as underscores, which also
+    means a misspelled type matches nothing rather than raising.
 
     The arguments are applied as an AND filter, meaning that all filters must match for a class to be included. If
     a filter is not provided, it is not applied. If multiple values are provided for a filter the values are treated
@@ -31,7 +40,8 @@ class ClassFilter(BaseModel):
 
     start_date: date | str | None = None
     end_date: date | str | None = None
-    class_type: list[ClassType] | ClassType | None = None
+    # also takes a single value, which a type checker allows because a str is a Sequence[str]; the validator wraps it
+    class_type: Sequence[ClassType | str] | None = None
     day_of_week: list[DoW] | DoW | None = None
     start_time: list[time] | time | None = None
 
@@ -62,7 +72,10 @@ class ClassFilter(BaseModel):
             classes = [c for c in classes if c.starts_at.date() <= self.end_date]
 
         if self.class_type:
-            classes = [c for c in classes if c.class_type in self.class_type]
+            # a value assigned after the class is created skips the validator, so it may be a single string
+            wanted = [self.class_type] if isinstance(self.class_type, str) else self.class_type
+            wanted_keys = {class_type_key(t) for t in wanted}
+            classes = [c for c in classes if class_type_key(c.class_type) in wanted_keys]
 
         if self.day_of_week:
             classes = [c for c in classes if c.day_of_week in self.day_of_week]
@@ -74,7 +87,7 @@ class ClassFilter(BaseModel):
 
         return classes
 
-    @field_validator("class_type", "day_of_week", "start_time", mode="before")
+    @field_validator("day_of_week", "start_time", mode="before")
     @classmethod
     def _single_item_to_list(cls, v: str | list | None) -> list | None:
         if v and not isinstance(v, list):
@@ -101,17 +114,11 @@ class ClassFilter(BaseModel):
 
     @field_validator("class_type", mode="before")
     @classmethod
-    def _class_type_str_to_enum(cls, v: str | list[str] | None) -> list[ClassType] | None:
-        if v and isinstance(v, str):
-            return [ClassType.get_case_insensitive(v)]
-
-        if v and isinstance(v, list) and not all(isinstance(i, ClassType) for i in v):
-            return [ClassType.get_case_insensitive(i) for i in v]
-
+    def _normalize_class_types(cls, v: str | Sequence[ClassType | str] | None) -> list[ClassType | str] | None:
         if not v:
             return None
 
-        return v  # pyright: ignore[reportReturnType]
+        return [known_class_type_or_raw(i) for i in ([v] if isinstance(v, str) else v)]
 
     @field_validator("start_date", "end_date", mode="before")
     @classmethod
@@ -126,3 +133,15 @@ class ClassFilter(BaseModel):
             return value.date() if isinstance(value, datetime) else value  # pyright: ignore[reportReturnType]
         except (ValueError, TypeError):
             raise ValueError(f"Invalid date format: {v}. Expected format is YYYY-MM-DD or a date object.")
+
+
+def known_class_type_or_raw(value: str) -> ClassType | str:
+    """Returns the matching ClassType, or the value as given with a warning, since it may just be a typo."""
+    try:
+        return ClassType.get_case_insensitive(value)
+    except KeyError:
+        LOGGER.warning(
+            "ClassFilter class_type %r is not a known class type; it matches only a class type of the same name",
+            value,
+        )
+        return value

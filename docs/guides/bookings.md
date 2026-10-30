@@ -50,11 +50,51 @@ classes = otf.bookings.get_classes(filters=[cf, cf2])
 ```
 
 **Available filter fields:** `day_of_week` (DoW), `start_time` (time), `class_type`
-(ClassType), `start_date` (date), `end_date` (date). Each accepts a single value or list.
+(ClassType or str), `start_date` (date), `end_date` (date). Each accepts a single value or list.
 
 !!! tip
     Use `ClassType.get_standard_class_types()` to match all standard 2G/3G formats
     without listing each one individually.
+
+`class_type` also accepts a type newer than this library, compared ignoring case and treating
+spaces as underscores, so `"hyrox 75"` matches `HYROX_75`. A value that matches no `ClassType`
+logs a warning each time the filter is built. A misspelled type therefore returns no classes and
+a warning, not an exception.
+
+## Values the Library Doesn't Recognize
+
+OrangeTheory can add a class type or booking status at any time. A response carrying a value this
+version doesn't know still parses: the record is kept, the field holds the raw string, and the
+library logs one warning per value per process. So `OtfClass.class_type` and
+`BookingV2Class.class_type` are `ClassType | str`, and `Booking.status` is `BookingStatus | str`.
+
+Compare by value, which works on either form and keeps working if a later release adds the value
+as an enum member:
+
+```python
+if otf_class.class_type == "HYROX_75":
+    ...
+
+if booking.status in (BookingStatus.Booked, "Some New Status"):
+    ...
+```
+
+Don't read `.value` without narrowing first, because a raw string has no `.value`:
+
+```python
+if isinstance(otf_class.class_type, ClassType):
+    label = otf_class.class_type.value
+else:
+    label = otf_class.class_type
+
+# the same thing, for code that doesn't need to tell them apart
+label = getattr(otf_class.class_type, "value", otf_class.class_type)
+```
+
+`BookingV2.ends_at` is derived from the class type. For an unrecognized type ending in an
+underscore and a number from 30 to 120, it uses that number as the length in minutes, so `HYROX_75`
+lasts 75 minutes. Any other unrecognized type is assumed to last 60. This is a best guess from the
+name.
 
 ## Booking a Class
 
@@ -70,6 +110,13 @@ otf.bookings.book_class("c465a372-5cda-4e4b-addd-e695db2c4efa")
     `book_class` will raise `AlreadyBookedError` if you are already booked for that class,
     or `OutsideSchedulingWindowError` if the class is not yet in the booking window. It also
     checks for time conflicts with your existing bookings.
+
+These checks, and the `exclude_cancelled` and `exclude_checkedin` options of `get_bookings`, read
+`Booking.state`, which is `"cancelled"`, `"checked_in"`, or `"active"`. For an unrecognized status
+it comes from the booking's dates: a `cancelled_date` means cancelled, otherwise a
+`checked_in_date` means checked in, and neither means active. If a new cancelled-style status sets
+no date, `book_class` wrongly refuses to rebook until a release adds that status. `book_class_new`
+runs no local checks, so use it in that case.
 
 ## Viewing Your Bookings
 

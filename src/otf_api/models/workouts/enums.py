@@ -1,4 +1,9 @@
 from enum import IntEnum, StrEnum
+from typing import Annotated
+
+from pydantic import AfterValidator
+
+from otf_api.models.vocabulary import normalize_to
 
 
 class StatsTime(StrEnum):
@@ -22,6 +27,9 @@ class EquipmentType(IntEnum):
     Bike = 5
     WeightFloor = 6
     PowerWalker = 7
+
+
+OpenEquipmentType = Annotated[EquipmentType | int, AfterValidator(normalize_to(EquipmentType))]
 
 
 class ChallengeCategory(IntEnum):

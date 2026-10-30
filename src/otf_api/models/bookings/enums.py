@@ -1,5 +1,9 @@
 from enum import StrEnum
-from typing import Self
+from typing import Annotated, Self
+
+from pydantic import AfterValidator
+
+from otf_api.models.vocabulary import normalize_to
 
 
 class BookingStatus(StrEnum):
@@ -38,6 +42,8 @@ class BookingStatus(StrEnum):
         }
         return priorities.get(self, 999)
 
+
+OpenBookingStatus = Annotated[BookingStatus | str, AfterValidator(normalize_to(BookingStatus))]
 
 HISTORICAL_BOOKING_STATUSES = [
     BookingStatus.CheckedIn,
@@ -114,6 +120,11 @@ class Orange90ClassType(StrEnum):
     LifeIsWhyWeGive90 = "Life is Why We Give 90"
 
 
+def class_type_key(value: str) -> str:
+    """Folds case, surrounding space, and inner spaces, so `"orange 60 "` and `ORANGE_60` compare equal."""
+    return (value or "").strip().replace(" ", "_").lower()
+
+
 class ClassType(StrEnum):
     """High-level classification of OTF class formats."""
 
@@ -128,10 +139,8 @@ class ClassType(StrEnum):
     @classmethod
     def get_case_insensitive(cls, value: str) -> "Self":
         """Returns the actual value of the enum, regardless of case."""
-        value = (value or "").strip()
-        value = value.replace(" ", "_")
         lcase_to_actual = {item.value.lower(): item for item in cls}
-        return lcase_to_actual[value.lower()]
+        return lcase_to_actual[class_type_key(value)]
 
     @staticmethod
     def get_standard_class_types() -> list["ClassType"]:
@@ -142,3 +151,6 @@ class ClassType(StrEnum):
     def get_tread_strength_class_types() -> list["ClassType"]:
         """Returns Tread/Strength 50 minute classes."""
         return [ClassType.TREAD_50, ClassType.STRENGTH_50]
+
+
+OpenClassType = Annotated[ClassType | str, AfterValidator(normalize_to(ClassType))]

@@ -58,14 +58,14 @@ class WorkoutApi:
     def get_benchmarks(
         self,
         challenge_category_id: int = 0,
-        equipment_id: models.EquipmentType | Literal[0] = 0,
+        equipment_id: models.EquipmentType | int = 0,
         challenge_subcategory_id: int = 0,
     ) -> list[models.FitnessBenchmark]:
         """Get the member's challenge tracker participation details.
 
         Args:
             challenge_category_id (int): The challenge type ID.
-            equipment_id (EquipmentType | Literal[0]): The equipment ID, default is 0 - this doesn't seem\
+            equipment_id (EquipmentType | int): The equipment ID, default is 0 - this doesn't seem\
                 to be have any impact on the results.
             challenge_subcategory_id (int): The challenge sub type ID. Default is 0 - this doesn't seem\
                 to be have any impact on the results.
@@ -76,11 +76,11 @@ class WorkoutApi:
         data = self.client.get_benchmarks(int(challenge_category_id), int(equipment_id), challenge_subcategory_id)
         return [models.FitnessBenchmark(**item) for item in data]
 
-    def get_benchmarks_by_equipment(self, equipment_id: models.EquipmentType) -> list[models.FitnessBenchmark]:
+    def get_benchmarks_by_equipment(self, equipment_id: models.EquipmentType | int) -> list[models.FitnessBenchmark]:
         """Get the member's challenge tracker participation details by equipment.
 
         Args:
-            equipment_id (EquipmentType): The equipment type ID.
+            equipment_id (EquipmentType | int): The equipment type ID.
 
         Returns:
             list[FitnessBenchmark]: The member's challenge tracker details.

@@ -56,6 +56,11 @@ print(f"Time Zone: {studio.time_zone}")
     `name="Studio Not Found"` and `status="Unknown"` rather than raising an exception. This
     allows downstream code to continue without null checks.
 
+`status` is `StudioStatus | str | None`. If OrangeTheory adds a status this version doesn't know,
+the studio is still returned, `status` holds the raw string, and the library logs one warning per
+value per process. Compare by value (`studio.status == StudioStatus.ACTIVE`), and narrow with
+`isinstance` before reading `.value`, because a raw string has no `.value`.
+
 ## Studio Services
 
 View pricing and service packages available at a studio:

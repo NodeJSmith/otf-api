@@ -446,9 +446,10 @@ class BookingApi:
 
         try:
             existing_booking = self.get_booking_from_class(class_uuid)
-            if existing_booking.status != models.BookingStatus.Cancelled:
+            if existing_booking.state != "cancelled":
                 raise exc.AlreadyBookedError(
-                    f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.booking_uuid
+                    f"Class {class_uuid} is already booked (status: {existing_booking.status}).",
+                    booking_uuid=existing_booking.booking_uuid,
                 )
         except exc.ResourceNotFoundError:
             pass
@@ -529,7 +530,7 @@ class BookingApi:
         self,
         start_date: date | str | None = None,
         end_date: date | str | None = None,
-        status: models.BookingStatus | list[models.BookingStatus] | None = None,
+        status: models.BookingStatus | str | list[models.BookingStatus] | list[str] | None = None,
         exclude_cancelled: bool = True,
         exclude_checkedin: bool = True,
     ) -> list[models.Booking]:
@@ -540,7 +541,8 @@ class BookingApi:
         Args:
             start_date (date | str | None): The start date for the bookings. Default is None.
             end_date (date | str | None): The end date for the bookings. Default is None.
-            status (BookingStatus | list[BookingStatus] | None): The status(es) to filter by. Default is None.
+            status (BookingStatus | str | list[BookingStatus] | list[str] | None): The status(es) to filter by.\
+                Default is None.
             exclude_cancelled (bool): Whether to exclude cancelled bookings. Default is True.
             exclude_checkedin (bool): Whether to exclude checked-in bookings. Default is True.
 
@@ -607,10 +609,10 @@ class BookingApi:
         bookings = sorted(bookings, key=lambda x: x.otf_class.starts_at)
 
         if exclude_cancelled:
-            bookings = [b for b in bookings if b.status != models.BookingStatus.Cancelled]
+            bookings = [b for b in bookings if b.state != "cancelled"]
 
         if exclude_checkedin:
-            bookings = [b for b in bookings if b.status != models.BookingStatus.CheckedIn]
+            bookings = [b for b in bookings if b.state != "checked_in"]
 
         return bookings
 

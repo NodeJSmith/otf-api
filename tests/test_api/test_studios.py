@@ -1,7 +1,12 @@
 """Tests for StudioApi read-only methods."""
 
-import httpx
+from unittest.mock import patch
 
+import httpx
+import pytest
+from conftest import load_fixture
+
+from otf_api.models.studios import StudioStatus
 from otf_api.models.studios.studio_detail import StudioDetail
 from otf_api.models.studios.studio_services import StudioService
 
@@ -59,6 +64,38 @@ def test_get_studio_services(mock_otf) -> None:
     assert isinstance(first.name, str)
     assert first.studio is not None
     assert isinstance(first.studio.studio_uuid, str)
+
+
+def test_get_studio_detail_keeps_unrecognized_status(mock_otf, mock_router) -> None:
+    uuid = "11111111-1111-1111-1111-111111111111"
+    fixture_data = load_fixture("studios/get_studio_detail__452ec40a")
+    fixture_data["data"]["studioUUId"] = uuid
+    fixture_data["data"]["studioStatus"] = "Relocating"
+    mock_router.request("GET", f"https://api.orangetheory.co/mobile/v1/studios/{uuid}").mock(
+        return_value=httpx.Response(200, json=fixture_data)
+    )
+
+    result = mock_otf.studios.get_studio_detail(uuid)
+
+    assert result.status == "Relocating"
+    assert not isinstance(result.status, StudioStatus)
+
+
+@pytest.mark.parametrize(
+    ["raw", "expected"],
+    [("Active", StudioStatus.ACTIVE), (None, None)],
+)
+def test_studio_status_known_value_and_null_pass_through(raw, expected) -> None:
+    result = StudioDetail.model_validate({"studioUUId": "uuid", "studioStatus": raw})
+
+    assert result.status is expected
+
+
+def test_null_studio_status_is_not_reported() -> None:
+    with patch("otf_api.models.vocabulary.LOGGER.warning") as warning:
+        StudioDetail.model_validate({"studioUUId": "uuid", "studioStatus": None})
+
+    warning.assert_not_called()
 
 
 def test_get_studio_detail_threaded_skips_invalid_uuid(mock_otf) -> None:

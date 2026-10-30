@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import Field
 
@@ -6,7 +7,7 @@ from otf_api.models.base import OtfItemBase
 from otf_api.models.mixins import ApiMixin
 from otf_api.models.studios import StudioDetail
 
-from .enums import BookingStatus
+from .enums import BookingStatus, OpenBookingStatus
 
 
 class Coach(OtfItemBase):
@@ -63,7 +64,7 @@ class Booking(ApiMixin, OtfItemBase):
 
     booking_uuid: str = Field(validation_alias="classBookingUUId", description="ID used to cancel the booking")
     is_intro: bool = Field(validation_alias="isIntro", description="Whether this is an introductory class booking.")
-    status: BookingStatus = Field(..., description="Current status of the booking.")
+    status: OpenBookingStatus = Field(..., description="Current status of the booking.")
     booked_date: datetime | None = Field(
         None, validation_alias="bookedDate", description="When the booking was confirmed."
     )
@@ -130,12 +131,37 @@ class Booking(ApiMixin, OtfItemBase):
         """Returns the booking_uuid, to be compatible with new BookingV2 model."""
         return self.booking_uuid
 
+    @property
+    def state(self) -> Literal["cancelled", "checked_in", "active"]:
+        """What the booking means for booking guards and list exclusions, whatever its status.
+
+        A known status decides on its own: only `Cancelled` is cancelled and only `CheckedIn` is checked in, so
+        `LateCancelled` counts as active here, because it blocks rebooking and is kept by `exclude_cancelled`. An
+        unrecognized status is read from the date fields the server set, with cancelled winning if both are set.
+        """
+        if self.status == BookingStatus.Cancelled:
+            return "cancelled"
+
+        if self.status == BookingStatus.CheckedIn:
+            return "checked_in"
+
+        if isinstance(self.status, BookingStatus):
+            return "active"
+
+        if self.cancelled_date:
+            return "cancelled"
+
+        if self.checked_in_date:
+            return "checked_in"
+
+        return "active"
+
     def __str__(self) -> str:
         """Returns a string representation of the booking."""
         starts_at_str = self.otf_class.starts_at.strftime("%a %b %d, %I:%M %p")
         class_name = self.otf_class.name
         coach_name = self.otf_class.coach.name
-        booked_str = self.status.value
+        booked_str = str(self.status)
 
         return f"Booking: {starts_at_str} {class_name} - {coach_name} ({booked_str})"
 

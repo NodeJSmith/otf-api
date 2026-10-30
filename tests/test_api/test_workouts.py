@@ -1,6 +1,10 @@
 """Tests for WorkoutApi read-only methods."""
 
 from datetime import date
+from unittest.mock import patch
+
+import pytest
+from conftest import load_fixture
 
 from otf_api.models.workouts import (
     BodyCompositionData,
@@ -16,6 +20,8 @@ from otf_api.models.workouts import (
     TelemetryHistoryItem,
     Workout,
 )
+from otf_api.models.workouts.challenge_tracker_content import Benchmark
+from otf_api.models.workouts.challenge_tracker_detail import BenchmarkHistory, MetricEntry
 
 
 def test_get_body_composition_list(mock_otf) -> None:
@@ -45,6 +51,38 @@ def test_get_benchmarks_by_equipment(mock_otf) -> None:
 
     first = result[0]
     assert first.equipment_id == EquipmentType.Treadmill
+
+
+@pytest.mark.parametrize(
+    ["model", "raw"],
+    [
+        (Benchmark, {"EquipmentId": 99}),
+        (FitnessBenchmark, {"EquipmentId": 99}),
+        (MetricEntry, {"EquipmentId": 99}),
+        (BenchmarkHistory, {"EquipmentId": 99}),
+    ],
+)
+def test_unrecognized_equipment_id_is_kept_raw(model, raw) -> None:
+    result = model.model_validate(raw)
+
+    assert result.equipment_id == 99
+    assert not isinstance(result.equipment_id, EquipmentType)
+
+
+def test_known_and_null_equipment_id_pass_through() -> None:
+    assert FitnessBenchmark.model_validate({"EquipmentId": 2}).equipment_id is EquipmentType.Treadmill
+    assert FitnessBenchmark.model_validate({"EquipmentId": None}).equipment_id is None
+
+
+def test_get_benchmarks_by_equipment_accepts_a_value_read_from_a_response(mock_otf) -> None:
+    benchmarks = load_fixture("workouts/get_benchmarks")["Dto"][:1]
+    benchmarks[0]["EquipmentId"] = 99
+
+    with patch.object(mock_otf.workouts.client, "get_benchmarks", return_value=benchmarks):
+        result = mock_otf.workouts.get_benchmarks_by_equipment(99)
+
+    assert len(result) == 1
+    assert result[0].equipment_id == 99
 
 
 def test_get_benchmarks_by_challenge_category(mock_otf) -> None:
