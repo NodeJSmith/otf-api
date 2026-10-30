@@ -1,0 +1,61 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "Per-repo Renovate config, processed by a self-hosted Renovate runner.",
+    "chore(deps) commits keep dependency bumps out of the release-please changelog.",
+    "Runtime dependency ranges stay as written (rangeStrategy update-lockfile): otf-api is a library, so a bump here must not raise the minimum versions its users get.",
+    "Non-major updates automerge through GitHub auto-merge once the required checks pass, after minimumReleaseAge holds each release for 3 days. Major updates and the python runtime never automerge.",
+    "customManagers tracks each GitHub-hosted hook repo's rev in prek.toml: Renovate's built-in pre-commit manager only reads .pre-commit-config.yaml, so prek.toml pins would otherwise go stale silently."
+  ],
+  "extends": ["config:recommended"],
+  "schedule": ["before 9am"],
+  "timezone": "America/New_York",
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 0,
+  "minimumReleaseAge": "3 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
+  "rangeStrategy": "update-lockfile",
+  "customManagers": [
+    {
+      "description": "prek.toml hook repo revs (each `repo = \"https://github.com/...\"` line followed directly by its `rev = ...` line)",
+      "customType": "regex",
+      "managerFilePatterns": ["/^prek\\.toml$/"],
+      "matchStrings": ["repo = \"https://github\\.com/(?<depName>[^\"]+)\"\\nrev = \"(?<currentValue>[^\"]+)\""],
+      "datasourceTemplate": "github-tags"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Automerge non-major updates once the required checks pass",
+      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "automerge": true
+    },
+    {
+      "description": "A python 3.x minor is a language upgrade and is never automerged",
+      "matchDepNames": ["python"],
+      "automerge": false
+    },
+    {
+      "description": "prek tooling: every hook rev in prek.toml moves together",
+      "matchFileNames": ["prek.toml"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "groupName": "prek tooling"
+    },
+    {
+      "description": "prek tooling: the prek CLI (mise.toml) and its GitHub Action join the hook revs",
+      "matchDepNames": ["prek", "j178/prek-action"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "groupName": "prek tooling"
+    },
+    {
+      "description": "Batch GitHub Actions non-major and digest updates into one PR (prek-action stays in prek tooling; the python-version runtime pin is excluded)",
+      "matchManagers": ["github-actions"],
+      "matchDepNames": ["!j178/prek-action", "!python"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "groupName": "github-actions non-major"
+    }
+  ]
+}

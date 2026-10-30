@@ -1,0 +1,73 @@
+# Configuration file for prek, a fast Rust-based Git hook manager.
+# See https://prek.j178.dev for more information.
+#:schema https://www.schemastore.org/prek.json
+
+# scripts/ holds one-off maintenance scripts that aren't held to the library's lint rules.
+exclude = "^scripts"
+
+[[repos]]
+repo = "builtin"
+hooks = [
+    { id = "trailing-whitespace" },
+    { id = "end-of-file-fixer" },
+    { id = "mixed-line-ending" },
+    { id = "check-case-conflict" },
+    { id = "check-shebang-scripts-are-executable" },
+    { id = "check-merge-conflict" },
+    { id = "check-yaml", args = ["--unsafe"] },
+]
+
+# Hooks not yet reimplemented as builtins
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+hooks = [
+    { id = "check-builtin-literals" },
+    { id = "debug-statements" },
+]
+
+[[repos]]
+repo = "https://github.com/codespell-project/codespell"
+rev = "v2.4.1"
+hooks = [
+    { id = "codespell", args = ["--config", ".codespellrc"] },
+]
+
+[[repos]]
+repo = "https://github.com/gitleaks/gitleaks"
+rev = "v8.30.1"
+hooks = [
+    # The upstream hook scans only the index, so at pre-push or in CI's clean checkout it would
+    # pass having scanned nothing. The whole-tree alias covers those stages.
+    { id = "gitleaks", stages = ["pre-commit"] },
+    { id = "gitleaks", alias = "gitleaks-tree", name = "Detect hardcoded secrets (tracked tree)", entry = "./tools/scan_tracked_secrets.sh", pass_filenames = false, always_run = true, stages = ["pre-push"] },
+]
+
+# Python tools locked in uv.lock run through `uv run`, so the hook and a hand-run
+# `uv run <tool>` always use the same version.
+[[repos]]
+repo = "local"
+
+# --force-exclude applies ruff.toml's excludes to the filenames prek passes explicitly.
+[[repos.hooks]]
+id = "ruff-check"
+name = "ruff check"
+language = "system"
+entry = "uv run ruff check --fix --force-exclude --show-fixes"
+require_serial = true
+types_or = ["python", "pyi"]
+
+[[repos.hooks]]
+id = "ruff-format"
+name = "ruff format"
+language = "system"
+entry = "uv run ruff format --force-exclude"
+require_serial = true
+types_or = ["python", "pyi"]
+
+[[repos.hooks]]
+id = "no-future-annotations"
+name = "Ban from __future__ import annotations (breaks Pydantic)"
+language = "pygrep"
+types = ["python"]
+entry = "^from __future__ import annotations"

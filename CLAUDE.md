@@ -23,7 +23,7 @@ uv sync          # install all dependencies (dev group included by default)
 
 ```bash
 uv run pytest                          # run tests (requires real OTF credentials)
-uv run pre-commit run --all-files      # lint + format (ruff, codespell, etc.)
+prek run --all-files                   # lint + format (ruff, codespell, etc.)
 uv run ruff check --fix --show-fixes   # lint only
 uv run ruff format                     # format only
 uv build                               # build wheel and sdist
@@ -43,7 +43,7 @@ Tests require real OrangeTheory credentials. Set `OTF_EMAIL` and `OTF_PASSWORD` 
 - **Quotes**: Double quotes
 - **Indentation**: 4 spaces
 - All Ruff rules are auto-fixable (`fixable = ["ALL"]`)
-- Pre-commit hooks enforce ruff check, ruff format, codespell, and standard file hygiene
+- prek hooks (`prek.toml`) enforce ruff check, ruff format, codespell, gitleaks, and standard file hygiene
 
 ## Architecture Notes
 
@@ -112,5 +112,5 @@ The fixture-based test suite (`tests/`) uses `respx` to mock HTTP — no credent
 
 - Feature branches for new work
 - Versioning and release PRs managed via `release-please`
-- CI runs tests on Python 3.11 and 3.12, plus pre-commit checks
+- CI runs tests on Python 3.11 and 3.12, plus prek hooks
 - Releases created through the release-please workflow; published to PyPI via trusted publishing
