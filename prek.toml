@@ -2,6 +2,8 @@
 # See https://prek.j178.dev for more information.
 #:schema https://www.schemastore.org/prek.json
 
+default_install_hook_types = ["pre-commit", "pre-push"]
+
 # scripts/ holds one-off maintenance scripts that aren't held to the library's lint rules.
 exclude = "^scripts"
 

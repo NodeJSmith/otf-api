@@ -17,6 +17,7 @@ Python library for the OrangeTheory Fitness API. Provides typed clients for book
 
 ```bash
 uv sync          # install all dependencies (dev group included by default)
+prek install     # install the pre-commit and pre-push hooks
 ```
 
 ## Common Commands
