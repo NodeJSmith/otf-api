@@ -233,11 +233,11 @@ def create_capture_hook(config: AnonymizeConfig | None = None) -> AnonymizedCapt
         A fully initialised ``AnonymizedCaptureHook`` ready for injection.
     """
     if config is None:
-        # --- output_dir ---
+        # output_dir
         output_dir_env = os.getenv("OTF_ANONYMIZE_OUTPUT_DIR")
         output_dir = Path(output_dir_env) if output_dir_env else _DEFAULT_OUTPUT_DIR
 
-        # --- seed ---
+        # seed
         seed_env = os.getenv("OTF_ANONYMIZE_SEED")
         seed: int | None = None
         if seed_env is not None:
@@ -249,7 +249,7 @@ def create_capture_hook(config: AnonymizeConfig | None = None) -> AnonymizedCapt
                     seed_env,
                 )
 
-        # --- strictness ---
+        # strictness
         strictness_raw = os.getenv("OTF_ANONYMIZE_STRICTNESS", "mask").lower()
         if strictness_raw not in ("permissive", "mask", "drop"):
             logger.warning(

@@ -3,7 +3,7 @@
 
 from otf_api.anonymize.mappings import FIELD_MAPPINGS, KNOWN_SAFE_FIELDS, FieldMapping
 
-# All known PII field names from the fixture audit, organized per WP01 spec.
+# All known PII field names from the fixture audit.
 ALL_KNOWN_PII_FIELDS = {
     # Identity UUIDs
     "memberUUId",

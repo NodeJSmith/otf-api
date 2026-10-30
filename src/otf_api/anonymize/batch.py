@@ -32,6 +32,23 @@ _UUID_SEED_KEY = "memberUUId"
 _UUID_PATTERN = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", re.IGNORECASE)
 
 
+_MIN_PII_LENGTH = 8
+"""Minimum character length for a value to be considered a meaningful PII leak.
+
+Short values like state codes ("KS"), single digits ("0"), gender codes ("M"),
+common first names ("Blair", "Bobby", "Erika" — all ≤7 chars) will produce
+false-positive leak reports because:
+  1. They appear as substrings in safe metadata (studio names, etc.)
+  2. Faker's name generator draws from the same name pool and can accidentally
+     generate a name that matches a real name in the corpus.
+
+8 characters is the practical threshold: short enough to catch phone numbers
+(10 digits) and emails; long enough to exclude common first names (7 chars
+or fewer) and 2-letter state codes from scanning. Note: numeric member IDs
+(6-7 digits) fall below this threshold and are not scanned for leaks.
+"""
+
+
 @dataclasses.dataclass
 class BatchResult:
     """Summarises the result of a full-batch anonymization run.
@@ -147,23 +164,6 @@ def _preseed_uuids_from_filenames(input_dir: Path, anonymizer: Anonymizer) -> in
     return len(seen_uuids)
 
 
-_MIN_PII_LENGTH = 8
-"""Minimum character length for a value to be considered a meaningful PII leak.
-
-Short values like state codes ("KS"), single digits ("0"), gender codes ("M"),
-common first names ("Blair", "Bobby", "Erika" — all ≤7 chars) will produce
-false-positive leak reports because:
-  1. They appear as substrings in safe metadata (studio names, etc.)
-  2. Faker's name generator draws from the same name pool and can accidentally
-     generate a name that matches a real name in the corpus.
-
-8 characters is the practical threshold: short enough to catch phone numbers
-(10 digits) and emails; long enough to exclude common first names (7 chars
-or fewer) and 2-letter state codes from scanning. Note: numeric member IDs
-(6-7 digits) fall below this threshold and are not scanned for leaks.
-"""
-
-
 def _collect_all_real_values(input_dir: Path) -> set[str]:
     """Collect all real PII values from the entire input corpus.
 
@@ -273,9 +273,7 @@ def anonymize_batch(
     input_dir = Path(input_dir)
     output_dir = Path(output_dir)
 
-    # ------------------------------------------------------------------
     # Step 1: Resolve seed
-    # ------------------------------------------------------------------
     effective_seed = seed
     if effective_seed is None and config is not None:
         effective_seed = config.seed
@@ -287,9 +285,7 @@ def anonymize_batch(
         else:
             logger.warning("No memberUUId found in fixtures; using random seed")
 
-    # ------------------------------------------------------------------
     # Step 2: Build anonymizer
-    # ------------------------------------------------------------------
     if config is None:
         effective_config = AnonymizeConfig(seed=effective_seed)
     else:
@@ -298,29 +294,23 @@ def anonymize_batch(
     generators = FakeDataGenerators(seed=effective_seed)
     anonymizer = Anonymizer(config=effective_config, generators=generators, mappings=FIELD_MAPPINGS)
 
-    # ------------------------------------------------------------------
     # Step 3: Collect all real values for the validator (before processing)
-    # ------------------------------------------------------------------
     logger.info("Collecting real PII values from %s", input_dir)
     all_real_values = _collect_all_real_values(input_dir)
     logger.info("Found %d distinct real PII values", len(all_real_values))
 
-    # ------------------------------------------------------------------
     # Step 3b: Pre-seed the replacement map with UUIDs from filenames
     # Some fixtures (e.g. challenges endpoints) embed the member UUID only in
     # the filename, not in the response body.  Pre-seeding ensures that every
     # UUID in a filename gets a fake UUID in the replacement map before
     # anonymize_filename() runs.
-    # ------------------------------------------------------------------
     n_preseeded = _preseed_uuids_from_filenames(input_dir, anonymizer)
     logger.info("Pre-seeded replacement map with %d filename UUIDs", n_preseeded)
 
     files_processed = 0
     files_skipped = 0
 
-    # ------------------------------------------------------------------
     # Step 5: Anonymize and validate all files in memory before writing
-    # ------------------------------------------------------------------
     all_json_files = sorted(input_dir.rglob("*.json"))
     data_files = [f for f in all_json_files if not f.name.startswith("_")]
 
@@ -353,9 +343,7 @@ def anonymize_batch(
         files_processed += 1
         logger.debug("Anonymized %s -> %s", relative_path, anon_relative_str)
 
-    # ------------------------------------------------------------------
     # Step 6: Validate all anonymized data in memory (before any disk writes)
-    # ------------------------------------------------------------------
     validator = PiiValidator(known_real_values=all_real_values)
     all_leaks: list[LeakReport] = []
     all_structural: list[str] = []
@@ -415,9 +403,7 @@ def anonymize_batch(
             validation=validation_result,
         )
 
-    # ------------------------------------------------------------------
     # Step 7: Write all validated files to disk
-    # ------------------------------------------------------------------
     output_dir_existed = output_dir.exists()
     try:
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -425,9 +411,7 @@ def anonymize_batch(
         for anon_output_path, anon_json_str, *_ in pending_writes:
             _atomic_write(anon_output_path, anon_json_str)
 
-        # ------------------------------------------------------------------
         # Step 8: Anonymize and write _meta.json if it exists
-        # ------------------------------------------------------------------
         meta_src = input_dir / "_meta.json"
         if meta_src.exists():
             try:
@@ -442,9 +426,7 @@ def anonymize_batch(
             except Exception as exc:
                 logger.warning("Failed to anonymize _meta.json: %s", exc)
 
-        # ------------------------------------------------------------------
         # Step 9: Write replacement map
-        # ------------------------------------------------------------------
         replacement_map_path = output_dir / "_anonymization_map.json"
         raw_map = anonymizer.replacement_map.to_json()
         # Invert to {fake: position_hint} to avoid writing real PII to disk.

@@ -1,4 +1,4 @@
-"""Tests for domain-specific anonymization transforms (WP03).
+"""Tests for domain-specific anonymization transforms.
 
 Covers:
 - Body composition scaling (preserving mathematical relationships between ~50 fields)
@@ -12,10 +12,6 @@ import pytest
 from otf_api.anonymize.anonymizer import AnonymizeConfig, Anonymizer
 from otf_api.anonymize.generators import FakeDataGenerators
 from otf_api.anonymize.mappings import FIELD_MAPPINGS
-
-# ---------------------------------------------------------------------------
-# Fixtures
-# ---------------------------------------------------------------------------
 
 
 @pytest.fixture
@@ -71,11 +67,6 @@ def _make_workout_with_telemetry(hr_values: list[int], max_hr: int = 185) -> dic
     }
 
 
-# ---------------------------------------------------------------------------
-# Body composition scaling
-# ---------------------------------------------------------------------------
-
-
 def test_body_comp_scaling_preserves_ratios(anonymizer: Anonymizer) -> None:
     """After scaling, lean mass + fat mass ≈ tbw (total body weight-related water components).
 
@@ -129,11 +120,6 @@ def test_body_comp_different_factor_per_scan(
     assert abs(factor1 - factor2) > 0.001, f"Both scans got the same factor {factor1:.4f}, expected different factors"
 
 
-# ---------------------------------------------------------------------------
-# Heart-rate telemetry
-# ---------------------------------------------------------------------------
-
-
 def test_hr_zone_recalculation(anonymizer: Anonymizer) -> None:
     """Zone startBpm/endBpm are derived from the anonymized maxHr, not the original."""
     max_hr = 185
@@ -185,11 +171,6 @@ def test_hr_delta_different_per_workout(config_permissive: AnonymizeConfig, gene
     delta2 = result2["telemetry"][0]["hr"] - 145
 
     assert delta1 != delta2, f"Both workouts got the same HR delta ({delta1}), expected different"
-
-
-# ---------------------------------------------------------------------------
-# Address correlation
-# ---------------------------------------------------------------------------
 
 
 def test_address_correlation_same_studio(config_permissive: AnonymizeConfig, generators: FakeDataGenerators) -> None:

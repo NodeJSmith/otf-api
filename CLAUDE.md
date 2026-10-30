@@ -23,7 +23,7 @@ uv sync          # install all dependencies (dev group included by default)
 
 ```bash
 uv run pytest                          # run tests (requires real OTF credentials)
-prek run --all-files                   # lint + format (ruff, codespell, etc.)
+prek run --all-files                   # lint + format (ruff, typos, etc.)
 uv run ruff check --fix --show-fixes   # lint only
 uv run ruff format                     # format only
 uv build                               # build wheel and sdist
@@ -43,7 +43,7 @@ Tests require real OrangeTheory credentials. Set `OTF_EMAIL` and `OTF_PASSWORD` 
 - **Quotes**: Double quotes
 - **Indentation**: 4 spaces
 - All Ruff rules are auto-fixable (`fixable = ["ALL"]`)
-- prek hooks (`prek.toml`) enforce ruff check, ruff format, codespell, gitleaks, and standard file hygiene
+- prek hooks (`prek.toml`) enforce ruff check, ruff format, typos, house-lint, gitleaks, and standard file hygiene
 
 ## Architecture Notes
 

@@ -14,30 +14,30 @@ DEBUG = os.environ.get("GEN_REF_DEBUG", "").lower() in ("1", "true", "yes")
 # Public API allowlist — only modules in this set will have reference stubs generated.
 PUBLIC_MODULES: frozenset[str] = frozenset(
     {
-        # --- API layer ---
+        # API layer
         "otf_api.api.api",
         "otf_api.api.bookings.booking_api",
         "otf_api.api.members.member_api",
         "otf_api.api.studios.studio_api",
         "otf_api.api.workouts.workout_api",
-        # --- Auth ---
+        # Auth
         "otf_api.auth.user",
-        # --- Models: Bookings ---
+        # Models: Bookings
         "otf_api.models.bookings.bookings",
         "otf_api.models.bookings.bookings_v2",
         "otf_api.models.bookings.classes",
         "otf_api.models.bookings.enums",
         "otf_api.models.bookings.filters",
-        # --- Models: Members ---
+        # Models: Members
         "otf_api.models.members.member_detail",
         "otf_api.models.members.member_membership",
         "otf_api.models.members.member_purchases",
         "otf_api.models.members.notifications",
-        # --- Models: Studios ---
+        # Models: Studios
         "otf_api.models.studios.studio_detail",
         "otf_api.models.studios.studio_services",
         "otf_api.models.studios.enums",
-        # --- Models: Workouts ---
+        # Models: Workouts
         "otf_api.models.workouts.workout",
         "otf_api.models.workouts.performance_summary",
         "otf_api.models.workouts.telemetry",
@@ -47,7 +47,7 @@ PUBLIC_MODULES: frozenset[str] = frozenset(
         "otf_api.models.workouts.lifetime_stats",
         "otf_api.models.workouts.out_of_studio_workout_history",
         "otf_api.models.workouts.enums",
-        # --- Base / Utilities ---
+        # Base / Utilities
         "otf_api.cache",
         "otf_api.exceptions",
         "otf_api.models.base",
@@ -56,37 +56,32 @@ PUBLIC_MODULES: frozenset[str] = frozenset(
 )
 
 
-def format_title(part: str) -> str:
-    """Convert a snake_case module name part to a Title Case display name."""
-    return " ".join(word.capitalize() for word in part.split("_"))
-
-
 # 2-level nav: group → leaf label. Avoids deep nesting in the sidebar.
 NAV_LABELS: dict[str, tuple[str, str]] = {
-    # --- API ---
+    # API
     "otf_api.api.api": ("API", "Otf (Main Client)"),
     "otf_api.api.bookings.booking_api": ("API", "BookingApi"),
     "otf_api.api.members.member_api": ("API", "MemberApi"),
     "otf_api.api.studios.studio_api": ("API", "StudioApi"),
     "otf_api.api.workouts.workout_api": ("API", "WorkoutApi"),
-    # --- Auth ---
+    # Auth
     "otf_api.auth.user": ("Auth", "OtfUser"),
-    # --- Models: Bookings ---
+    # Models: Bookings
     "otf_api.models.bookings.bookings": ("Models - Bookings", "Booking"),
     "otf_api.models.bookings.bookings_v2": ("Models - Bookings", "BookingV2"),
     "otf_api.models.bookings.classes": ("Models - Bookings", "Classes"),
     "otf_api.models.bookings.enums": ("Models - Bookings", "Enums"),
     "otf_api.models.bookings.filters": ("Models - Bookings", "Filters"),
-    # --- Models: Members ---
+    # Models: Members
     "otf_api.models.members.member_detail": ("Models - Members", "Member Detail"),
     "otf_api.models.members.member_membership": ("Models - Members", "Membership"),
     "otf_api.models.members.member_purchases": ("Models - Members", "Purchases"),
     "otf_api.models.members.notifications": ("Models - Members", "Notifications"),
-    # --- Models: Studios ---
+    # Models: Studios
     "otf_api.models.studios.studio_detail": ("Models - Studios", "Studio Detail"),
     "otf_api.models.studios.studio_services": ("Models - Studios", "Studio Services"),
     "otf_api.models.studios.enums": ("Models - Studios", "Enums"),
-    # --- Models: Workouts ---
+    # Models: Workouts
     "otf_api.models.workouts.workout": ("Models - Workouts", "Workout"),
     "otf_api.models.workouts.performance_summary": ("Models - Workouts", "Performance Summary"),
     "otf_api.models.workouts.telemetry": ("Models - Workouts", "Telemetry"),
@@ -96,12 +91,17 @@ NAV_LABELS: dict[str, tuple[str, str]] = {
     "otf_api.models.workouts.lifetime_stats": ("Models - Workouts", "Lifetime Stats"),
     "otf_api.models.workouts.out_of_studio_workout_history": ("Models - Workouts", "Out Of Studio"),
     "otf_api.models.workouts.enums": ("Models - Workouts", "Enums"),
-    # --- Utilities ---
+    # Utilities
     "otf_api.cache": ("Utilities", "Cache"),
     "otf_api.exceptions": ("Utilities", "Exceptions"),
     "otf_api.models.base": ("Utilities", "Base Model"),
     "otf_api.models.mixins": ("Utilities", "Mixins"),
 }
+
+
+def format_title(part: str) -> str:
+    """Convert a snake_case module name part to a Title Case display name."""
+    return " ".join(word.capitalize() for word in part.split("_"))
 
 
 def main() -> None:

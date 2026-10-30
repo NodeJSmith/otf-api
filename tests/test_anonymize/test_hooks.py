@@ -12,10 +12,6 @@ from otf_api.anonymize.generators import FakeDataGenerators
 from otf_api.anonymize.hooks import AnonymizedCaptureHook, create_capture_hook
 from otf_api.anonymize.mappings import FIELD_MAPPINGS
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
 
 def _make_anonymizer(seed: int = 42, strictness: str = "permissive") -> Anonymizer:
     config = AnonymizeConfig(seed=seed, strictness=strictness)  # type: ignore[arg-type]
@@ -55,11 +51,6 @@ def _make_non_json_response(
     )
 
 
-# ---------------------------------------------------------------------------
-# test_hook_writes_anonymized_output
-# ---------------------------------------------------------------------------
-
-
 def test_hook_writes_anonymized_output(tmp_path: Path) -> None:
     """Hook writes anonymized JSON to the output directory."""
     anonymizer = _make_anonymizer(seed=1)
@@ -96,11 +87,6 @@ def test_hook_writes_anonymized_output(tmp_path: Path) -> None:
     assert "real@example.com" not in text
 
 
-# ---------------------------------------------------------------------------
-# test_hook_handles_non_json_response
-# ---------------------------------------------------------------------------
-
-
 def test_hook_handles_non_json_response(tmp_path: Path) -> None:
     """Hook skips non-JSON responses without raising."""
     anonymizer = _make_anonymizer(seed=2)
@@ -117,11 +103,6 @@ def test_hook_handles_non_json_response(tmp_path: Path) -> None:
     assert not host_dir.exists() or list(host_dir.glob("*.json")) == []
 
 
-# ---------------------------------------------------------------------------
-# test_hook_error_does_not_propagate
-# ---------------------------------------------------------------------------
-
-
 def test_hook_error_does_not_propagate(tmp_path: Path) -> None:
     """If the anonymizer raises, the hook catches and logs — does not re-raise."""
     anonymizer = _make_anonymizer(seed=3)
@@ -135,11 +116,6 @@ def test_hook_error_does_not_propagate(tmp_path: Path) -> None:
 
     # Must not raise
     hook(response)
-
-
-# ---------------------------------------------------------------------------
-# test_capture_start_json_written
-# ---------------------------------------------------------------------------
 
 
 def test_capture_start_json_written(tmp_path: Path) -> None:
@@ -177,11 +153,6 @@ def test_capture_start_json_written_only_once(tmp_path: Path) -> None:
     mtime_after_second = sentinel.stat().st_mtime
 
     assert mtime_after_first == mtime_after_second, "_capture_start.json must not be overwritten"
-
-
-# ---------------------------------------------------------------------------
-# test_env_var_config_parsing
-# ---------------------------------------------------------------------------
 
 
 def test_env_var_config_parsing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -241,11 +212,6 @@ def test_create_capture_hook_uses_provided_config(tmp_path: Path) -> None:
     assert hook.anonymizer._config.seed == 777
     assert hook.anonymizer._config.strictness == "drop"
     assert hook.output_dir == tmp_path
-
-
-# ---------------------------------------------------------------------------
-# test_hook_anonymizes_uuids_in_output_filenames
-# ---------------------------------------------------------------------------
 
 
 def test_hook_anonymizes_uuids_in_output_filenames(tmp_path: Path) -> None:

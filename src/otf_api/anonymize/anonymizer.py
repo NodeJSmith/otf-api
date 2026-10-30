@@ -20,9 +20,7 @@ from otf_api.anonymize.mappings import KNOWN_SAFE_FIELDS, FieldMapping
 
 logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
 # Domain detection constants
-# ---------------------------------------------------------------------------
 
 # Minimum set of fields that must ALL be present to classify a dict as a body
 # composition scan.  Checking for three distinct fields avoids false positives
@@ -77,9 +75,11 @@ _GENERATOR_FAILURE_SENTINEL = "__ANONYMIZE_ERROR__"
 _MAX_RECURSION_DEPTH = 50
 
 
-# ---------------------------------------------------------------------------
-# AnonymizeConfig
-# ---------------------------------------------------------------------------
+_UNKNOWN_FIELD_MASK = "__MASKED__"
+
+_DATETIME_RE = re.compile(r"^\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$")
+
+_NUMERIC_STR_RE = re.compile(r"^-?\d+\.?\d*$")
 
 
 @dataclasses.dataclass
@@ -95,21 +95,12 @@ class AnonymizeConfig:
               datetime strings pass through unchanged
             - "drop": remove the key entirely from the output
         output_dir: Optional directory for fixture output files.  Defined here for
-            forward-compatibility; consumed by WP05/WP06 (not used in this WP).
+            forward-compatibility; not used yet.
     """
 
     seed: int | None = None
     strictness: Literal["permissive", "mask", "drop"] = "mask"
     output_dir: Path | None = None
-
-
-# ---------------------------------------------------------------------------
-# ReplacementMap
-# ---------------------------------------------------------------------------
-
-_UNKNOWN_FIELD_MASK = "__MASKED__"
-_DATETIME_RE = re.compile(r"^\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$")
-_NUMERIC_STR_RE = re.compile(r"^-?\d+\.?\d*$")
 
 
 class ReplacementMap:
@@ -185,9 +176,7 @@ class ReplacementMap:
         return instance
 
 
-# ---------------------------------------------------------------------------
 # Anonymizer
-# ---------------------------------------------------------------------------
 
 
 class Anonymizer:
@@ -237,9 +226,7 @@ class Anonymizer:
         """The underlying ReplacementMap for this anonymizer instance."""
         return self._replacement_map
 
-    # ------------------------------------------------------------------
     # Public API
-    # ------------------------------------------------------------------
 
     def anonymize_dict(self, data: dict[str, Any], context: str = "") -> dict[str, Any]:
         """Anonymize a JSON-compatible dict recursively.
@@ -323,9 +310,7 @@ class Anonymizer:
         """
         return self._walk_list(data, context, depth=0)
 
-    # ------------------------------------------------------------------
     # Internal: recursive walk helpers
-    # ------------------------------------------------------------------
 
     def _walk_dict(self, data: dict[str, Any], context: str, depth: int = 0) -> dict[str, Any]:
         """Recursively walk a dict, returning a new dict with PII replaced.
@@ -348,15 +333,11 @@ class Anonymizer:
 
         dict_keys = set(data.keys())
 
-        # ------------------------------------------------------------------
         # Domain detection: body composition scan
-        # ------------------------------------------------------------------
         if dict_keys >= _BODY_COMP_DETECTION_KEYS:
             return self._anonymize_body_comp_scan(data, context)
 
-        # ------------------------------------------------------------------
         # Domain detection: address correlation
-        # ------------------------------------------------------------------
         # Find the location identifier for this dict, if any.
         location_id: str | None = None
         for id_key in _ADDRESS_IDENTIFIER_KEYS:
@@ -364,9 +345,7 @@ class Anonymizer:
                 location_id = str(data[id_key])
                 break
 
-        # ------------------------------------------------------------------
         # Per-field walk
-        # ------------------------------------------------------------------
         result: dict[str, Any] = {}
         for key, value in data.items():
             # Check if this key is a known PII field
@@ -402,13 +381,11 @@ class Anonymizer:
                     continue
                 result[key] = self.anonymize_value(key, value)
 
-        # ------------------------------------------------------------------
         # Domain detection: zone recalculation (post-walk)
         #
         # After per-field processing, if this dict had both maxHr (now
         # anonymized) and a zones sub-dict, recalculate zone BPM boundaries
         # from the new maxHr value.
-        # ------------------------------------------------------------------
         if "maxHr" in result and "zones" in result and isinstance(result["zones"], dict):
             result["zones"] = self._recalculate_zones(result["maxHr"], result["zones"])
 
@@ -429,9 +406,7 @@ class Anonymizer:
                 result.append(item)
         return result
 
-    # ------------------------------------------------------------------
     # Internal: domain-specific transforms
-    # ------------------------------------------------------------------
 
     def _anonymize_body_comp_scan(self, data: dict[str, Any], context: str) -> dict[str, Any]:
         """Anonymize a body composition scan dict.
@@ -570,9 +545,7 @@ class Anonymizer:
         canonical = _ADDRESS_ALIAS_TO_CANONICAL.get(key, key)
         return components.get(canonical, components.get("city", "FakeCity"))
 
-    # ------------------------------------------------------------------
     # Internal: strategy dispatch
-    # ------------------------------------------------------------------
 
     def _apply_mapping(self, key: str, value: Any, mapping: FieldMapping) -> Any:  # noqa: ANN401
         """Apply the FieldMapping strategy to *value*, with referential integrity if needed."""
@@ -715,9 +688,7 @@ class Anonymizer:
         # "drop" — caller (_walk_dict) handles removal; return mask as fallback
         return _UNKNOWN_FIELD_MASK
 
-    # ------------------------------------------------------------------
     # Internal: string substitution from replacement map
-    # ------------------------------------------------------------------
 
     # Minimum key length for filename/URL substitution.  Short keys (e.g. single
     # digits like '5', '6') appear as substrings of UUIDs, timestamps, and other

@@ -1,4 +1,4 @@
-"""Tests for the core anonymizer engine (WP02)."""
+"""Tests for the core anonymizer engine."""
 
 import concurrent.futures
 from unittest.mock import patch
@@ -8,10 +8,6 @@ import pytest
 from otf_api.anonymize.anonymizer import AnonymizeConfig, Anonymizer, ReplacementMap
 from otf_api.anonymize.generators import FakeDataGenerators
 from otf_api.anonymize.mappings import FIELD_MAPPINGS
-
-# ---------------------------------------------------------------------------
-# Fixtures
-# ---------------------------------------------------------------------------
 
 
 @pytest.fixture
@@ -42,11 +38,6 @@ def config_drop() -> AnonymizeConfig:
 def anonymizer(config_permissive: AnonymizeConfig, generators: FakeDataGenerators) -> Anonymizer:
     """Permissive anonymizer with seeded generators."""
     return Anonymizer(config=config_permissive, generators=generators, mappings=FIELD_MAPPINGS)
-
-
-# ---------------------------------------------------------------------------
-# Core replacement tests
-# ---------------------------------------------------------------------------
 
 
 def test_replaces_known_pii_field(anonymizer: Anonymizer) -> None:
@@ -149,11 +140,6 @@ def test_drop_mode_recurses_into_unknown_dicts(config_drop: AnonymizeConfig, gen
     assert "unknownScalar" not in result["unknownWrapper"]
 
 
-# ---------------------------------------------------------------------------
-# Referential integrity
-# ---------------------------------------------------------------------------
-
-
 def test_referential_integrity_across_calls(config_permissive: AnonymizeConfig, generators: FakeDataGenerators) -> None:
     """Same UUID in two separate anonymize_dict calls produces the same fake UUID."""
     anon = Anonymizer(config=config_permissive, generators=generators, mappings=FIELD_MAPPINGS)
@@ -164,11 +150,6 @@ def test_referential_integrity_across_calls(config_permissive: AnonymizeConfig, 
     assert result1["memberUUId"] == result2["memberUUId"]
     # And it's not the real value
     assert result1["memberUUId"] != real_uuid
-
-
-# ---------------------------------------------------------------------------
-# Recursive walk
-# ---------------------------------------------------------------------------
 
 
 def test_nested_dict_walk(anonymizer: Anonymizer) -> None:
@@ -208,11 +189,6 @@ def test_list_walk(anonymizer: Anonymizer) -> None:
     assert items[1]["memberId"] != 222222
 
 
-# ---------------------------------------------------------------------------
-# URL and filename anonymization
-# ---------------------------------------------------------------------------
-
-
 def test_anonymize_url(config_permissive: AnonymizeConfig, generators: FakeDataGenerators) -> None:
     """Member UUID in a URL path is replaced using the replacement map."""
     anon = Anonymizer(config=config_permissive, generators=generators, mappings=FIELD_MAPPINGS)
@@ -247,20 +223,10 @@ def test_anonymize_filename(config_permissive: AnonymizeConfig, generators: Fake
     assert real_uuid not in result
 
 
-# ---------------------------------------------------------------------------
-# Sentinel / redaction tests
-# ---------------------------------------------------------------------------
-
-
 def test_redacted_sentinel(anonymizer: Anonymizer) -> None:
     """StudioToken is always replaced with the 'REDACTED' sentinel."""
     result = anonymizer.anonymize_dict({"studioToken": "some-token-value-abc123"})
     assert result["studioToken"] == "REDACTED"
-
-
-# ---------------------------------------------------------------------------
-# ReplacementMap serialization
-# ---------------------------------------------------------------------------
 
 
 def test_replacement_map_serialization() -> None:
@@ -285,11 +251,6 @@ def test_replacement_map_serialization() -> None:
     assert restored.get_or_create("real-value-b", gen) == v2
 
 
-# ---------------------------------------------------------------------------
-# Thread safety
-# ---------------------------------------------------------------------------
-
-
 def test_replacement_map_thread_safety() -> None:
     """Concurrent access from multiple threads doesn't corrupt the replacement map."""
     rmap = ReplacementMap()
@@ -312,11 +273,6 @@ def test_replacement_map_thread_safety() -> None:
     assert len(results) == 100
     # All threads must have gotten the same fake value
     assert len(set(results)) == 1, f"Expected 1 unique fake value, got: {set(results)}"
-
-
-# ---------------------------------------------------------------------------
-# Faker failure fallback
-# ---------------------------------------------------------------------------
 
 
 def test_faker_failure_fallback(config_permissive: AnonymizeConfig, generators: FakeDataGenerators) -> None:

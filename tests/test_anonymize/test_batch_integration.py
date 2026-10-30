@@ -18,9 +18,6 @@ import pytest
 from otf_api.anonymize import anonymize_batch, batch
 from otf_api.anonymize.anonymizer import AnonymizeConfig
 
-# ---------------------------------------------------------------------------
-# Paths
-# ---------------------------------------------------------------------------
 
 _REPO_ROOT = Path(__file__).parent.parent.parent
 _RAW_FIXTURES_DIR = _REPO_ROOT / "fixtures" / "raw_responses"
@@ -36,11 +33,6 @@ _SKIP_WITHOUT_FIXTURES = pytest.mark.skipif(
 _REAL_MEMBER_UUID = "7b1cf060-fd27-45ab-b820-fdcdefa4ee23"
 _REAL_EMAIL = "12jessicasmith34@gmail.com"
 _REAL_PHONE = "3166808339"
-
-
-# ---------------------------------------------------------------------------
-# Tests requiring real fixtures
-# ---------------------------------------------------------------------------
 
 
 @pytest.fixture(scope="module")
@@ -124,7 +116,6 @@ def test_full_batch_referential_integrity(batch_output_dir: Path) -> None:
     assert output_json_count == expected_output, (
         f"Expected {expected_output} output files (input={input_json_count} + 1 for map) but found {output_json_count}"
     )
-
 
 
 @_SKIP_WITHOUT_FIXTURES
@@ -319,11 +310,6 @@ def _collect_field_values(data: object, field_name: str) -> list[str]:
         for item in data:
             values.extend(_collect_field_values(item, field_name))
     return values
-
-
-# ---------------------------------------------------------------------------
-# Tests that work without real fixtures
-# ---------------------------------------------------------------------------
 
 
 def test_malformed_json_skipped(tmp_path: Path) -> None:
