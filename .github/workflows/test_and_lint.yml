@@ -30,5 +30,10 @@ jobs:
       - name: Run tests
         run: uv run pytest
 
+      - name: Install prek
+        uses: j178/prek-action@5337cb91e0fa35a7ff31b9ca345126d8bbbcdf16 # v2
+        with:
+          install-only: true
+
       - name: Run lint checks
-        run: uv run pre-commit run --all-files
+        run: prek run --all-files
