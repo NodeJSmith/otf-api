@@ -75,6 +75,23 @@ types = ["python"]
 files = '^(src|tests|tools|examples)/.*\.py$'
 
 [[repos.hooks]]
+id = "pyright"
+name = "pyright"
+language = "system"
+entry = "uv run pyright"
+pass_filenames = false
+require_serial = true
+types_or = ["python", "pyi"]
+stages = ["pre-push"]
+
+[[repos.hooks]]
+id = "no-mypy-ignore"
+name = 'Ban "type: ignore" comments (use pyright)'
+language = "pygrep"
+types = ["python"]
+entry = "# type: ignore"
+
+[[repos.hooks]]
 id = "no-future-annotations"
 name = "Ban from __future__ import annotations (breaks Pydantic)"
 language = "pygrep"

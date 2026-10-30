@@ -1,6 +1,7 @@
 """Shared fixtures for auth test suite."""
 
 import time
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import jwt
@@ -70,7 +71,7 @@ def mock_id_client():
     return client
 
 
-def fake_tokens(include_device_metadata=True):
+def fake_tokens(include_device_metadata=True) -> Any:
     """Return a well-formed InitiateAuthResponseTypeDef dict with real JWT tokens."""
     future_exp = int(time.time()) + 3600
     payload = {"sub": "test-sub", "exp": future_exp, "iss": "test", "token_use": "access"}
@@ -79,7 +80,7 @@ def fake_tokens(include_device_metadata=True):
     id_payload = {"sub": "test-sub", "exp": future_exp, "iss": "test", "token_use": "id"}
     id_token = jwt.encode(id_payload, "test-secret", algorithm="HS256")
 
-    auth_result = {
+    auth_result: dict[str, Any] = {
         "AccessToken": access_token,
         "IdToken": id_token,
         "RefreshToken": "test-refresh-token",

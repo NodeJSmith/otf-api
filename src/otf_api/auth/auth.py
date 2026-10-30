@@ -140,7 +140,7 @@ class OtfCognito(Cognito):
         Returns:
             datetime: The datetime when the access token expires.
         """
-        return datetime.fromtimestamp(self.get_decoded_access_token()["exp"])  # type: ignore # noqa: DTZ006
+        return datetime.fromtimestamp(self.get_decoded_access_token()["exp"])  # noqa: DTZ006
 
     @property
     def tokens(self) -> dict[str, str]:
@@ -183,8 +183,8 @@ class OtfCognito(Cognito):
         refresh_token: str | None = None,
     ):
         self.username = username
-        self.id_token = id_token  # type: ignore
-        self.access_token = access_token  # type: ignore
+        self.id_token = id_token  # pyright: ignore[reportAttributeAccessIssue]
+        self.access_token = access_token  # pyright: ignore[reportAttributeAccessIssue]
         self.refresh_token = refresh_token
 
         self.id_claims: dict[str, Any] = {}
@@ -207,13 +207,13 @@ class OtfCognito(Cognito):
     def idp_client(self) -> "CognitoIdentityProviderClient":
         """Returns the Cognito Identity Provider client."""
         LOGGER.debug("Creating Cognito Identity Provider client")
-        return Session().client("cognito-idp", config=BOTO_CONFIG, region_name=REGION)  # type: ignore
+        return Session().client("cognito-idp", config=BOTO_CONFIG, region_name=REGION)  # pyright: ignore[reportReturnType]
 
     @cached_property
     def id_client(self) -> "CognitoIdentityClient":
         """Returns the Cognito Identity client."""
         LOGGER.debug("Creating Cognito Identity client")
-        return Session().client("cognito-identity", config=BOTO_CONFIG, region_name=REGION)  # type: ignore
+        return Session().client("cognito-identity", config=BOTO_CONFIG, region_name=REGION)  # pyright: ignore[reportReturnType]
 
     def handle_login(self, password: str | None = None) -> None:
         """Handles the login process for the user.
@@ -244,9 +244,9 @@ class OtfCognito(Cognito):
         It will read the tokens and device metadata from the cache and set the instance attributes accordingly.
         """
         token_cache = CACHE.read_token_data_from_cache()
-        self.id_token = self.id_token or token_cache.get("id_token")  # type: ignore
-        self.access_token = self.access_token or token_cache.get("access_token")  # type: ignore
-        self.refresh_token = self.refresh_token or token_cache.get("refresh_token")  # type: ignore
+        self.id_token = self.id_token or token_cache.get("id_token")  # pyright: ignore[reportAttributeAccessIssue]
+        self.access_token = self.access_token or token_cache.get("access_token")  # pyright: ignore[reportAttributeAccessIssue]
+        self.refresh_token = self.refresh_token or token_cache.get("refresh_token")
 
         dd_cache = CACHE.read_device_data_from_cache()
         self.device_key = dd_cache.get("device_key") or ""
@@ -367,7 +367,7 @@ class OtfCognito(Cognito):
         self.idp_client.confirm_device(
             AccessToken=self.access_token,
             DeviceKey=self.device_key,
-            DeviceSecretVerifierConfig=device_secret_verifier_config,  # type: ignore (pycognito is untyped)
+            DeviceSecretVerifierConfig=device_secret_verifier_config,  # pyright: ignore[reportArgumentType]
             DeviceName=self.device_name,
         )
 

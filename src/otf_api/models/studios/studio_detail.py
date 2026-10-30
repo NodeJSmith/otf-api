@@ -39,8 +39,11 @@ class StudioDetail(ApiMixin, OtfItemBase):
         repr=False,
     )
     location: StudioLocation = Field(
-        ..., validation_alias="studioLocation", default_factory=StudioLocation, description="Physical location details."
-    )  # type: ignore
+        ...,
+        validation_alias="studioLocation",
+        default_factory=lambda: StudioLocation.model_validate({}),
+        description="Physical location details.",
+    )
     name: str | None = Field(None, validation_alias="studioName", description="Name of the studio.")
     status: StudioStatus | None = Field(
         None, validation_alias="studioStatus", description="Active, Temporarily Closed, Coming Soon"
@@ -99,7 +102,7 @@ class StudioDetail(ApiMixin, OtfItemBase):
             A StudioDetail with the given UUID and 'Studio Not Found' as the name.
         """
         # pylance doesn't know that the rest of the fields default to None, so we use type: ignore
-        return StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")  # type: ignore
+        return StudioDetail(studioUUId=studio_uuid, studioName="Studio Not Found", studioStatus="Unknown")  # pyright: ignore[reportCallIssue]
 
     def add_to_favorites(self) -> None:
         """Add this studio to the member's list of favorite studios.

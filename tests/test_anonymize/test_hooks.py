@@ -14,7 +14,7 @@ from otf_api.anonymize.mappings import FIELD_MAPPINGS
 
 
 def _make_anonymizer(seed: int = 42, strictness: str = "permissive") -> Anonymizer:
-    config = AnonymizeConfig(seed=seed, strictness=strictness)  # type: ignore[arg-type]
+    config = AnonymizeConfig(seed=seed, strictness=strictness)  # pyright: ignore[reportArgumentType]
     generators = FakeDataGenerators(seed=seed)
     return Anonymizer(config=config, generators=generators, mappings=FIELD_MAPPINGS)
 

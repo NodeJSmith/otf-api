@@ -23,7 +23,7 @@ uv sync          # install all dependencies (dev group included by default)
 
 ```bash
 uv run pytest                          # run tests (requires real OTF credentials)
-prek run --all-files                   # lint + format (ruff, typos, etc.)
+prek run --all-files --stage pre-push  # lint + format + pyright (ruff, typos, etc.)
 uv run ruff check --fix --show-fixes   # lint only
 uv run ruff format                     # format only
 uv build                               # build wheel and sdist

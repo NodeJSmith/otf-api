@@ -1,5 +1,7 @@
 """Tests for OtfCognito in src/otf_api/auth/auth.py."""
 
+# pyright: reportTypedDictNotRequiredAccess=none
+
 import time
 from unittest.mock import MagicMock, PropertyMock, patch
 
@@ -75,7 +77,7 @@ def test_get_decoded_access_token_no_token(mock_cache, mock_verify_token):
     with patch("pycognito.Cognito.check_token", return_value=False):
         cognito = OtfCognito(username="user@test.com")
 
-    cognito.access_token = None  # type: ignore
+    cognito.access_token = None  # pyright: ignore[reportAttributeAccessIssue]
 
     with pytest.raises(AttributeError, match="Access Token Required"):
         cognito.get_decoded_access_token()
@@ -106,7 +108,7 @@ def test_tokens_property(mock_cache, mock_verify_token):
     assert "refresh_token" in tokens
 
     # Excluding a None token
-    cognito.refresh_token = None  # type: ignore
+    cognito.refresh_token = None
     tokens_no_refresh = cognito.tokens
     assert "refresh_token" not in tokens_no_refresh
 
@@ -156,7 +158,7 @@ def test_renew_access_token_no_refresh_token(mock_cache, mock_verify_token):
     with patch("pycognito.Cognito.check_token", return_value=False):
         cognito = OtfCognito(username="user@test.com")
 
-    cognito.refresh_token = None  # type: ignore
+    cognito.refresh_token = None
 
     with pytest.raises(ValueError, match="refresh token"):
         cognito.renew_access_token()

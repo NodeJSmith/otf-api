@@ -260,7 +260,7 @@ def create_capture_hook(config: AnonymizeConfig | None = None) -> AnonymizedCapt
 
         config = AnonymizeConfig(
             seed=seed,
-            strictness=strictness_raw,  # type: ignore[arg-type]
+            strictness=strictness_raw,
             output_dir=output_dir,
         )
     else:

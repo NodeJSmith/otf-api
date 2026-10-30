@@ -12,7 +12,7 @@ import re
 import threading
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Literal, cast
 from urllib.parse import quote
 
 from otf_api.anonymize.generators import FakeDataGenerators
@@ -632,7 +632,7 @@ class Anonymizer:
                 fake_inner = g.fake_biometric_scalar(key, float(inner) if inner is not None else 0.0)
                 return {**value, "value": round(fake_inner) if isinstance(inner, int) else fake_inner}
             try:
-                orig = float(value) if value is not None else 0.0
+                orig = float(cast("Any", value)) if value is not None else 0.0
             except (TypeError, ValueError):
                 orig = 0.0
             fake_scalar = g.fake_biometric_scalar(key, orig)
@@ -643,7 +643,7 @@ class Anonymizer:
             return fake_scalar
         if category == "biometric_body_comp":
             try:
-                orig = float(value) if value is not None else 0.0
+                orig = float(cast("Any", value)) if value is not None else 0.0
             except (TypeError, ValueError):
                 orig = 0.0
             return round(orig * g.fake_body_comp_factor(), 4)
@@ -657,7 +657,7 @@ class Anonymizer:
             return g.fake_studio_name()
         if category == "geo_coordinate":
             try:
-                orig = float(value) if value is not None else 0.0
+                orig = float(cast("Any", value)) if value is not None else 0.0
             except (TypeError, ValueError):
                 orig = 0.0
             fake = g.fake_geo_coordinate(orig)
