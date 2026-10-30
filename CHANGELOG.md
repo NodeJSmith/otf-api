@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.3](https://github.com/NodeJSmith/otf-api/compare/v0.21.2...v0.21.3) (2026-10-30)
+
+
+### Bug Fixes
+
+* **build:** declare pyyaml so the release build can generate the schema ([#168](https://github.com/NodeJSmith/otf-api/issues/168)) ([e6f6a25](https://github.com/NodeJSmith/otf-api/commit/e6f6a25e4d84687afc4f38c16418a25028dc4c56))
+
 ## [0.21.2](https://github.com/NodeJSmith/otf-api/compare/v0.21.1...v0.21.2) (2026-10-30)
 
 
