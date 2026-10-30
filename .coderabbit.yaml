@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# A repo config replaces account-level settings unless it inherits them.
+inheritance: true
+
+reviews:
+  # The PR body becomes the squash commit body, and a BREAKING CHANGE footer runs to its end,
+  # so a summary appended to the description would land in the commit and any generated changelog.
+  high_level_summary_in_walkthrough: true
