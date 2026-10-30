@@ -94,6 +94,13 @@ types = ["python"]
 entry = "# type: ignore"
 
 [[repos.hooks]]
+id = "zizmor"
+name = "zizmor (GitHub Actions security)"
+language = "system"
+entry = "env -u GH_TOKEN -u GITHUB_TOKEN uvx zizmor@1.26.1 --offline"
+files = '^\.github/workflows/'
+
+[[repos.hooks]]
 id = "no-future-annotations"
 name = "Ban from __future__ import annotations (breaks Pydantic)"
 language = "pygrep"
