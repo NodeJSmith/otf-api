@@ -1,7 +1,7 @@
 # Design: Open server-owned vocabularies
 
 **Date:** 2026-10-30
-**Status:** ratified
+**Status:** built
 **Mode:** sketch
 **Issues:** #161, #148, #158, #159
 **Prior art:** design/research/2026-10-26-tolerant-response-enums/prior-art.md
@@ -213,16 +213,17 @@ In every option an unknown status stays a retained record, because the posture k
 
 - [x] Implementation and tests committed
 - [x] Docs
-- [ ] Ship-time challenge
+- [x] Ship-time challenge
 
 **Calls made during the build:**
 
 - Field aliases live beside their enums in each package's `enums.py`, not in `models/vocabulary.py`: the module importing all three enum modules is a real import cycle (`workouts` → `bookings` package init, which is still partial). The normalizer and reporting stay in `vocabulary.py`, and nothing is added to `__all__`, so D7 holds.
 - The normalizer is an `AfterValidator` on the union rather than a before-validator: it needs no `None` handling because the `| None` sits outside the alias, the reported value is always hashable, and a value of the wrong type fails the record without first being reported as new.
-- `get_bookings` keeps list support and is typed `BookingStatus | str | list[BookingStatus] | list[str] | None`; `ClassFilter.class_type` likewise uses `list[ClassType] | list[str]`. `list` is invariant, so `list[BookingStatus | str]` would reject an existing `list[BookingStatus]`, including `HISTORICAL_BOOKING_STATUSES` and `ClassType.get_standard_class_types()`.
+- `get_bookings` keeps list support and is typed `BookingStatus | str | list[BookingStatus] | list[str] | None`. `list` is invariant, so `list[BookingStatus | str]` would reject an existing `list[BookingStatus]`, including `HISTORICAL_BOOKING_STATUSES`.
+- `ClassFilter.class_type` is declared `Sequence[ClassType | str] | None`, chosen at the ship-time challenge. It accepts `list[ClassType]`, a known value stays a member next to an unknown one, and a single string still type-checks and is wrapped by the validator.
 - `Booking.state` returns a `Literal`, with no new enum, so nothing new needs exporting or keeping stable beyond one property.
 - `class_type_key` lives in `bookings/enums.py` and `ClassType.get_case_insensitive` now calls it, so one function owns how class type names are folded. The method's behavior is unchanged.
-- `filter_classes` wraps a non-list `class_type`, because the existing code supports attributes set after construction, which skip the validator. Iterating a bare string would otherwise compare characters.
+- `filter_classes` wraps a single string `class_type`, because the existing code supports attributes set after construction, which skip the validator. Iterating a bare string would otherwise compare characters.
 - The once-per-value and per-construction warnings are pinned by patching the logger and counting calls, not by asserting message text, because the log line is itself the behavior D2 and D5 specify.
-- `get_end_time`'s `OTHER` warning stays at WARNING: D5 moves only the unrecognized-type arm to DEBUG, and D6 leaves `OTHER` unchanged.
+- `get_end_time`'s `OTHER` log line also moves to DEBUG, chosen at the ship-time challenge: `ends_at` is read repeatedly and a per-read warning about a known value tells no one anything they can act on. `OTHER`'s 60-minute length is unchanged, as D6 says.
 - `docs/guides/studios.md` also gets the narrowing note, which the Summary's doc list omits, because `StudioDetail.status` is one of the four open fields and that guide prints it.

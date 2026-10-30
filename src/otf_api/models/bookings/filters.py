@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from datetime import date, datetime, time
 from logging import getLogger
 
@@ -39,7 +40,8 @@ class ClassFilter(BaseModel):
 
     start_date: date | str | None = None
     end_date: date | str | None = None
-    class_type: list[ClassType] | list[str] | ClassType | str | None = None
+    # also takes a single value, which a type checker allows because a str is a Sequence[str]; the validator wraps it
+    class_type: Sequence[ClassType | str] | None = None
     day_of_week: list[DoW] | DoW | None = None
     start_time: list[time] | time | None = None
 
@@ -70,8 +72,8 @@ class ClassFilter(BaseModel):
             classes = [c for c in classes if c.starts_at.date() <= self.end_date]
 
         if self.class_type:
-            # a value assigned after the class is created skips the validator, so it may not be a list
-            wanted = self.class_type if isinstance(self.class_type, list) else [self.class_type]
+            # a value assigned after the class is created skips the validator, so it may be a single string
+            wanted = [self.class_type] if isinstance(self.class_type, str) else self.class_type
             wanted_keys = {class_type_key(t) for t in wanted}
             classes = [c for c in classes if class_type_key(c.class_type) in wanted_keys]
 
@@ -85,7 +87,7 @@ class ClassFilter(BaseModel):
 
         return classes
 
-    @field_validator("class_type", "day_of_week", "start_time", mode="before")
+    @field_validator("day_of_week", "start_time", mode="before")
     @classmethod
     def _single_item_to_list(cls, v: str | list | None) -> list | None:
         if v and not isinstance(v, list):
@@ -112,11 +114,11 @@ class ClassFilter(BaseModel):
 
     @field_validator("class_type", mode="before")
     @classmethod
-    def _normalize_class_types(cls, v: str | list[str] | None) -> list[ClassType | str] | None:
+    def _normalize_class_types(cls, v: str | Sequence[ClassType | str] | None) -> list[ClassType | str] | None:
         if not v:
             return None
 
-        return [known_class_type_or_raw(i) for i in (v if isinstance(v, list) else [v])]
+        return [known_class_type_or_raw(i) for i in ([v] if isinstance(v, str) else v)]
 
     @field_validator("start_date", "end_date", mode="before")
     @classmethod

@@ -73,6 +73,12 @@ def test_class_type_unknown_value_is_accepted(provided, expected):
     assert ClassFilter(class_type=provided).class_type == expected
 
 
+def test_class_type_known_value_stays_a_member_next_to_an_unknown_value():
+    stored = ClassFilter(class_type=[ClassType.ORANGE_60, "HYROX_75"]).class_type
+
+    assert [type(t) for t in stored or []] == [ClassType, str]
+
+
 @pytest.mark.parametrize("provided", ["HYROX_75", "hyrox 75", " Hyrox_75 ", ["hyrox 75", "ORANGE_60"]])
 def test_filter_matches_unknown_class_type_ignoring_case_and_spaces(provided):
     hyrox = make_class("HYROX_75")

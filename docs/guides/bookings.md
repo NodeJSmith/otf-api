@@ -50,7 +50,7 @@ classes = otf.bookings.get_classes(filters=[cf, cf2])
 ```
 
 **Available filter fields:** `day_of_week` (DoW), `start_time` (time), `class_type`
-(ClassType), `start_date` (date), `end_date` (date). Each accepts a single value or list.
+(ClassType or str), `start_date` (date), `end_date` (date). Each accepts a single value or list.
 
 !!! tip
     Use `ClassType.get_standard_class_types()` to match all standard 2G/3G formats

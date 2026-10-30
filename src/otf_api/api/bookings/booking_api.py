@@ -448,7 +448,8 @@ class BookingApi:
             existing_booking = self.get_booking_from_class(class_uuid)
             if existing_booking.state != "cancelled":
                 raise exc.AlreadyBookedError(
-                    f"Class {class_uuid} is already booked.", booking_uuid=existing_booking.booking_uuid
+                    f"Class {class_uuid} is already booked (status: {existing_booking.status}).",
+                    booking_uuid=existing_booking.booking_uuid,
                 )
         except exc.ResourceNotFoundError:
             pass

@@ -9,7 +9,7 @@ import pytest
 from conftest import load_fixture
 from pydantic import ValidationError
 
-from otf_api.exceptions import AlreadyBookedError
+from otf_api.exceptions import AlreadyBookedError, ConflictingBookingError, ResourceNotFoundError
 from otf_api.models.bookings import Booking, BookingV2, BookingV2Class, ClassFilter, OtfClass
 from otf_api.models.bookings.bookings_v2 import get_end_time
 from otf_api.models.bookings.enums import BookingStatus, ClassType
@@ -29,6 +29,23 @@ _BOOKINGS_NEW_URL = (
 
 WAITLISTED_BOOKING_ID = "a1e2f3d4-5678-4abc-9def-0123456789ab"
 _A_DATE = "2026-03-27T08:00:00"
+
+# A member stops reading its dates once it is added to BookingStatus, so each one needs a deliberate state here.
+EXPECTED_STATE_BY_MEMBER = {
+    BookingStatus.Pending: "active",
+    BookingStatus.Requested: "active",
+    BookingStatus.Booked: "active",
+    BookingStatus.Cancelled: "cancelled",
+    BookingStatus.LateCancelled: "active",
+    BookingStatus.Waitlisted: "active",
+    BookingStatus.CheckedIn: "checked_in",
+    BookingStatus.CheckinPending: "active",
+    BookingStatus.CheckinRequested: "active",
+    BookingStatus.Confirmed: "active",
+    BookingStatus.CheckinCancelled: "active",
+    BookingStatus.CancelCheckinPending: "active",
+    BookingStatus.CancelCheckinRequested: "active",
+}
 
 
 def make_booking(status: str, cancelled: str | None = None, checked_in: str | None = None) -> Booking:
@@ -219,6 +236,14 @@ def test_booking_state(status: str, cancelled: str | None, checked_in: str | Non
     assert make_booking(status, cancelled, checked_in).state == state
 
 
+@pytest.mark.parametrize("status", list(BookingStatus))
+def test_every_booking_status_member_has_a_decided_state(status: BookingStatus) -> None:
+    # both dates are set to show that a member's state comes from the map, not from its dates
+    booking = make_booking(status.value, _A_DATE, _A_DATE)
+
+    assert booking.state == EXPECTED_STATE_BY_MEMBER[status]
+
+
 @pytest.mark.parametrize(
     ["cancelled", "checked_in", "books"],
     [(_A_DATE, None, True), (None, None, False), (None, _A_DATE, False)],
@@ -239,6 +264,51 @@ def test_book_class_with_unrecognized_existing_status_acts_on_its_dates(
         else:
             with pytest.raises(AlreadyBookedError):
                 mock_otf.bookings.book_class("class-uuid")
+
+    assert put_class.called is books
+
+
+def test_already_booked_error_names_the_status(mock_otf) -> None:
+    existing = make_booking("No Show")
+
+    with (
+        patch.object(mock_otf.bookings, "get_booking_from_class", return_value=existing),
+        pytest.raises(AlreadyBookedError, match="No Show"),
+    ):
+        mock_otf.bookings.book_class("class-uuid")
+
+
+@pytest.mark.parametrize(["cancelled", "books"], [(_A_DATE, True), (None, False)])
+def test_book_class_conflict_check_acts_on_an_unrecognized_status(mock_otf, cancelled: str | None, books: bool) -> None:
+    record = load_fixture("bookings/get_bookings")["data"][0] | {
+        "status": "No Show",
+        "cancelledDate": cancelled,
+        "checkedInDate": None,
+    }
+    # same time window as the existing booking, so only its state decides whether this conflicts
+    overlapping = OtfClass.model_validate(
+        {
+            "ot_base_class_uuid": "another-class-uuid",
+            "name": "An overlapping class",
+            "type": "ORANGE_60",
+            "starts_at_local": record["class"]["startDateTime"],
+            "ends_at_local": record["class"]["endDateTime"],
+            "studio": {"studioUUId": "studio-uuid"},
+        }
+    )
+    saved = {"savedBookings": [{"classBookingUUId": "new-booking-uuid"}]}
+
+    with (
+        patch.object(mock_otf.bookings, "get_booking_from_class", side_effect=ResourceNotFoundError("none")),
+        patch.object(mock_otf.bookings, "get_booking", return_value=make_booking("Booked")),
+        patch.object(mock_otf.bookings.client, "get_bookings", return_value=[record]),
+        patch.object(mock_otf.bookings.client, "put_class", return_value=saved) as put_class,
+    ):
+        if books:
+            mock_otf.bookings.book_class(overlapping)
+        else:
+            with pytest.raises(ConflictingBookingError):
+                mock_otf.bookings.book_class(overlapping)
 
     assert put_class.called is books
 

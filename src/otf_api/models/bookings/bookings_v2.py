@@ -46,9 +46,7 @@ def get_end_time(start_time: datetime, class_type: ClassType | str) -> datetime:
         case ClassType.STRENGTH_50 | ClassType.TREAD_50:
             return start_time.add(minutes=50)
         case ClassType.OTHER:
-            LOGGER.warning(
-                f"Class type {class_type} does not have defined length, returning start time plus 60 minutes"
-            )
+            LOGGER.debug("Class type %s does not have defined length, returning start time plus 60 minutes", class_type)
             return start_time.add(minutes=60)
         case _:
             minutes = minutes_from_class_type_name(class_type)
