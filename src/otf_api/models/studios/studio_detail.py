@@ -5,7 +5,7 @@ from pydantic import AliasChoices, AliasPath, Field
 from otf_api.models.base import OtfItemBase
 from otf_api.models.mixins import AddressMixin, ApiMixin
 
-from .enums import StudioStatus
+from .enums import OpenStudioStatus
 
 
 class StudioLocation(AddressMixin, OtfItemBase):
@@ -45,7 +45,7 @@ class StudioDetail(ApiMixin, OtfItemBase):
         description="Physical location details.",
     )
     name: str | None = Field(None, validation_alias="studioName", description="Name of the studio.")
-    status: StudioStatus | None = Field(
+    status: OpenStudioStatus | None = Field(
         None, validation_alias="studioStatus", description="Active, Temporarily Closed, Coming Soon"
     )
     time_zone: str | None = Field(None, validation_alias="timeZone", description="IANA time zone of the studio.")

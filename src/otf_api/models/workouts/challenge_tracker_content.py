@@ -2,7 +2,7 @@ from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
 
-from .enums import EquipmentType
+from .enums import OpenEquipmentType
 
 
 class Year(OtfItemBase):
@@ -62,7 +62,7 @@ class Challenge(OtfItemBase):
 class Benchmark(OtfItemBase):
     """A benchmark represents a specific workout that members can participate in."""
 
-    equipment_id: EquipmentType | None = Field(
+    equipment_id: OpenEquipmentType | None = Field(
         None, validation_alias="EquipmentId", description="Type of equipment used for the benchmark."
     )
     equipment_name: str | None = Field(

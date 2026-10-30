@@ -110,3 +110,23 @@ print(f"Metric: {detail.metric_entry.entry_type}")
     Challenge category IDs and equipment IDs are internal OTF identifiers. Use the
     `ChallengeCategory` and `EquipmentType` enums rather than raw integers for clarity
     and forward compatibility.
+
+## Equipment IDs the Library Doesn't Recognize
+
+OrangeTheory can add equipment at any time. A response carrying an ID this version doesn't know
+still parses: the record is kept, `equipment_id` holds the raw integer, and the library logs one
+warning per value per process. So `equipment_id` is `EquipmentType | int | None`.
+
+Compare by value, which works on either form and keeps working if a later release adds the ID to
+`EquipmentType`. Narrow with `isinstance` before reading `.name` or `.value`, because a raw integer
+has neither:
+
+```python
+if benchmark.equipment_id == EquipmentType.Rower:
+    ...
+
+if isinstance(benchmark.equipment_id, EquipmentType):
+    print(benchmark.equipment_id.name)
+```
+
+An ID read from a response can be passed straight back to `get_benchmarks_by_equipment`.

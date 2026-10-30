@@ -5,14 +5,14 @@ from pydantic import Field
 
 from otf_api.models.base import OtfItemBase
 
-from .enums import EquipmentType
+from .enums import OpenEquipmentType
 
 
 class MetricEntry(OtfItemBase):
     """Definition of a metric used to track benchmark performance."""
 
     title: str | None = Field(None, validation_alias="Title", description="Display title for the metric.")
-    equipment_id: EquipmentType | None = Field(
+    equipment_id: OpenEquipmentType | None = Field(
         None, validation_alias="EquipmentId", description="Type of equipment for this metric."
     )
     entry_type: str | None = Field(
@@ -29,7 +29,7 @@ class BenchmarkHistory(OtfItemBase):
     studio_name: str | None = Field(
         None, validation_alias="StudioName", description="Name of the studio where the benchmark was performed."
     )
-    equipment_id: EquipmentType | None = Field(
+    equipment_id: OpenEquipmentType | None = Field(
         None, validation_alias="EquipmentId", description="Type of equipment used."
     )
     class_time: datetime | None = Field(None, validation_alias="ClassTime", description="When the class took place.")
@@ -127,7 +127,7 @@ class FitnessBenchmark(OtfItemBase):
     challenge_sub_category_id: int | None = Field(
         None, validation_alias="ChallengeSubCategoryId", description="Sub-category ID for the benchmark."
     )
-    equipment_id: EquipmentType | None = Field(
+    equipment_id: OpenEquipmentType | None = Field(
         None, validation_alias="EquipmentId", description="Type of equipment used."
     )
     equipment_name: str | None = Field(

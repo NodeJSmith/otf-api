@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 from logging import getLogger
 
@@ -8,9 +9,14 @@ from otf_api.models.base import OtfItemBase
 from otf_api.models.mixins import AddressMixin, ApiMixin, PhoneLongitudeLatitudeMixin
 
 # from otf_api.models.performance_summary import ZoneTimeMinutes
-from .enums import BookingStatus, ClassType
+from .enums import BookingStatus, ClassType, OpenClassType
 
 LOGGER = getLogger(__name__)
+
+DEFAULT_CLASS_MINUTES = 60
+DURATION_SUFFIX = re.compile(r"_(\d+)$")
+MIN_PARSED_CLASS_MINUTES = 30
+MAX_PARSED_CLASS_MINUTES = 120
 
 
 class Address(AddressMixin, OtfItemBase):
@@ -19,7 +25,16 @@ class Address(AddressMixin, OtfItemBase):
     ...
 
 
-def get_end_time(start_time: datetime, class_type: ClassType) -> datetime:
+def minutes_from_class_type_name(class_type: str) -> int:
+    """Best-effort length of an unrecognized class type, from a trailing number such as `HYROX_75`."""
+    match = DURATION_SUFFIX.search(class_type)
+    if match and MIN_PARSED_CLASS_MINUTES <= int(match.group(1)) <= MAX_PARSED_CLASS_MINUTES:
+        return int(match.group(1))
+
+    return DEFAULT_CLASS_MINUTES
+
+
+def get_end_time(start_time: datetime, class_type: ClassType | str) -> datetime:
     """Get the end time of a class based on the start time and class type."""
     start_time = pendulum.instance(start_time)
 
@@ -36,8 +51,9 @@ def get_end_time(start_time: datetime, class_type: ClassType) -> datetime:
             )
             return start_time.add(minutes=60)
         case _:
-            LOGGER.warning(f"Class type {class_type} is not recognized, returning start time plus 60 minutes")
-            return start_time.add(minutes=60)
+            minutes = minutes_from_class_type_name(class_type)
+            LOGGER.debug("Class type %s is not recognized, returning start time plus %d minutes", class_type, minutes)
+            return start_time.add(minutes=minutes)
 
 
 class Rating(OtfItemBase):
@@ -66,7 +82,7 @@ class BookingV2Class(ApiMixin, OtfItemBase):
 
     class_id: str = Field(validation_alias="id", description="Matches the `class_id` attribute of the OtfClass model")
     name: str = Field(..., description="The name of the class.")
-    class_type: ClassType = Field(validation_alias="type", description="The high-level class format category.")
+    class_type: OpenClassType = Field(validation_alias="type", description="The high-level class format category.")
     starts_at: datetime = Field(
         validation_alias="starts_at_local",
         description="The start time of the class. Reflects local time, but the object does not have a timezone.",

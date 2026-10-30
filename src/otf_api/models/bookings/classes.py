@@ -8,7 +8,7 @@ from otf_api.models.base import OtfItemBase
 from otf_api.models.mixins import ApiMixin
 from otf_api.models.studios import StudioDetail
 
-from .enums import ClassType, DoW
+from .enums import DoW, OpenClassType
 
 if typing.TYPE_CHECKING:
     from otf_api.models.bookings import Booking, BookingV2
@@ -21,7 +21,7 @@ class OtfClass(ApiMixin, OtfItemBase):
     class_id: str | None = Field(None, validation_alias="id", description="Matches new booking endpoint class id")
 
     name: str = Field(..., description="The name of the class")
-    class_type: ClassType = Field(validation_alias="type", description="The high-level class format category.")
+    class_type: OpenClassType = Field(validation_alias="type", description="The high-level class format category.")
     coach: str | None = Field(
         None,
         validation_alias=AliasPath("coach", "first_name"),

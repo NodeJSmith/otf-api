@@ -1,4 +1,9 @@
 from enum import StrEnum
+from typing import Annotated
+
+from pydantic import AfterValidator
+
+from otf_api.models.vocabulary import normalize_to
 
 
 class StudioStatus(StrEnum):
@@ -11,3 +16,6 @@ class StudioStatus(StrEnum):
     TEMP_CLOSED = "Temporarily Closed"
     PERM_CLOSED = "Permanently Closed"
     UNKNOWN = "Unknown"
+
+
+OpenStudioStatus = Annotated[StudioStatus | str, AfterValidator(normalize_to(StudioStatus))]
