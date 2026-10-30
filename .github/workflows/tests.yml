@@ -1,9 +1,15 @@
-name: Test and Lint
+name: Tests
 
 on:
   push:
     branches: [main]
   pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -11,8 +17,10 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12"]
 
@@ -27,7 +35,6 @@ jobs:
         with:
           version: "0.13.6"
           python-version: ${{ matrix.python-version }}
-          enable-cache: true
 
       - name: Install dependencies
         run: uv sync
@@ -35,10 +42,17 @@ jobs:
       - name: Run tests
         run: uv run pytest
 
-      - name: Install prek
-        uses: j178/prek-action@5337cb91e0fa35a7ff31b9ca345126d8bbbcdf16 # v2
-        with:
-          install-only: true
-
-      - name: Run lint checks
-        run: prek run --all-files --stage pre-push
+  tests-complete:
+    needs: [test]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Report result
+        env:
+          RESULT: ${{ needs.test.result }}
+        run: |
+          if [[ "$RESULT" != "success" ]]; then
+            echo "Tests finished with result: $RESULT"
+            exit 1
+          fi

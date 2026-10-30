@@ -113,5 +113,5 @@ The fixture-based test suite (`tests/`) uses `respx` to mock HTTP — no credent
 
 - Feature branches for new work
 - Versioning and release PRs managed via `release-please`
-- CI runs tests on Python 3.11 and 3.12, plus prek hooks
+- CI runs tests on Python 3.11 and 3.12, plus prek hooks; `lint-complete` and `tests-complete` are the jobs to require
 - Releases created through the release-please workflow; published to PyPI via trusted publishing
