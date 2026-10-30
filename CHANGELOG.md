@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.21.2](https://github.com/NodeJSmith/otf-api/compare/v0.21.1...v0.21.2) (2026-10-30)
+
+
+### Bug Fixes
+
+* add HYROX_60 and OPEN_STUDIO class types ([#162](https://github.com/NodeJSmith/otf-api/issues/162)) ([ab638aa](https://github.com/NodeJSmith/otf-api/commit/ab638aa5cfe5a3bf518640cca2bd03f5818c7c4b))
+* **auth:** map Cognito errors at login, token refresh, and credential fetch ([#156](https://github.com/NodeJSmith/otf-api/issues/156)) ([208d67d](https://github.com/NodeJSmith/otf-api/commit/208d67d6113306dc88339a600dd22ca099be112f))
+* validate URL path identifiers and restrict cache dir permissions ([#152](https://github.com/NodeJSmith/otf-api/issues/152)) ([6abe2c0](https://github.com/NodeJSmith/otf-api/commit/6abe2c08254be4d268798ef8df05bfd3bd0db268))
+
+
+### Documentation
+
+* add REVIEW.md review questions for src/otf_api ([#155](https://github.com/NodeJSmith/otf-api/issues/155)) ([162b034](https://github.com/NodeJSmith/otf-api/commit/162b03408fae13eac24dd5bd96eb8e5375d6390c))
+
 ## [0.21.1](https://github.com/NodeJSmith/otf-api/compare/v0.21.0...v0.21.1) (2026-08-11)
 
 
