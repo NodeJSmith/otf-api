@@ -1,5 +1,7 @@
 """Tests for OtfCognito in src/otf_api/auth/auth.py."""
 
+# pyright: reportTypedDictNotRequiredAccess=none
+
 import time
 from unittest.mock import MagicMock, PropertyMock, patch
 
@@ -13,10 +15,6 @@ from otf_api.exceptions import OtfAuthenticationError, OtfConfigurationError, Ot
 from .conftest import fake_tokens
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
 _FAKE_RESULT = fake_tokens(include_device_metadata=False)["AuthenticationResult"]
 _ACCESS_TOKEN = _FAKE_RESULT["AccessToken"]
 _ID_TOKEN = _FAKE_RESULT["IdToken"]
@@ -28,11 +26,6 @@ def _client_error(code, message=""):
         error_response={"Error": {"Code": code, "Message": message}},
         operation_name="op",
     )
-
-
-# ---------------------------------------------------------------------------
-# Subtask 2 — __init__ cache-hit path
-# ---------------------------------------------------------------------------
 
 
 def test_init_cache_hit(mock_cache, mock_verify_token):
@@ -57,20 +50,10 @@ def test_init_cache_hit(mock_cache, mock_verify_token):
     assert cognito.access_token == access_token
 
 
-# ---------------------------------------------------------------------------
-# Subtask 3 — __init__ no-credentials path
-# ---------------------------------------------------------------------------
-
-
 def test_init_no_credentials(mock_cache):
     """OtfCognito raises NoCredentialsError when no credentials are available."""
     with pytest.raises(NoCredentialsError):
         OtfCognito()
-
-
-# ---------------------------------------------------------------------------
-# Subtask 4 — get_decoded_access_token happy path
-# ---------------------------------------------------------------------------
 
 
 def test_get_decoded_access_token(mock_cache, mock_verify_token):
@@ -86,11 +69,6 @@ def test_get_decoded_access_token(mock_cache, mock_verify_token):
     assert "exp" in result
 
 
-# ---------------------------------------------------------------------------
-# Subtask 5 — get_decoded_access_token no token
-# ---------------------------------------------------------------------------
-
-
 def test_get_decoded_access_token_no_token(mock_cache, mock_verify_token):
     """get_decoded_access_token raises AttributeError when access_token is None."""
     mock_cache.write_token_data_to_cache({"access_token": _ACCESS_TOKEN, "id_token": "id", "refresh_token": "rt"})
@@ -99,15 +77,10 @@ def test_get_decoded_access_token_no_token(mock_cache, mock_verify_token):
     with patch("pycognito.Cognito.check_token", return_value=False):
         cognito = OtfCognito(username="user@test.com")
 
-    cognito.access_token = None  # type: ignore
+    cognito.access_token = None  # pyright: ignore[reportAttributeAccessIssue]
 
     with pytest.raises(AttributeError, match="Access Token Required"):
         cognito.get_decoded_access_token()
-
-
-# ---------------------------------------------------------------------------
-# Subtask 6 — expiration_seconds
-# ---------------------------------------------------------------------------
 
 
 def test_expiration_seconds(mock_cache, mock_verify_token):
@@ -119,11 +92,6 @@ def test_expiration_seconds(mock_cache, mock_verify_token):
         cognito = OtfCognito(username="user@test.com")
 
     assert cognito.expiration_seconds > 0
-
-
-# ---------------------------------------------------------------------------
-# Subtask 7 — tokens property
-# ---------------------------------------------------------------------------
 
 
 def test_tokens_property(mock_cache, mock_verify_token):
@@ -140,14 +108,9 @@ def test_tokens_property(mock_cache, mock_verify_token):
     assert "refresh_token" in tokens
 
     # Excluding a None token
-    cognito.refresh_token = None  # type: ignore
+    cognito.refresh_token = None
     tokens_no_refresh = cognito.tokens
     assert "refresh_token" not in tokens_no_refresh
-
-
-# ---------------------------------------------------------------------------
-# Subtask 8 — renew_access_token happy path
-# ---------------------------------------------------------------------------
 
 
 def test_renew_access_token(mock_cache, mock_verify_token, mock_idp_client):
@@ -173,11 +136,6 @@ def test_renew_access_token(mock_cache, mock_verify_token, mock_idp_client):
     assert call_kwargs.kwargs["AuthParameters"]["DEVICE_KEY"] == "dk-123"
 
 
-# ---------------------------------------------------------------------------
-# Subtask 9 — renew_access_token no device key
-# ---------------------------------------------------------------------------
-
-
 def test_renew_access_token_no_device_key(mock_cache, mock_verify_token):
     """renew_access_token raises ValueError when device_key is empty."""
     mock_cache.write_token_data_to_cache({"access_token": _ACCESS_TOKEN, "id_token": "id", "refresh_token": "rt"})
@@ -192,11 +150,6 @@ def test_renew_access_token_no_device_key(mock_cache, mock_verify_token):
         cognito.renew_access_token()
 
 
-# ---------------------------------------------------------------------------
-# Subtask 10 — renew_access_token no refresh token
-# ---------------------------------------------------------------------------
-
-
 def test_renew_access_token_no_refresh_token(mock_cache, mock_verify_token):
     """renew_access_token raises ValueError when refresh_token is None."""
     mock_cache.write_token_data_to_cache({"access_token": _ACCESS_TOKEN, "id_token": "id", "refresh_token": "rt"})
@@ -205,15 +158,10 @@ def test_renew_access_token_no_refresh_token(mock_cache, mock_verify_token):
     with patch("pycognito.Cognito.check_token", return_value=False):
         cognito = OtfCognito(username="user@test.com")
 
-    cognito.refresh_token = None  # type: ignore
+    cognito.refresh_token = None
 
     with pytest.raises(ValueError, match="refresh token"):
         cognito.renew_access_token()
-
-
-# ---------------------------------------------------------------------------
-# Subtask 11 — renew_access_token error boundary
-# ---------------------------------------------------------------------------
 
 
 def _cognito_with_cached_tokens(mock_cache, access_token=_ACCESS_TOKEN):
@@ -303,11 +251,6 @@ def test_check_token_expired_not_authorized(mock_cache, mock_verify_token, mock_
     mock_clear.assert_called_once()
 
 
-# ---------------------------------------------------------------------------
-# Subtask 12 — _set_tokens happy path
-# ---------------------------------------------------------------------------
-
-
 def test_set_tokens(mock_cache, mock_verify_token):
     """_set_tokens updates device_key, device_group_key, and writes tokens to cache."""
     mock_cache.write_token_data_to_cache({"access_token": _ACCESS_TOKEN, "id_token": "id", "refresh_token": "rt"})
@@ -326,11 +269,6 @@ def test_set_tokens(mock_cache, mock_verify_token):
     assert "access_token" in cached_tokens
 
 
-# ---------------------------------------------------------------------------
-# Subtask 13 — _set_tokens missing AccessToken
-# ---------------------------------------------------------------------------
-
-
 def test_set_tokens_missing_access_token(mock_cache, mock_verify_token):
     """_set_tokens raises ValueError when AccessToken is absent from the result."""
     mock_cache.write_token_data_to_cache({"access_token": _ACCESS_TOKEN, "id_token": "id", "refresh_token": "rt"})
@@ -344,11 +282,6 @@ def test_set_tokens_missing_access_token(mock_cache, mock_verify_token):
 
     with pytest.raises(ValueError, match="AccessToken"):
         cognito._set_tokens(ft)
-
-
-# ---------------------------------------------------------------------------
-# Subtask 14 — _handle_device_setup happy path
-# ---------------------------------------------------------------------------
 
 
 def test_handle_device_setup(mock_cache, mock_verify_token, mock_idp_client):
@@ -377,11 +310,6 @@ def test_handle_device_setup(mock_cache, mock_verify_token, mock_idp_client):
     assert cached.get("device_password") == "test_password"
 
 
-# ---------------------------------------------------------------------------
-# Subtask 15 — _handle_device_setup no device key
-# ---------------------------------------------------------------------------
-
-
 def test_handle_device_setup_no_device_key(mock_cache, mock_verify_token):
     """_handle_device_setup raises ValueError when device_key is not in the cache."""
     mock_cache.write_token_data_to_cache({"access_token": _ACCESS_TOKEN, "id_token": "id", "refresh_token": "rt"})
@@ -392,11 +320,6 @@ def test_handle_device_setup_no_device_key(mock_cache, mock_verify_token):
 
     with pytest.raises(ValueError, match="Device key"):
         cognito._handle_device_setup()
-
-
-# ---------------------------------------------------------------------------
-# Subtask 16 — login_with_password happy path
-# ---------------------------------------------------------------------------
 
 
 def test_login_with_password(mock_cache, mock_verify_token):
@@ -415,11 +338,6 @@ def test_login_with_password(mock_cache, mock_verify_token):
         cognito = OtfCognito(username="user@test.com", password="password123")
 
     mock_aws.authenticate_user.assert_called_once()
-
-
-# ---------------------------------------------------------------------------
-# Subtask 17 — login_with_password UserLambdaValidationException retry
-# ---------------------------------------------------------------------------
 
 
 def test_login_with_password_lambda_validation_retry(mock_cache, mock_verify_token):
@@ -443,11 +361,6 @@ def test_login_with_password_lambda_validation_retry(mock_cache, mock_verify_tok
 
     assert mock_aws.authenticate_user.call_count == 2
     mock_sleep.assert_called_once_with(5)
-
-
-# ---------------------------------------------------------------------------
-# Subtask 18 — login_with_password error boundary
-# ---------------------------------------------------------------------------
 
 
 def _construct_with_password(mock_idp_client, authenticate_user_side_effect):
@@ -530,11 +443,6 @@ def test_login_with_password_client_construction_error(mock_cache, mock_verify_t
         OtfCognito(username="user@test.com", password="pw")
 
     assert exc_info.value.__cause__ is error
-
-
-# ---------------------------------------------------------------------------
-# Subtask 19 — get_identity_credentials
-# ---------------------------------------------------------------------------
 
 
 def test_get_identity_credentials(mock_cache, mock_verify_token, mock_id_client):

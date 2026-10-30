@@ -17,13 +17,14 @@ Python library for the OrangeTheory Fitness API. Provides typed clients for book
 
 ```bash
 uv sync          # install all dependencies (dev group included by default)
+prek install     # install the pre-commit and pre-push hooks
 ```
 
 ## Common Commands
 
 ```bash
 uv run pytest                          # run tests (requires real OTF credentials)
-prek run --all-files                   # lint + format (ruff, codespell, etc.)
+prek run --all-files --stage pre-push  # lint + format + pyright (ruff, typos, etc.)
 uv run ruff check --fix --show-fixes   # lint only
 uv run ruff format                     # format only
 uv build                               # build wheel and sdist
@@ -43,7 +44,7 @@ Tests require real OrangeTheory credentials. Set `OTF_EMAIL` and `OTF_PASSWORD` 
 - **Quotes**: Double quotes
 - **Indentation**: 4 spaces
 - All Ruff rules are auto-fixable (`fixable = ["ALL"]`)
-- prek hooks (`prek.toml`) enforce ruff check, ruff format, codespell, gitleaks, and standard file hygiene
+- prek hooks (`prek.toml`) enforce ruff check, ruff format, typos, house-lint, gitleaks, and standard file hygiene
 
 ## Architecture Notes
 
@@ -112,5 +113,5 @@ The fixture-based test suite (`tests/`) uses `respx` to mock HTTP — no credent
 
 - Feature branches for new work
 - Versioning and release PRs managed via `release-please`
-- CI runs tests on Python 3.11 and 3.12, plus prek hooks
+- CI runs tests on Python 3.11 and 3.12, plus prek hooks; `lint-complete` and `tests-complete` are the jobs to require
 - Releases created through the release-please workflow; published to PyPI via trusted publishing

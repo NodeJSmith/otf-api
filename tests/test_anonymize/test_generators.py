@@ -109,8 +109,6 @@ def test_fake_last_name_returns_string(gen: FakeDataGenerators) -> None:
 
 
 def test_fake_studio_name_format(gen: FakeDataGenerators) -> None:
-    import re
-
     result = gen.fake_studio_name()
     assert isinstance(result, str)
     assert re.match(r".+ - .+, [A-Z]{2}$", result), f"Unexpected format: {result!r}"

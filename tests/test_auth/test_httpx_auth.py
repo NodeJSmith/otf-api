@@ -1,5 +1,6 @@
 """Tests for HttpxCognitoAuth in otf_api.auth.auth."""
 
+from typing import cast
 from unittest.mock import MagicMock, patch
 
 import httpx
@@ -10,7 +11,7 @@ from otf_api.auth.auth import HttpxCognitoAuth
 SIGV4AUTH_REQUIRED = "SIGV4AUTH_REQUIRED"
 
 
-def _make_auth(id_token="test.id.token"):
+def _make_auth(id_token: str | None = "test.id.token"):
     """Return an HttpxCognitoAuth with a pre-configured MagicMock cognito."""
     cognito = MagicMock()
     cognito.id_token = id_token
@@ -27,7 +28,7 @@ def test_auth_flow_standard_request():
 
     assert len(yielded) == 1
     assert yielded[0].headers["Authorization"] == "Bearer test.id.token"
-    auth.cognito.check_token.assert_called_once_with(renew=True)
+    cast(MagicMock, auth.cognito.check_token).assert_called_once_with(renew=True)
 
 
 def test_auth_flow_sigv4_branch():
@@ -44,7 +45,7 @@ def test_auth_flow_sigv4_branch():
     passed_request = call_args[0][0]
     assert SIGV4AUTH_REQUIRED not in passed_request.headers
     assert passed_request.headers["Authorization"] == "Bearer test.id.token"
-    auth.cognito.check_token.assert_called_once_with(renew=True)
+    cast(MagicMock, auth.cognito.check_token).assert_called_once_with(renew=True)
     mock_sign.assert_called_once()
     assert yielded == [signed_request]
 

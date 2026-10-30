@@ -48,7 +48,7 @@ class OtfCache(Cache):
             dd = {k: self.get(k) for k in DEVICE_KEYS}
             if not any(dd.values()):
                 return {}
-            return dd  # type: ignore
+            return dd  # pyright: ignore[reportReturnType]
         except Exception:
             LOGGER.exception("Failed to read device key cache")
             return {}
@@ -77,10 +77,10 @@ class OtfCache(Cache):
             dict[str, str | None]: The token data read from the cache.
         """
         try:
-            tokens = {k: self.get(k) for k in TOKEN_KEYS}  # type: ignore
+            tokens = {k: self.get(k) for k in TOKEN_KEYS}
             if not any(tokens.values()):
                 return {}
-            return tokens  # type: ignore
+            return tokens  # pyright: ignore[reportReturnType]
         except Exception:
             LOGGER.exception("Failed to read token cache")
             return {}

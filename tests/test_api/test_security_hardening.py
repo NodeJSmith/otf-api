@@ -3,6 +3,7 @@
 import stat
 import tempfile
 from pathlib import Path
+from typing import cast
 from unittest.mock import Mock, patch
 
 import pytest
@@ -124,15 +125,15 @@ class TestTrendTypeValidation:
     def test_accepts_enum_member(self):
         api = self._make_api()
         api.get_workout_stats(TrendType.SplatPoints)
-        assert api.client.get_workout_stats.call_args.args[0] == "splat_points"
+        assert cast(Mock, api.client.get_workout_stats).call_args.args[0] == "splat_points"
 
     def test_accepts_string_value(self):
         api = self._make_api()
         api.get_workout_stats("splat_points")
-        assert api.client.get_workout_stats.call_args.args[0] == "splat_points"
+        assert cast(Mock, api.client.get_workout_stats).call_args.args[0] == "splat_points"
 
     def test_rejects_unknown_string(self):
         api = self._make_api()
         with pytest.raises(ValueError, match="not a valid TrendType"):
             api.get_workout_stats("../preview")
-        api.client.get_workout_stats.assert_not_called()
+        cast(Mock, api.client.get_workout_stats).assert_not_called()

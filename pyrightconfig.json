@@ -1,0 +1,7 @@
+{
+    "include": ["src", "tests", "examples"],
+    "venvPath": ".",
+    "venv": ".venv",
+    "typeCheckingMode": "basic",
+    "executionEnvironments": [{ "root": "tests" }, { "root": "." }]
+}

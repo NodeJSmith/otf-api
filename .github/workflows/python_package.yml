@@ -10,29 +10,33 @@ on:
         description: "Git ref to build and publish. Schema upload only runs if HEAD has a version tag."
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build package & schema
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           ref: ${{ github.event.inputs.ref || github.ref }}
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.11"
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
-          version: "0.7.3"
+          version: "0.13.6"
           python-version: 3.11
           activate-environment: true
-          enable-cache: true
+          # A release build must not restore a cache other workflows could have written.
+          enable-cache: false
 
       - name: Install python packages
         run: uv sync --no-default-groups
@@ -44,13 +48,13 @@ jobs:
         run: uv run python scripts/generate_openapi.py
 
       - name: Upload package artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: pypi-dists
           path: "./dist"
 
       - name: Upload schema artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: openapi-schema
           path: "./schema"
@@ -67,13 +71,13 @@ jobs:
 
     steps:
       - name: Download package artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: pypi-dists
           path: "./dist"
 
       - name: Publish distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # release/v1
 
   upload-schema:
     name: Upload schema to release
@@ -87,37 +91,38 @@ jobs:
 
     steps:
       - name: Download schema artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: openapi-schema
           path: "./schema"
 
       - name: Upload schema to release
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            TAG="${{ github.event.inputs.ref }}"
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            TAG="$INPUT_REF"
           else
-            TAG="${{ github.ref_name }}"
+            TAG="$GITHUB_REF_NAME"
           fi
           echo "Uploading schema files to release ${TAG}..."
 
           for i in 1 2 3; do
-            if gh release view "$TAG" --repo ${{ github.repository }} > /dev/null 2>&1; then
+            if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
               break
             fi
             echo "Release not found yet (attempt $i/3), waiting 10s..."
             sleep 10
           done
 
-          if ! gh release view "$TAG" --repo ${{ github.repository }} > /dev/null 2>&1; then
+          if ! gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
             echo "Release ${TAG} not found after 3 attempts — cannot upload schema"
             exit 1
           fi
 
           gh release upload "$TAG" ./schema/openapi.yaml ./schema/openapi.json \
-            --repo ${{ github.repository }} \
+            --repo "$GITHUB_REPOSITORY" \
             --clobber
 
           echo "Schema files uploaded successfully!"
         env:
           GH_TOKEN: ${{ github.token }}
+          INPUT_REF: ${{ github.event.inputs.ref }}

@@ -26,63 +26,8 @@ from otf_api.anonymize.mappings import FieldMapping
 logger = logging.getLogger(__name__)
 
 
-# ---------------------------------------------------------------------------
 # Result dataclasses
-# ---------------------------------------------------------------------------
 
-
-@dataclasses.dataclass
-class LeakReport:
-    """Describes a single PII leak found in the anonymized output.
-
-    Attributes:
-        file: Filename of the fixture where the leak was found.
-        field_path: Dot-separated path to the field containing the leak (e.g. "data.firstName").
-        real_value: The real PII value that was found in the output.
-        category: The PII category this value belongs to (e.g. "name", "email").
-    """
-
-    file: str
-    field_path: str
-    real_value: str
-    category: str
-
-
-@dataclasses.dataclass
-class ValidationResult:
-    """Summarises the result of validating one or more anonymized fixtures.
-
-    Attributes:
-        passed: True iff there are no leaks, structural errors, or model parse errors.
-        leaks: List of detected PII leaks.
-        structural_errors: List of structural integrity error messages.
-        model_parse_errors: List of model parsing error messages (best-effort).
-    """
-
-    passed: bool
-    leaks: list[LeakReport]
-    structural_errors: list[str]
-    model_parse_errors: list[str]
-
-
-# ---------------------------------------------------------------------------
-# Endpoint-to-model mapping
-# ---------------------------------------------------------------------------
-# Maps regex patterns that match fixture filenames/paths to Pydantic model
-# import paths and any extraction hint needed to locate the data in the fixture.
-#
-# Format:
-#   (pattern, model_class_path, extraction_key_or_None)
-#
-# extraction_key: if the fixture has a wrapper (e.g. "data" or "items"), this
-#   is the key to extract the payload. "data" → fixture["data"]
-#   "Dto" → fixture["Dto"]
-#   None → use the entire fixture dict
-#   "items[0]" → first item from fixture["items"]
-#
-# Model import paths are resolved lazily so that importing this module never
-# fails due to circular imports or heavy model modules.
-# New endpoints also require FIELD_MAPPINGS and KNOWN_SAFE_FIELDS updates in mappings.py.
 
 _ENDPOINT_MODEL_MAP: list[tuple[str, str, str | None]] = [
     # Member detail
@@ -219,6 +164,63 @@ _ENDPOINT_MODEL_MAP: list[tuple[str, str, str | None]] = [
     ),
 ]
 
+# Regex that matches the ", input_value=..." portion of a Pydantic ValidationError
+# string.  Stripping this makes error normalization data-independent so that the same
+# structural error on the raw vs. anonymized fixture compares as equal.
+_PYDANTIC_INPUT_VALUE_RE = re.compile(r",\s*input_value=.*", re.DOTALL)
+
+
+@dataclasses.dataclass
+class LeakReport:
+    """Describes a single PII leak found in the anonymized output.
+
+    Attributes:
+        file: Filename of the fixture where the leak was found.
+        field_path: Dot-separated path to the field containing the leak (e.g. "data.firstName").
+        real_value: The real PII value that was found in the output.
+        category: The PII category this value belongs to (e.g. "name", "email").
+    """
+
+    file: str
+    field_path: str
+    real_value: str
+    category: str
+
+
+@dataclasses.dataclass
+class ValidationResult:
+    """Summarises the result of validating one or more anonymized fixtures.
+
+    Attributes:
+        passed: True iff there are no leaks, structural errors, or model parse errors.
+        leaks: List of detected PII leaks.
+        structural_errors: List of structural integrity error messages.
+        model_parse_errors: List of model parsing error messages (best-effort).
+    """
+
+    passed: bool
+    leaks: list[LeakReport]
+    structural_errors: list[str]
+    model_parse_errors: list[str]
+
+
+# Endpoint-to-model mapping
+# Maps regex patterns that match fixture filenames/paths to Pydantic model
+# import paths and any extraction hint needed to locate the data in the fixture.
+#
+# Format:
+#   (pattern, model_class_path, extraction_key_or_None)
+#
+# extraction_key: if the fixture has a wrapper (e.g. "data" or "items"), this
+#   is the key to extract the payload. "data" → fixture["data"]
+#   "Dto" → fixture["Dto"]
+#   None → use the entire fixture dict
+#   "items[0]" → first item from fixture["items"]
+#
+# Model import paths are resolved lazily so that importing this module never
+# fails due to circular imports or heavy model modules.
+# New endpoints also require FIELD_MAPPINGS and KNOWN_SAFE_FIELDS updates in mappings.py.
+
 
 def _get_model_class(model_path: str) -> type | None:
     """Lazily import and return a Pydantic model class by dotted path.
@@ -270,9 +272,7 @@ def _extract_payload(fixture: dict[str, Any], extraction_key: str | None) -> Any
         return None
 
 
-# ---------------------------------------------------------------------------
 # collect_real_values helper
-# ---------------------------------------------------------------------------
 
 
 def collect_real_values(
@@ -340,16 +340,6 @@ def _add_with_variants(value: str, values: set[str]) -> None:
     encoded = quote(value, safe="")
     if encoded != value:
         values.add(encoded)
-
-
-# ---------------------------------------------------------------------------
-# PiiValidator
-# ---------------------------------------------------------------------------
-
-# Regex that matches the ", input_value=..." portion of a Pydantic ValidationError
-# string.  Stripping this makes error normalization data-independent so that the same
-# structural error on the raw vs. anonymized fixture compares as equal.
-_PYDANTIC_INPUT_VALUE_RE = re.compile(r",\s*input_value=.*", re.DOTALL)
 
 
 def _normalize_model_error(error: str) -> str:

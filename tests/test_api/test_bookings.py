@@ -21,6 +21,9 @@ _BOOKINGS_NEW_URL = (
 )
 
 
+WAITLISTED_BOOKING_ID = "a1e2f3d4-5678-4abc-9def-0123456789ab"
+
+
 def test_get_bookings(mock_otf) -> None:
     result = mock_otf.bookings.get_bookings(exclude_cancelled=False, exclude_checkedin=False)
 
@@ -110,7 +113,7 @@ def test_get_end_time_new_class_types_last_60_minutes(class_type: str) -> None:
 
     end = get_end_time(start, ClassType(class_type))
 
-    assert (end - pendulum.instance(start)).in_minutes() == 60
+    assert (end - pendulum.instance(start)).total_seconds() == 3600
 
 
 def test_get_bookings_with_default_filters(mock_otf) -> None:
@@ -147,8 +150,6 @@ def test_get_class_from_booking(mock_otf) -> None:
 # get_class_from_booking_new / get_booking_from_class_new cannot be tested:
 # the new booking class IDs (from get_bookings_new fixtures) don't overlap with
 # any class IDs in the get_classes fixture, so the lookup always fails.
-
-WAITLISTED_BOOKING_ID = "a1e2f3d4-5678-4abc-9def-0123456789ab"
 
 
 def test_waitlisted_booking_returns_waitlisted_status(mock_otf) -> None:

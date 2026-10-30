@@ -13,10 +13,6 @@ import pytest
 from otf_api.anonymize.hooks import AnonymizedCaptureHook
 from otf_api.api.client import OtfClient
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
 
 def _make_mock_user() -> MagicMock:
     """Return a MagicMock that satisfies OtfClient's expectations for OtfUser."""
@@ -24,11 +20,6 @@ def _make_mock_user() -> MagicMock:
     mock_user.member_uuid = "mock-member-uuid-1234-5678-9012"
     mock_user.httpx_auth = None  # httpx.Client accepts None for auth
     return mock_user
-
-
-# ---------------------------------------------------------------------------
-# test_env_var_disabled_no_hook
-# ---------------------------------------------------------------------------
 
 
 def test_env_var_disabled_no_hook(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -59,11 +50,6 @@ def test_env_var_false_no_hook(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert not hasattr(client, "_anonymize_hook")
     client.session.close()
-
-
-# ---------------------------------------------------------------------------
-# test_env_var_injects_hook
-# ---------------------------------------------------------------------------
 
 
 def test_env_var_injects_hook(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:

@@ -18,9 +18,6 @@ import pytest
 from otf_api.anonymize import anonymize_batch, batch
 from otf_api.anonymize.anonymizer import AnonymizeConfig
 
-# ---------------------------------------------------------------------------
-# Paths
-# ---------------------------------------------------------------------------
 
 _REPO_ROOT = Path(__file__).parent.parent.parent
 _RAW_FIXTURES_DIR = _REPO_ROOT / "fixtures" / "raw_responses"
@@ -38,11 +35,6 @@ _REAL_EMAIL = "12jessicasmith34@gmail.com"
 _REAL_PHONE = "3166808339"
 
 
-# ---------------------------------------------------------------------------
-# Tests requiring real fixtures
-# ---------------------------------------------------------------------------
-
-
 @pytest.fixture(scope="module")
 def batch_result(tmp_path_factory: pytest.TempPathFactory) -> tuple[Path, object]:
     """Module-scoped fixture: run the batch once, return (output_dir, BatchResult)."""
@@ -55,14 +47,14 @@ def batch_result(tmp_path_factory: pytest.TempPathFactory) -> tuple[Path, object
 
 
 @pytest.fixture(scope="module")
-def batch_output_dir(batch_result: tuple[Path, object]) -> Path:
+def batch_output_dir(batch_result: tuple[Path, batch.BatchResult]) -> Path:
     """Return only the output directory from the module-scoped batch run."""
     out, _ = batch_result
     return out
 
 
 @_SKIP_WITHOUT_FIXTURES
-def test_full_batch_zero_leaks(batch_result: tuple[Path, object]) -> None:
+def test_full_batch_zero_leaks(batch_result: tuple[Path, batch.BatchResult]) -> None:
     """Run the anonymizer on all fixture files and assert zero PII leaks.
 
     Uses the built-in validation result from the batch run, which validates
@@ -80,7 +72,7 @@ def test_full_batch_zero_leaks(batch_result: tuple[Path, object]) -> None:
 
 
 @_SKIP_WITHOUT_FIXTURES
-def test_full_batch_models_parse(batch_result: tuple[Path, object]) -> None:
+def test_full_batch_models_parse(batch_result: tuple[Path, batch.BatchResult]) -> None:
     """All anonymized files should parse through their corresponding Pydantic models.
 
     Uses the built-in validation result from the batch run (validated inline
@@ -124,7 +116,6 @@ def test_full_batch_referential_integrity(batch_output_dir: Path) -> None:
     assert output_json_count == expected_output, (
         f"Expected {expected_output} output files (input={input_json_count} + 1 for map) but found {output_json_count}"
     )
-
 
 
 @_SKIP_WITHOUT_FIXTURES
@@ -319,11 +310,6 @@ def _collect_field_values(data: object, field_name: str) -> list[str]:
         for item in data:
             values.extend(_collect_field_values(item, field_name))
     return values
-
-
-# ---------------------------------------------------------------------------
-# Tests that work without real fixtures
-# ---------------------------------------------------------------------------
 
 
 def test_malformed_json_skipped(tmp_path: Path) -> None:

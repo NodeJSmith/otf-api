@@ -2,6 +2,8 @@
 # See https://prek.j178.dev for more information.
 #:schema https://www.schemastore.org/prek.json
 
+default_install_hook_types = ["pre-commit", "pre-push"]
+
 # scripts/ holds one-off maintenance scripts that aren't held to the library's lint rules.
 exclude = "^scripts"
 
@@ -27,10 +29,10 @@ hooks = [
 ]
 
 [[repos]]
-repo = "https://github.com/codespell-project/codespell"
-rev = "v2.4.1"
+repo = "https://github.com/crate-ci/typos"
+rev = "v1.51.1"
 hooks = [
-    { id = "codespell", args = ["--config", ".codespellrc"] },
+    { id = "typos", args = ["--force-exclude"], require_serial = true },
 ]
 
 [[repos]]
@@ -64,6 +66,39 @@ language = "system"
 entry = "uv run ruff format --force-exclude"
 require_serial = true
 types_or = ["python", "pyi"]
+
+[[repos.hooks]]
+id = "house-lint"
+name = "house-lint"
+language = "system"
+entry = "uv run house-lint check"
+require_serial = true
+types = ["python"]
+files = '^(src|tests|tools|examples)/.*\.py$'
+
+[[repos.hooks]]
+id = "pyright"
+name = "pyright"
+language = "system"
+entry = "uv run pyright"
+pass_filenames = false
+require_serial = true
+types_or = ["python", "pyi"]
+stages = ["pre-push"]
+
+[[repos.hooks]]
+id = "no-mypy-ignore"
+name = 'Ban "type: ignore" comments (use pyright)'
+language = "pygrep"
+types = ["python"]
+entry = "# type: ignore"
+
+[[repos.hooks]]
+id = "zizmor"
+name = "zizmor (GitHub Actions security)"
+language = "system"
+entry = "env -u GH_TOKEN -u GITHUB_TOKEN uvx zizmor@1.26.1 --offline"
+files = '^\.github/workflows/'
 
 [[repos.hooks]]
 id = "no-future-annotations"

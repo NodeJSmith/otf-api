@@ -44,9 +44,7 @@ class FakeDataGenerators:
         self._rng = random.Random(seed)
         self._lock = threading.Lock()
 
-    # ------------------------------------------------------------------
     # Identity
-    # ------------------------------------------------------------------
 
     def fake_uuid(self) -> str:
         """Return a valid UUID4 string."""
@@ -58,9 +56,7 @@ class FakeDataGenerators:
         with self._lock:
             return self._rng.randint(100_000, 999_999_999)
 
-    # ------------------------------------------------------------------
     # Personal info
-    # ------------------------------------------------------------------
 
     def fake_first_name(self) -> str:
         """Return a fake first name."""
@@ -102,9 +98,7 @@ class FakeDataGenerators:
             dob = self._faker.date_of_birth(minimum_age=18, maximum_age=90)
             return dob.isoformat()
 
-    # ------------------------------------------------------------------
     # Financial
-    # ------------------------------------------------------------------
 
     def fake_cc_last4(self) -> str:
         """Return a fake 4-digit credit card suffix."""
@@ -126,9 +120,7 @@ class FakeDataGenerators:
         with self._lock:
             return self._rng.choice(_GENDER_VALUES)
 
-    # ------------------------------------------------------------------
     # Biometric
-    # ------------------------------------------------------------------
 
     def fake_biometric_scalar(self, field_name: str, _original_value: float) -> float:
         """Return a fake biometric scalar value in the realistic human range for the field.
@@ -163,9 +155,7 @@ class FakeDataGenerators:
         with self._lock:
             return self._rng.randint(-30, 30)
 
-    # ------------------------------------------------------------------
     # Timestamps
-    # ------------------------------------------------------------------
 
     def fake_timestamp_delta(self) -> int:
         """Return an integer seconds offset for timestamp anonymization.
@@ -177,9 +167,7 @@ class FakeDataGenerators:
         with self._lock:
             return self._rng.randint(-365 * 24 * 3600, 365 * 24 * 3600)
 
-    # ------------------------------------------------------------------
     # Studio / Geo
-    # ------------------------------------------------------------------
 
     def fake_studio_name(self) -> str:
         """Return a fake studio name in OTF's 'City - Direction, ST' format."""
@@ -200,9 +188,7 @@ class FakeDataGenerators:
             return max(-90.0, min(90.0, fake))
         return max(-180.0, min(180.0, fake))
 
-    # ------------------------------------------------------------------
     # Media
-    # ------------------------------------------------------------------
 
     def fake_image_url(self) -> str:
         """Return a placeholder image URL."""
