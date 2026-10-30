@@ -42,6 +42,12 @@ jobs:
       - name: Run tests
         run: uv run pytest
 
+      # The publish workflow runs these, and a PR can't exercise that workflow directly.
+      - name: Check the release build steps
+        run: |
+          uv build
+          uv run python scripts/generate_openapi.py
+
   tests-complete:
     needs: [test]
     if: always()
