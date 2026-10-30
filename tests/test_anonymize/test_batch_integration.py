@@ -47,14 +47,14 @@ def batch_result(tmp_path_factory: pytest.TempPathFactory) -> tuple[Path, object
 
 
 @pytest.fixture(scope="module")
-def batch_output_dir(batch_result: tuple[Path, object]) -> Path:
+def batch_output_dir(batch_result: tuple[Path, batch.BatchResult]) -> Path:
     """Return only the output directory from the module-scoped batch run."""
     out, _ = batch_result
     return out
 
 
 @_SKIP_WITHOUT_FIXTURES
-def test_full_batch_zero_leaks(batch_result: tuple[Path, object]) -> None:
+def test_full_batch_zero_leaks(batch_result: tuple[Path, batch.BatchResult]) -> None:
     """Run the anonymizer on all fixture files and assert zero PII leaks.
 
     Uses the built-in validation result from the batch run, which validates
@@ -72,7 +72,7 @@ def test_full_batch_zero_leaks(batch_result: tuple[Path, object]) -> None:
 
 
 @_SKIP_WITHOUT_FIXTURES
-def test_full_batch_models_parse(batch_result: tuple[Path, object]) -> None:
+def test_full_batch_models_parse(batch_result: tuple[Path, batch.BatchResult]) -> None:
     """All anonymized files should parse through their corresponding Pydantic models.
 
     Uses the built-in validation result from the batch run (validated inline

@@ -113,7 +113,7 @@ def test_get_end_time_new_class_types_last_60_minutes(class_type: str) -> None:
 
     end = get_end_time(start, ClassType(class_type))
 
-    assert (end - pendulum.instance(start)).in_minutes() == 60
+    assert (end - pendulum.instance(start)).total_seconds() == 3600
 
 
 def test_get_bookings_with_default_filters(mock_otf) -> None:

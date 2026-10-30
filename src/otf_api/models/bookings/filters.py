@@ -97,7 +97,7 @@ class ClassFilter(BaseModel):
         if not v:
             return None
 
-        return v  # type: ignore
+        return v  # pyright: ignore[reportReturnType]
 
     @field_validator("class_type", mode="before")
     @classmethod
@@ -111,7 +111,7 @@ class ClassFilter(BaseModel):
         if not v:
             return None
 
-        return v  # type: ignore
+        return v  # pyright: ignore[reportReturnType]
 
     @field_validator("start_date", "end_date", mode="before")
     @classmethod
@@ -123,6 +123,6 @@ class ClassFilter(BaseModel):
 
         try:
             value = pendulum.parse(v)
-            return value.date() if isinstance(value, datetime) else value  # type: ignore
+            return value.date() if isinstance(value, datetime) else value  # pyright: ignore[reportReturnType]
         except (ValueError, TypeError):
             raise ValueError(f"Invalid date format: {v}. Expected format is YYYY-MM-DD or a date object.")

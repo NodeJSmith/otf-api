@@ -2,6 +2,8 @@
 # See https://prek.j178.dev for more information.
 #:schema https://www.schemastore.org/prek.json
 
+default_install_hook_types = ["pre-commit", "pre-push"]
+
 # scripts/ holds one-off maintenance scripts that aren't held to the library's lint rules.
 exclude = "^scripts"
 
@@ -73,6 +75,23 @@ entry = "uv run house-lint check"
 require_serial = true
 types = ["python"]
 files = '^(src|tests|tools|examples)/.*\.py$'
+
+[[repos.hooks]]
+id = "pyright"
+name = "pyright"
+language = "system"
+entry = "uv run pyright"
+pass_filenames = false
+require_serial = true
+types_or = ["python", "pyi"]
+stages = ["pre-push"]
+
+[[repos.hooks]]
+id = "no-mypy-ignore"
+name = 'Ban "type: ignore" comments (use pyright)'
+language = "pygrep"
+types = ["python"]
+entry = "# type: ignore"
 
 [[repos.hooks]]
 id = "no-future-annotations"

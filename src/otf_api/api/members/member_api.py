@@ -36,7 +36,7 @@ class MemberApi:
         Returns:
             SmsNotificationSettings: The member's SMS notification settings.
         """
-        res = self.client.get_sms_notification_settings(self.otf.member.phone_number)  # type: ignore
+        res = self.client.get_sms_notification_settings(self.otf.member.phone_number)  # pyright: ignore[reportArgumentType]
 
         return models.SmsNotificationSettings(**res)
 
@@ -62,9 +62,9 @@ class MemberApi:
         )
 
         self.client.post_sms_notification_settings(
-            self.otf.member.phone_number,  # type: ignore
-            promotional_enabled,  # type: ignore
-            transactional_enabled,  # type: ignore
+            self.otf.member.phone_number,  # pyright: ignore[reportArgumentType]
+            promotional_enabled,  # pyright: ignore[reportArgumentType]
+            transactional_enabled,  # pyright: ignore[reportArgumentType]
         )
 
         # the response returns nothing useful, so we just query the settings again
@@ -77,7 +77,7 @@ class MemberApi:
         Returns:
             EmailNotificationSettings: The member's email notification settings.
         """
-        res = self.client.get_email_notification_settings(self.otf.member.email)  # type: ignore
+        res = self.client.get_email_notification_settings(self.otf.member.email)  # pyright: ignore[reportArgumentType]
 
         return models.EmailNotificationSettings(**res)
 
@@ -105,9 +105,9 @@ class MemberApi:
         )
 
         self.client.post_email_notification_settings(
-            self.otf.member.email,  # type: ignore
-            promotional_enabled,  # type: ignore
-            transactional_enabled,  # type: ignore
+            self.otf.member.email,  # pyright: ignore[reportArgumentType]
+            promotional_enabled,  # pyright: ignore[reportArgumentType]
+            transactional_enabled,  # pyright: ignore[reportArgumentType]
         )
 
         # the response returns nothing useful, so we just query the settings again

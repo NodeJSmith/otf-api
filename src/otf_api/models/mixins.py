@@ -15,7 +15,7 @@ class ApiMixin:
     If the API instance is not set, calling methods that require it will raise a ValueError.
     """
 
-    _api: "Otf" = None  # type: ignore[assignment]
+    _api: "Otf" = None  # pyright: ignore[reportAssignmentType]
 
     def set_api(self, api: "Otf") -> None:
         """Set the API instance for this model."""

@@ -36,4 +36,4 @@ jobs:
           install-only: true
 
       - name: Run lint checks
-        run: prek run --all-files
+        run: prek run --all-files --stage pre-push
