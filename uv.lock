@@ -949,14 +949,14 @@ wheels = [
 
 [[package]]
 name = "mypy-boto3-cognito-identity"
-version = "1.38.0"
+version = "1.43.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typing-extensions", marker = "python_full_version < '3.12'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f8/d9/df3cc1d44b74951ecb0bc683773196d3cba30407e8fa09be2611b300030b/mypy_boto3_cognito_identity-1.38.0.tar.gz", hash = "sha256:51e93ada134ad1e251c518fd622538478e30df7214cab5d9f40c866c47288b27", size = 19495, upload-time = "2025-04-22T21:20:45.607Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e8/61/7fd2999621f7cfb5b6c866a92097b86bf4afe15d94ff83059b243c2da0ce/mypy_boto3_cognito_identity-1.43.0.tar.gz", hash = "sha256:09abc12a0a7e744311da9a11f9b1b63e065bfb05f5ce5366b8ec89b15dcb7d53", size = 19270, upload-time = "2026-04-29T22:58:58.221Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7f/f4/05b30dd04a961a7a64a405f3203ad03b6291b810f893709735d8a6893f4f/mypy_boto3_cognito_identity-1.38.0-py3-none-any.whl", hash = "sha256:e2b0afcc9657996add70e86ac202b06202a54d0a5fbba2fe060dbe29ce888151", size = 26424, upload-time = "2025-04-22T21:20:43.657Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/d6/24f2842e97659ff471e9c487a96743f31741f7d42a5d8038191706787d13/mypy_boto3_cognito_identity-1.43.0-py3-none-any.whl", hash = "sha256:bac11ab7a241fc9151c88c87f374e474ee5cd6188d9e7b28273539a814442356", size = 26437, upload-time = "2026-04-29T22:58:54.77Z" },
 ]
 
 [[package]]
