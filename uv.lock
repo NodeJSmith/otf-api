@@ -95,16 +95,16 @@ wheels = [
 
 [[package]]
 name = "build"
-version = "1.2.1"
+version = "1.6.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama", marker = "os_name == 'nt'" },
     { name = "packaging" },
     { name = "pyproject-hooks" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ce/9e/2d725d2f7729c6e79ca62aeb926492abbc06e25910dd30139d60a68bcb19/build-1.2.1.tar.gz", hash = "sha256:526263f4870c26f26c433545579475377b2b7588b6f1eac76a001e873ae3e19d", size = 44781, upload-time = "2024-03-28T14:56:38.541Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bd/67/4898a44ea4f3f8e213b0954ec0aa0a16971d62a6212d6ea3931e97115b99/build-1.6.1.tar.gz", hash = "sha256:51cc11666391ab6f092070437ac747002ff46f3e4113a3622177ee6b488bfc53", size = 113427, upload-time = "2026-09-10T07:56:00.417Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e2/03/f3c8ba0a6b6e30d7d18c40faab90807c9bb5e9a1e3b2fe2008af624a9c97/build-1.2.1-py3-none-any.whl", hash = "sha256:75e10f767a433d9a86e50d83f418e83efc18ede923ee5ff7df93b6cb0306c5d4", size = 21911, upload-time = "2024-03-28T14:56:36.589Z" },
+    { url = "https://files.pythonhosted.org/packages/ad/9b/9fb3585dabcd73a1b2a6267f63f62649347c9e6d072c9fde365b105abb2c/build-1.6.1-py3-none-any.whl", hash = "sha256:ecd351a4be9d35a9eaaba244a7687143c9c7d4aea6ac964e7e7ddab20cbcf4e7", size = 31179, upload-time = "2026-09-10T07:55:59.148Z" },
 ]
 
 [[package]]
@@ -1080,7 +1080,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "build", specifier = "==1.2.1" },
+    { name = "build", specifier = "==1.6.1" },
     { name = "house-lint", specifier = ">=0.3.0" },
     { name = "mypy-boto3-cognito-identity", specifier = ">=1.38.0" },
     { name = "mypy-boto3-cognito-idp", specifier = ">=1.35.93,<2" },

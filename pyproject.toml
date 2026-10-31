@@ -38,7 +38,7 @@ Documentation = "https://otf-api.readthedocs.io/en/stable/"
 
 [dependency-groups]
 dev = [
-    "build==1.2.1",
+    "build==1.6.1",
     "house-lint>=0.3.0",
     "mypy-boto3-cognito-identity>=1.38.0",
     "mypy-boto3-cognito-idp>=1.35.93,<2",
