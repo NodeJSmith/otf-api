@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.22.0](https://github.com/NodeJSmith/otf-api/compare/v0.21.3...v0.22.0) (2026-10-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* class_type, status, and equipment_id are no longer always enum members. An unrecognized value is a raw str or int with no enum attributes or methods (.value, .name, BookingStatus.priority()). Narrow with isinstance first, or use getattr(x, "value", x). ==, in, and match keep working for values that exactly match a member. ClassFilter(class_type=...) no longer raises KeyError on an unknown type: it warns and matches nothing, and ClassFilter.class_type's declared type now includes raw strings.
+
+### Features
+
+* keep server values the library does not recognize ([#171](https://github.com/NodeJSmith/otf-api/issues/171)) ([1fdfe02](https://github.com/NodeJSmith/otf-api/commit/1fdfe02255b4c65b4033a2b4bde7357f5c765466))
+
 ## [0.21.3](https://github.com/NodeJSmith/otf-api/compare/v0.21.2...v0.21.3) (2026-10-30)
 
 
