@@ -3,47 +3,49 @@
 ## [0.22.0](https://github.com/NodeJSmith/otf-api/compare/v0.21.3...v0.22.0) (2026-11-09)
 
 
-### ⚠ BREAKING CHANGES
+### Breaking Changes
 
-* **cache:** The on-disk cache no longer uses `diskcache`, which reads its files back through `pickle` ([CVE-2025-69872](https://nvd.nist.gov/vuln/detail/CVE-2025-69872)). Tokens, device keys, and cached responses are now stored as owner-only JSON files, and `diskcache` is no longer a dependency. The old cache is deleted, so you will need to sign in once after upgrading. `OtfCache` no longer subclasses `diskcache.Cache`: only the documented token, device, and clear helpers remain, plus `memoize` and `evict`. `clear_cache()` now also clears cached responses.
-* **models:** `class_type`, `status`, and `equipment_id` are no longer always enum members. A value the library doesn't recognize is kept as a raw `str` or `int` instead of failing validation and dropping the record. Raw values have no enum attributes or methods (`.value`, `.name`, `BookingStatus.priority()`), so narrow with `isinstance` first or use `getattr(x, "value", x)`. `==`, `in`, and `match` still work for values that exactly match a member. `ClassFilter(class_type=...)` with an unknown type now warns and matches nothing instead of raising `KeyError`, and `ClassFilter.class_type` is typed to accept raw strings.
+- **Cache no longer uses `diskcache`** — tokens, device keys, and cached responses are stored as owner-only JSON files instead of a `diskcache` database that reads entries back through `pickle` ([CVE-2025-69872](https://nvd.nist.gov/vuln/detail/CVE-2025-69872)). The old cache is deleted the first time the new version runs, so you will sign in once more. `OtfCache` no longer subclasses `diskcache.Cache`: code calling `diskcache` methods on it must use the documented token, device, and clear helpers, or `memoize` and `evict`. `diskcache` is no longer installed with otf-api, so add it to your own dependencies if you import it directly. Reported by @avgvi, thanks! (#210, #212)
+- **Unrecognized `class_type`, `status`, and `equipment_id` values are kept raw** — these fields hold the enum member for a known value and a raw `str` or `int` otherwise, so calling `.value`, `.name`, or `BookingStatus.priority()` on them can raise `AttributeError`. Narrow with `isinstance` first, or use `getattr(x, "value", x)`. `==`, `in`, and `match` still work for values that exactly match a member. (#171)
+- **`ClassFilter(class_type=...)` no longer raises `KeyError` for an unknown type** — it logs a warning and matches nothing, and `ClassFilter.class_type` is typed to accept raw strings. Code that caught `KeyError` to detect a misspelled type should check for an empty result instead. (#171)
+
+### You Can Now Delete
+
+- Any ignore entry for CVE-2025-69872 or `diskcache` in your `pip-audit`, Dependabot, or other vulnerability-scanner config. otf-api no longer depends on `diskcache`. (#212)
 
 ### Features
 
-* keep server values the library does not recognize ([#171](https://github.com/NodeJSmith/otf-api/issues/171)) ([1fdfe02](https://github.com/NodeJSmith/otf-api/commit/1fdfe02255b4c65b4033a2b4bde7357f5c765466))
-
+- Classes, bookings, and studios with a class type, status, or equipment ID the library doesn't know yet are returned instead of being dropped from list results. Each new value logs one warning per process. (#171)
+- `ClassFilter` matches class types ignoring case and spaces, and accepts types the library doesn't know yet. (#171)
+- End times for an unrecognized class type use the length in its name when it has one (30–120 minutes), and 60 minutes otherwise. (#171)
 
 ### Bug Fixes
 
-* **cache:** replace diskcache with owner-only JSON files ([#212](https://github.com/NodeJSmith/otf-api/issues/212)) ([b1c88fe](https://github.com/NodeJSmith/otf-api/commit/b1c88fef410702bc52b1882b909ffc7edd2145b8)), closes [#210](https://github.com/NodeJSmith/otf-api/issues/210)
+- `clear_cache()` now clears cached API responses too, not just tokens and device data. (#212)
 
 ## [0.21.3](https://github.com/NodeJSmith/otf-api/compare/v0.21.2...v0.21.3) (2026-10-30)
 
-
 ### Bug Fixes
 
-* **build:** declare pyyaml so the release build can generate the schema ([#168](https://github.com/NodeJSmith/otf-api/issues/168)) ([e6f6a25](https://github.com/NodeJSmith/otf-api/commit/e6f6a25e4d84687afc4f38c16418a25028dc4c56))
+- The release build installs `pyyaml`, which the OpenAPI schema generator needs. 0.21.2's publish failed on it and never reached PyPI, so this is the first release on PyPI with 0.21.2's fixes. (#168)
 
 ## [0.21.2](https://github.com/NodeJSmith/otf-api/compare/v0.21.1...v0.21.2) (2026-10-30)
 
+Not published to PyPI: the release build failed. Its changes ship in 0.21.3.
 
 ### Bug Fixes
 
-* add HYROX_60 and OPEN_STUDIO class types ([#162](https://github.com/NodeJSmith/otf-api/issues/162)) ([ab638aa](https://github.com/NodeJSmith/otf-api/commit/ab638aa5cfe5a3bf518640cca2bd03f5818c7c4b))
-* **auth:** map Cognito errors at login, token refresh, and credential fetch ([#156](https://github.com/NodeJSmith/otf-api/issues/156)) ([208d67d](https://github.com/NodeJSmith/otf-api/commit/208d67d6113306dc88339a600dd22ca099be112f))
-* validate URL path identifiers and restrict cache dir permissions ([#152](https://github.com/NodeJSmith/otf-api/issues/152)) ([6abe2c0](https://github.com/NodeJSmith/otf-api/commit/6abe2c08254be4d268798ef8df05bfd3bd0db268))
-
-
-### Documentation
-
-* add REVIEW.md review questions for src/otf_api ([#155](https://github.com/NodeJSmith/otf-api/issues/155)) ([162b034](https://github.com/NodeJSmith/otf-api/commit/162b03408fae13eac24dd5bd96eb8e5375d6390c))
+- `ClassType` adds `HYROX_60` and `OPEN_STUDIO`. `get_classes` was dropping these classes because validation rejected the unknown type. (#162)
+- When a class, booking, or studio fails to parse, the log names the record's ID instead of dumping the whole response. (#162)
+- `OtfCognito` raises `OtfAuthenticationError`, `OtfTransportError`, or `OtfConfigurationError` for Cognito failures at login, token refresh, and credential fetch, instead of raw botocore errors. (#156)
+- IDs passed into request URLs are validated, so a malformed ID such as `../x` raises instead of sending the request to a different endpoint. `get_workout_stats()` rejects an unknown `trend_type` with `ValueError`. (#152)
+- The cache directory is created with owner-only permissions. (#152)
 
 ## [0.21.1](https://github.com/NodeJSmith/otf-api/compare/v0.21.0...v0.21.1) (2026-08-11)
 
-
 ### Bug Fixes
 
-* **auth:** complete public error boundary in _create_cognito ([#142](https://github.com/NodeJSmith/otf-api/issues/142)) ([1c8321d](https://github.com/NodeJSmith/otf-api/commit/1c8321d6c58b7060be893fb2178af8414845922f))
+- Connectivity failures while creating the Cognito client raise `OtfTransportError`, and `OtfAuthenticationError` carries a fixed message instead of raw Cognito error text. (#142)
 
 ## [0.21.0](https://github.com/NodeJSmith/otf-api/compare/v0.20.0...v0.21.0) (2026-08-11)
 
