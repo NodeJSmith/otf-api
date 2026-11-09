@@ -51,7 +51,7 @@ Tests require real OrangeTheory credentials. Set `OTF_EMAIL` and `OTF_PASSWORD` 
 - **Source layout**: `src/otf_api/` with sub-packages for `api/`, `auth/`, `models/`
 - **Auth**: Cognito client ID, region, user pool ID, and identity pool ID are hardcoded in `auth/auth.py` (extracted from the OTF Android app)
 - **Models**: All Pydantic models inherit from `OtfItemBase` which sets `extra="ignore"` to handle upstream API schema changes gracefully
-- **Caching**: Disk-based response caching via `diskcache`, persists across sessions
+- **Caching**: `OtfCache` stores tokens, device keys, and 10-minute memoized getter responses as owner-only JSON files (no pickle), persisting across sessions
 - **Logging**: Auto-initialized on module import via `coloredlogs`; controlled by `OTF_LOG_LEVEL` env var (default: INFO)
 
 ## API Versioning and Dual Endpoints

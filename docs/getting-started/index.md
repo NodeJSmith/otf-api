@@ -158,7 +158,7 @@ purchases = otf.members.get_member_purchases()
 
 ### Cache Management
 
-The library caches authentication tokens and device registration data to disk using [`diskcache`](https://grantjenks.com/docs/diskcache/). The cache directory is determined by [`platformdirs`](https://platformdirs.readthedocs.io/en/latest/) and versioned by major library version.
+The library caches authentication tokens and device registration data to disk as owner-only JSON files. The cache directory is determined by [`platformdirs`](https://platformdirs.readthedocs.io/en/latest/) and versioned by major library version.
 
 **Typical locations:**
 
@@ -171,7 +171,7 @@ The library caches authentication tokens and device registration data to disk us
 ```python
 from otf_api.cache import clear_cache
 
-# Clear everything (tokens + device data)
+# Clear everything (tokens, device data, and cached responses)
 clear_cache()
 ```
 

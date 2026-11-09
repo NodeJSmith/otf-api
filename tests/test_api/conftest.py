@@ -13,7 +13,7 @@ from otf_api.api.studios.studio_client import StudioClient
 from otf_api.api.workouts.workout_client import WorkoutClient
 
 
-# Methods decorated with @CACHE.memoize() whose closures hold the import-time cache.
+# Methods decorated with @CACHE.memoize(), which writes to the real user cache directory.
 # We bypass the memoize layer for tests by replacing them with their __wrapped__ originals.
 _MEMOIZED_METHODS: list[tuple[type, str]] = [
     (MemberClient, "get_member_detail"),
@@ -91,7 +91,7 @@ def mock_otf(mock_router):
     - OtfUser is replaced with a MagicMock (no Cognito calls)
     - respx intercepts all HTTP with assert_all_mocked=True
     - @CACHE.memoize() decorated methods are replaced with their unwrapped originals
-      to avoid pickle failures caused by MagicMock objects in the cache key
+      so tests neither read nor write the real user cache directory
     """
     mock_user = _make_mock_user()
 

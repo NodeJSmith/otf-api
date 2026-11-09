@@ -23,7 +23,7 @@ flowchart TD
 
     subgraph infra["Infrastructure"]
         AUTH["HttpxCognitoAuth<br/><i>request signing</i>"]
-        CACHE["OtfCache<br/><i>diskcache</i>"]
+        CACHE["OtfCache<br/><i>JSON files</i>"]
     end
 
     subgraph cognito["AWS"]
@@ -89,12 +89,13 @@ The `OtfUser` class wraps `OtfCognito` and provides a clean interface for creden
 
 ## Caching
 
-`OtfCache` (a `diskcache.Cache` subclass) persists two categories of data:
+`OtfCache` stores everything as owner-only (0600) JSON files, so reading the cache never runs code:
 
-| Tag | Contents | Expiration |
+| File | Contents | Expiration |
 |-----|----------|------------|
-| `token` | Access, ID, and refresh tokens | Matches token TTL |
-| `device` | Device key, group key, password | No expiration |
+| `tokens.json` | Access, ID, and refresh tokens | Matches token TTL |
+| `device.json` | Device key, group key, password | No expiration |
+| `responses/<tag>/*.json` | Memoized client getters (member/studio detail, performance summary, telemetry), keyed by member UUID and arguments | 10 minutes |
 
 The cache directory is platform-specific (via `platformdirs`) and versioned by library major version to avoid cross-version conflicts.
 
@@ -105,7 +106,7 @@ The cache directory is platform-specific (via `platformdirs`) and versioned by l
 | `otf_api/api/` | Domain API classes (`BookingApi`, `MemberApi`, `StudioApi`, `WorkoutApi`) and the HTTP client |
 | `otf_api/models/` | Pydantic response models, base classes, and mixins |
 | `otf_api/auth/` | Cognito authentication, HTTPX auth handler, credential utilities |
-| `otf_api/cache.py` | Disk cache wrapper for tokens and device data |
+| `otf_api/cache.py` | JSON file cache for tokens, device data, and memoized responses |
 | `otf_api/exceptions.py` | Exception hierarchy for all library errors |
 
 !!! note

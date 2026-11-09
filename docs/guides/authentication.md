@@ -61,7 +61,7 @@ All of this happens transparently — you never need to manage tokens yourself.
 
 ## Token Caching
 
-Tokens are persisted to disk using `diskcache`, stored in a platform-appropriate cache directory with a version prefix based on the library's major version (e.g., `~/.cache/otf-api/v0/` for the current 0.x series). This means:
+Tokens are persisted to disk as owner-only JSON files, stored in a platform-appropriate cache directory with a version prefix based on the library's major version (e.g., `~/.cache/otf-api/v0/` for the current 0.x series). This means:
 
 - Subsequent script runs reuse existing tokens without re-authenticating
 - Tokens automatically expire from the cache when they become invalid
@@ -77,7 +77,7 @@ from otf_api.cache import clear_cache
 clear_cache()
 ```
 
-This removes both token and device data, forcing a fresh login on next use.
+This removes tokens, device data, and cached API responses, forcing a fresh login on next use.
 
 ## Device Key Management
 
