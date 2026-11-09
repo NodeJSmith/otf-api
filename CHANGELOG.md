@@ -5,8 +5,8 @@
 
 ### ⚠ BREAKING CHANGES
 
-* **cache:** OtfCache no longer subclasses diskcache.Cache; only the documented token/device/clear helpers remain, plus memoize and evict.
-* class_type, status, and equipment_id are no longer always enum members. An unrecognized value is a raw str or int with no enum attributes or methods (.value, .name, BookingStatus.priority()). Narrow with isinstance first, or use getattr(x, "value", x). ==, in, and match keep working for values that exactly match a member. ClassFilter(class_type=...) no longer raises KeyError on an unknown type: it warns and matches nothing, and ClassFilter.class_type's declared type now includes raw strings.
+* **cache:** The on-disk cache no longer uses `diskcache`, which reads its files back through `pickle` ([CVE-2025-69872](https://nvd.nist.gov/vuln/detail/CVE-2025-69872)). Tokens, device keys, and cached responses are now stored as owner-only JSON files, and `diskcache` is no longer a dependency. The old cache is deleted, so you will need to sign in once after upgrading. `OtfCache` no longer subclasses `diskcache.Cache`: only the documented token, device, and clear helpers remain, plus `memoize` and `evict`. `clear_cache()` now also clears cached responses.
+* **models:** `class_type`, `status`, and `equipment_id` are no longer always enum members. A value the library doesn't recognize is kept as a raw `str` or `int` instead of failing validation and dropping the record. Raw values have no enum attributes or methods (`.value`, `.name`, `BookingStatus.priority()`), so narrow with `isinstance` first or use `getattr(x, "value", x)`. `==`, `in`, and `match` still work for values that exactly match a member. `ClassFilter(class_type=...)` with an unknown type now warns and matches nothing instead of raising `KeyError`, and `ClassFilter.class_type` is typed to accept raw strings.
 
 ### Features
 
