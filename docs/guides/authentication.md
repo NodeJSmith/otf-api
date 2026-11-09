@@ -77,7 +77,7 @@ from otf_api.cache import clear_cache
 clear_cache()
 ```
 
-This removes both token and device data, forcing a fresh login on next use.
+This removes tokens, device data, and cached API responses, forcing a fresh login on next use.
 
 ## Device Key Management
 

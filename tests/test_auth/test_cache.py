@@ -169,18 +169,20 @@ def test_clear_swallows_exception(tmp_cache):
 
 
 def test_clear_cache_helper(tmp_path):
-    """clear_cache() clears tokens and device data from the module-level cache."""
+    """clear_cache() clears tokens, device data, and memoized responses from the module-level cache."""
     cache = OtfCache(str(tmp_path))
     device_data = {"device_key": "dk", "device_group_key": "dgk", "device_password": "dp"}
     token_data = {"access_token": "at", "id_token": "it", "refresh_token": "rt"}
     cache.write_device_data_to_cache(device_data)
     cache.write_token_data_to_cache(token_data)
+    cache.memoize(expire=600, tag="member_detail")(lambda self: {})(Client("m1"))
 
     with patch("otf_api.cache.get_cache", return_value=cache):
         clear_cache()
 
     assert cache.read_device_data_from_cache() == {}
     assert cache.read_token_data_from_cache() == {}
+    assert not cache.responses_dir.exists()
 
 
 def test_cache_files_are_owner_only_json(tmp_cache):

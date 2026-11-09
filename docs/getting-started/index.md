@@ -171,7 +171,7 @@ The library caches authentication tokens and device registration data to disk as
 ```python
 from otf_api.cache import clear_cache
 
-# Clear everything (tokens + device data)
+# Clear everything (tokens, device data, and cached responses)
 clear_cache()
 ```
 

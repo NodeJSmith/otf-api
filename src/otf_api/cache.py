@@ -323,10 +323,8 @@ def get_cache() -> OtfCache:
 
 
 def clear_cache() -> None:
-    """Clears the cache."""
+    """Clears tokens, device data, and memoized responses."""
     try:
-        cache = get_cache()
-        cache.clear_device_data()
-        cache.clear_tokens()
+        get_cache().clear()
     except Exception:
         LOGGER.exception("Failed to clear cache")
