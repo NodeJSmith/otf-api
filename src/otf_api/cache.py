@@ -1,7 +1,10 @@
 import stat
+from collections.abc import Callable
+from functools import wraps
 from importlib.metadata import version
 from logging import getLogger
 from pathlib import Path
+from typing import Any
 
 from diskcache_community import Cache, SafeDisk
 from packaging.version import Version
@@ -156,10 +159,33 @@ def get_cache() -> OtfCache:
         cache_dir = get_cache_dir()
         ensure_secure_directory(cache_dir)
         LOGGER.debug("Using cache directory: %s", cache_dir)
-        _CACHE = OtfCache(
-            cache_dir, disk=SafeDisk.with_types(modules=("otf_api.api", "otf_api.auth")).with_options(on_error="miss")
-        )
+        _CACHE = OtfCache(cache_dir, disk=SafeDisk.with_options(on_error="miss"))
     return _CACHE
+
+
+def memoize_by_member(expire: int, tag: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    """Memoize a client method in the cache, keyed by the client's member UUID and the other arguments.
+
+    Args:
+        expire (int): Seconds until a cached result expires.
+        tag (str): Cache tag for the results, used to evict them.
+
+    Returns:
+        Callable: The decorator.
+    """
+
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+        @get_cache().memoize(name=f"{func.__module__}.{func.__qualname__}", expire=expire, tag=tag, ignore={1})
+        def cached(_member_uuid: str | None, client: Any, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+            return func(client, *args, **kwargs)
+
+        @wraps(func)
+        def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+            return cached(self.member_uuid, self, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def clear_cache() -> None:

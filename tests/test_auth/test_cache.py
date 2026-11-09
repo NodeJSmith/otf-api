@@ -3,21 +3,15 @@
 import time
 from unittest.mock import patch
 
-from diskcache_community import Cache, Disk
+from diskcache_community import Cache, Disk, SafeDisk
 
-from otf_api.cache import OtfCache, clear_cache, get_cache
-
-planted_calls = []
-
-
-def planted():
-    planted_calls.append(True)
-    return "planted-id-token"
+from otf_api.auth.auth import OtfCognito
+from otf_api.cache import OtfCache, clear_cache, get_cache, memoize_by_member
 
 
 class Planted:
     def __reduce__(self):
-        return (planted, ())
+        return (OtfCognito, ("planted-user", "planted-password"))
 
 
 def test_device_data_round_trip(tmp_cache):
@@ -193,10 +187,36 @@ def test_get_cache_ignores_planted_pickle(tmp_path):
     with Cache(str(tmp_path), disk=Disk) as other_writer:
         other_writer.set("id_token", Planted(), tag="token")
 
-    with patch("otf_api.cache._CACHE", None), patch("otf_api.cache.get_cache_dir", return_value=str(tmp_path)):
+    with (
+        patch("otf_api.cache._CACHE", None),
+        patch("otf_api.cache.get_cache_dir", return_value=str(tmp_path)),
+        patch.object(OtfCognito, "handle_login") as handle_login,
+    ):
         cache = get_cache()
-    tokens = cache.read_token_data_from_cache()
+        tokens = cache.read_token_data_from_cache()
     cache.close()
 
     assert tokens == {}
-    assert planted_calls == []
+    handle_login.assert_not_called()
+
+
+def test_memoize_by_member_keys_by_member_uuid(tmp_path):
+    class Client:
+        def __init__(self, member_uuid):
+            self.member_uuid = member_uuid
+
+    requests = []
+    cache = OtfCache(str(tmp_path), disk=SafeDisk.with_options(on_error="miss"))
+    with patch("otf_api.cache._CACHE", cache):
+
+        @memoize_by_member(expire=600, tag="studio_detail")
+        def get_studio_detail(self, studio_uuid):
+            requests.append((self.member_uuid, studio_uuid))
+            return {"member": self.member_uuid, "studio": studio_uuid}
+
+    first, second = Client("member-1"), Client("member-2")
+    assert get_studio_detail(first, "studio-1") == {"member": "member-1", "studio": "studio-1"}
+    assert get_studio_detail(Client("member-1"), "studio-1") == {"member": "member-1", "studio": "studio-1"}
+    assert get_studio_detail(second, "studio-1") == {"member": "member-2", "studio": "studio-1"}
+    assert requests == [("member-1", "studio-1"), ("member-2", "studio-1")]
+    cache.close()

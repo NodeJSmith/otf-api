@@ -1,6 +1,7 @@
 from typing import Any
 
 from otf_api.api.client import CACHE, OtfClient
+from otf_api.cache import memoize_by_member
 
 
 class MemberClient:
@@ -14,7 +15,7 @@ class MemberClient:
         self.client = client
         self.member_uuid = client.member_uuid
 
-    @CACHE.memoize(expire=600, tag="member_detail")
+    @memoize_by_member(expire=600, tag="member_detail")
     def get_member_detail(self) -> dict:
         """Retrieve raw member details."""
         return self.client.default_request(

@@ -3,8 +3,9 @@ from functools import partial
 from logging import getLogger
 from typing import Any
 
-from otf_api.api.client import API_IO_BASE_URL, API_TELEMETRY_BASE_URL, CACHE, OtfClient
+from otf_api.api.client import API_IO_BASE_URL, API_TELEMETRY_BASE_URL, OtfClient
 from otf_api.api.utils import validate_identifier
+from otf_api.cache import memoize_by_member
 
 LOGGER = getLogger(__name__)
 
@@ -47,7 +48,7 @@ class WorkoutClient:
         params = {"limit": limit} if limit else {}
         return self.performance_summary_request("GET", "/v1/performance-summaries", params=params)
 
-    @CACHE.memoize(expire=600, tag="performance_summary")
+    @memoize_by_member(expire=600, tag="performance_summary")
     def get_performance_summary(self, performance_summary_id: str) -> dict:
         """Retrieve raw performance summary data."""
         performance_summary_id = validate_identifier(performance_summary_id, "performance_summary_id")
@@ -59,7 +60,7 @@ class WorkoutClient:
             "history"
         ]
 
-    @CACHE.memoize(expire=600, tag="telemetry")
+    @memoize_by_member(expire=600, tag="telemetry")
     def get_telemetry(self, performance_summary_id: str, max_data_points: int = 150) -> dict:
         """Retrieve raw telemetry data."""
         data = self.telemetry_request(

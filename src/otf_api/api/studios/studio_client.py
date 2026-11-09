@@ -2,8 +2,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from logging import getLogger
 from typing import Any
 
-from otf_api.api.client import CACHE, OtfClient
+from otf_api.api.client import OtfClient
 from otf_api.api.utils import validate_identifier
+from otf_api.cache import memoize_by_member
 
 LOGGER = getLogger(__name__)
 
@@ -19,7 +20,7 @@ class StudioClient:
         self.client = client
         self.member_uuid = client.member_uuid
 
-    @CACHE.memoize(expire=600, tag="studio_detail")
+    @memoize_by_member(expire=600, tag="studio_detail")
     def get_studio_detail(self, studio_uuid: str) -> dict:
         """Retrieve raw studio details."""
         studio_uuid = validate_identifier(studio_uuid, "studio_uuid")
