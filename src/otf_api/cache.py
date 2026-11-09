@@ -3,7 +3,7 @@ from importlib.metadata import version
 from logging import getLogger
 from pathlib import Path
 
-from diskcache import Cache
+from diskcache_community import Cache, SafeDisk
 from packaging.version import Version
 from platformdirs import user_cache_dir
 
@@ -156,7 +156,9 @@ def get_cache() -> OtfCache:
         cache_dir = get_cache_dir()
         ensure_secure_directory(cache_dir)
         LOGGER.debug("Using cache directory: %s", cache_dir)
-        _CACHE = OtfCache(cache_dir)
+        _CACHE = OtfCache(
+            cache_dir, disk=SafeDisk.with_types(modules=("otf_api.api", "otf_api.auth")).with_options(on_error="miss")
+        )
     return _CACHE
 
 

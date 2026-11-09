@@ -3,7 +3,21 @@
 import time
 from unittest.mock import patch
 
-from otf_api.cache import OtfCache, clear_cache
+from diskcache_community import Cache, Disk
+
+from otf_api.cache import OtfCache, clear_cache, get_cache
+
+planted_calls = []
+
+
+def planted():
+    planted_calls.append(True)
+    return "planted-id-token"
+
+
+class Planted:
+    def __reduce__(self):
+        return (planted, ())
 
 
 def test_device_data_round_trip(tmp_cache):
@@ -173,3 +187,16 @@ def test_clear_cache_helper(tmp_path):
 
     assert cache.read_device_data_from_cache() == {}
     assert cache.read_token_data_from_cache() == {}
+
+
+def test_get_cache_ignores_planted_pickle(tmp_path):
+    with Cache(str(tmp_path), disk=Disk) as other_writer:
+        other_writer.set("id_token", Planted(), tag="token")
+
+    with patch("otf_api.cache._CACHE", None), patch("otf_api.cache.get_cache_dir", return_value=str(tmp_path)):
+        cache = get_cache()
+    tokens = cache.read_token_data_from_cache()
+    cache.close()
+
+    assert tokens == {}
+    assert planted_calls == []
