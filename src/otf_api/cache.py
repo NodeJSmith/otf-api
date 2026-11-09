@@ -144,10 +144,15 @@ class OtfCache:
         shutil.rmtree(self.responses_dir / tag, ignore_errors=True)
 
     def purge_expired_responses(self) -> None:
-        """Deletes expired memoized responses, which are otherwise only removed when the same call is repeated."""
+        """Deletes expired or unreadable memoized responses, which reads leave in place.
+
+        Racing a concurrent writer can delete a fresh response, which only costs a refetch.
+        """
         for path in self.responses_dir.glob("*/*.json"):
             try:
-                read_unexpired(path)
+                data = read_json(path)
+                if data is None or is_expired(data):
+                    path.unlink(missing_ok=True)
             except OSError:
                 LOGGER.warning("Could not purge cached response %s", path, exc_info=True)
 
@@ -207,7 +212,6 @@ def read_json(path: Path) -> dict[str, Any] | None:
         return None
     except (json.JSONDecodeError, UnicodeDecodeError):
         LOGGER.warning("Ignoring corrupt cache file", extra={"path": str(path)})
-        path.unlink(missing_ok=True)
         return None
     return data if isinstance(data, dict) else None
 
@@ -231,15 +235,22 @@ def write_entry(path: Path, data: dict[str, Any], expire: int | None) -> None:
     write_json(path, {**data, "_expires_at": expires_at})
 
 
+def is_expired(data: dict[str, Any]) -> bool:
+    """Whether an entry written by `write_entry` has passed its expiry."""
+    expires_at = data.get("_expires_at")
+    return expires_at is not None and expires_at <= time.time()
+
+
 def read_unexpired(path: Path) -> dict[str, Any] | None:
-    """Reads an entry written by `write_entry`, deleting and ignoring it once it has expired."""
+    """Reads an entry written by `write_entry`, returning None once it has expired.
+
+    Never deletes the file: another process may have replaced it with a fresh entry since it was read, and the
+    next write overwrites it anyway.
+    """
     data = read_json(path)
-    if data is None:
+    if data is None or is_expired(data):
         return None
-    expires_at = data.pop("_expires_at", None)
-    if expires_at is not None and expires_at <= time.time():
-        path.unlink(missing_ok=True)
-        return None
+    data.pop("_expires_at", None)
     return data
 
 

@@ -199,7 +199,18 @@ def test_unreadable_token_file_is_ignored(tmp_cache):
     tmp_cache.token_path.write_bytes(pickle.dumps({"access_token": "planted"}))
 
     assert tmp_cache.read_token_data_from_cache() == {}
-    assert not tmp_cache.token_path.exists()
+
+
+def test_reads_never_delete_cache_files(tmp_cache):
+    """An expired entry is a miss but stays on disk; another process may have replaced it since it was read."""
+    tmp_cache.write_token_data_to_cache({"access_token": "a", "id_token": "b", "refresh_token": "c"}, expiration=60)
+
+    with patch("otf_api.cache.time.time", return_value=time.time() + 61):
+        assert tmp_cache.read_token_data_from_cache() == {}
+    assert tmp_cache.token_path.exists()
+
+    tmp_cache.write_token_data_to_cache({"access_token": "a2", "id_token": "b2", "refresh_token": "c2"}, expiration=60)
+    assert tmp_cache.read_token_data_from_cache() == {"access_token": "a2", "id_token": "b2", "refresh_token": "c2"}
 
 
 def test_device_data_writes_merge(tmp_cache):
