@@ -96,7 +96,7 @@ class MemberClient:
 
     def put_member_name(self, first_name: str, last_name: str) -> dict:
         """Retrieve raw response from updating member name."""
-        CACHE.evict(tag="member_detail", retry=True)
+        CACHE.evict("member_detail")
         return self.client.default_request(
             "PUT",
             f"/member/members/{self.member_uuid}",

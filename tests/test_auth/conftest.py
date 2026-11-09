@@ -27,9 +27,7 @@ def set_env_creds(monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.fixture()
 def tmp_cache(tmp_path):
     """Return an OtfCache instance backed by a temporary directory."""
-    cache = OtfCache(str(tmp_path))
-    yield cache
-    cache.close()
+    return OtfCache(str(tmp_path))
 
 
 @pytest.fixture()
@@ -38,7 +36,6 @@ def mock_cache(tmp_path):
     cache = OtfCache(str(tmp_path))
     with patch("otf_api.auth.auth.CACHE", cache):
         yield cache
-    cache.close()
 
 
 @pytest.fixture()
