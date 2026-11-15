@@ -1,3 +1,7 @@
 [tools]
 prek = "0.5.10"
 uv = "latest"
+
+[tasks."worktree:setup"]
+description = "Set up a new worktree (Python venv); the autofix pipeline runs it in each worktree it creates"
+run = "uv sync"

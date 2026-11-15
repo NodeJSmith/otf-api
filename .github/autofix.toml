@@ -1,0 +1,36 @@
+# The autofix pipeline's recipe for this repo, read from the default branch at the start of each
+# run (Dotfiles packages/autofix/src/autofix/recipe.py). A PR can't change what its own review
+# session runs: edits here take effect once they merge. An automated PR that edits this file is
+# parked for a human to merge or close; it is never auto-merged.
+#
+# Only the review job runs here, for Renovate PRs that fail CI, conflict, or get review threads.
+# The recipe format requires [fix] too; it describes the repo for when fix is turned on.
+schema_version = 2
+
+[review]
+# Workflow `name:` values whose failures get CI triage (rerun or park) instead of a review session.
+test_workflows = ["Tests"]
+# Inserted into the review skill as its "Repo checks" section.
+checks = """
+**Before committing.** Run `uv run pytest` and `prek run --all-files --stage pre-push` (ruff, typos, house-lint, gitleaks and pyright).
+
+**Public surface.** otf-api is a published library. Runtime dependency ranges in `pyproject.toml` stay as written (`rangeStrategy: update-lockfile`): a fix must not raise the minimum versions users get. Change `uv.lock` instead.
+"""
+
+[fix]
+# Inserted into the fix prompt as its "Repo checks" section.
+checks = """
+**Public surface.** otf-api is a published library: its public surface is everything importable from `otf_api` and the models it returns. A breaking change needs a `!` commit type so release-please bumps the major version. Don't raise runtime dependency minimums in `pyproject.toml`.
+
+**Tests, lint and types.** Run the full suite with `uv run pytest`, then `prek run --all-files --stage pre-push` for lint and type checks.
+"""
+# Inserted into the ship prompt as its "Repo checks" section.
+ship_checks = """
+**Why CI covers the rest.** `.github/workflows/tests.yml` runs the complete test suite on every PR, so a scoped run is enough here.
+
+**Scoped tests.** `uv run pytest <test file(s)>`.
+
+**Lint and type checks.** `prek run --all-files --stage pre-push`.
+
+**Repairs the repair pass may make**, besides a formatter or a lint rule's `--fix`: none.
+"""
