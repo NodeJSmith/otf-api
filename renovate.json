@@ -4,7 +4,7 @@
     "Per-repo Renovate config, processed by a self-hosted Renovate runner.",
     "chore(deps) commits keep dependency bumps out of the release-please changelog.",
     "Runtime dependency ranges stay as written (rangeStrategy update-lockfile): otf-api is a library, so a bump here must not raise the minimum versions its users get.",
-    "Non-major updates automerge through GitHub auto-merge once the required checks pass, after minimumReleaseAge holds each release for 3 days. Major updates and the python runtime never automerge.",
+    "Non-major updates automerge through GitHub auto-merge once the required checks pass, after minimumReleaseAge holds each release for 3 days. Major updates also automerge for dev tooling only (Python dependency-groups, GitHub Actions action/workflow refs): if one breaks, CI fails and the autofix reviewer picks it up, and nothing ships to users. Majors of runtime dependencies (project.dependencies) and the python runtime never automerge.",
     "customManagers tracks each GitHub-hosted hook repo's rev in prek.toml: Renovate's built-in pre-commit manager only reads .pre-commit-config.yaml, so prek.toml pins would otherwise go stale silently."
   ],
   "extends": ["config:recommended"],
@@ -31,6 +31,12 @@
     {
       "description": "Automerge non-major updates once the required checks pass",
       "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "automerge": true
+    },
+    {
+      "description": "Automerge major updates of dev tooling once the required checks pass; runtime dependency majors stay manual",
+      "matchUpdateTypes": ["major"],
+      "matchDepTypes": ["dependency-groups", "action", "workflow"],
       "automerge": true
     },
     {
