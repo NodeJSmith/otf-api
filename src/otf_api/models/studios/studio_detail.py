@@ -39,7 +39,6 @@ class StudioDetail(ApiMixin, OtfItemBase):
         repr=False,
     )
     location: StudioLocation = Field(
-        ...,
         validation_alias="studioLocation",
         default_factory=lambda: StudioLocation.model_validate({}),
         description="Physical location details.",
