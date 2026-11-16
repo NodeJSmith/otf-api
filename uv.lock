@@ -528,16 +528,16 @@ wheels = [
 
 [[package]]
 name = "house-lint"
-version = "0.5.0"
+version = "0.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cyclopts" },
     { name = "msgspec" },
     { name = "pathspec" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/be/1a/2f9fbcf989a28ff8940b21867e01ceff8b895da35795d2efb5e400c12f3f/house_lint-0.5.0.tar.gz", hash = "sha256:83dab5853e4b52c66fd15fdf63cce0ff17f21165899cea3cdaaed55d83ad3e03", size = 60360, upload-time = "2026-11-03T20:49:56.301Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/12/c2/d31cf931aaa21ad9ef5cfb186f47249933ddc81b9e5777e9ae13c602c1f1/house_lint-0.7.0.tar.gz", hash = "sha256:86a2e6e5e955e4d483526b6589149f0d75e6bf3c14a9b6bb3423d97d430516b2", size = 82881, upload-time = "2026-11-15T16:04:33.114Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/57/56/695a752039dc6f35cf85c8c061de57f4d5985df0d4b85d83b64c4d599a5c/house_lint-0.5.0-py3-none-any.whl", hash = "sha256:efbc7d1cbc6a80862f4b6f87f91e58741fef8fc7ff01d31a6a6638e64477593c", size = 71937, upload-time = "2026-11-03T20:49:55.047Z" },
+    { url = "https://files.pythonhosted.org/packages/39/4e/94156e22149366a7aaf7bed6fa8e7f67da437d098f7704592b4fdb4363b9/house_lint-0.7.0-py3-none-any.whl", hash = "sha256:061ece4aa5f79c3cddabbb28ccd619716ae7001dd3441a3c7c48b497251e3e56", size = 97958, upload-time = "2026-11-15T16:04:31.803Z" },
 ]
 
 [[package]]
