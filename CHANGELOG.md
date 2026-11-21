@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.1](https://github.com/NodeJSmith/otf-api/compare/v0.22.0...v0.22.1) (2026-11-21)
+
+
+### Bug Fixes
+
+* **deps:** allow attrs 25 and 26 ([#221](https://github.com/NodeJSmith/otf-api/issues/221)) ([3e0feec](https://github.com/NodeJSmith/otf-api/commit/3e0feecbde50ba8f47bed4a897f2357d6d5055b7))
+
 ## [0.22.0](https://github.com/NodeJSmith/otf-api/compare/v0.21.3...v0.22.0) (2026-11-09)
 
 
